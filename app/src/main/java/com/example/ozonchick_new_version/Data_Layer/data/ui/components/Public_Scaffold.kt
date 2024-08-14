@@ -36,6 +36,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Test_Components.Scafold_BottomBar
 import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
@@ -132,82 +133,7 @@ fun Public_Scaffold(
     bottomBar: @Composable () -> Unit = {
         if (bottomButton) {
             var navigator = LocalNavigator.current
-            BottomAppBar(
-                containerColor = Color_Background.value,
-/*                modifier = Modifier.drawBehind {
-                    drawLine(
-                        Color_MainText.value,
-                        Offset(0f, -size.height/25),
-                        Offset(size.width, size.height*25),
-                        5f
-                    )
-                }*/
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround
-                ) {
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.clickable { navigator?.push(Spisok_Predlogenii_Screen()) }
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.vakansi_icon_3),
-                            contentDescription = "Вакансии",
-                            modifier = Modifier
-                                .size(sizeIcon),
-                            tint = Color_MainText.value
-                        )
-                        Text(
-                            text = "Вакансии",
-                            style = bottomTextStyle,
-                            color = Color_MainText.value,
-                            modifier = Modifier.padding(top = 3.dp)
-                        )
-                    }
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.clickable { navigator?.push(Otkliks_Screen()) }
-                    )
-                    {
-                        Icon(
-                            painter = painterResource(id = R.drawable.folder),
-                            contentDescription = "Отклики",
-                            modifier = Modifier
-                                .size(sizeIcon),
-                            tint = Color_MainText.value
-                        )
-                        Text(
-                            text = "Собственные вакансии"/*"Отклики"*/,
-                            style = bottomTextStyle,
-                            color = Color_MainText.value,
-                            modifier = Modifier.padding(top = 3.dp)
-                        )
-                    }
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.clickable { navigator?.push(Profile_Screen()) }
-                    )
-                    {
-                        Icon(
-                            painter = painterResource(id = R.drawable.profile_circle),
-                            contentDescription = "Иконка профиля",
-                            modifier = Modifier
-                                .size(sizeIcon),
-                            tint = Color_MainText.value
-                        )
-                        Text(
-                            text = "Профиль",
-                            style = bottomTextStyle,
-                            color = Color_MainText.value,
-                            modifier = Modifier.padding(top = 3.dp)
-                        )
-                    }
-                }
-            }
+            Scafold_BottomBar(navigator = navigator, sizeIcon = sizeIcon, bottomTextStyle = bottomTextStyle)
         }
     },
     snackbarHost: @Composable () -> Unit = {},

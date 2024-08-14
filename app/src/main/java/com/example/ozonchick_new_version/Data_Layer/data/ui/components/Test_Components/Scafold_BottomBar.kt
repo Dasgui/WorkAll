@@ -25,6 +25,7 @@ import com.example.ozonchick_new_version.Screens.Home.Spisok_Predlogenii_Screen
 import cafe.adriel.voyager.navigator.Navigator
 import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
 import androidx.compose.ui.text.TextStyle
+import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Test_Components.mini_components.Clickable_Icon
 
 @Composable
 fun Scafold_BottomBar(
@@ -39,25 +40,35 @@ fun Scafold_BottomBar(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround
         ) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.clickable { navigator?.push(Spisok_Predlogenii_Screen()) }
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.vakansi_icon_3),
-                    contentDescription = "Вакансии",
-                    modifier = Modifier
-                        .size(sizeIcon),
-                    tint = Color_MainText.value
-                )
-                Text(
-                    text = "Вакансии",
-                    style = bottomTextStyle,
-                    color = Color_MainText.value,
-                    modifier = Modifier.padding(top = 3.dp)
-                )
-            }
+            Clickable_Icon(
+                navigator = navigator,
+                screen = Spisok_Predlogenii_Screen(),
+                iconId = R.drawable.vakansi_icon_3,
+                sizeIcon = sizeIcon,
+                colorIcon = Color_MainText.value,
+                bottomText = "Вакансии",
+                bottomTextStyle = bottomTextStyle,
+                colorBottomText = Color_MainText.value
+            )
+//            Column(
+//                verticalArrangement = Arrangement.Center,
+//                horizontalAlignment = Alignment.CenterHorizontally,
+//                modifier = Modifier.clickable { navigator?.push(Spisok_Predlogenii_Screen()) }
+//            ) {
+//                Icon(
+//                    painter = painterResource(id = R.drawable.vakansi_icon_3),
+//                    contentDescription = "Вакансии",
+//                    modifier = Modifier
+//                        .size(sizeIcon),
+//                    tint = Color_MainText.value
+//                )
+//                Text(
+//                    text = "Вакансии",
+//                    style = bottomTextStyle,
+//                    color = Color_MainText.value,
+//                    modifier = Modifier.padding(top = 3.dp)
+//                )
+//            }
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
