@@ -68,14 +68,8 @@ import org.koin.androidx.compose.koinViewModel
 
 private var mainTextStyle: TextStyle = Tema.Text_24_24_Bold
 private var secondTextStyle: TextStyle = Tema.Text_18_18_Medium
-
-private var MenuTextColor: MutableState<Color> = Color_MainText
-
-private var background: MutableState<Color> = Color_Background
 private var mainTextColor: MutableState<Color> = Color_MainText
 
-private var bottomTextStyle: androidx.compose.ui.text.TextStyle = Tema.Text_14_14_Regular
-private var bottomTextColor: MutableState<Color> = Color_MainText
 
 class Profile_Screen() : Screen {
     @Composable
@@ -87,80 +81,89 @@ class Profile_Screen() : Screen {
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Profile_Construct(vm: Home_ViewModel = koinViewModel()) {
-    val screen = rememberScreen(provider = Send_a_Package_Provider.Send_a_Package)
+fun Profile_Construct() {
     var navigator = LocalNavigator.current
     Public_Scaffold(mainText = "Профиль", bottomButton = true) {
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 15.dp, end = 15.dp, top = 90.dp)
         ) {
-
-            Row(modifier = Modifier.fillMaxWidth()) {
-                Image(
-                    painter = painterResource(id = R.drawable.good_tick),
-                    contentDescription = "К",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(50.dp)
-                        .clip(CircleShape)
-                )
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 5.dp), horizontalArrangement = Arrangement.Center
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.Start,
-                        modifier = Modifier.padding(start = 10.dp)
-                    ) {
-                        Log.d("Имя 2", vm.nameUser.value)
-                        Text(
-                            text = vm.Name_for_base(),
-                            style = mainTextStyle/*vm.Name_for_base()*/,
-                            color = mainTextColor.value
-                        )
-                    }
-                    Column(
-                        horizontalAlignment = Alignment.End,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_round_log_out),
-                            contentDescription = "Выход",
-                            modifier = Modifier
-                                .size(50.dp)
-                                .clickable { vm.Exit(navigator) },
-                            colorFilter = ColorFilter.tint(Color_MainText.value)
-                        )
-                    }
-                }
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 10.dp),
-
-            ) {
-                Card_construct(
-                    "Настройки",
-                    "Здесь вы можете настроить приложение",
-                    R.drawable.setting_icon,
-                    navigator
-                )
-                Card_construct(
-                    "Информация о вас",
-                    "Здесь вы можете изменить информация",
-                    R.drawable.setting_icon,
-                    navigator
-                )
-            }
+            ScreenHead(navigator = navigator)
+            ScreenBody(navigator = navigator)
         }
     }
 
 
+}
+
+@Composable
+private fun ScreenHead(
+    vm: Home_ViewModel = koinViewModel(),
+    navigator: Navigator?
+) {
+    Row(modifier = Modifier.fillMaxWidth()) {
+        Image(
+            painter = painterResource(id = R.drawable.good_tick),
+            contentDescription = "Значок подтверждения полной регистрации",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(50.dp)
+                .clip(CircleShape)
+        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 5.dp), horizontalArrangement = Arrangement.Center
+        ) {
+            Column(
+                horizontalAlignment = Alignment.Start,
+                modifier = Modifier.padding(start = 10.dp)
+            ) {
+                Log.d("Имя 2", vm.nameUser.value)
+                Text(
+                    text = vm.Name_for_base(),
+                    style = mainTextStyle,
+                    color = mainTextColor.value
+                )
+            }
+            Column(
+                horizontalAlignment = Alignment.End,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_round_log_out),
+                    contentDescription = "Выход",
+                    modifier = Modifier
+                        .size(50.dp)
+                        .clickable { vm.Exit(navigator) },
+                    colorFilter = ColorFilter.tint(Color_MainText.value)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ScreenBody(navigator: Navigator?) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 10.dp),
+    ) {
+        Card_construct(
+            "Настройки",
+            "Здесь вы можете настроить приложение",
+            R.drawable.setting_icon,
+            navigator
+        )
+        Card_construct(
+            "Информация о вас",
+            "Здесь вы можете изменить информация",
+            R.drawable.setting_icon,
+            navigator
+        )
+    }
 }
 
 @Composable
@@ -182,40 +185,49 @@ private fun Card_construct(
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                Icon(
-                    modifier = Modifier.size(25.dp),
-                    painter = painterResource(id = icon),
-                    contentDescription = "Настройки",
-                    tint = mainTextColor.value
-                )
-                Column(
-                    horizontalAlignment = Alignment.Start,
-                    verticalArrangement = Arrangement.SpaceAround,
-                    modifier = Modifier.padding(start = 5.dp)
-                ) {
-                    Text(
-                        text = mainText,
-                        style = mainTextStyle,
-                        color = mainTextColor.value,
-                    )
-                    Text(
-                        text = secondText,
-                        style = secondTextStyle,
-                        color = mainTextColor.value,
-                    )
-                }
-            }
-            Icon(
-                modifier = Modifier.size(20.dp),
-                painter = painterResource(id = R.drawable.vector),
-                contentDescription = "",
-                tint = mainTextColor.value
+            CardMain(mainText = mainText, secondText = secondText, icon = icon)
+        }
+    }
+}
+
+@Composable
+private fun CardMain(
+    mainText: String,
+    secondText: String,
+    icon: Int
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceAround
+    ) {
+        Icon(
+            modifier = Modifier.size(25.dp),
+            painter = painterResource(id = icon),
+            contentDescription = "Значок",
+            tint = mainTextColor.value
+        )
+        Column(
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.SpaceAround,
+            modifier = Modifier.padding(start = 5.dp)
+        ) {
+            Text(
+                text = mainText,
+                style = mainTextStyle,
+                color = mainTextColor.value,
+            )
+            Text(
+                text = secondText,
+                style = secondTextStyle,
+                color = mainTextColor.value,
             )
         }
     }
+    Icon(
+        modifier = Modifier.size(20.dp),
+        painter = painterResource(id = R.drawable.vector),
+        contentDescription = "",
+        tint = mainTextColor.value
+    )
 }
 

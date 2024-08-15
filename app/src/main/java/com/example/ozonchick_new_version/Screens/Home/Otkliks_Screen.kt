@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -53,7 +54,6 @@ import kotlinx.coroutines.runBlocking
 import org.koin.androidx.compose.koinViewModel
 private var FirstMainTextStyle: androidx.compose.ui.text.TextStyle = Tema.Text_24_24_Bold
 private var SecondMainTextStyle: androidx.compose.ui.text.TextStyle = Tema.Text_18_18_Medium
-private var ThreeMainTextStyle: androidx.compose.ui.text.TextStyle = Tema.Text_18_18_Regular
 private var mainTextColor: MutableState<Color> = Color_MainText
 
 class Otkliks_Screen:Screen {
@@ -71,7 +71,7 @@ fun Otkliks_construct(vm: Spisok_ViewModel = koinViewModel())
     }
     LaunchedEffect(key1 = true) {
         delay(1000)
-        vm.GetVakans(userSharedId.value/*vm.GetUserId()*/)
+        vm.GetVakans(userSharedId.value)
         delay(1000)
         Log.d("GetVakans", vm.spisokOtkliks.toString())
         delay(1000)
@@ -89,22 +89,13 @@ fun Otkliks_construct(vm: Spisok_ViewModel = koinViewModel())
     }
     MainScreen(isLoading = isLoading.value)
 
-    var idNumber: MutableState<Int> = remember {
-        mutableIntStateOf(0)
-    }
-
 }
 
 @Composable
-fun Card_V(/*list: MutableList<Vakans_information>,*/ number: Int,
+fun Card_V( number: Int,
                 list: MutableList<Vakans_information>,
                 vm: Spisok_ViewModel
 ) {
-    var localNumber: MutableState<Int> = remember {
-        mutableIntStateOf(number)
-    }
-    val context = LocalContext.current
-    var contactList: MutableList<Vakans_contacts> = mutableListOf()
     val navigator = LocalNavigator.current
     Public_Card(
         modifier = Modifier
@@ -130,31 +121,31 @@ fun Card_V(/*list: MutableList<Vakans_information>,*/ number: Int,
                 ) {
                     //Требуется специалист Name
                     Text(
-                        text = list[number].vakans_name/*"Инженер"*/,
+                        text = list[number].vakans_name,
                         style = FirstMainTextStyle,
                         color = mainTextColor.value
                     )
                     //Заработная плата Price
                     Text(
-                        text = list[number].vakans_price/*"90 000 - 130 000"*/,
+                        text = list[number].vakans_price,
                         style = FirstMainTextStyle,
                         color = mainTextColor.value
                     )
                     //Организация Organization
                     Text(
-                        text = list[number].vakans_organization/*"ООО Некронтиры"*/,
+                        text = list[number].vakans_organization,
                         style = SecondMainTextStyle,
                         color = mainTextColor.value
                     )
                     //Расположение Location
                     Text(
-                        text = list[number].vakans_location/*"Челябинск"*/,
+                        text = list[number].vakans_location,
                         style = SecondMainTextStyle,
                         color = mainTextColor.value
                     )
                     //Опыт работы Experience
                     Text(
-                        text = list[number].vakans_experience/*"Опыт работы 3 до 6 лет"*/,
+                        text = list[number].vakans_experience,
                         style = SecondMainTextStyle,
                         color = mainTextColor.value
                     )
@@ -170,7 +161,7 @@ fun Card_V(/*list: MutableList<Vakans_information>,*/ number: Int,
                         modifier = Modifier.width(180.dp)
                     ) {
                         Text(
-                            text = /*vm.spisokOtvetOtkliks[0].otvet*/ /*"Откликнуться"*/ vm.testPeredacha[number].otvet,
+                            text = vm.testPeredacha[number].otvet,
                             style = SecondMainTextStyle,
                             textAlign = TextAlign.Center
                         )
@@ -183,21 +174,6 @@ fun Card_V(/*list: MutableList<Vakans_information>,*/ number: Int,
                                 vm.GetCONTACTTEST(vm.spisokOtkliks[number].vakans_id)
                                 delay(1000)
                                 Log.d("Приём контактов", vm.list.toString())
-/*                                vm.GetContacts(
-                                    vm.spisokVakans[localNumber.value].vakans_mail,
-                                    number
-                                )
-                                delay(500)
-                                Log.d(
-                                    "Spisok Contacts mail",
-                                    vm.spisokVakans[localNumber.value].vakans_mail
-                                )
-                                Log.d("Spisok Contacts number", number.toString())
-                                vm.number_contacts.value = localNumber.value
-                                delay(500)
-                                Log.d("Spisok Contacts", vm.list.toString())
-                                delay(500)
-                                Log.d("Spisok Phone", vm.number_phone.value)*/
                                 navigator?.push(Contacts_Screen())
                             }
 
@@ -236,22 +212,6 @@ fun MainScreen(vm:Spisok_ViewModel = koinViewModel(), isLoading:Boolean)
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-/*            CoroutineScope(Dispatchers.IO).launch {
-                delay(1000)
-                vm.GetVakans(vm.userIdfremeno.value*//*vm.GetUserId()*//*)
-                delay(1000)
-                Log.d("GetVakans", vm.spisokOtkliks.toString())
-                delay(1000)
-                Log.d("SizeTestPeredach", vm.testPeredacha.size.toString())
-                delay(1000)
-                for (i in 0 until vm.testPeredacha.size){
-                    vm.InsertVakans(i)
-                }
-                delay(1000)
-                Log.d("GetOtkliks", vm.spisokOtkliks.toString())
-                delay(1000)
-                vm.GetOtvetOtkliks(1)
-            }*/
                 items(vm.testPeredacha.size)
                 {
                         item->
