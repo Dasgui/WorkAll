@@ -50,65 +50,26 @@ fun Scafold_BottomBar(
                 bottomTextStyle = bottomTextStyle,
                 colorBottomText = Color_MainText.value
             )
-//            Column(
-//                verticalArrangement = Arrangement.Center,
-//                horizontalAlignment = Alignment.CenterHorizontally,
-//                modifier = Modifier.clickable { navigator?.push(Spisok_Predlogenii_Screen()) }
-//            ) {
-//                Icon(
-//                    painter = painterResource(id = R.drawable.vakansi_icon_3),
-//                    contentDescription = "Вакансии",
-//                    modifier = Modifier
-//                        .size(sizeIcon),
-//                    tint = Color_MainText.value
-//                )
-//                Text(
-//                    text = "Вакансии",
-//                    style = bottomTextStyle,
-//                    color = Color_MainText.value,
-//                    modifier = Modifier.padding(top = 3.dp)
-//                )
-//            }
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.clickable { navigator?.push(Otkliks_Screen()) }
+            Clickable_Icon(
+                navigator = navigator,
+                screen = Otkliks_Screen(),
+                iconId = R.drawable.folder,
+                sizeIcon = sizeIcon,
+                colorIcon = Color_MainText.value,
+                bottomText = "Собственные вакансии",
+                bottomTextStyle = bottomTextStyle,
+                colorBottomText = Color_MainText.value
             )
-            {
-                Icon(
-                    painter = painterResource(id = R.drawable.folder),
-                    contentDescription = "Отклики",
-                    modifier = Modifier
-                        .size(sizeIcon),
-                    tint = Color_MainText.value
-                )
-                Text(
-                    text = "Собственные вакансии"/*"Отклики"*/,
-                    style = bottomTextStyle,
-                    color = Color_MainText.value,
-                    modifier = Modifier.padding(top = 3.dp)
-                )
-            }
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.clickable { navigator?.push(Profile_Screen()) }
+            Clickable_Icon(
+                navigator = navigator,
+                screen = Profile_Screen(),
+                iconId = R.drawable.profile_circle,
+                sizeIcon = sizeIcon,
+                colorIcon = Color_MainText.value,
+                bottomText = "Профиль",
+                bottomTextStyle = bottomTextStyle,
+                colorBottomText = Color_MainText.value
             )
-            {
-                Icon(
-                    painter = painterResource(id = R.drawable.profile_circle),
-                    contentDescription = "Иконка профиля",
-                    modifier = Modifier
-                        .size(sizeIcon),
-                    tint = Color_MainText.value
-                )
-                Text(
-                    text = "Профиль",
-                    style = bottomTextStyle,
-                    color = Color_MainText.value,
-                    modifier = Modifier.padding(top = 3.dp)
-                )
-            }
         }
     }
 }
