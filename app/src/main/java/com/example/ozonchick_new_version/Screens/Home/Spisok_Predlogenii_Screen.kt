@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
@@ -43,7 +44,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import androidx.compose.ui.text.TextStyle
 
-var users : MutableList<Vakans_information> = mutableListOf()
+var users : List<Vakans_information> = mutableListOf()
 var idNumber : MutableState<Int> = mutableIntStateOf(0)
 var isLoading : MutableState<Boolean> = mutableStateOf(false)
 
@@ -72,7 +73,7 @@ fun Spisok_Predlogenii_construct(vm: Spisok_ViewModel = koinViewModel()) {
     LaunchedEffect(key1 = true) {
         CoroutineScope(Dispatchers.IO).launch {
             delay(1000)
-            users = vm.spisokVakans
+            users = vm.spisokVakans.value
             delay(1000)
             vm.GetInformation()
             Log.d("Тетс", vm.spisokVakans.toString())

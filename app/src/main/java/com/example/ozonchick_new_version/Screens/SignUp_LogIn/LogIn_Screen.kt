@@ -17,6 +17,7 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -45,7 +46,6 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import com.example.ozonchick_new_version.Data_Layer.data.db.accessSharedAuth
 import com.example.ozonchick_new_version.Data_Layer.data.db.emailSharedUser
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.SignUp_LogIn_Components.SignUp_LogIn_Button
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.SignUp_LogIn_Components.SignUp_LogIn_OutlinedTextField
@@ -77,9 +77,9 @@ fun LogIn_Construct(vm: SignUp_ViewModel = koinViewModel()) {
     val navigator = LocalNavigator.current
     val checkedState = remember { mutableStateOf(false) }
     val screen = rememberScreen(provider = Home_Provider.Profile)
+    val authState = vm.accessSharedAuth.collectAsState()
 
-    var accessAuth = vm.accessAuth.collectAsState()
-
+    MaterialTheme.colorScheme
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -146,7 +146,7 @@ fun LogIn_Construct(vm: SignUp_ViewModel = koinViewModel()) {
                                 )
                             },
                             trailingIcon = {
-                                var localImage:MutableState<Int> =remember { mutableStateOf(R.drawable.eye_slash) }
+                                val localImage:MutableState<Int> =remember { mutableStateOf(R.drawable.eye_slash) }
                                 Image(
                                     painter = painterResource(id = localImage.value),
                                     contentDescription = "Показать пароль",
@@ -202,7 +202,7 @@ fun LogIn_Construct(vm: SignUp_ViewModel = koinViewModel()) {
                     )
                 }
             }
-            if (accessSharedAuth.value) {
+            if (authState.value) {
                 emailSharedUser.value = vm.emailUser.value
                 navigator?.replaceAll(screen)
             }

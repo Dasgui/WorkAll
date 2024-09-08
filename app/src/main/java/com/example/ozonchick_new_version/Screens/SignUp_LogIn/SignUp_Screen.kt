@@ -43,7 +43,6 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import com.example.ozonchick_new_version.Data_Layer.data.db.accessSharedAuth
 import com.example.ozonchick_new_version.Data_Layer.data.db.accessSharedRegistrait
 import com.example.ozonchick_new_version.Data_Layer.data.db.emailSharedUser
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.SignUp_LogIn_Components.SignUp_LogIn_Button

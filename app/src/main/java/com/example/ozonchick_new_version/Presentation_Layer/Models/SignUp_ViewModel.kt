@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -12,7 +13,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.navigator.LocalNavigator
-import com.example.ozonchick_new_version.Data_Layer.data.db.accessSharedAuth
 import com.example.ozonchick_new_version.Data_Layer.data.db.accessSharedRegistrait
 import com.example.ozonchick_new_version.Data_Layer.data.db.userAuthInformation
 import com.example.ozonchick_new_version.Data_Layer.model.DTOMessage
@@ -32,19 +32,26 @@ import io.paperdb.Paper
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-
+enum class userType(val type: String){
+    soiskat(type = "Соискатель"), nesoiskat(type = "Работодатель")
+}
 class SignUp_ViewModel() : ViewModel() {
-    var idUser: MutableState<Int> = mutableStateOf(0)
+    private val _accessSharedAuth: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val accessSharedAuth: StateFlow<Boolean> = _accessSharedAuth.asStateFlow()
+
     var nameUser: MutableState<String> = mutableStateOf("")
     var phoneNumber: MutableState<String> = mutableStateOf("")
     var emailUser: MutableState<String> = mutableStateOf("")
     var passwordUser: MutableState<String> = mutableStateOf("")
     var confirmPassword: MutableState<String> = mutableStateOf("")
-    var userRole:MutableState<String> = mutableStateOf("Соискатель")
+    var userRole:MutableState<userType> = mutableStateOf(userType.soiskat)
     var INN:MutableState<String> = mutableStateOf("")
 
     var isDarkMode: MutableState<Boolean> = mutableStateOf(false)
@@ -55,7 +62,6 @@ class SignUp_ViewModel() : ViewModel() {
     val accessRegistrait = MutableStateFlow(false)
     var rememberUser:MutableState<Boolean> = mutableStateOf(false)
 
-    val navigator = LocalNavigator
 /*    val supabase = createSupabaseClient(
         supabaseUrl = "https://qxniznftwaxnvnksitua.supabase.co",
         supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF4bml6bmZ0d2F4bnZua3NpdHVhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDg4NDc1NTAsImV4cCI6MjAyNDQyMzU1MH0.7X_dAg3PvNrCsl14_N8z8YCfd0pxKWmV_dbNKczm_Lc"
@@ -124,16 +130,8 @@ class SignUp_ViewModel() : ViewModel() {
             }
             accessAuth.value = responseAuth
         }*/
-        var responseAuth: Boolean
-        runBlocking {
-            delay(1000)
-            responseAuth = postAuth(contextAuth).postAuthEmail(emailUser.value,passwordUser.value, rememberUser.value)
-            delay(100)
-            accessSharedAuth.value = responseAuth
-            if (!accessSharedAuth.value)
-            {
-
-            }
+        viewModelScope.launch {
+            _accessSharedAuth.value = postAuth(contextAuth).postAuthEmail(emailUser.value,passwordUser.value, rememberUser.value)
         }
 //        viewModelScope.launch {
 //            var Info = CompletableDeferred<DTOMessage>()
@@ -229,6 +227,7 @@ class SignUp_ViewModel() : ViewModel() {
 
 
 
+
     fun Registrait(context: Context)
     {
 /*        viewModelScope.launch {
@@ -243,7 +242,7 @@ class SignUp_ViewModel() : ViewModel() {
         var responseRegistrait: Boolean
         runBlocking {
             delay(1000)
-            responseRegistrait = postRegistrait(context).postRegistraitEmail(nameUser.value.capitalize(),phoneNumber.value,emailUser.value,passwordUser.value, userRole.value, INN.value)
+            responseRegistrait = postRegistrait(context).postRegistraitEmail(nameUser.value.capitalize(),phoneNumber.value,emailUser.value,passwordUser.value, userRole.value.type, INN.value)
             delay(100)
             accessSharedRegistrait.value = responseRegistrait
         }
@@ -273,9 +272,9 @@ class SignUp_ViewModel() : ViewModel() {
             supabase.from("user_information").insert(User_Information_Registrait(nameUser.value,phoneNumber.value,emailUser.value))
         }*/
 
-    fun Name_for_base():String
+/*    fun Name_for_base():String
     {
-        CoroutineScope(Dispatchers.IO).launch {
+        coroutineScope{
             val result = supabase.from("user_information").select(){
                 filter {
                     User_name_email::user_email eq emailUser.value
@@ -287,7 +286,7 @@ class SignUp_ViewModel() : ViewModel() {
             nameUser.value=note[0].user_name
         }
         return nameUser.value
-    }
+    }*/
 
 /*    fun Balance_for_base():Float
     {

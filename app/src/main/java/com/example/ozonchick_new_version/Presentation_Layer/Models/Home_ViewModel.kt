@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.navigator.Navigator
-import com.example.ozonchick_new_version.Data_Layer.data.db.accessSharedAuth
 import com.example.ozonchick_new_version.Data_Layer.data.db.accessSharedRegistrait
 import com.example.ozonchick_new_version.Data_Layer.data.db.emailSharedUser
 import com.example.ozonchick_new_version.Data_Layer.data.db.userAuthInformation
@@ -49,6 +48,7 @@ class Home_ViewModel() : ViewModel() {
 
     fun Name_for_base(): String {
         val session = supabase.auth.currentSessionOrNull()
+
 /*        Log.d("Сессия", session?.user?.email.toString())*/
         CoroutineScope(Dispatchers.IO).launch {
             val result =
@@ -62,7 +62,6 @@ class Home_ViewModel() : ViewModel() {
         }
         return nameUser.value
     }
-
 /*    fun GetId(): Int {
         CoroutineScope(Dispatchers.IO).launch {
             val take_id = supabase.from("user_information").select(Columns.list("user_id", "email"))
@@ -104,7 +103,6 @@ class Home_ViewModel() : ViewModel() {
     {
         CoroutineScope(Dispatchers.IO).launch {
             userSharedId.value = 0
-            accessSharedAuth.value = false
             accessSharedRegistrait.value = false
             userAuthInformation.clear()
             supabase.auth.signOut()

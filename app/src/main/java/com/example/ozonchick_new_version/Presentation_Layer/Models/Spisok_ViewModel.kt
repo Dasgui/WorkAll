@@ -120,8 +120,8 @@ class Spisok_ViewModel() : ViewModel() {
         }
         response.value = DataState.Success(listA)
     }
-
-    var spisokVakans: MutableList<Vakans_information> = mutableListOf()
+    private var _spisokVakans: MutableStateFlow<List<Vakans_information>> = MutableStateFlow(emptyList())
+    var spisokVakans = _spisokVakans.asStateFlow()
     var spisokOtkliks: MutableList<Vakans_information> = mutableListOf()
     var testPeredacha: MutableList<Vakans_otklik> = mutableListOf()
     var spisokOtvetOtkliks: MutableList<Vakans_otklik> = mutableListOf()
@@ -140,9 +140,8 @@ class Spisok_ViewModel() : ViewModel() {
     var userIdfremeno: MutableState<Int> = mutableIntStateOf(0)
 
 
-    /*suspend*/ fun GetInformation(): MutableList<Vakans_information> {
+    /*suspend*/ fun GetInformation() {
         var name: String = ""
-        var listA: MutableList<Vakans_information> = mutableListOf()
         viewModelScope.launch {
             CoroutineScope(Dispatchers.IO).launch {
                 val result = supabase.from("vakans").select(
@@ -157,19 +156,17 @@ class Spisok_ViewModel() : ViewModel() {
                         "employer_id"
                     )
                 ).decodeList<Vakans_information>()
-                spisokVakans = result.toMutableList()
-                listA = result.toMutableList()
+                _spisokVakans.value = result
 
                 /*name = spisokVakans[0].vakans_name*/
             }
         }
         /*delay(1000)*/
-        return listA
     }
 
     suspend fun GetSize(): Int {
         delay(1000)
-        return spisokVakans.size
+        return spisokVakans.value.size
     }
 
     suspend fun GetMail(): String {
