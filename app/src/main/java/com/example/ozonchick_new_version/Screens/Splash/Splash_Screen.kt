@@ -36,24 +36,30 @@ import kotlinx.coroutines.delay
 class Splash_Screen : Screen {
     @Composable
     override fun Content() {
-        Splash()
+        val navigator = LocalNavigator.current
+        Splash(
+            onNavigateForLogin = {
+                navigator?.replaceAll(LogIn_Screen())
+            },
+            onNavigateForPredlogenii = {
+                navigator?.replaceAll(Spisok_Predlogenii_Screen())
+            }
+        )
     }
 }
 
 @Composable
-fun Splash() {
+fun Splash(onNavigateForLogin: () -> Unit, onNavigateForPredlogenii: () -> Unit) {
     val navigator = LocalNavigator.current
 
     LaunchedEffect(key1 = true) {
 //        Paper.book().delete("User")
-        delay(600)
-        if(userAuthInformation.isNotEmpty())
-        {
-            navigator?.replaceAll(Spisok_Predlogenii_Screen())
-        }
-        else
-        {
-            navigator?.replaceAll(LogIn_Screen())
+        if (userAuthInformation.isNotEmpty()) {
+            onNavigateForPredlogenii()
+            /*navigator?.replaceAll(Spisok_Predlogenii_Screen())*/
+        } else {
+            onNavigateForLogin()
+            /*navigator?.replaceAll(LogIn_Screen())*/
         }
 
     }

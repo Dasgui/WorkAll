@@ -1,7 +1,5 @@
 package com.example.ozonchick_new_version.Screens.SignUp_LogIn
 
-import android.view.Gravity
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,13 +27,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -57,12 +52,9 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.MainFontFamily
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Primary_Color
 import com.example.ozonchick_new_version.Presentation_Layer.Models.SignUp_ViewModel
 import com.example.ozonchick_new_version.R
+import com.example.ozonchick_new_version.Screens.Home.Profile_Screen
 import com.example.ozonchick_new_version.Screens.navigation.screen_provider.Home_Provider
-import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
-private var mainTextColor: MutableState<Color> = Color_MainText
-private var mainTextStyle: TextStyle = Tema.Text_24_24_Bold
-private var secondTextStyle: TextStyle = Tema.Text_16_16_Medium
 
 class LogIn_Screen : Screen {
     @Composable
@@ -72,12 +64,9 @@ class LogIn_Screen : Screen {
 }
 
 @Composable
-fun LogIn_Construct(vm: SignUp_ViewModel = koinViewModel()) {
-    val context = LocalContext.current
+fun LogIn_Construct(viewModel: SignUp_ViewModel = koinViewModel()) {
     val navigator = LocalNavigator.current
-    val checkedState = remember { mutableStateOf(false) }
-    val screen = rememberScreen(provider = Home_Provider.Profile)
-    val authState = vm.accessSharedAuth.collectAsState()
+//    val authState = vm.accessSharedAuth.collectAsState()
 
     MaterialTheme.colorScheme
     Box(
@@ -92,189 +81,200 @@ fun LogIn_Construct(vm: SignUp_ViewModel = koinViewModel()) {
                 .fillMaxWidth()
                 .padding(start = 24.dp, end = 24.dp)
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 155.dp)
-            ) {
-                Text(
-                    text = "Добро пожаловать",
-                    style = mainTextStyle,
-                    color = mainTextColor.value
-                )
-                Text(
-                    text = "Введите адрес электронной почты и пароль, чтобы продолжить",
-                    style = secondTextStyle,
-                    color = mainTextColor.value,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
+            TextHead()
+            MainBody(viewModel)
+            BottomBody(viewModel)
+            if (viewModel.accessSharedAuth.collectAsState().value) {
+                emailSharedUser.value = viewModel.emailUser.collectAsState().value
+                navigator?.replaceAll(Profile_Screen())
             }
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 20.dp)
-            ) {
-                Column(
-                ) {
+            BottomText(viewModel, onNavigateForSignUp = {navigator?.replaceAll(SignUp_Screen())})
+        }
+    }
+
+}
+
+@Composable
+fun TextHead()
+{
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 155.dp)
+    ) {
+        Text(
+            text = "Добро пожаловать",
+            style = Tema.Text_24_24_Bold,
+            color = Color_MainText.value
+        )
+        Text(
+            text = "Введите адрес электронной почты и пароль, чтобы продолжить",
+            style = Tema.Text_16_16_Medium,
+            color = Color_MainText.value,
+            modifier = Modifier.padding(top = 8.dp)
+        )
+    }
+}
+
+@Composable
+fun MainBody(viewModel: SignUp_ViewModel)
+{
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 20.dp)
+    ) {
+        Column(
+        ) {
+            Text(
+                text = "Адрес почты",
+                style = Tema.Text_24_24_Bold,
+                color = Color_MainText.value
+            )
+            SignUp_LogIn_OutlinedTextField(
+                value = viewModel.emailUser.collectAsState().value,
+                onValueChange = { viewModel.setEmailUserFieldValue (it) },
+                placeholder = {
                     Text(
-                        text = "Адрес почты",
-                        style = mainTextStyle,
-                        color = mainTextColor.value
+                        text = "*******@mail.com",
+                        style = Tema.Text_16_16_Medium
                     )
-                    SignUp_LogIn_OutlinedTextField(
-                        value = vm.emailUser.value,
-                        onValueChange = { vm.emailUser.value = it },
-                        placeholder = {
-                            Text(
-                                text = "*******@mail.com",
-                                style = secondTextStyle
-                            )
-                        }
-                    )
-                    var passwordVisible by rememberSaveable { mutableStateOf(false) }
-                    Column(
-                        modifier = Modifier.padding(top = 24.dp)
-                    ) {
-                        Text(text = "Пароль", style = mainTextStyle, maxLines = 1, color = mainTextColor.value)
-                        SignUp_LogIn_OutlinedTextField(
-                            value = vm.passwordUser.value,
-                            onValueChange = { vm.passwordUser.value = it },
-                            placeholder = {
-                                Text(
-                                    text = "***********",
-                                    style = secondTextStyle
-                                )
-                            },
-                            trailingIcon = {
-                                val localImage:MutableState<Int> =remember { mutableStateOf(R.drawable.eye_slash) }
-                                Image(
-                                    painter = painterResource(id = localImage.value),
-                                    contentDescription = "Показать пароль",
-                                    contentScale = ContentScale.Crop,
-                                    modifier = Modifier
-                                        .size(24.dp)
-                                        .clickable {
-                                            if (localImage.value == R.drawable.eye_slash) {
-                                                localImage.value = R.drawable.eye
-                                            } else {
-                                                localImage.value = R.drawable.eye_slash
-                                            }
-                                            passwordVisible = !passwordVisible
-                                        },
-                                    colorFilter = ColorFilter.tint(Color_MainText.value)
-                                )
-                            },
-                            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                }
+            )
+            var passwordVisible by rememberSaveable { mutableStateOf(false) }
+            Column(
+                modifier = Modifier.padding(top = 24.dp)
+            ) {
+                Text(text = "Пароль", style = Tema.Text_24_24_Bold, maxLines = 1, color = Color_MainText.value)
+                SignUp_LogIn_OutlinedTextField(
+                    value = viewModel.passwordUser.collectAsState().value,
+                    onValueChange = { viewModel.setPasswordUserFieldValue (it) },
+                    placeholder = {
+                        Text(
+                            text = "***********",
+                            style = Tema.Text_16_16_Medium
                         )
-                    }
-                }
-//            Email(MainText = "Email Address", InsideText = "*******@mail.com")
-//            Password(MainText = "Password", InsideText = "***********")
-            }
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 10.dp)
-            ) {
-                Checkbox(
-                    checked = vm.rememberUser.value,
-                    onCheckedChange = { vm.rememberUser.value = it },
-                    modifier = Modifier
-                        .size(35.dp),
-                    colors = CheckboxDefaults.colors(
-                        uncheckedColor = Gray_Color_Passive_Secondary,
-                        checkedColor = Primary_Color
-                    ),
-                )
-                Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth() /*Arrangement.spacedBy(90.dp, Alignment.Start)*/) {
-                    Text(
-                        text = "Запомнить пароль",
-                        color = mainTextColor.value,
-                        style = secondTextStyle
-                    )
-                    Text(
-                        text = "Забыли пароль?",
-                        style = secondTextStyle,
-                        color = Primary_Color
-                    )
-                }
-            }
-            if (authState.value) {
-                emailSharedUser.value = vm.emailUser.value
-                navigator?.replaceAll(screen)
-            }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.padding(top = 64.dp)
-            ) {
-                SignUp_LogIn_Button(
-                    enabled = vm.ConstructProverka(vm.emailUser.value, vm.passwordUser.value),
-                    onClick = {
-//                    Log.d("Авторизация", vm.Auth().toString())
-
-                        vm.Auth(context)
-//                        val toast = Toast.makeText(context,"Произошла ошибка, проверьте введенные данные", Toast.LENGTH_LONG)
-//                        toast.setGravity(Gravity.FILL_VERTICAL,0,0)
-//                        toast.show()
-
-
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color_Background.value)/*if (vm.ConstructProverka(vm.emailUser.value, vm.passwordUser.value)) {
-                        ButtonDefaults.buttonColors(containerColor = Primary_Color)
-                    } else {
-                        ButtonDefaults.buttonColors(containerColor = Gray_Color_Passive_Secondary)
-                    }*/
-                ) {
-                    Text(
-                        text = "Войти",
-                        style = mainTextStyle,
-                        color = mainTextColor.value
-                    )
-                }
-
-                val SignUpText = buildAnnotatedString {
-                    withStyle(
-                        style = SpanStyle(
-                            color =  mainTextColor.value,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Medium,
-                            fontFamily = MainFontFamily
+                    trailingIcon = {
+                        val localImage:MutableState<Int> =remember { mutableStateOf(R.drawable.eye_slash) }
+                        Image(
+                            painter = painterResource(id = localImage.value),
+                            contentDescription = "Показать пароль",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .size(24.dp)
+                                .clickable {
+                                    if (localImage.value == R.drawable.eye_slash) {
+                                        localImage.value = R.drawable.eye
+                                    } else {
+                                        localImage.value = R.drawable.eye_slash
+                                    }
+                                    passwordVisible = !passwordVisible
+                                },
+                            colorFilter = ColorFilter.tint(Color_MainText.value)
                         )
-                    )
-                    {
-                        append("У вас нет аккаунта? ")
-                    }
-
-                    pushStringAnnotation(tag = "click", annotation = "click")
-                    withStyle(
-                        SpanStyle(
-                            color = Primary_Color,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Medium,
-                            fontFamily = MainFontFamily
-                        )
-                    ) {
-                        append("Зарегистрироваться")
-                    }
-                }
-                ClickableText(
-                    text = SignUpText,
-                    onClick = {
-                        SignUpText.getStringAnnotations(tag = "click", start = it, end = it).firstOrNull()
-                            ?.let {
-                                navigator?.replaceAll(SignUp_Screen())
-                            }
                     },
-                    modifier = Modifier.padding(top = 20.dp)
+                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 )
             }
         }
     }
+}
 
+@Composable
+fun BottomBody(viewModel: SignUp_ViewModel)
+{
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 10.dp)
+    ) {
+        Checkbox(
+            checked = viewModel.rememberUser.collectAsState().value,
+            onCheckedChange = { viewModel.setRememberUserCheckBoxValue  (it) },
+            modifier = Modifier
+                .size(35.dp),
+            colors = CheckboxDefaults.colors(
+                uncheckedColor = Gray_Color_Passive_Secondary,
+                checkedColor = Primary_Color
+            ),
+        )
+        Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = "Запомнить пароль",
+                color = Color_MainText.value,
+                style = Tema.Text_16_16_Medium
+            )
+            Text(
+                text = "Забыли пароль?",
+                style = Tema.Text_16_16_Medium,
+                color = Primary_Color
+            )
+        }
+    }
+}
+
+@Composable
+fun BottomText(viewModel: SignUp_ViewModel, onNavigateForSignUp: () -> Unit)
+{
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.padding(top = 64.dp)
+    ) {
+        SignUp_LogIn_Button(
+            enabled = viewModel.ConstructProverka(viewModel.emailUser.collectAsState().value, viewModel.passwordUser.collectAsState().value),
+            onClick = {
+                viewModel.Auth()
+            },
+            colors = ButtonDefaults.buttonColors(containerColor = Color_Background.value)
+        ) {
+            Text(
+                text = "Войти",
+                style = Tema.Text_24_24_Bold,
+                color = Color_MainText.value
+            )
+        }
+
+        val SignUpText = buildAnnotatedString {
+            withStyle(
+                style = SpanStyle(
+                    color =  Color_MainText.value,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium,
+                    fontFamily = MainFontFamily
+                )
+            )
+            {
+                append("У вас нет аккаунта? ")
+            }
+
+            pushStringAnnotation(tag = "click", annotation = "click")
+            withStyle(
+                SpanStyle(
+                    color = Primary_Color,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium,
+                    fontFamily = MainFontFamily
+                )
+            ) {
+                append("Зарегистрироваться")
+            }
+        }
+        ClickableText(
+            text = SignUpText,
+            onClick = {
+                SignUpText.getStringAnnotations(tag = "click", start = it, end = it).firstOrNull()
+                    ?.let {
+                        onNavigateForSignUp()
+//                        navigator?.replaceAll(SignUp_Screen())
+                    }
+            },
+            modifier = Modifier.padding(top = 20.dp)
+        )
+    }
 }
 
 @Composable

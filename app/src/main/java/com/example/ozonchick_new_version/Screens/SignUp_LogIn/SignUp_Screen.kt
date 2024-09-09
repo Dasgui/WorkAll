@@ -60,6 +60,7 @@ import com.example.ozonchick_new_version.Presentation_Layer.Models.SignUp_ViewMo
 import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Screens.navigation.screen_provider.SignUp_LogIn_Provider
 import org.koin.androidx.compose.koinViewModel
+import com.example.ozonchick_new_version.Data_Layer.data.dto.userType
 private var mainTextStyle: TextStyle = Tema.Text_24_24_Bold
 private var secondTextStyle: TextStyle = Tema.Text_16_16_Medium
 class SignUp_Screen : Screen {
@@ -83,7 +84,7 @@ fun Create_Account(vm: SignUp_ViewModel = koinViewModel()) {
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
     var passwordVisible1 by rememberSaveable { mutableStateOf(false) }
     if (accessSharedRegistrait.value) {
-        emailSharedUser.value = vm.emailUser.value
+        emailSharedUser.value = vm.emailUser.collectAsState().value
         navigator?.replaceAll(screen)
     }
 //    val accessRegistrait = vm.accessRegistrait.collectAsState()
@@ -117,8 +118,8 @@ fun Create_Account(vm: SignUp_ViewModel = koinViewModel()) {
                 Column(modifier = Modifier.padding(top = 24.dp)) {
                     Text(text = "Имя", style = mainTextStyle, maxLines = 1, color = Color_MainText.value)
                     SignUp_LogIn_OutlinedTextField(
-                        value = vm.nameUser.value,
-                        onValueChange = { vm.nameUser.value = it },
+                        value = vm.nameUser.collectAsState().value,
+                        onValueChange = { vm.setNameUserFieldValue(it) },
                         placeholder = {
                             Text(
                                 text = "Василий"/*getUser.name*/,
@@ -130,8 +131,8 @@ fun Create_Account(vm: SignUp_ViewModel = koinViewModel()) {
                 Column(modifier = Modifier.padding(top = 24.dp)) {
                     Text(text = "Номер телефона", style = mainTextStyle, maxLines = 1, color = Color_MainText.value)
                     SignUp_LogIn_OutlinedTextField(
-                        value = vm.phoneNumber.value,
-                        onValueChange = { vm.phoneNumber.value = it },
+                        value = vm.phoneNumber.collectAsState().value,
+                        onValueChange = { vm.setPhoneNumberFieldValue (it) },
                         placeholder = {
                             Text(
                                 text = "+7*****",
@@ -143,8 +144,8 @@ fun Create_Account(vm: SignUp_ViewModel = koinViewModel()) {
                 Column(modifier = Modifier.padding(top = 24.dp)) {
                     Text(text = "Адрес почты", style = mainTextStyle, maxLines = 1, color = Color_MainText.value)
                     SignUp_LogIn_OutlinedTextField(
-                        value = vm.emailUser.value,
-                        onValueChange = { vm.emailUser.value = it },
+                        value = vm.emailUser.collectAsState().value,
+                        onValueChange = { vm.setEmailUserFieldValue (it) },
                         placeholder = {
                             Text(
                                 text = "vasili@mail.ru",
@@ -178,8 +179,8 @@ fun Create_Account(vm: SignUp_ViewModel = koinViewModel()) {
                 Column(modifier = Modifier.padding(top = 24.dp)) {
                     Text(text = "Пароль", style = mainTextStyle, maxLines = 1, color = Color_MainText.value)
                     SignUp_LogIn_OutlinedTextField(
-                        value = vm.passwordUser.value,
-                        onValueChange = { vm.passwordUser.value = it },
+                        value = vm.passwordUser.collectAsState().value,
+                        onValueChange = { vm.setPasswordUserFieldValue (it) },
                         placeholder = {
                             Text(
                                 text = "******",
@@ -205,8 +206,8 @@ fun Create_Account(vm: SignUp_ViewModel = koinViewModel()) {
                 Column(modifier = Modifier.padding(top = 24.dp)) {
                     Text(text = "Подтвердите пароль", style = mainTextStyle, maxLines = 1, color = Color_MainText.value)
                     SignUp_LogIn_OutlinedTextField(
-                        value = vm.confirmPassword.value,
-                        onValueChange = { vm.confirmPassword.value = it },
+                        value = vm.confirmPassword.collectAsState().value,
+                        onValueChange = { vm.setConfirmPasswordFieldValue (it) },
                         placeholder = {
                             Text(
                                 text = "*******",
@@ -229,11 +230,11 @@ fun Create_Account(vm: SignUp_ViewModel = koinViewModel()) {
                         visualTransformation = if (passwordVisible1) VisualTransformation.None else PasswordVisualTransformation(),
                     )
                 }
-                if (vm.userRole.value== secondType_OfRegistration)
+                if (vm.userRole.collectAsState().value == userType.nesoiskat)
                 {
                     Column(modifier = Modifier.padding(top = 24.dp)) {
                         Text(text = "Подтвердите ИНН", style = mainTextStyle, maxLines = 1, color = Color_MainText.value)
-                        SignUp_LogIn_OutlinedTextField(value = vm.INN.value, onValueChange = {vm.INN.value = it})
+                        SignUp_LogIn_OutlinedTextField(value = vm.INN.collectAsState().value, onValueChange = {vm.setInnFieldValue (it)})
                     }
                 }
                 Row(
@@ -243,8 +244,8 @@ fun Create_Account(vm: SignUp_ViewModel = koinViewModel()) {
                     horizontalArrangement = Arrangement.SpaceBetween,
 
                     ) {
-                    Text(text = firstType_OfRegistration, style = mainTextStyle, color = Color_MainText.value, modifier = Modifier.clickable { vm.userRole.value=firstType_OfRegistration})
-                    Text(text = secondType_OfRegistration, style = mainTextStyle, color = Color_MainText.value, modifier = Modifier.clickable { vm.userRole.value=secondType_OfRegistration})
+                    Text(text = firstType_OfRegistration, style = mainTextStyle, color = Color_MainText.value, modifier = Modifier.clickable { vm.setUserRoleFieldValue(userType.soiskat)})
+                    Text(text = secondType_OfRegistration, style = mainTextStyle, color = Color_MainText.value, modifier = Modifier.clickable { vm.setUserRoleFieldValue (userType.nesoiskat)})
                 }
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -315,13 +316,9 @@ fun Create_Account(vm: SignUp_ViewModel = koinViewModel()) {
         }
     }
 }
-@Composable
-fun CandidateRegistrait_information(vm: SignUp_ViewModel = koinViewModel())
-{
 
-}
 
-@Composable
+/*@Composable
 fun Create_Account_Min_Elem(Maint_text: String, Inside_Text: String, vm: SignUp_ViewModel) {
     val getUser = getName()
     var text by remember { mutableStateOf("") }
@@ -360,4 +357,4 @@ fun Create_Account_Min_Elem_Password(Maint_text: String, Inside_Text: String) {
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         )
     }
-}
+}*/

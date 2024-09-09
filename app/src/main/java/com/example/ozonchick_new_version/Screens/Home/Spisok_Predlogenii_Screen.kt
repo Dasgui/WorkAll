@@ -91,7 +91,7 @@ fun Spisok_Predlogenii_construct(vm: Spisok_ViewModel = koinViewModel()) {
 
 @Composable
 fun Main_Screen_Predlojen(loading: Boolean) {
-    Public_Scaffold(mainText = "Вакансии", bottomButton = true) {
+/*    Public_Scaffold(mainText = "Вакансии", bottomButton = true) {
         if (loading) {
             LazyColumn(
                 modifier = Modifier
@@ -108,7 +108,7 @@ fun Main_Screen_Predlojen(loading: Boolean) {
         } else {
             Public_Loading(isLoading = loading)
         }
-    }
+    }*/
 }
 
 @Composable

@@ -9,26 +9,7 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.delay
 import okhttp3.internal.wait
 
-class postAuth(context:Context) {
-//    val context = context
-//    suspend fun postAuthEmail(mail:String,password:String):Boolean{
-//        var accessAuth = CompletableDeferred<Boolean>()
-//        var responseAuth = AuthUser().AuthEmail(mail,password)
-//        accessAuth.complete(responseAuth.acess)
-//        accessAuth.await()
-//        if (responseAuth.acess){
-//            /*            val toast =Toast.makeText(context,responseAuth.message,Toast.LENGTH_LONG)
-//                        toast.setGravity(Gravity.FILL_VERTICAL,0,0)
-//                        toast.show()*/
-//            return true
-//        }
-//        else{
-//            /*            val toast =Toast.makeText(context,responseAuth.message,Toast.LENGTH_LONG)
-//                        toast.setGravity(Gravity.FILL_VERTICAL,0,0)
-//                        toast.show()*/
-//            return false
-//        }
-//    }
+class postAuth(/*context:Context*/) {
 /*val context = context*/
     suspend fun postAuthEmail(mail:String,password:String, rememberUser : Boolean):Boolean{
         var access = CompletableDeferred<Boolean>()
