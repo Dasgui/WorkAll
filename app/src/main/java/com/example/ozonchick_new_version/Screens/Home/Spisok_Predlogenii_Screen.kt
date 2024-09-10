@@ -44,7 +44,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import androidx.compose.ui.text.TextStyle
 
-var users : List<Vakans_information> = mutableListOf()
+var users : List<Vakans_information> = emptyList()
 var idNumber : MutableState<Int> = mutableIntStateOf(0)
 var isLoading : MutableState<Boolean> = mutableStateOf(false)
 
@@ -91,7 +91,7 @@ fun Spisok_Predlogenii_construct(vm: Spisok_ViewModel = koinViewModel()) {
 
 @Composable
 fun Main_Screen_Predlojen(loading: Boolean) {
-/*    Public_Scaffold(mainText = "Вакансии", bottomButton = true) {
+    Public_Scaffold(mainText = "Вакансии", bottomButton = true) {
         if (loading) {
             LazyColumn(
                 modifier = Modifier
@@ -108,12 +108,12 @@ fun Main_Screen_Predlojen(loading: Boolean) {
         } else {
             Public_Loading(isLoading = loading)
         }
-    }*/
+    }
 }
 
 @Composable
 fun Card_Vakans(
-    list: MutableList<Vakans_information>,
+    list: List<Vakans_information>,
     number: Int
 ) {
     val navigator = LocalNavigator.current
@@ -143,7 +143,7 @@ fun Card_Vakans(
 
 @Composable
 private fun MainText(
-    list: MutableList<Vakans_information>,
+    list: List<Vakans_information>,
     number: Int
 ) {
     Column(
@@ -187,7 +187,7 @@ private fun MainText(
 @Composable
 private fun MainButtons(
     vm: Spisok_ViewModel = koinViewModel(),
-    list: MutableList<Vakans_information>,
+    list: List<Vakans_information>,
     number: Int,
     navigator: Navigator?,
 ) {

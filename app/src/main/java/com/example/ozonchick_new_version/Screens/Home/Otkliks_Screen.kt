@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -49,6 +50,7 @@ import com.example.ozonchick_new_version.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.koin.androidx.compose.koinViewModel
@@ -92,9 +94,9 @@ fun Otkliks_construct(vm: Spisok_ViewModel = koinViewModel())
 }
 
 @Composable
-fun Card_V( number: Int,
-                list: MutableList<Vakans_information>,
-                vm: Spisok_ViewModel
+fun Card_V(number: Int,
+           list: StateFlow<List<Vakans_information>>,
+           vm: Spisok_ViewModel
 ) {
     val navigator = LocalNavigator.current
     Public_Card(
@@ -121,31 +123,31 @@ fun Card_V( number: Int,
                 ) {
                     //Требуется специалист Name
                     Text(
-                        text = list[number].vakans_name,
+                        text = list.collectAsState().value[number].vakans_name,
                         style = FirstMainTextStyle,
                         color = mainTextColor.value
                     )
                     //Заработная плата Price
                     Text(
-                        text = list[number].vakans_price,
+                        text = list.collectAsState().value[number].vakans_price,
                         style = FirstMainTextStyle,
                         color = mainTextColor.value
                     )
                     //Организация Organization
                     Text(
-                        text = list[number].vakans_organization,
+                        text = list.collectAsState().value[number].vakans_organization,
                         style = SecondMainTextStyle,
                         color = mainTextColor.value
                     )
                     //Расположение Location
                     Text(
-                        text = list[number].vakans_location,
+                        text = list.collectAsState().value[number].vakans_location,
                         style = SecondMainTextStyle,
                         color = mainTextColor.value
                     )
                     //Опыт работы Experience
                     Text(
-                        text = list[number].vakans_experience,
+                        text = list.collectAsState().value[number].vakans_experience,
                         style = SecondMainTextStyle,
                         color = mainTextColor.value
                     )
@@ -157,7 +159,7 @@ fun Card_V( number: Int,
                 ) {
                     Public_Button(
                         fillButton = true,
-                        onClick = { vm.PushOtklik(list[number].vakans_id) },
+                        onClick = { vm.PushOtklik(list.value[number].vakans_id) },
                         modifier = Modifier.width(180.dp)
                     ) {
                         Text(
@@ -171,7 +173,7 @@ fun Card_V( number: Int,
                         onClick = {
                             CoroutineScope(Dispatchers.IO).launch {
                                 delay(500)
-                                vm.GetCONTACTTEST(vm.spisokOtkliks[number].vakans_id)
+                                vm.GetCONTACTTEST(vm.spisokOtkliks.value[number].vakans_id)
                                 delay(1000)
                                 Log.d("Приём контактов", vm.list.toString())
                                 navigator?.push(Contacts_Screen())

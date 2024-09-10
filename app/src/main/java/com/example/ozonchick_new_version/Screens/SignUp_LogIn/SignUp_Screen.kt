@@ -21,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -55,8 +54,7 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Primary_Color
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Red
 import com.example.ozonchick_new_version.Data_Layer.data.variables.firstType_OfRegistration
 import com.example.ozonchick_new_version.Data_Layer.data.variables.secondType_OfRegistration
-import com.example.ozonchick_new_version.Data_Layer.repository.SignUp_LogIn_Case.getName
-import com.example.ozonchick_new_version.Presentation_Layer.Models.SignUp_ViewModel
+import com.example.ozonchick_new_version.Presentation_Layer.Models.SignUpViewModel
 import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Screens.navigation.screen_provider.SignUp_LogIn_Provider
 import org.koin.androidx.compose.koinViewModel
@@ -77,7 +75,7 @@ fun SignUp_Construct() {
 
 @Preview
 @Composable
-fun Create_Account(vm: SignUp_ViewModel = koinViewModel()) {
+fun Create_Account(vm: SignUpViewModel = koinViewModel()) {
     val screen = rememberScreen(provider = SignUp_LogIn_Provider.LogIn)
     val context = LocalContext.current
     val navigator = LocalNavigator.current

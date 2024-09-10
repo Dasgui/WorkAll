@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import com.example.ozonchick_new_version.Data_Layer.data.dto.userType
 
-class SignUp_ViewModel() : ViewModel() {
+class SignUpViewModel() : ViewModel() {
     private val _accessSharedAuth: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val accessSharedAuth: StateFlow<Boolean> = _accessSharedAuth.asStateFlow()
 

@@ -122,7 +122,10 @@ class Spisok_ViewModel() : ViewModel() {
     }
     private var _spisokVakans: MutableStateFlow<List<Vakans_information>> = MutableStateFlow(emptyList())
     var spisokVakans = _spisokVakans.asStateFlow()
-    var spisokOtkliks: MutableList<Vakans_information> = mutableListOf()
+
+    private val _spisokOtkliks: MutableStateFlow<List<Vakans_information>> = MutableStateFlow(emptyList())
+    var spisokOtkliks = _spisokVakans.asStateFlow()
+
     var testPeredacha: MutableList<Vakans_otklik> = mutableListOf()
     var spisokOtvetOtkliks: MutableList<Vakans_otklik> = mutableListOf()
 
@@ -135,8 +138,6 @@ class Spisok_ViewModel() : ViewModel() {
     var number_phone: MutableState<String> = mutableStateOf("")
     var location: MutableState<String> = mutableStateOf("")
 
-    var takeUP: MutableState<Boolean> = mutableStateOf(false)
-    var realbd: MutableState<String> = mutableStateOf("")
     var userIdfremeno: MutableState<Int> = mutableIntStateOf(0)
 
 
@@ -350,7 +351,8 @@ class Spisok_ViewModel() : ViewModel() {
                     Vakans_information::vakans_id eq testPeredacha[number].vakans_id
                 }
             }.decodeSingle<Vakans_information>()
-            spisokOtkliks.add(vakans_information)
+            _spisokOtkliks.value = _spisokOtkliks.value.toMutableList().apply { add(vakans_information) }
+//            spisokOtkliks.add(vakans_information)
         }
     }
 

@@ -38,7 +38,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Data_Layer.data.db.emailSharedUser
@@ -50,10 +49,9 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Gray_Color_Passive_Secondary
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.MainFontFamily
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Primary_Color
-import com.example.ozonchick_new_version.Presentation_Layer.Models.SignUp_ViewModel
+import com.example.ozonchick_new_version.Presentation_Layer.Models.SignUpViewModel
 import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Screens.Home.Profile_Screen
-import com.example.ozonchick_new_version.Screens.navigation.screen_provider.Home_Provider
 import org.koin.androidx.compose.koinViewModel
 
 class LogIn_Screen : Screen {
@@ -64,7 +62,7 @@ class LogIn_Screen : Screen {
 }
 
 @Composable
-fun LogIn_Construct(viewModel: SignUp_ViewModel = koinViewModel()) {
+fun LogIn_Construct(viewModel: SignUpViewModel = koinViewModel()) {
     val navigator = LocalNavigator.current
 //    val authState = vm.accessSharedAuth.collectAsState()
 
@@ -117,7 +115,7 @@ fun TextHead()
 }
 
 @Composable
-fun MainBody(viewModel: SignUp_ViewModel)
+fun MainBody(viewModel: SignUpViewModel)
 {
     Column(
         modifier = Modifier
@@ -182,7 +180,7 @@ fun MainBody(viewModel: SignUp_ViewModel)
 }
 
 @Composable
-fun BottomBody(viewModel: SignUp_ViewModel)
+fun BottomBody(viewModel: SignUpViewModel)
 {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -217,7 +215,7 @@ fun BottomBody(viewModel: SignUp_ViewModel)
 }
 
 @Composable
-fun BottomText(viewModel: SignUp_ViewModel, onNavigateForSignUp: () -> Unit)
+fun BottomText(viewModel: SignUpViewModel, onNavigateForSignUp: () -> Unit)
 {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

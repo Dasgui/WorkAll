@@ -2,7 +2,6 @@ package com.example.ozonchick_new_version.Screens.Home
 
 import android.annotation.SuppressLint
 import android.util.Log
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,61 +13,30 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Card
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Scaffold
 import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Ozonchick_new_versionTheme
-import com.example.ozonchick_new_version.Data_Layer.network.supabase
-import com.example.ozonchick_new_version.Presentation_Layer.Models.Home_ViewModel
-import com.example.ozonchick_new_version.Presentation_Layer.Models.SignUp_ViewModel
+import com.example.ozonchick_new_version.Presentation_Layer.Models.HomeViewModel
 import com.example.ozonchick_new_version.R
-import com.example.ozonchick_new_version.Screens.Onboarding.Onboarding_Screen_1
-import com.example.ozonchick_new_version.Screens.navigation.screen_provider.Send_a_Package_Provider
-import io.github.jan.supabase.gotrue.auth
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 
-private var mainTextStyle: TextStyle = Tema.Text_24_24_Bold
-private var secondTextStyle: TextStyle = Tema.Text_18_18_Medium
-private var mainTextColor: MutableState<Color> = Color_MainText
 
 
 class Profile_Screen() : Screen {
@@ -99,7 +67,7 @@ fun Profile_Construct() {
 
 @Composable
 private fun ScreenHead(
-    vm: Home_ViewModel = koinViewModel(),
+    viewModel: HomeViewModel = koinViewModel(),
     navigator: Navigator?
 ) {
     Row(modifier = Modifier.fillMaxWidth()) {
@@ -120,11 +88,11 @@ private fun ScreenHead(
                 horizontalAlignment = Alignment.Start,
                 modifier = Modifier.padding(start = 10.dp)
             ) {
-                Log.d("Имя 2", vm.nameUser.value)
+                Log.d("Имя 2", viewModel.nameUser.collectAsState().value)
                 Text(
-                    text = vm.Name_for_base(),
-                    style = mainTextStyle,
-                    color = mainTextColor.value
+                    text = viewModel.getNameForBD(),
+                    style = Tema.Text_24_24_Bold,
+                    color = Color_MainText.value
                 )
             }
             Column(
@@ -136,7 +104,7 @@ private fun ScreenHead(
                     contentDescription = "Выход",
                     modifier = Modifier
                         .size(50.dp)
-                        .clickable { vm.Exit(navigator) },
+                        .clickable { viewModel.Exit(navigator) },
                     colorFilter = ColorFilter.tint(Color_MainText.value)
                 )
             }
@@ -204,7 +172,7 @@ private fun CardMain(
             modifier = Modifier.size(25.dp),
             painter = painterResource(id = icon),
             contentDescription = "Значок",
-            tint = mainTextColor.value
+            tint = Color_MainText.value
         )
         Column(
             horizontalAlignment = Alignment.Start,
@@ -213,13 +181,13 @@ private fun CardMain(
         ) {
             Text(
                 text = mainText,
-                style = mainTextStyle,
-                color = mainTextColor.value,
+                style = Tema.Text_24_24_Bold,
+                color = Color_MainText.value,
             )
             Text(
                 text = secondText,
-                style = secondTextStyle,
-                color = mainTextColor.value,
+                style = Tema.Text_18_18_Medium,
+                color = Color_MainText.value,
             )
         }
     }
@@ -227,7 +195,7 @@ private fun CardMain(
         modifier = Modifier.size(20.dp),
         painter = painterResource(id = R.drawable.vector),
         contentDescription = "",
-        tint = mainTextColor.value
+        tint = Color_MainText.value
     )
 }
 
