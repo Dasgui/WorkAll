@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -32,6 +33,7 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Ca
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Scaffold
 import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Ozonchick_new_versionTheme
 import com.example.ozonchick_new_version.Presentation_Layer.Models.HomeViewModel
 import com.example.ozonchick_new_version.R
 import org.koin.androidx.compose.koinViewModel
@@ -42,7 +44,9 @@ import org.koin.androidx.compose.koinViewModel
 class Profile_Screen() : Screen {
     @Composable
     override fun Content() {
-        Profile_Construct()
+        Ozonchick_new_versionTheme {
+            Profile_Construct()
+        }
     }
 }
 
@@ -92,7 +96,7 @@ private fun ScreenHead(
                 Text(
                     text = viewModel.getNameForBD(),
                     style = Tema.Text_24_24_Bold,
-                    color = Color_MainText.value
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
             Column(
@@ -105,7 +109,7 @@ private fun ScreenHead(
                     modifier = Modifier
                         .size(50.dp)
                         .clickable { viewModel.Exit(navigator) },
-                    colorFilter = ColorFilter.tint(Color_MainText.value)
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
                 )
             }
         }
@@ -172,7 +176,7 @@ private fun CardMain(
             modifier = Modifier.size(25.dp),
             painter = painterResource(id = icon),
             contentDescription = "Значок",
-            tint = Color_MainText.value
+            tint = MaterialTheme.colorScheme.primary
         )
         Column(
             horizontalAlignment = Alignment.Start,
@@ -182,12 +186,12 @@ private fun CardMain(
             Text(
                 text = mainText,
                 style = Tema.Text_24_24_Bold,
-                color = Color_MainText.value,
+                color = MaterialTheme.colorScheme.primary,
             )
             Text(
                 text = secondText,
                 style = Tema.Text_18_18_Medium,
-                color = Color_MainText.value,
+                color = MaterialTheme.colorScheme.primary,
             )
         }
     }
@@ -195,7 +199,7 @@ private fun CardMain(
         modifier = Modifier.size(20.dp),
         painter = painterResource(id = R.drawable.vector),
         contentDescription = "",
-        tint = Color_MainText.value
+        tint = MaterialTheme.colorScheme.primary
     )
 }
 

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
@@ -35,6 +36,7 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.components.SignUp_Lo
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.SignUp_LogIn_Components.SignUp_LogIn_OutlinedTextField
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Ozonchick_new_versionTheme
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainTextStyle
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.middleTextStyle
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.secondTextStyle
@@ -53,7 +55,9 @@ class ChangeInformation_Screen : Screen {
     @Preview
     @Composable
     override fun Content() {
-        ChangeInformation_construct()
+        Ozonchick_new_versionTheme {
+            ChangeInformation_construct()
+        }
     }
 }
 
@@ -126,7 +130,7 @@ fun ChangeInformation_part_main(vm: VakansCreate_ViewModel = koinViewModel()) {
                     .padding(paddingBetween_Text),
                 text = "Возраст",
                 style = middleTextStyle.value,
-                color = Color_MainText.value
+                color = MaterialTheme.colorScheme.primary
             )
             SignUp_LogIn_OutlinedTextField(
                 value = vm.specialization.value,
@@ -135,7 +139,7 @@ fun ChangeInformation_part_main(vm: VakansCreate_ViewModel = koinViewModel()) {
                     Text(
                         text = "",
                         style = secondTextStyle.value,
-                        color = Color_MainText.value
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             )
@@ -152,7 +156,7 @@ fun ChangeInformation_part_main(vm: VakansCreate_ViewModel = koinViewModel()) {
                     .padding(paddingBetween_Text),
                 text = "Место проживания",
                 style = middleTextStyle.value,
-                color = Color_MainText.value
+                color = MaterialTheme.colorScheme.primary
             )
             SignUp_LogIn_OutlinedTextField(
                 value = vm.wage.value,
@@ -161,7 +165,7 @@ fun ChangeInformation_part_main(vm: VakansCreate_ViewModel = koinViewModel()) {
                     Text(
                         text = "",
                         style = secondTextStyle.value,
-                        color = Color_MainText.value
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             )
@@ -178,7 +182,7 @@ fun ChangeInformation_part_main(vm: VakansCreate_ViewModel = koinViewModel()) {
                     .padding(paddingBetween_Text),
                 text = "Ограничения по здоровью",
                 style = middleTextStyle.value,
-                color = Color_MainText.value
+                color = MaterialTheme.colorScheme.primary
             )
             SignUp_LogIn_OutlinedTextField(
                 value = vm.wage.value,
@@ -187,7 +191,7 @@ fun ChangeInformation_part_main(vm: VakansCreate_ViewModel = koinViewModel()) {
                     Text(
                         text = "",
                         style = secondTextStyle.value,
-                        color = Color_MainText.value
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             )
@@ -205,7 +209,7 @@ fun ChangeInformation_part_main_contacts(vm: VakansCreate_ViewModel = koinViewMo
         Text(
             text = "Контакты:",
             style = mainTextStyle.value,
-            color = Color_MainText.value
+            color = MaterialTheme.colorScheme.primary
         )
         Column(
             modifier = Modifier
@@ -234,7 +238,7 @@ fun ChangeInformation_part_main_contacts(vm: VakansCreate_ViewModel = koinViewMo
                         .padding(paddingBetween_Text),
                     text = "Номер телефона",
                     style = middleTextStyle.value,
-                    color = Color_MainText.value
+                    color = MaterialTheme.colorScheme.primary
                 )
                 SignUp_LogIn_OutlinedTextField(
                     value = vm.phoneNumber.value,
@@ -252,16 +256,16 @@ fun ChangeInformation_part_main_contacts(vm: VakansCreate_ViewModel = koinViewMo
                         Text(
                             text = "",
                             style = secondTextStyle.value,
-                            color = Color_MainText.value
+                            color = MaterialTheme.colorScheme.primary
                         )
                     },
                     colors = TextFieldDefaults.colors(
-                        focusedContainerColor = /*textField_Color*/ Color_Background.value,
-                        unfocusedContainerColor = /*textField_Color*/ Color_Background.value,
-                        focusedIndicatorColor = textField_Number_Color/*Color_MainText.value*/,
-                        unfocusedIndicatorColor = textField_Number_Color/*Color_MainText.value*/,
-                        focusedTextColor = Color_MainText.value,
-                        unfocusedTextColor = Color_MainText.value
+                        focusedContainerColor = /*textField_Color*/ MaterialTheme.colorScheme.background,
+                        unfocusedContainerColor = /*textField_Color*/ MaterialTheme.colorScheme.background,
+                        focusedIndicatorColor = MaterialTheme.colorScheme.primary/*Color_MainText.value*/,
+                        unfocusedIndicatorColor = MaterialTheme.colorScheme.primary/*Color_MainText.value*/,
+                        focusedTextColor = MaterialTheme.colorScheme.primary,
+                        unfocusedTextColor = MaterialTheme.colorScheme.primary
                     )
                 )
             }
@@ -277,7 +281,7 @@ fun ChangeInformation_part_main_contacts(vm: VakansCreate_ViewModel = koinViewMo
                         .padding(paddingBetween_Text),
                     text = "Почта",
                     style = middleTextStyle.value,
-                    color = Color_MainText.value
+                    color = MaterialTheme.colorScheme.primary
                 )
                 SignUp_LogIn_OutlinedTextField(
                     value = vm.mail.value,
@@ -300,16 +304,16 @@ fun ChangeInformation_part_main_contacts(vm: VakansCreate_ViewModel = koinViewMo
                         Text(
                             text = "",
                             style = secondTextStyle.value,
-                            color = Color_MainText.value
+                            color = MaterialTheme.colorScheme.primary
                         )
                     },
                     colors = TextFieldDefaults.colors(
-                        focusedContainerColor = /*textField_Color*/ Color_Background.value,
-                        unfocusedContainerColor = /*textField_Color*/ Color_Background.value,
-                        focusedIndicatorColor = textField_Mail_Color/*Color_MainText.value*/,
-                        unfocusedIndicatorColor = textField_Mail_Color/*Color_MainText.value*/,
-                        focusedTextColor = Color_MainText.value,
-                        unfocusedTextColor = Color_MainText.value
+                        focusedContainerColor = /*textField_Color*/ MaterialTheme.colorScheme.background,
+                        unfocusedContainerColor = /*textField_Color*/ MaterialTheme.colorScheme.background,
+                        focusedIndicatorColor = MaterialTheme.colorScheme.primary/*Color_MainText.value*/,
+                        unfocusedIndicatorColor = MaterialTheme.colorScheme.primary/*Color_MainText.value*/,
+                        focusedTextColor = MaterialTheme.colorScheme.primary,
+                        unfocusedTextColor = MaterialTheme.colorScheme.primary
                     )
                 )
             }
@@ -339,7 +343,7 @@ fun ChangeInformation_part_optinalData(vm: VakansCreate_ViewModel = koinViewMode
                     .padding(paddingBetween_Text),
                 text = "О себе",
                 style = middleTextStyle.value,
-                color = Color_MainText.value
+                color = MaterialTheme.colorScheme.primary
             )
             SignUp_LogIn_OutlinedTextField(
                 value = vm.experience.value,
@@ -378,7 +382,7 @@ fun ChangeInformation_part_confiramtion() {
         Text(
             text = "Изменить данные",
             style = mainTextStyle.value,
-            color = Color_MainText.value
+            color = MaterialTheme.colorScheme.primary
         )
     }
 }

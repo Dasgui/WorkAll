@@ -15,6 +15,7 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -48,6 +49,7 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Backgrou
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Gray_Color_Passive_Secondary
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.MainFontFamily
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Ozonchick_new_versionTheme
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Primary_Color
 import com.example.ozonchick_new_version.Presentation_Layer.Models.SignUpViewModel
 import com.example.ozonchick_new_version.R
@@ -57,7 +59,9 @@ import org.koin.androidx.compose.koinViewModel
 class LogIn_Screen : Screen {
     @Composable
     override fun Content() {
-        LogIn_Construct()
+        Ozonchick_new_versionTheme {
+            LogIn_Construct()
+        }
     }
 }
 
@@ -103,12 +107,12 @@ fun TextHead()
         Text(
             text = "Добро пожаловать",
             style = Tema.Text_24_24_Bold,
-            color = Color_MainText.value
+            color = MaterialTheme.colorScheme.primary /*Color_MainText.value*/
         )
         Text(
             text = "Введите адрес электронной почты и пароль, чтобы продолжить",
             style = Tema.Text_16_16_Medium,
-            color = Color_MainText.value,
+            color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.padding(top = 8.dp)
         )
     }
@@ -127,7 +131,7 @@ fun MainBody(viewModel: SignUpViewModel)
             Text(
                 text = "Адрес почты",
                 style = Tema.Text_24_24_Bold,
-                color = Color_MainText.value
+                color = MaterialTheme.colorScheme.primary
             )
             SignUp_LogIn_OutlinedTextField(
                 value = viewModel.emailUser.collectAsState().value,
@@ -143,7 +147,7 @@ fun MainBody(viewModel: SignUpViewModel)
             Column(
                 modifier = Modifier.padding(top = 24.dp)
             ) {
-                Text(text = "Пароль", style = Tema.Text_24_24_Bold, maxLines = 1, color = Color_MainText.value)
+                Text(text = "Пароль", style = Tema.Text_24_24_Bold, maxLines = 1, color = MaterialTheme.colorScheme.primary)
                 SignUp_LogIn_OutlinedTextField(
                     value = viewModel.passwordUser.collectAsState().value,
                     onValueChange = { viewModel.setPasswordUserFieldValue (it) },
@@ -169,7 +173,7 @@ fun MainBody(viewModel: SignUpViewModel)
                                     }
                                     passwordVisible = !passwordVisible
                                 },
-                            colorFilter = ColorFilter.tint(Color_MainText.value)
+                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
                         )
                     },
                     visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
@@ -195,20 +199,20 @@ fun BottomBody(viewModel: SignUpViewModel)
             modifier = Modifier
                 .size(35.dp),
             colors = CheckboxDefaults.colors(
-                uncheckedColor = Gray_Color_Passive_Secondary,
-                checkedColor = Primary_Color
+                uncheckedColor = MaterialTheme.colorScheme.primary,
+                checkedColor = MaterialTheme.colorScheme.secondary
             ),
         )
         Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = "Запомнить пароль",
-                color = Color_MainText.value,
+                color = MaterialTheme.colorScheme.primary,
                 style = Tema.Text_16_16_Medium
             )
             Text(
                 text = "Забыли пароль?",
                 style = Tema.Text_16_16_Medium,
-                color = Primary_Color
+                color = MaterialTheme.colorScheme.primary
             )
         }
     }
@@ -232,14 +236,14 @@ fun BottomText(viewModel: SignUpViewModel, onNavigateForSignUp: () -> Unit)
             Text(
                 text = "Войти",
                 style = Tema.Text_24_24_Bold,
-                color = Color_MainText.value
+                color = MaterialTheme.colorScheme.primary
             )
         }
 
         val SignUpText = buildAnnotatedString {
             withStyle(
                 style = SpanStyle(
-                    color =  Color_MainText.value,
+                    color =  MaterialTheme.colorScheme.primary,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium,
                     fontFamily = MainFontFamily
@@ -252,7 +256,7 @@ fun BottomText(viewModel: SignUpViewModel, onNavigateForSignUp: () -> Unit)
             pushStringAnnotation(tag = "click", annotation = "click")
             withStyle(
                 SpanStyle(
-                    color = Primary_Color,
+                    color = MaterialTheme.colorScheme.secondary,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium,
                     fontFamily = MainFontFamily

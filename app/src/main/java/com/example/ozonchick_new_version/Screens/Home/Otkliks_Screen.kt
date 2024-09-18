@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,6 +44,7 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Lo
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Scaffold
 import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Ozonchick_new_versionTheme
 import com.example.ozonchick_new_version.Data_Layer.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data_Layer.model.Vakans_information
 import com.example.ozonchick_new_version.Presentation_Layer.Models.Spisok_ViewModel
@@ -61,7 +63,10 @@ private var mainTextColor: MutableState<Color> = Color_MainText
 class Otkliks_Screen:Screen {
     @Composable
     override fun Content() {
-        Otkliks_construct()
+        Ozonchick_new_versionTheme {
+            Otkliks_construct()
+        }
+
     }
 }
 
@@ -125,31 +130,31 @@ fun Card_V(number: Int,
                     Text(
                         text = list.collectAsState().value[number].vakans_name,
                         style = FirstMainTextStyle,
-                        color = mainTextColor.value
+                        color = MaterialTheme.colorScheme.primary
                     )
                     //Заработная плата Price
                     Text(
                         text = list.collectAsState().value[number].vakans_price,
                         style = FirstMainTextStyle,
-                        color = mainTextColor.value
+                        color = MaterialTheme.colorScheme.primary
                     )
                     //Организация Organization
                     Text(
                         text = list.collectAsState().value[number].vakans_organization,
                         style = SecondMainTextStyle,
-                        color = mainTextColor.value
+                        color = MaterialTheme.colorScheme.primary
                     )
                     //Расположение Location
                     Text(
                         text = list.collectAsState().value[number].vakans_location,
                         style = SecondMainTextStyle,
-                        color = mainTextColor.value
+                        color = MaterialTheme.colorScheme.primary
                     )
                     //Опыт работы Experience
                     Text(
                         text = list.collectAsState().value[number].vakans_experience,
                         style = SecondMainTextStyle,
-                        color = mainTextColor.value
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
                 Column(

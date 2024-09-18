@@ -18,8 +18,8 @@ import androidx.core.view.WindowCompat
 import com.example.ozonchick_new_version.Data_Layer.data.db.isDark
 
 private val DarkColorScheme = darkColorScheme(
-    primary = BackgroundTop_Color_DarkMode,
-    secondary = Gray_Color_Passive_Secondary,
+    primary = Color.Red/*BackgroundTop_Color_DarkMode*/,
+    secondary = Color.Red/*Gray_Color_Passive_Secondary*/,
     tertiary = Pink80,
     background = Background_Color_DarkMode,
     onPrimary = Text_Color_Active_DarkMode,
@@ -31,10 +31,10 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Color_Background.value,
-    secondary = Gray_Color_Passive_Secondary,
+    primary = Color(0xFFFFFFFF) /*Text_Color_Active_DarkMode*/ /*Color_Background.value*/,
+    secondary = Color(0xFF0560FA) /*Color.Yellow*/ /*Gray_Color_Passive_Secondary*/,
     tertiary = Pink40,
-    background = Color_Background.value,
+    background = Color(0xFF141414)/*Color_Background.value*/,
     onPrimary = Text_Color_Active,
     onSecondaryContainer = Gray_Color_Active_SideText,
     primaryContainer = Color.White,
@@ -72,14 +72,14 @@ fun Ozonchick_new_versionTheme(
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
-    val view = LocalView.current
+/*    val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = colorScheme.primary.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
-    }
+    }*/
 
     MaterialTheme(
         colorScheme = colorScheme,

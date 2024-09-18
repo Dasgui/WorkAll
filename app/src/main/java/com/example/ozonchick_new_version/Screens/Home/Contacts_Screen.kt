@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -38,6 +39,7 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Sc
 import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Ozonchick_new_versionTheme
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.middleTextStyle
 import com.example.ozonchick_new_version.Data_Layer.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data_Layer.model.Vakans_information
@@ -59,7 +61,10 @@ class Contacts_Screen() : Screen {
     @Composable
     @Preview
     override fun Content() {
-        Contacts_construct()
+        Ozonchick_new_versionTheme {
+            Contacts_construct()
+        }
+
     }
 }
 
@@ -119,7 +124,7 @@ fun Contacts_construct(vm: Spisok_ViewModel = koinViewModel(), /*list:MutableLis
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color_Background.value),
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
                 modifier = Modifier
                     .fillMaxWidth(),
             )
@@ -143,7 +148,7 @@ fun Contacts_construct(vm: Spisok_ViewModel = koinViewModel(), /*list:MutableLis
                         .padding(top = paddimgBetween_Text),
                     text = "Номер телефона: ${vm.list[0].vakans_number}"/*"Номер телефона: ${vm.number_phone.value}"*/, /*"Номер телефона: +79000"*/ /*vm.list[vm.number_contacts.value].vakans_mail*/
                     style = mainTextStyle,
-                    color = mainTextColor.value,
+                    color = MaterialTheme.colorScheme.primary,
                     textAlign = TextAlign.Center
                 )
                 Text(
@@ -151,7 +156,7 @@ fun Contacts_construct(vm: Spisok_ViewModel = koinViewModel(), /*list:MutableLis
                         .padding(top = paddimgBetween_Text),
                     text = /*list[0].vakans_mail*/ /*"Почта: polina@mail.ru"*/ /*"Почта: ${vm.spisokVakans[vm.number_contacts.value].vakans_mail}"*/ "Почта: ${vm.list[0].vakans_mail}",
                     style = mainTextStyle,
-                    color = mainTextColor.value,
+                    color = MaterialTheme.colorScheme.primary,
                     textAlign = TextAlign.Center
                 )
                 Text(
@@ -159,7 +164,7 @@ fun Contacts_construct(vm: Spisok_ViewModel = koinViewModel(), /*list:MutableLis
                         .padding(top = paddimgBetween_Text),
                     text = /*list[0].vakans_raspolog*/ /*"Расположение: Захарево 89"*/ /*"Расположение: ${vm.location.value}"*/ "Расположение: ${vm.list[0].vakans_raspolog}",
                     style = mainTextStyle,
-                    color = mainTextColor.value,
+                    color = MaterialTheme.colorScheme.primary,
                     textAlign = TextAlign.Center
                 )
                 Text(
@@ -167,7 +172,7 @@ fun Contacts_construct(vm: Spisok_ViewModel = koinViewModel(), /*list:MutableLis
                         .padding(top = paddimgBetween_Text),
                     text = "О работе:",
                     style = mainTextStyle,
-                    color = mainTextColor.value,
+                    color = MaterialTheme.colorScheme.primary,
                     textAlign = TextAlign.Start
                 )
                 Text(
@@ -175,7 +180,7 @@ fun Contacts_construct(vm: Spisok_ViewModel = koinViewModel(), /*list:MutableLis
                         .padding(top = paddimgBetween_Text),
                     text = vm.list[0].vakans_aboutWork,
                     style = mainTextStyle,
-                    color = mainTextColor.value,
+                    color = MaterialTheme.colorScheme.primary,
                     textAlign = TextAlign.Start
                 )
             }

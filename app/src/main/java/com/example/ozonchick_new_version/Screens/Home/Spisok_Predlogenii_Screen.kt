@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,6 +44,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import androidx.compose.ui.text.TextStyle
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Ozonchick_new_versionTheme
 
 var users : List<Vakans_information> = emptyList()
 var idNumber : MutableState<Int> = mutableIntStateOf(0)
@@ -50,17 +52,19 @@ var isLoading : MutableState<Boolean> = mutableStateOf(false)
 
 private var FirstMainTextStyle : TextStyle = Tema.Text_24_24_Bold
 private var SecondMainTextStyle : TextStyle = Tema.Text_18_18_Medium
-private var mainTextColor : MutableState<Color> = Color_MainText
 
 class Spisok_Predlogenii_Screen() : Screen {
     @Composable
     override fun Content() {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = Color_Background.value
-        ) {
-            Spisok_Predlogenii_construct()
+        Ozonchick_new_versionTheme {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                Spisok_Predlogenii_construct()
+            }
         }
+
     }
 }
 
@@ -155,31 +159,31 @@ private fun MainText(
         Text(
             text = list[number].vakans_name/*"Инженер"*/,
             style = FirstMainTextStyle,
-            color = mainTextColor.value
+            color = MaterialTheme.colorScheme.primary
         )
         //Заработная плата Price
         Text(
             text = list[number].vakans_price/*"90 000 - 130 000"*/,
             style = FirstMainTextStyle,
-            color = mainTextColor.value
+            color = MaterialTheme.colorScheme.primary
         )
         //Организация Organization
         Text(
             text = list[number].vakans_organization/*"ООО Некронтиры"*/,
             style = SecondMainTextStyle,
-            color = mainTextColor.value
+            color = MaterialTheme.colorScheme.primary
         )
         //Расположение Location
         Text(
             text = list[number].vakans_location/*"Челябинск"*/,
             style = SecondMainTextStyle,
-            color = mainTextColor.value
+            color = MaterialTheme.colorScheme.primary
         )
         //Опыт работы Experience
         Text(
             text = list[number].vakans_experience/*"Опыт работы 3 до 6 лет"*/,
             style = SecondMainTextStyle,
-            color = mainTextColor.value
+            color = MaterialTheme.colorScheme.primary
         )
     }
 }
