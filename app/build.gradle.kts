@@ -77,6 +77,8 @@ dependencies {
     implementation("cafe.adriel.voyager:voyager-androidx:1.0.0-rc10")
     implementation("cafe.adriel.voyager:voyager-koin:${rootProject.extra["voyagerKoinVersion"]}")
 
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
 
 
     implementation(libs.androidx.core.ktx)
