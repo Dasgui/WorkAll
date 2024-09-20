@@ -3,7 +3,6 @@ package com.example.ozonchick_new_version.Screens
 import com.example.ozonchick_new_version.Screens.Home.HomeViewModel
 import com.example.ozonchick_new_version.Screens.Home.Employer.Candidate.ListOfCandidate_ViewModel
 import com.example.ozonchick_new_version.Screens.Home.Employer.Vacancies.ListOfVacancies_ViewModel
-import com.example.ozonchick_new_version.Presentation_Layer.Models.Send_a_Package_ViewModel
 import com.example.ozonchick_new_version.Screens.SignUp_LogIn.SignUpViewModel
 import com.example.ozonchick_new_version.Screens.Otkliks.Spisok_ViewModel
 import com.example.ozonchick_new_version.Screens.Home.Candidate.VakansCreate_ViewModel
@@ -16,9 +15,6 @@ var AppModule = module {
     }
     single {
         HomeViewModel()
-    }
-    single {
-        Send_a_Package_ViewModel()
     }
     single {
         Spisok_ViewModel()

@@ -55,7 +55,6 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Red
 import com.example.ozonchick_new_version.Data_Layer.data.variables.firstType_OfRegistration
 import com.example.ozonchick_new_version.Data_Layer.data.variables.secondType_OfRegistration
 import com.example.ozonchick_new_version.R
-import com.example.ozonchick_new_version.Screens.navigation.screen_provider.SignUp_LogIn_Provider
 import org.koin.androidx.compose.koinViewModel
 import com.example.ozonchick_new_version.Data_Layer.data.dto.userType
 private var mainTextStyle: TextStyle = Tema.Text_24_24_Bold
@@ -75,14 +74,14 @@ fun SignUp_Construct() {
 @Preview
 @Composable
 fun Create_Account(vm: SignUpViewModel = koinViewModel()) {
-    val screen = rememberScreen(provider = SignUp_LogIn_Provider.LogIn)
+//    val screen = rememberScreen(provider = SignUp_LogIn_Provider.LogIn)
     val context = LocalContext.current
     val navigator = LocalNavigator.current
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
     var passwordVisible1 by rememberSaveable { mutableStateOf(false) }
     if (accessSharedRegistrait.value) {
         emailSharedUser.value = vm.emailUser.collectAsState().value
-        navigator?.replaceAll(screen)
+        navigator?.replaceAll(LogIn_Screen())
     }
 //    val accessRegistrait = vm.accessRegistrait.collectAsState()
     /*    var text by remember { mutableStateOf("") }
