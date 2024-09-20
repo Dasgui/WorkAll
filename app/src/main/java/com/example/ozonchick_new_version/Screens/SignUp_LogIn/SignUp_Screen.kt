@@ -54,7 +54,6 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Primary_Color
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Red
 import com.example.ozonchick_new_version.Data_Layer.data.variables.firstType_OfRegistration
 import com.example.ozonchick_new_version.Data_Layer.data.variables.secondType_OfRegistration
-import com.example.ozonchick_new_version.Presentation_Layer.Models.SignUpViewModel
 import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Screens.navigation.screen_provider.SignUp_LogIn_Provider
 import org.koin.androidx.compose.koinViewModel

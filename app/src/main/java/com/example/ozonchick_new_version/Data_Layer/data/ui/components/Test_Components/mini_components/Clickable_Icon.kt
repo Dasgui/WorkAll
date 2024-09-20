@@ -1,6 +1,5 @@
 package com.example.ozonchick_new_version.Data_Layer.data.ui.components.Test_Components.mini_components
 
-import android.graphics.drawable.Icon
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,9 +17,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.Navigator
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
-import com.example.ozonchick_new_version.R
-import com.example.ozonchick_new_version.Screens.Home.Spisok_Predlogenii_Screen
 
 @Composable
 fun Clickable_Icon(

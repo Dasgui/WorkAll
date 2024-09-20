@@ -1,10 +1,9 @@
-package com.example.ozonchick_new_version.Presentation_Layer.Models
+package com.example.ozonchick_new_version.Screens.Home.Employer.Candidate
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Data_Layer.model.Candidate_information
-import com.example.ozonchick_new_version.Data_Layer.model.Vakans_information
 import com.example.ozonchick_new_version.Data_Layer.model.Vakans_information_id
 import com.example.ozonchick_new_version.Data_Layer.network.supabase
 import io.github.jan.supabase.postgrest.from
@@ -13,7 +12,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class ListOfCandidate_ViewModel:ViewModel() {
     var spisokCandidates: MutableList<Candidate_information> = mutableListOf()

@@ -1,4 +1,4 @@
-package com.example.ozonchick_new_version.Screens.Home
+package com.example.ozonchick_new_version.Screens.SpisokPredlogenii
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -19,12 +19,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -34,10 +32,8 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Ca
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Loading
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Scaffold
 import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
 import com.example.ozonchick_new_version.Data_Layer.model.Vakans_information
-import com.example.ozonchick_new_version.Presentation_Layer.Models.Spisok_ViewModel
+import com.example.ozonchick_new_version.Screens.Otkliks.Spisok_ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -45,6 +41,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import androidx.compose.ui.text.TextStyle
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Ozonchick_new_versionTheme
+import com.example.ozonchick_new_version.Screens.Contacts.Contacts_Screen
 
 var users : List<Vakans_information> = emptyList()
 var idNumber : MutableState<Int> = mutableIntStateOf(0)

@@ -1,36 +1,13 @@
-package com.example.ozonchick_new_version.Presentation_Layer.Models
+package com.example.ozonchick_new_version.Screens.Otkliks
 
 import android.content.Context
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.esotericsoftware.minlog.Log
 import com.example.ozonchick_new_version.Data_Layer.data.db.userSharedId
-import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Button
-import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Card
-import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
 import com.example.ozonchick_new_version.Data_Layer.model.DataState
-import com.example.ozonchick_new_version.Data_Layer.model.SignUp_LogIn_Model.User_id_name_email
 import com.example.ozonchick_new_version.Data_Layer.model.TestModel_Get
 import com.example.ozonchick_new_version.Data_Layer.model.User_information
 import com.example.ozonchick_new_version.Data_Layer.model.Vakans_contacts
@@ -38,17 +15,11 @@ import com.example.ozonchick_new_version.Data_Layer.model.Vakans_information
 import com.example.ozonchick_new_version.Data_Layer.model.Vakans_otklik
 import com.example.ozonchick_new_version.Data_Layer.network.supabase
 import com.example.ozonchick_new_version.Domain.postGetContacts
-import com.example.ozonchick_new_version.Domain.postRegistrait
-import com.example.ozonchick_new_version.Screens.Home.Card_Vakans
-import com.google.gson.Gson
-import com.google.gson.JsonArray
 import io.github.jan.supabase.annotations.SupabaseExperimental
 import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.query.Columns
-import io.github.jan.supabase.realtime.PostgresAction
 import io.github.jan.supabase.realtime.channel
-import io.github.jan.supabase.realtime.postgresChangeFlow
 import io.github.jan.supabase.realtime.postgresListDataFlow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -56,12 +27,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.json.Json
 
 
 class Spisok_ViewModel() : ViewModel() {

@@ -1,11 +1,7 @@
-package com.example.ozonchick_new_version.Screens.Home
+package com.example.ozonchick_new_version.Screens.Contacts
 
-import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -37,19 +33,11 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Scaffold
 import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Ozonchick_new_versionTheme
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.middleTextStyle
 import com.example.ozonchick_new_version.Data_Layer.model.Vakans_contacts
-import com.example.ozonchick_new_version.Data_Layer.model.Vakans_information
-import com.example.ozonchick_new_version.Presentation_Layer.Models.Spisok_ViewModel
+import com.example.ozonchick_new_version.Screens.Otkliks.Spisok_ViewModel
 import com.example.ozonchick_new_version.R
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.koin.androidx.compose.koinViewModel
 
 private var mainTextColor: MutableState<Color> = Color_MainText

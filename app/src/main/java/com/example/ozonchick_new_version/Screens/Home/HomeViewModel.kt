@@ -1,4 +1,4 @@
-package com.example.ozonchick_new_version.Presentation_Layer.Models
+package com.example.ozonchick_new_version.Screens.Home
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

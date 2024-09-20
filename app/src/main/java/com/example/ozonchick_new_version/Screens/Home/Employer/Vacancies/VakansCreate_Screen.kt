@@ -1,4 +1,4 @@
-package com.example.ozonchick_new_version.Screens.Home.Employer
+package com.example.ozonchick_new_version.Screens.Home.Employer.Vacancies
 
 import android.view.Gravity
 import android.widget.Toast
@@ -36,7 +36,7 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainTextStyle
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.middleTextStyle
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.secondTextStyle
-import com.example.ozonchick_new_version.Presentation_Layer.Models.VakansCreate_ViewModel
+import com.example.ozonchick_new_version.Screens.Home.Candidate.VakansCreate_ViewModel
 import com.example.ozonchick_new_version.R
 import org.koin.androidx.compose.koinViewModel
 

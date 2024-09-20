@@ -32,9 +32,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Card
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Scaffold
 import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Ozonchick_new_versionTheme
-import com.example.ozonchick_new_version.Presentation_Layer.Models.HomeViewModel
 import com.example.ozonchick_new_version.R
 import org.koin.androidx.compose.koinViewModel
 

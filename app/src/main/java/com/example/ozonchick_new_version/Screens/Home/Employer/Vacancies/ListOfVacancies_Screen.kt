@@ -1,6 +1,5 @@
-package com.example.ozonchick_new_version.Screens.Home.Employer
+package com.example.ozonchick_new_version.Screens.Home.Employer.Vacancies
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,8 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,7 +21,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -36,20 +32,10 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Bu
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Card
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Scaffold
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Red
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainTextStyle
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.middleTextStyle
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.secondTextStyle
 import com.example.ozonchick_new_version.Data_Layer.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data_Layer.model.Vakans_information
-import com.example.ozonchick_new_version.Presentation_Layer.Models.ListOfVacancies_ViewModel
-import com.example.ozonchick_new_version.Presentation_Layer.Models.Spisok_ViewModel
 import com.example.ozonchick_new_version.R
-import com.example.ozonchick_new_version.Screens.Home.Contacts_Screen
-import com.example.ozonchick_new_version.Screens.Home.Contacts_construct
-import com.example.ozonchick_new_version.Screens.Home.Main_Screen_Predlojen
-import com.example.ozonchick_new_version.Screens.Home.idNumber
-import com.example.ozonchick_new_version.Screens.Home.users
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

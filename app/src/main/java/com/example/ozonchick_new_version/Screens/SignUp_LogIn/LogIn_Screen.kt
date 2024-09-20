@@ -15,7 +15,6 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -46,12 +45,8 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.components.SignUp_Lo
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.SignUp_LogIn_Components.SignUp_LogIn_OutlinedTextField
 import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Gray_Color_Passive_Secondary
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.MainFontFamily
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Ozonchick_new_versionTheme
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Primary_Color
-import com.example.ozonchick_new_version.Presentation_Layer.Models.SignUpViewModel
 import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Screens.Home.Profile_Screen
 import org.koin.androidx.compose.koinViewModel

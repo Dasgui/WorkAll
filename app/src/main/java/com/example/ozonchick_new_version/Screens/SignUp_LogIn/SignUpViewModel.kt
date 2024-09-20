@@ -1,4 +1,4 @@
-package com.example.ozonchick_new_version.Presentation_Layer.Models
+package com.example.ozonchick_new_version.Screens.SignUp_LogIn
 
 import android.content.Context
 import android.util.Log
