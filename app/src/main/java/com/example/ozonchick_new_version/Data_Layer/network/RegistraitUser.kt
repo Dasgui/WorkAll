@@ -1,11 +1,8 @@
 package com.example.ozonchick_new_version.Data_Layer.network
 
 import android.util.Log
-import com.example.ozonchick_new_version.Data_Layer.data.variables.secondType_OfRegistration
 import com.example.ozonchick_new_version.Data_Layer.model.DTOMessage
-import com.example.ozonchick_new_version.Data_Layer.model.Send_a_Package_Model.Main_details
 import com.example.ozonchick_new_version.Data_Layer.model.SignUp_LogIn_Model.Employer_information_registrait
-import com.example.ozonchick_new_version.Data_Layer.model.SignUp_LogIn_Model.User_balance
 import com.example.ozonchick_new_version.Data_Layer.model.SignUp_LogIn_Model.User_information_registrait
 import io.github.jan.supabase.gotrue.SessionSource
 import io.github.jan.supabase.gotrue.SessionStatus
@@ -55,7 +52,7 @@ class RegistraitUser() {
                                             val otvet = supabase.from("user_information").insert(User_information_registrait(name,phoneNumber,mail))
                                             {
                                                 select(Columns.list("user_id"))
-                                            }.decodeSingle<Main_details>()
+                                            }
 
                                         }
                                         "Работодатель" -> {

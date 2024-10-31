@@ -92,7 +92,7 @@ fun LogIn_Construct(viewModel: SignUpViewModel = koinViewModel()) {
 }
 
 @Composable
-fun TextHead()
+private fun TextHead()
 {
     Column(
         modifier = Modifier
@@ -114,7 +114,7 @@ fun TextHead()
 }
 
 @Composable
-fun MainBody(viewModel: SignUpViewModel)
+private fun MainBody(viewModel: SignUpViewModel)
 {
     Column(
         modifier = Modifier
@@ -179,7 +179,7 @@ fun MainBody(viewModel: SignUpViewModel)
 }
 
 @Composable
-fun BottomBody(viewModel: SignUpViewModel)
+private fun BottomBody(viewModel: SignUpViewModel)
 {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -214,7 +214,7 @@ fun BottomBody(viewModel: SignUpViewModel)
 }
 
 @Composable
-fun BottomText(viewModel: SignUpViewModel, onNavigateForSignUp: () -> Unit)
+private fun BottomText(viewModel: SignUpViewModel, onNavigateForSignUp: () -> Unit)
 {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -270,58 +270,6 @@ fun BottomText(viewModel: SignUpViewModel, onNavigateForSignUp: () -> Unit)
                     }
             },
             modifier = Modifier.padding(top = 20.dp)
-        )
-    }
-}
-
-@Composable
-fun Email(MainText: String, InsideText: String) {
-    var text by remember { mutableStateOf("") }
-    var passwordVisible by rememberSaveable { mutableStateOf(false) }
-    Column(
-    ) {
-        Text(
-            text = "$MainText",
-            style = Tema.PassiveSideText_14_16_500
-        )
-        SignUp_LogIn_OutlinedTextField(
-            value = text,
-            onValueChange = { text = it },
-            placeholder = { Text(text = "$InsideText", style = Tema.SecondaryText_14_16_500) }
-        )
-    }
-}
-
-@Composable
-fun Password(MainText: String, InsideText: String) {
-    var text by remember { mutableStateOf("") }
-    var passwordVisible by rememberSaveable { mutableStateOf(false) }
-    Column(
-        modifier = Modifier.padding(top = 24.dp)
-    ) {
-        Text(text = MainText, style = Tema.SecondaryText_14_16_500, maxLines = 1)
-        SignUp_LogIn_OutlinedTextField(
-            value = text,
-            onValueChange = { text = it },
-            placeholder = {
-                Text(
-                    text = InsideText,
-                    style = Tema.PassiveSideText_14_16_500
-                )
-            },
-            trailingIcon = {
-                Image(
-                    painter = painterResource(id = R.drawable.eye_slash),
-                    contentDescription = "Показать пароль",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(24.dp)
-                        .clickable {
-                            passwordVisible = !passwordVisible
-                        },
-                )
-            },
-            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         )
     }
 }
