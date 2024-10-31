@@ -1,6 +1,7 @@
 package com.example.ozonchick_new_version.Screens.SignUp_LogIn.SignUp
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Backgrou
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Red
 import com.example.ozonchick_new_version.Data_Layer.model.SignUp_LogIn_Model.User_information_registrait
+import com.example.ozonchick_new_version.Data_Layer.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data_Layer.network.supabase
 import com.example.ozonchick_new_version.Domain.postRegistrait
 import io.github.jan.supabase.postgrest.from
@@ -115,10 +117,22 @@ class SignUpViewModel : ViewModel() {
     fun Registrait()
     {
         var responseRegistrait: Boolean
+        var listA: MutableList<User_information_registrait> = mutableListOf()
         viewModelScope.launch {
-            supabase.from("user_information").insert(User_information_registrait(nameUser.value,phoneNumber.value,emailUser.value))
-            {
-                select(Columns.list("user_id"))
+            val user = supabase.from("user_information").select(columns = Columns.list("user_name, user_email, user_phone_number")) {
+                filter {
+                    User_information_registrait::user_name eq nameUser.value
+                    User_information_registrait::user_email eq emailUser.value
+                    User_information_registrait::user_phone_number eq phoneNumber.value
+                }
+            }.decodeList<User_information_registrait>()
+            listA = user.toMutableList()
+            Log.d("Registrait", listA.toString())
+            if (listA.isNullOrEmpty()) {
+                supabase.from("user_information").insert(User_information_registrait(nameUser.value,phoneNumber.value,emailUser.value))
+                {
+                    select(Columns.list("user_id"))
+                }
             }
 //            responseRegistrait = postRegistrait().postRegistraitEmail(nameUser.value.capitalize(),
 //                phoneNumber.value,
