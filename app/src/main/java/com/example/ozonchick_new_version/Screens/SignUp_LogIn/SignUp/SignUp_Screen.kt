@@ -1,4 +1,4 @@
-package com.example.ozonchick_new_version.Screens.SignUp_LogIn
+package com.example.ozonchick_new_version.Screens.SignUp_LogIn.SignUp
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -29,7 +29,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
@@ -48,6 +47,7 @@ import com.example.ozonchick_new_version.R
 import org.koin.androidx.compose.koinViewModel
 import com.example.ozonchick_new_version.Data_Layer.data.dto.userType
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Primary_Color
+import com.example.ozonchick_new_version.Screens.SignUp_LogIn.LogIn_Screen
 
 class SignUp_Screen : Screen {
     @Composable
@@ -61,7 +61,6 @@ fun SignUp_Construct() {
 
 }
 
-@Preview
 @Composable
 fun Create_Account(viewModel: SignUpViewModel = koinViewModel()) {
 //    val screen = rememberScreen(provider = SignUp_LogIn_Provider.LogIn)
@@ -115,14 +114,14 @@ private fun TextHead() {
 }
 
 @Composable
-private fun MainBody(viewModel: SignUpViewModel = koinViewModel()) {
+private fun MainBody(viewModel: SignUpViewModel) {
     MainBody_PartContacts(viewModel)
     MainBody_PartPassword(viewModel)
     MainBody_PartTypeUsers(viewModel)
 }
 
 @Composable
-private fun MainBody_PartContacts(viewModel: SignUpViewModel = koinViewModel()) {
+private fun MainBody_PartContacts(viewModel: SignUpViewModel) {
     Column(modifier = Modifier.padding(top = 24.dp)) {
         Text(text = "Имя", style = Tema.Text_24_24_Bold, maxLines = 1, color = Color_MainText.value)
         SignUp_LogIn_OutlinedTextField(
@@ -176,7 +175,7 @@ private fun MainBody_PartContacts(viewModel: SignUpViewModel = koinViewModel()) 
 }
 
 @Composable
-private fun MainBody_PartPassword(viewModel: SignUpViewModel = koinViewModel()) {
+private fun MainBody_PartPassword(viewModel: SignUpViewModel) {
     Column(modifier = Modifier.padding(top = 24.dp)) {
         Text(
             text = "Пароль",
@@ -185,7 +184,7 @@ private fun MainBody_PartPassword(viewModel: SignUpViewModel = koinViewModel()) 
             color = Color_MainText.value
         )
         SignUp_LogIn_OutlinedTextField(
-            value = viewModel.passwordUser.collectAsState().value,
+            value = viewModel.password.collectAsState().value,
             onValueChange = { viewModel.setPasswordUserFieldValue(it) },
             placeholder = {
                 Text(
@@ -262,7 +261,7 @@ private fun MainBody_PartTypeUsers(viewModel: SignUpViewModel) {
 }
 
 @Composable
-private fun BottomTypeRegistraion(viewModel: SignUpViewModel = koinViewModel()) {
+private fun BottomTypeRegistraion(viewModel: SignUpViewModel) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -284,7 +283,7 @@ private fun BottomTypeRegistraion(viewModel: SignUpViewModel = koinViewModel()) 
 
 
 @Composable
-private fun Bottom(viewModel: SignUpViewModel = koinViewModel()) {
+private fun Bottom(viewModel: SignUpViewModel) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -296,12 +295,11 @@ private fun Bottom(viewModel: SignUpViewModel = koinViewModel()) {
 }
 
 @Composable
-private fun BottomButton(viewModel: SignUpViewModel = koinViewModel()) {
-    val context = LocalContext.current
+private fun BottomButton(viewModel: SignUpViewModel) {
 
     SignUp_LogIn_Button(
         onClick = {
-            viewModel.Registrait(context)
+            viewModel.Registrait()
         },
         colors = if (viewModel.Proverka()) {
             ButtonDefaults.buttonColors(containerColor = Color_MainText.value)

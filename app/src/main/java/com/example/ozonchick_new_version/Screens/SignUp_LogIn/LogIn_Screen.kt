@@ -49,6 +49,7 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.MainFontFamily
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Ozonchick_new_versionTheme
 import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Screens.Home.Profile_Screen
+import com.example.ozonchick_new_version.Screens.SignUp_LogIn.SignUp.SignUp_Screen
 import org.koin.androidx.compose.koinViewModel
 
 class LogIn_Screen : Screen {
@@ -61,7 +62,7 @@ class LogIn_Screen : Screen {
 }
 
 @Composable
-fun LogIn_Construct(viewModel: SignUpViewModel = koinViewModel()) {
+fun LogIn_Construct(viewModel: LogInViewModel = koinViewModel()) {
     val navigator = LocalNavigator.current
 //    val authState = vm.accessSharedAuth.collectAsState()
 
@@ -114,7 +115,7 @@ private fun TextHead()
 }
 
 @Composable
-private fun MainBody(viewModel: SignUpViewModel)
+private fun MainBody(viewModel: LogInViewModel)
 {
     Column(
         modifier = Modifier
@@ -179,7 +180,7 @@ private fun MainBody(viewModel: SignUpViewModel)
 }
 
 @Composable
-private fun BottomBody(viewModel: SignUpViewModel)
+private fun BottomBody(viewModel: LogInViewModel)
 {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -214,7 +215,7 @@ private fun BottomBody(viewModel: SignUpViewModel)
 }
 
 @Composable
-private fun BottomText(viewModel: SignUpViewModel, onNavigateForSignUp: () -> Unit)
+private fun BottomText(viewModel: LogInViewModel, onNavigateForSignUp: () -> Unit)
 {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

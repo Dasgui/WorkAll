@@ -1,32 +1,29 @@
-package com.example.ozonchick_new_version.Screens.SignUp_LogIn
+package com.example.ozonchick_new_version.Screens.SignUp_LogIn.SignUp
 
 import android.content.Context
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Data_Layer.data.db.accessSharedRegistrait
-import com.example.ozonchick_new_version.Domain.postAuth
+import com.example.ozonchick_new_version.Data_Layer.data.dto.userType
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Red
+import com.example.ozonchick_new_version.Data_Layer.model.SignUp_LogIn_Model.User_information_registrait
+import com.example.ozonchick_new_version.Data_Layer.network.supabase
 import com.example.ozonchick_new_version.Domain.postRegistrait
+import io.github.jan.supabase.postgrest.from
+import io.github.jan.supabase.postgrest.query.Columns
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import com.example.ozonchick_new_version.Data_Layer.data.dto.userType
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Red
 
-class SignUpViewModel() : ViewModel() {
-    private val _accessSharedAuth: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val accessSharedAuth: StateFlow<Boolean> = _accessSharedAuth.asStateFlow()
-
-
+class SignUpViewModel : ViewModel() {
     private val _nameUser: MutableStateFlow<String> = MutableStateFlow("")
     var nameUser: StateFlow<String> = _nameUser.asStateFlow()
 
@@ -54,12 +51,12 @@ class SignUpViewModel() : ViewModel() {
     }
 
 
-    private val _passwordUser: MutableStateFlow<String> = MutableStateFlow("")
-    var passwordUser: StateFlow<String> = _passwordUser.asStateFlow()
+    private val _password: MutableStateFlow<String> = MutableStateFlow("")
+    var password: StateFlow<String> = _password.asStateFlow()
 
     fun setPasswordUserFieldValue(newValue: String)
     {
-        _passwordUser.value = newValue
+        _password.value = newValue
     }
 
 
@@ -69,6 +66,30 @@ class SignUpViewModel() : ViewModel() {
     fun setConfirmPasswordFieldValue(newValue: String)
     {
         _confirmPassword.value = newValue
+    }
+
+
+    private val  _passwordVisibleFirst: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    var passwordVisibleFirst: StateFlow<Boolean> = _passwordVisibleFirst.asStateFlow()
+
+    fun setPasswordVisibleFirst(newValue: Boolean) {
+        if (newValue && _passwordVisibleFirst.value) {
+            _passwordVisibleFirst.value = false
+        } else if (newValue && !_passwordVisibleFirst.value) {
+            _passwordVisibleFirst.value = true
+        }
+    }
+
+
+    private val _passwordVisibleSecond: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    var passwordVisibleSecond: StateFlow<Boolean> = _passwordVisibleSecond.asStateFlow()
+
+    fun setPasswordVisibleSecond(newValue: Boolean) {
+        if (newValue && _passwordVisibleSecond.value) {
+            _passwordVisibleSecond.value = false
+        } else if (newValue && !_passwordVisibleSecond.value) {
+            _passwordVisibleSecond.value = true
+        }
     }
 
 
@@ -90,87 +111,31 @@ class SignUpViewModel() : ViewModel() {
     }
 
 
-    private val _rememberUser:MutableStateFlow<Boolean> = MutableStateFlow(false)
-    var rememberUser:StateFlow<Boolean> = _rememberUser.asStateFlow()
 
-    fun setRememberUserCheckBoxValue(newValue: Boolean)
-    {
-        _rememberUser.value = newValue
-    }
-
-
-
-    private val  _passwordVisibleFirst:MutableStateFlow<Boolean> = MutableStateFlow(false)
-    var passwordVisibleFirst:StateFlow<Boolean> = _passwordVisibleFirst.asStateFlow()
-
-    fun setPasswordVisibleFirst(newValue: Boolean) {
-        if (newValue && _passwordVisibleFirst.value) {
-            _passwordVisibleFirst.value = false
-        } else if (newValue && !_passwordVisibleFirst.value) {
-            _passwordVisibleFirst.value = true
-        }
-    }
-
-
-    private val _passwordVisibleSecond:MutableStateFlow<Boolean> = MutableStateFlow(false)
-    var passwordVisibleSecond:StateFlow<Boolean> = _passwordVisibleSecond.asStateFlow()
-
-    fun setPasswordVisibleSecond(newValue: Boolean) {
-        if (newValue && _passwordVisibleSecond.value) {
-            _passwordVisibleSecond.value = false
-        } else if (newValue && !_passwordVisibleSecond.value) {
-            _passwordVisibleSecond.value = true
-        }
-    }
-
-
-
-    fun Auth(/*contextAuth:Context*/)
-    {
-        viewModelScope.launch {
-            _accessSharedAuth.value = postAuth(/*contextAuth*/).postAuthEmail(emailUser.value,passwordUser.value, rememberUser.value)
-        }
-    }
-
-    fun Registrait(context: Context)
+    fun Registrait()
     {
         var responseRegistrait: Boolean
-        runBlocking {
-            delay(1000)
-            responseRegistrait = postRegistrait(context).postRegistraitEmail(nameUser.value.capitalize(),phoneNumber.value,emailUser.value,passwordUser.value, userRole.value.type, INN.value)
-            delay(100)
-            accessSharedRegistrait.value = responseRegistrait
+        viewModelScope.launch {
+            supabase.from("user_information").insert(User_information_registrait(nameUser.value,phoneNumber.value,emailUser.value))
+            {
+                select(Columns.list("user_id"))
+            }
+//            responseRegistrait = postRegistrait().postRegistraitEmail(nameUser.value.capitalize(),
+//                phoneNumber.value,
+//                emailUser.value,
+//                password.value,
+//                userRole.value.type,
+//                INN.value)
+//            accessSharedRegistrait.value = responseRegistrait
         }
     }
 
-
-
-    var EnableCheck: MutableState<Boolean> = mutableStateOf(false)
-
-    fun ConstructProverka(firstLine:String, secondLine:String = ""):Boolean
-    {
-        if(firstLine.isNotEmpty() && secondLine.isNotEmpty())
-        {
-            return true
-        }
-        else if (firstLine.isNotEmpty() && secondLine == null)
-        {
-            return true
-        }
-        return false
-    }
 
     fun Proverka(): Boolean {
         return (nameUser.value.isNotEmpty() && phoneNumber.value.isNotEmpty()
-                && emailUser.value.isNotEmpty() && passwordUser.value.isNotEmpty()
-                && EnableCheck.value && confirmPassword.value.isNotEmpty()
-                && isMail() && passwordUser.value == confirmPassword.value)
-    }
-
-    private fun isMail(): Boolean {
-        val answer : Boolean = (emailUser.value == emailUser.value.toLowerCase()
-                && emailUser.value.contains('@'))
-        return answer
+                && emailUser.value.isNotEmpty() && password.value.isNotEmpty()
+                && confirmPassword.value.isNotEmpty()
+                && isMail() && password.value == confirmPassword.value)
     }
 
     @Composable
@@ -197,8 +162,10 @@ class SignUpViewModel() : ViewModel() {
         }
         return getColor
     }
+
+    private fun isMail(): Boolean {
+        val answer : Boolean = (emailUser.value == emailUser.value.toLowerCase()
+                && emailUser.value.contains('@'))
+        return answer
+    }
 }
-
-
-
-

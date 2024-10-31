@@ -17,13 +17,6 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 
 class RegistraitUser() {
-/*    private val supabase = createSupabaseClient(
-        supabaseUrl = "https://qxniznftwaxnvnksitua.supabase.co",
-        supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF4bml6bmZ0d2F4bnZua3NpdHVhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDg4NDc1NTAsImV4cCI6MjAyNDQyMzU1MH0.7X_dAg3PvNrCsl14_N8z8YCfd0pxKWmV_dbNKczm_Lc"
-    ) {
-        install(Auth)
-        install(Postgrest)
-    }*/
     suspend fun RegisstraitEmail(name:String,phoneNumber:String,mail:String, passwordUser : String, userStatus:String, INN:String) : DTOMessage
     {
         var Info = CompletableDeferred<DTOMessage>()
@@ -41,19 +34,15 @@ class RegistraitUser() {
                             when (it.source) { //Check the source of the session
                                 SessionSource.External -> Log.d("Сесия", "External")
                                 is SessionSource.Refresh -> Log.d("Сесия", "Refresh")
-                                is SessionSource.SignIn -> {
-/*                                    Log.d("Сесия", "Зашёл")
-                                    Info.complete(DTOMessage(true,"Успешная авторизация"))*/
-                                }
+                                is SessionSource.SignIn -> {}
 
                                 is SessionSource.SignUp -> {
                                     when (userStatus) {
                                         "Соискатель" -> {
-                                            val otvet = supabase.from("user_information").insert(User_information_registrait(name,phoneNumber,mail))
+                                            supabase.from("user_information").insert(User_information_registrait(name,phoneNumber,mail))
                                             {
                                                 select(Columns.list("user_id"))
                                             }
-
                                         }
                                         "Работодатель" -> {
                                             supabase.from("employers_information").insert(Employer_information_registrait(name,phoneNumber,mail, INN))
