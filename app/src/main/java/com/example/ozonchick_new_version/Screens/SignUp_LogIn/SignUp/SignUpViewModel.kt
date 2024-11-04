@@ -1,37 +1,27 @@
 package com.example.ozonchick_new_version.Screens.SignUp_LogIn.SignUp
 
-import android.content.Context
-import android.util.Log
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ozonchick_new_version.Data_Layer.data.db.accessSharedRegistrait
 import com.example.ozonchick_new_version.Data_Layer.data.dto.userType
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Red
-import com.example.ozonchick_new_version.Data_Layer.model.SignUp_LogIn_Model.User_information_registrait
-import com.example.ozonchick_new_version.Data_Layer.model.Vakans_contacts
-import com.example.ozonchick_new_version.Data_Layer.network.supabase
 import com.example.ozonchick_new_version.Domain.postRegistrait
-import io.github.jan.supabase.postgrest.from
-import io.github.jan.supabase.postgrest.query.Columns
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class SignUpViewModel : ViewModel() {
-    private val _nameUser: MutableStateFlow<String> = MutableStateFlow("")
-    var nameUser: StateFlow<String> = _nameUser.asStateFlow()
+    private val _name: MutableStateFlow<String> = MutableStateFlow("")
+    var name: StateFlow<String> = _name.asStateFlow()
 
     fun setNameUserFieldValue(newValue: String)
     {
-        _nameUser.value = newValue
+        _name.value = newValue
     }
 
 
@@ -44,12 +34,12 @@ class SignUpViewModel : ViewModel() {
     }
 
 
-    private val _emailUser: MutableStateFlow<String> = MutableStateFlow("")
-    var emailUser: StateFlow<String> = _emailUser.asStateFlow()
+    private val _email: MutableStateFlow<String> = MutableStateFlow("")
+    var email: StateFlow<String> = _email.asStateFlow()
 
     fun setEmailUserFieldValue(newValue: String)
     {
-        _emailUser.value = newValue
+        _email.value = newValue
     }
 
 
@@ -116,38 +106,15 @@ class SignUpViewModel : ViewModel() {
 
     fun Registrait()
     {
-        var responseRegistrait: Boolean
-        var listA: MutableList<User_information_registrait> = mutableListOf()
         viewModelScope.launch {
-            val user = supabase.from("user_information").select(columns = Columns.list("user_name, user_email, user_phone_number")) {
-                filter {
-                    User_information_registrait::user_name eq nameUser.value
-                    User_information_registrait::user_email eq emailUser.value
-                    User_information_registrait::user_phone_number eq phoneNumber.value
-                }
-            }.decodeList<User_information_registrait>()
-            listA = user.toMutableList()
-            Log.d("Registrait", listA.toString())
-            if (listA.isNullOrEmpty()) {
-                supabase.from("user_information").insert(User_information_registrait(nameUser.value,phoneNumber.value,emailUser.value))
-                {
-                    select(Columns.list("user_id"))
-                }
-            }
-//            responseRegistrait = postRegistrait().postRegistraitEmail(nameUser.value.capitalize(),
-//                phoneNumber.value,
-//                emailUser.value,
-//                password.value,
-//                userRole.value.type,
-//                INN.value)
-//            accessSharedRegistrait.value = responseRegistrait
+            postRegistrait().postRegistraitEmail(name.value, phoneNumber.value, email.value, password.value)
         }
     }
 
 
     fun Proverka(): Boolean {
-        return (nameUser.value.isNotEmpty() && phoneNumber.value.isNotEmpty()
-                && emailUser.value.isNotEmpty() && password.value.isNotEmpty()
+        return (name.value.isNotEmpty() && phoneNumber.value.isNotEmpty()
+                && email.value.isNotEmpty() && password.value.isNotEmpty()
                 && confirmPassword.value.isNotEmpty()
                 && isMail() && password.value == confirmPassword.value)
     }
@@ -178,8 +145,8 @@ class SignUpViewModel : ViewModel() {
     }
 
     private fun isMail(): Boolean {
-        val answer : Boolean = (emailUser.value == emailUser.value.toLowerCase()
-                && emailUser.value.contains('@'))
+        val answer : Boolean = (email.value == email.value.toLowerCase()
+                && email.value.contains('@'))
         return answer
     }
 }

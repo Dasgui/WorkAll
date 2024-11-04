@@ -67,7 +67,7 @@ fun Create_Account(viewModel: SignUpViewModel = koinViewModel()) {
     val context = LocalContext.current
     val navigator = LocalNavigator.current
     if (accessSharedRegistrait.value) {
-        emailSharedUser.value = viewModel.emailUser.collectAsState().value
+        emailSharedUser.value = viewModel.email.collectAsState().value
         navigator?.replaceAll(LogIn_Screen())
     }
 //    val accessRegistrait = vm.accessRegistrait.collectAsState()
@@ -125,7 +125,7 @@ private fun MainBody_PartContacts(viewModel: SignUpViewModel) {
     Column(modifier = Modifier.padding(top = 24.dp)) {
         Text(text = "Имя", style = Tema.Text_24_24_Bold, maxLines = 1, color = Color_MainText.value)
         SignUp_LogIn_OutlinedTextField(
-            value = viewModel.nameUser.collectAsState().value,
+            value = viewModel.name.collectAsState().value,
             onValueChange = { viewModel.setNameUserFieldValue(it) },
             placeholder = {
                 Text(
@@ -161,7 +161,7 @@ private fun MainBody_PartContacts(viewModel: SignUpViewModel) {
             color = Color_MainText.value
         )
         SignUp_LogIn_OutlinedTextField(
-            value = viewModel.emailUser.collectAsState().value,
+            value = viewModel.email.collectAsState().value,
             onValueChange = { viewModel.setEmailUserFieldValue(it) },
             placeholder = {
                 Text(

@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Data_Layer.data.db.userSharedId
 import com.example.ozonchick_new_version.Data_Layer.model.DataState
 import com.example.ozonchick_new_version.Data_Layer.model.TestModel_Get
-import com.example.ozonchick_new_version.Data_Layer.model.User_information
+import com.example.ozonchick_new_version.Data_Layer.model.UserInformation
 import com.example.ozonchick_new_version.Data_Layer.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data_Layer.model.Vakans_information
 import com.example.ozonchick_new_version.Data_Layer.model.Vakans_otklik
@@ -244,15 +244,15 @@ class Spisok_ViewModel() : ViewModel() {
             val userGetId = supabase.from("user_information").select(
                 Columns.list(
                     "user_id",
-                    "user_name",
-                    "user_phone_number",
-                    "user_email"
+                    "name",
+                    "phoneNumber",
+                    "email"
                 )
             ) {
                 filter {
-                    User_information::user_email eq user?.user?.email.toString()
+                    UserInformation::email eq user?.user?.email.toString()
                 }
-            }.decodeSingle<User_information>()
+            }.decodeSingle<UserInformation>()
 
             id.value = userGetId.user_id
             userSharedId.value = userGetId.user_id
