@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.backgroundColor
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainColor
 import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Screens.Otkliks.Otkliks_Screen
@@ -26,7 +26,7 @@ fun Scafold_BottomBar(
     bottomTextStyle : TextStyle = Tema.Text_16_16_Medium
 ) {
     BottomAppBar(
-        containerColor = Color_Background,
+        containerColor = backgroundColor,
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),

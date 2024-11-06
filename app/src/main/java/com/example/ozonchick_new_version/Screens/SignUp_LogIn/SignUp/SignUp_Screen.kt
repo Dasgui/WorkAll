@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -38,7 +39,7 @@ import com.example.ozonchick_new_version.Data_Layer.data.db.emailSharedUser
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.SignUp_LogIn_Components.SignUp_LogIn_Button
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.SignUp_LogIn_Components.SignUp_LogIn_OutlinedTextField
 import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.backgroundColor
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainColor
 import com.example.ozonchick_new_version.Data_Layer.data.variables.firstType_OfRegistration
 import com.example.ozonchick_new_version.Data_Layer.data.variables.secondType_OfRegistration
@@ -75,7 +76,7 @@ fun Create_Account(viewModel: SignUpViewModel = koinViewModel()) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color_Background),
+            .background(backgroundColor),
     )
     {
         LazyColumn(
@@ -125,7 +126,9 @@ private fun MainBody_PartContacts(viewModel: SignUpViewModel) {
         Text(text = "Имя", style = Tema.Text_24_24_Bold, maxLines = 1, color = mainColor)
         SignUp_LogIn_OutlinedTextField(
             value = viewModel.name.collectAsState().value,
-            onValueChange = { viewModel.setNameUserFieldValue(it) },
+            onValueChange = {
+                viewModel.setNameUserFieldValue(it)
+                viewModel.Proverka() },
             placeholder = {
                 Text(
                     text = "Василий",
@@ -143,7 +146,9 @@ private fun MainBody_PartContacts(viewModel: SignUpViewModel) {
         )
         SignUp_LogIn_OutlinedTextField(
             value = viewModel.phoneNumber.collectAsState().value,
-            onValueChange = { viewModel.setPhoneNumberFieldValue(it) },
+            onValueChange = {
+                viewModel.setPhoneNumberFieldValue(it)
+                viewModel.Proverka() },
             placeholder = {
                 Text(
                     text = "+7*****",
@@ -161,7 +166,9 @@ private fun MainBody_PartContacts(viewModel: SignUpViewModel) {
         )
         SignUp_LogIn_OutlinedTextField(
             value = viewModel.email.collectAsState().value,
-            onValueChange = { viewModel.setEmailUserFieldValue(it) },
+            onValueChange = {
+                viewModel.setEmailUserFieldValue(it)
+                viewModel.Proverka() },
             placeholder = {
                 Text(
                     text = "vasili@mail.ru",
@@ -184,7 +191,9 @@ private fun MainBody_PartPassword(viewModel: SignUpViewModel) {
         )
         SignUp_LogIn_OutlinedTextField(
             value = viewModel.password.collectAsState().value,
-            onValueChange = { viewModel.setPasswordUserFieldValue(it) },
+            onValueChange = {
+                viewModel.setPasswordUserFieldValue(it)
+                viewModel.Proverka()},
             placeholder = {
                 Text(
                     text = "******",
@@ -217,7 +226,9 @@ private fun MainBody_PartPassword(viewModel: SignUpViewModel) {
         )
         SignUp_LogIn_OutlinedTextField(
             value = viewModel.confirmPassword.collectAsState().value,
-            onValueChange = { viewModel.setConfirmPasswordFieldValue(it) },
+            onValueChange = {
+                viewModel.setConfirmPasswordFieldValue(it)
+                viewModel.Proverka() },
             placeholder = {
                 Text(
                     text = "*******",
@@ -300,20 +311,20 @@ private fun BottomButton(viewModel: SignUpViewModel) {
         onClick = {
             viewModel.Registrait()
         },
-        colors = if (viewModel.Proverka()) {
-            ButtonDefaults.buttonColors(containerColor = mainColor)
+        colors = if (viewModel.isOkay.value) {
+            ButtonDefaults.buttonColors(containerColor = mainColor, contentColor = backgroundColor)
         } else {
-            ButtonDefaults.buttonColors(containerColor = Color_Background)
+            ButtonDefaults.buttonColors(containerColor = backgroundColor, contentColor = mainColor)
         }
     ) {
         Text(
             text = "Зарегистрироваться",
             style = Tema.Text_24_24_Bold,
-            color = if (viewModel.Proverka()) {
-                Color_Background
-            } else {
-                mainColor
-            }
+//            color = if (viewModel.Proverka()) {
+//                backgroundColor
+//            } else {
+//                mainColor
+//            }
         )
     }
 }

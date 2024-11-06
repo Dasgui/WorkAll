@@ -29,7 +29,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -45,7 +44,7 @@ import com.example.ozonchick_new_version.Data_Layer.data.db.emailSharedUser
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.SignUp_LogIn_Components.SignUp_LogIn_Button
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.SignUp_LogIn_Components.SignUp_LogIn_OutlinedTextField
 import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.backgroundColor
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.MainFontFamily
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Ozonchick_new_versionTheme
 import com.example.ozonchick_new_version.R
@@ -71,7 +70,7 @@ fun LogIn_Construct(viewModel: LogInViewModel = koinViewModel()) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color_Background)
+            .background(backgroundColor)
     ) {
         Column(
             horizontalAlignment = Alignment.Start,
@@ -228,7 +227,7 @@ private fun BottomText(viewModel: LogInViewModel, onNavigateForSignUp: () -> Uni
             onClick = {
                 viewModel.Auth()
             },
-            colors = ButtonDefaults.buttonColors(containerColor = Color_Background)
+            colors = ButtonDefaults.buttonColors(containerColor = backgroundColor)
         ) {
             Text(
                 text = "Войти",

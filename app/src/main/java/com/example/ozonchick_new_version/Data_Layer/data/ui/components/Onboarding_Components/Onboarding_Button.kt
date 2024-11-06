@@ -20,7 +20,6 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Primary_Color
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Primary_Color_DarkMode
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding

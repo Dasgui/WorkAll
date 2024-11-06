@@ -11,14 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.backgroundColor
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainColor
 
 @Composable
 fun Public_Card(
     modifier: Modifier,
     shape: Shape = RectangleShape,
-    colors: CardColors = CardDefaults.cardColors(containerColor = Color_Background),
+    colors: CardColors = CardDefaults.cardColors(containerColor = backgroundColor),
     elevation: CardElevation = CardDefaults.cardElevation(),
     border: BorderStroke? = BorderStroke(1.dp, mainColor),
     content: @Composable() (ColumnScope.() -> Unit)

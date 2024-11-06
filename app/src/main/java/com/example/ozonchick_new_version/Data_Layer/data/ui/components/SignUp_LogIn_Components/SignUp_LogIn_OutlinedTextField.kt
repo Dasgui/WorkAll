@@ -18,7 +18,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.backgroundColor
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainColor
 
 
@@ -49,8 +49,8 @@ fun SignUp_LogIn_OutlinedTextField(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = TextFieldDefaults.shape,
     colors: TextFieldColors = TextFieldDefaults.colors(
-        focusedContainerColor = Color_Background,
-        unfocusedContainerColor = Color_Background,
+        focusedContainerColor = backgroundColor,
+        unfocusedContainerColor = backgroundColor,
         focusedIndicatorColor = mainColor,
         unfocusedIndicatorColor = mainColor,
         focusedTextColor = mainColor,

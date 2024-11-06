@@ -1,12 +1,15 @@
 package com.example.ozonchick_new_version.Screens.SignUp_LogIn.SignUp
 
+import android.util.Log
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Data_Layer.data.dto.userType
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.backgroundColor
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainColor
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Red
 import com.example.ozonchick_new_version.Domain.postRegistrait
@@ -16,6 +19,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class SignUpViewModel : ViewModel() {
+    var isOkay : MutableState<Boolean> = mutableStateOf(false)
+
     private val _name: MutableStateFlow<String> = MutableStateFlow("")
     var name: StateFlow<String> = _name.asStateFlow()
 
@@ -112,11 +117,19 @@ class SignUpViewModel : ViewModel() {
     }
 
 
-    fun Proverka(): Boolean {
-        return (name.value.isNotEmpty() && phoneNumber.value.isNotEmpty()
+    fun Proverka() {
+        if (name.value.isNotEmpty() && phoneNumber.value.isNotEmpty()
                 && email.value.isNotEmpty() && password.value.isNotEmpty()
                 && confirmPassword.value.isNotEmpty()
-                && isMail() && password.value == confirmPassword.value)
+                && isMail() && password.value == confirmPassword.value) {
+            isOkay.value = true
+        } else {
+            isOkay.value = false
+        }
+//        return (name.value.isNotEmpty() && phoneNumber.value.isNotEmpty()
+//                && email.value.isNotEmpty() && password.value.isNotEmpty()
+//                && confirmPassword.value.isNotEmpty()
+//                && isMail() && password.value == confirmPassword.value)
     }
 
     @Composable
@@ -124,8 +137,8 @@ class SignUpViewModel : ViewModel() {
         val getColor : TextFieldColors
         if (isMail()) {
             getColor = TextFieldDefaults.colors(
-                focusedContainerColor = Color_Background,
-                unfocusedContainerColor = Color_Background,
+                focusedContainerColor = backgroundColor,
+                unfocusedContainerColor = backgroundColor,
                 focusedIndicatorColor = mainColor,
                 unfocusedIndicatorColor = mainColor,
                 focusedTextColor = mainColor,
@@ -133,8 +146,8 @@ class SignUpViewModel : ViewModel() {
             )
         } else {
             getColor = TextFieldDefaults.colors(
-                focusedContainerColor = Color_Background,
-                unfocusedContainerColor = Color_Background,
+                focusedContainerColor = backgroundColor,
+                unfocusedContainerColor = backgroundColor,
                 focusedIndicatorColor = Color_Red,
                 unfocusedIndicatorColor = Color_Red,
                 focusedTextColor = Color_Red,

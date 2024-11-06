@@ -12,13 +12,13 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Primary_Color
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.RobotoFamily
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Text_Color_Active
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Text_Color_Orange
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.backgroundColor
 
 object Tema {
     val TextField_Litch = TextStyle(
         fontSize = 12.sp,
         lineHeight = 16.sp,
-        color = Color_Background,
+        color = backgroundColor,
         textAlign = TextAlign.Justify
     )
     val TextField_Black = TextStyle(

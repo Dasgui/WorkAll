@@ -34,7 +34,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Scaffold
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.SignUp_LogIn_Components.SignUp_LogIn_Button
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.SignUp_LogIn_Components.SignUp_LogIn_OutlinedTextField
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.backgroundColor
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainColor
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Ozonchick_new_versionTheme
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainTextStyle
@@ -87,7 +87,7 @@ fun ChangeInformation_construct(vm: VakansCreate_ViewModel = koinViewModel()) {
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color_Background),
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = backgroundColor),
                 modifier = Modifier
                     .fillMaxWidth(),
             )

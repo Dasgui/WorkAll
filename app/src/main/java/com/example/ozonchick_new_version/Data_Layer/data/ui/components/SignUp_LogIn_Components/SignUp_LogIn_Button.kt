@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.BorderSize
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.backgroundColor
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainColor
 
 @Composable
@@ -28,7 +28,7 @@ fun SignUp_LogIn_Button(
         .height(46.dp),
     enabled: Boolean = true,
     shape: Shape = RectangleShape,
-    colors: ButtonColors = ButtonDefaults.buttonColors(containerColor = Color_Background, contentColor = mainColor),
+    colors: ButtonColors = ButtonDefaults.buttonColors(containerColor = backgroundColor, contentColor = mainColor),
     elevation: ButtonElevation? = ButtonDefaults.buttonElevation(),
     border: BorderStroke? = BorderStroke(BorderSize, mainColor),
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,

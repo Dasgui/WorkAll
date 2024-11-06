@@ -5,13 +5,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.screen.Screen
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.backgroundColor
 
 class Settings_Screen() : Screen {
     @Composable
     override fun Content() {
         Surface(
-            color = Color_Background,
+            color = backgroundColor,
             modifier = Modifier.fillMaxSize()
         ) {
 //            Settings_Screen_construct()

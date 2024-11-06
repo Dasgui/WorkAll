@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.BorderSize
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.backgroundColor
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainColor
 
 @Composable
@@ -28,11 +28,11 @@ fun Public_Button(
         if (fillButton) {
             ButtonDefaults.buttonColors(
                 containerColor = mainColor,
-                contentColor = Color_Background
+                contentColor = backgroundColor
             )
         } else {
             ButtonDefaults.buttonColors(
-                containerColor = Color_Background,
+                containerColor = backgroundColor,
                 contentColor = mainColor
             )
         },

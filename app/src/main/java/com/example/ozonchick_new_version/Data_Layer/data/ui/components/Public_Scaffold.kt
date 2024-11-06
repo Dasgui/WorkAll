@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Test_Components.Scafold_BottomBar
 import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.backgroundColor
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainColor
 import com.example.ozonchick_new_version.R
 
@@ -80,7 +80,7 @@ fun Public_Scaffold(
                             )
                         }
                     },
-                    colors = TopAppBarDefaults.topAppBarColors(containerColor = Color_Background),
+                    colors = TopAppBarDefaults.topAppBarColors(containerColor = backgroundColor),
                     modifier = Modifier
                         .fillMaxWidth(),
                 )
@@ -113,7 +113,7 @@ fun Public_Scaffold(
                             )
                         }
                     },
-                    colors = TopAppBarDefaults.topAppBarColors(containerColor = Color_Background),
+                    colors = TopAppBarDefaults.topAppBarColors(containerColor = backgroundColor),
                     modifier = Modifier
                         .fillMaxWidth(),
                 )
@@ -129,7 +129,7 @@ fun Public_Scaffold(
     snackbarHost: @Composable () -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
     floatingActionButtonPosition: FabPosition = FabPosition.End,
-    containerColor: Color = Color_Background,
+    containerColor: Color = backgroundColor,
     contentColor: Color = contentColorFor(containerColor),
     contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
     content: @Composable (PaddingValues) -> Unit

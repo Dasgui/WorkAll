@@ -3,7 +3,7 @@ package com.example.ozonchick_new_version.Data_Layer.data.ui.theme
 import androidx.compose.ui.graphics.Color
 //Основные цвета
 val mainColor = Color(0xFFFFFFFF)
-val Color_Background = Color(0xFF141414)
+val backgroundColor = Color(0xFF141414)
 
 
 
