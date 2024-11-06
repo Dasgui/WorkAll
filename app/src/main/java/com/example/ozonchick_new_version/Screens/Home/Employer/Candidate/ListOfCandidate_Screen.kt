@@ -84,7 +84,7 @@ fun ListOfCandidate_construct(vm: ListOfCandidate_ViewModel = koinViewModel())
                                     Text(
                                         text = "Алексей",
                                         style = middleTextStyle.value,
-                                        color = Color_MainText.value
+                                        color = Color_MainText
                                     )
                                 }
                                 Column(
@@ -148,7 +148,7 @@ fun ListOfCandidate_construct(vm: ListOfCandidate_ViewModel = koinViewModel())
                                     Text(
                                         text = "Николай",
                                         style = middleTextStyle.value,
-                                        color = Color_MainText.value
+                                        color = Color_MainText
                                     )
                                 }
                                 Column(
@@ -213,7 +213,7 @@ fun ListOfCandidate_construct(vm: ListOfCandidate_ViewModel = koinViewModel())
                                     Text(
                                         text = "Дмитрий",
                                         style = middleTextStyle.value,
-                                        color = Color_MainText.value
+                                        color = Color_MainText
                                     )
                                 }
                                 Column(
@@ -303,7 +303,7 @@ fun Card_Candidate(number: Int, list: MutableList<Vakans_information>)
                     Text(
                         text = list[number].vakans_name/*"Инженер"*/,
                         style = middleTextStyle.value,
-                        color = Color_MainText.value
+                        color = Color_MainText
                     )
                 }
                 Column(

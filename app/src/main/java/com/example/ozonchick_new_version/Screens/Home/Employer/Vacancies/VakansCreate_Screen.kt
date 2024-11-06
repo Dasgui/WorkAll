@@ -76,11 +76,11 @@ fun VakansCreate_construct(vm: VakansCreate_ViewModel = koinViewModel())
                                 .clickable {
                                     navigator?.pop()
                                 },
-                            tint = Color_MainText.value
+                            tint = Color_MainText
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color_Background.value),
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color_Background),
                 modifier = Modifier
                     .fillMaxWidth(),
             )
@@ -126,12 +126,12 @@ fun VakansCreate_part_main(vm: VakansCreate_ViewModel = koinViewModel())
                     .padding(bottom =  paddingBetween_Text),
                 text = "Требуемая специальность*",
                 style = middleTextStyle.value,
-                color = Color_MainText.value
+                color = Color_MainText
             )
             SignUp_LogIn_OutlinedTextField(
                 value = vm.specialization.value,
                 onValueChange = { vm.specialization.value = it },
-                placeholder = { Text(text = "Менеджер", style = secondTextStyle.value, color = Color_MainText.value)}
+                placeholder = { Text(text = "Менеджер", style = secondTextStyle.value, color = Color_MainText)}
             )
         }
 
@@ -146,12 +146,12 @@ fun VakansCreate_part_main(vm: VakansCreate_ViewModel = koinViewModel())
                     .padding(bottom =  paddingBetween_Text),
                 text = "Заработная плата*",
                 style = middleTextStyle.value,
-                color = Color_MainText.value
+                color = Color_MainText
             )
             SignUp_LogIn_OutlinedTextField(
                 value = vm.wage.value,
                 onValueChange = { vm.wage.value = it },
-                placeholder = { Text(text = "100000", style = secondTextStyle.value, color = Color_MainText.value)}
+                placeholder = { Text(text = "100000", style = secondTextStyle.value, color = Color_MainText)}
             )
         }
         Column(
@@ -166,7 +166,7 @@ fun VakansCreate_part_main(vm: VakansCreate_ViewModel = koinViewModel())
                     .padding(bottom = paddingBetween_Text),
                 text = "О работе*",
                 style = middleTextStyle.value,
-                color = Color_MainText.value
+                color = Color_MainText
             )
             SignUp_LogIn_OutlinedTextField(
                 value = vm.experience.value,
@@ -203,7 +203,7 @@ fun  VakansCreate_part_main_contacts(vm: VakansCreate_ViewModel = koinViewModel(
         Text(
             text = "Контакты*:",
             style = mainTextStyle.value,
-            color = Color_MainText.value
+            color = Color_MainText
         )
         Column(
             modifier = Modifier
@@ -211,7 +211,7 @@ fun  VakansCreate_part_main_contacts(vm: VakansCreate_ViewModel = koinViewModel(
                 .padding(start = 15.dp, top = 10.dp, bottom = 15.dp)
                 .drawBehind {
                     drawLine(
-                        Color_MainText.value,
+                        Color_MainText,
                         Offset(-10f, size.height-15f),
                         Offset(-10f, 45f),
                         20f
@@ -232,12 +232,12 @@ fun  VakansCreate_part_main_contacts(vm: VakansCreate_ViewModel = koinViewModel(
                         .padding(paddingBetween_Text),
                     text = "Номер телефона*",
                     style = middleTextStyle.value,
-                    color = Color_MainText.value
+                    color = Color_MainText
                 )
                 SignUp_LogIn_OutlinedTextField(
                     value = vm.phoneNumber.value,
                     onValueChange = { vm.phoneNumber.value = it },
-                    placeholder = { Text(text = "+79923845944", style = secondTextStyle.value, color = Color_MainText.value)}
+                    placeholder = { Text(text = "+79923845944", style = secondTextStyle.value, color = Color_MainText)}
                 )
             }
             Column(
@@ -252,12 +252,12 @@ fun  VakansCreate_part_main_contacts(vm: VakansCreate_ViewModel = koinViewModel(
                         .padding(paddingBetween_Text),
                     text = "Почта*",
                     style = middleTextStyle.value,
-                    color = Color_MainText.value
+                    color = Color_MainText
                 )
                 SignUp_LogIn_OutlinedTextField(
                     value = vm.mail.value,
                     onValueChange = { vm.mail.value = it },
-                    placeholder = { Text(text = "cilo@mail.ru", style = secondTextStyle.value, color = Color_MainText.value)}
+                    placeholder = { Text(text = "cilo@mail.ru", style = secondTextStyle.value, color = Color_MainText)}
                 )
             }
             Column(
@@ -273,12 +273,12 @@ fun  VakansCreate_part_main_contacts(vm: VakansCreate_ViewModel = koinViewModel(
                         .padding(paddingBetween_Text),
                     text = "Расположение места работы*",
                     style = middleTextStyle.value,
-                    color = Color_MainText.value,
+                    color = Color_MainText,
                 )
                 SignUp_LogIn_OutlinedTextField(
                     value = vm.locationOfWork.value,
                     onValueChange = { vm.locationOfWork.value = it },
-                    placeholder = { Text(text = "Ленинград", style = secondTextStyle.value, color = Color_MainText.value)}
+                    placeholder = { Text(text = "Ленинград", style = secondTextStyle.value, color = Color_MainText)}
                 )
             }
         }
@@ -290,7 +290,7 @@ fun VakansCreate_part_optinalData(vm: VakansCreate_ViewModel = koinViewModel())
 {
     Text(
         text = "Не обязательные данные:",
-        color = Color_MainText.value,
+        color = Color_MainText,
         style = mainTextStyle.value
     )
     Column(
@@ -313,12 +313,12 @@ fun VakansCreate_part_optinalData(vm: VakansCreate_ViewModel = koinViewModel())
                     .padding(paddingBetween_Text),
                 text = "Требуемый опыт работы/навыки",
                 style = middleTextStyle.value,
-                color = Color_MainText.value
+                color = Color_MainText
             )
             SignUp_LogIn_OutlinedTextField(
                 value = vm.experience.value,
                 onValueChange = { vm.experience.value = it },
-                placeholder = { Text(text = ""/*"Не требуется"*/, style = secondTextStyle.value, color = Color_MainText.value)}
+                placeholder = { Text(text = ""/*"Не требуется"*/, style = secondTextStyle.value, color = Color_MainText)}
             )
         }
 
@@ -339,7 +339,7 @@ fun VakansCreate_part_confiramtion()
         Text(
             text = "Создать вакансию",
             style = mainTextStyle.value,
-            color = Color_MainText.value
+            color = Color_MainText
         )
     }
 }

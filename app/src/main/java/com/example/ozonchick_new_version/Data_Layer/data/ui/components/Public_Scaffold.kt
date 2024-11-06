@@ -55,7 +55,7 @@ fun Public_Scaffold(
                     .fillMaxWidth()
                     .drawBehind {
                         drawLine(
-                            Color_MainText.value,
+                            Color_MainText,
                             Offset(0f, size.height),
                             Offset(size.width, size.height),
                             5f
@@ -76,11 +76,11 @@ fun Public_Scaffold(
                                 modifier = Modifier
                                     .size(30.dp)
                                     .clickable { navigator?.pop() },
-                                tint = Color_MainText.value
+                                tint = Color_MainText
                             )
                         }
                     },
-                    colors = TopAppBarDefaults.topAppBarColors(containerColor = Color_Background.value),
+                    colors = TopAppBarDefaults.topAppBarColors(containerColor = Color_Background),
                     modifier = Modifier
                         .fillMaxWidth(),
                 )
@@ -91,7 +91,7 @@ fun Public_Scaffold(
                     .fillMaxWidth()
                     .drawBehind {
                         drawLine(
-                            Color_MainText.value,
+                            Color_MainText,
                             Offset(0f, size.height),
                             Offset(size.width, size.height),
                             5f
@@ -109,11 +109,11 @@ fun Public_Scaffold(
                             Text(
                                 text = mainText,
                                 style = BigTextStyle/*Tema.Text_16_16_Medium*/,
-                                color = Color_MainText.value,
+                                color = Color_MainText,
                             )
                         }
                     },
-                    colors = TopAppBarDefaults.topAppBarColors(containerColor = Color_Background.value),
+                    colors = TopAppBarDefaults.topAppBarColors(containerColor = Color_Background),
                     modifier = Modifier
                         .fillMaxWidth(),
                 )
@@ -129,7 +129,7 @@ fun Public_Scaffold(
     snackbarHost: @Composable () -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
     floatingActionButtonPosition: FabPosition = FabPosition.End,
-    containerColor: Color = Color_Background.value,
+    containerColor: Color = Color_Background,
     contentColor: Color = contentColorFor(containerColor),
     contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
     content: @Composable (PaddingValues) -> Unit

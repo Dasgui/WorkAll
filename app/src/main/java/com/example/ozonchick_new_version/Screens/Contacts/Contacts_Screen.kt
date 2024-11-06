@@ -40,7 +40,6 @@ import com.example.ozonchick_new_version.Screens.Otkliks.Spisok_ViewModel
 import com.example.ozonchick_new_version.R
 import org.koin.androidx.compose.koinViewModel
 
-private var mainTextColor: MutableState<Color> = Color_MainText
 private var mainTextStyle: TextStyle = Tema.Text_24_24_Medium
 private var paddimgBetween_Text = 10.dp
 
@@ -108,7 +107,7 @@ fun Contacts_construct(vm: Spisok_ViewModel = koinViewModel(), /*list:MutableLis
 
                                     navigator?.pop()
                                 },
-                            tint = Color_MainText.value
+                            tint = Color_MainText
                         )
                     }
                 },

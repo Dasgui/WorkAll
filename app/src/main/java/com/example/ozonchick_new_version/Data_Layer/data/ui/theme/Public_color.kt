@@ -6,6 +6,5 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-var Color_Background:MutableState<Color> = mutableStateOf(Text_Color_Passive)
-var Color_MainText:MutableState<Color> = mutableStateOf(Text_Color_Active_DarkMode)
+//var Color_Background:MutableState<Color> = mutableStateOf(Text_Color_Passive)
 var BorderSize:Dp = 1.dp

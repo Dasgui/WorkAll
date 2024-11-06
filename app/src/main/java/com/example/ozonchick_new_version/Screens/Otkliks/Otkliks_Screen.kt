@@ -44,7 +44,6 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 private var FirstMainTextStyle: androidx.compose.ui.text.TextStyle = Tema.Text_24_24_Bold
 private var SecondMainTextStyle: androidx.compose.ui.text.TextStyle = Tema.Text_18_18_Medium
-private var mainTextColor: MutableState<Color> = Color_MainText
 
 class Otkliks_Screen:Screen {
     @Composable

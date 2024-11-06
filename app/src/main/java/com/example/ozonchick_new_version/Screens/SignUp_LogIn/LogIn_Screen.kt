@@ -71,7 +71,7 @@ fun LogIn_Construct(viewModel: LogInViewModel = koinViewModel()) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color_Background.value)
+            .background(Color_Background)
     ) {
         Column(
             horizontalAlignment = Alignment.Start,
@@ -228,7 +228,7 @@ private fun BottomText(viewModel: LogInViewModel, onNavigateForSignUp: () -> Uni
             onClick = {
                 viewModel.Auth()
             },
-            colors = ButtonDefaults.buttonColors(containerColor = Color_Background.value)
+            colors = ButtonDefaults.buttonColors(containerColor = Color_Background)
         ) {
             Text(
                 text = "Войти",

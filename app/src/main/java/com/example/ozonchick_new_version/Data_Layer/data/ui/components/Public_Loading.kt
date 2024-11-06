@@ -45,7 +45,7 @@ fun Public_Loading(isLoading:Boolean) {
                 .padding(top = 100.dp)
                 .size(120.dp)
                 .rotate(rorate),
-            colorFilter = ColorFilter.tint(Color_MainText.value)
+            colorFilter = ColorFilter.tint(Color_MainText)
         )
         LaunchedEffect(key1 = true) {
 

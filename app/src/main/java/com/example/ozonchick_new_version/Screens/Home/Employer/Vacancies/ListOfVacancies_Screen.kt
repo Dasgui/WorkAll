@@ -132,31 +132,31 @@ fun Card_Vakans(number: Int, list: MutableList<Vakans_information>)
                     Text(
                         text = list[number].vakans_name/*"Инженер"*/,
                         style = middleTextStyle.value,
-                        color = Color_MainText.value
+                        color = Color_MainText
                     )
                     //Заработная плата Price
                     Text(
                         text = list[number].vakans_price/*"90 000 - 130 000"*/,
                         style = middleTextStyle.value,
-                        color = Color_MainText.value
+                        color = Color_MainText
                     )
                     //Организация Organization
                     Text(
                         text = list[number].vakans_organization/*"ООО Некронтиры"*/,
                         style = middleTextStyle.value,
-                        color = Color_MainText.value
+                        color = Color_MainText
                     )
                     //Расположение Location
                     Text(
                         text = list[number].vakans_location/*"Челябинск"*/,
                         style = middleTextStyle.value,
-                        color = Color_MainText.value
+                        color = Color_MainText
                     )
                     //Опыт работы Experience
                     Text(
                         text = list[number].vakans_experience/*"Опыт работы 3 до 6 лет"*/,
                         style = middleTextStyle.value,
-                        color = Color_MainText.value
+                        color = Color_MainText
                     )
                 }
                 Column(

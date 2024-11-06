@@ -47,8 +47,8 @@ private var paddingBetween_Text = 5.dp
 private var paddingBetween_Lines = 10.dp
 private var paddingBetween_MainTitles = 15.dp
 private var textField_Color_Error = Color.Red
-private var textField_Number_Color = Color_MainText.value
-private var textField_Mail_Color = Color_MainText.value
+private var textField_Number_Color = Color_MainText
+private var textField_Mail_Color = Color_MainText
 
 class ChangeInformation_Screen : Screen {
     @Preview
@@ -83,11 +83,11 @@ fun ChangeInformation_construct(vm: VakansCreate_ViewModel = koinViewModel()) {
                                 .clickable {
                                     navigator?.pop()
                                 },
-                            tint = Color_MainText.value
+                            tint = Color_MainText
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color_Background.value),
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color_Background),
                 modifier = Modifier
                     .fillMaxWidth(),
             )
@@ -216,7 +216,7 @@ fun ChangeInformation_part_main_contacts(vm: VakansCreate_ViewModel = koinViewMo
                 .padding(start = 15.dp, top = 10.dp, bottom = 15.dp)
                 .drawBehind {
                     drawLine(
-                        Color_MainText.value,
+                        Color_MainText,
                         Offset(-10f, size.height - 15f),
                         Offset(-10f, 45f),
                         20f
@@ -246,9 +246,9 @@ fun ChangeInformation_part_main_contacts(vm: VakansCreate_ViewModel = koinViewMo
                         textField_Number_Color = if (!(it.contains("[+]".toRegex()))) {
                             Color.Red
                         } else if (it.isEmpty()) {
-                            Color_MainText.value
+                            Color_MainText
                         } else {
-                            Color_MainText.value
+                            Color_MainText
                         }
                     },
                     placeholder = {
@@ -292,11 +292,11 @@ fun ChangeInformation_part_main_contacts(vm: VakansCreate_ViewModel = koinViewMo
                         }
                         else if (it.isEmpty())
                         {
-                            textField_Mail_Color = Color_MainText.value
+                            textField_Mail_Color = Color_MainText
                         }
                         else
                         {
-                            textField_Mail_Color = Color_MainText.value
+                            textField_Mail_Color = Color_MainText
                         }
                     },
                     placeholder = {

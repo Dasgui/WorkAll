@@ -26,7 +26,7 @@ fun Scafold_BottomBar(
     bottomTextStyle : TextStyle = Tema.Text_16_16_Medium
 ) {
     BottomAppBar(
-        containerColor = Color_Background.value,
+        containerColor = Color_Background,
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -37,30 +37,30 @@ fun Scafold_BottomBar(
                 screen = Spisok_Predlogenii_Screen(),
                 iconId = R.drawable.vakansi_icon_3,
                 sizeIcon = sizeIcon,
-                colorIcon = Color_MainText.value,
+                colorIcon = Color_MainText,
                 bottomText = "Вакансии",
                 bottomTextStyle = bottomTextStyle,
-                colorBottomText = Color_MainText.value
+                colorBottomText = Color_MainText
             )
             Clickable_Icon(
                 navigator = navigator,
                 screen = Otkliks_Screen(),
                 iconId = R.drawable.folder,
                 sizeIcon = sizeIcon,
-                colorIcon = Color_MainText.value,
+                colorIcon = Color_MainText,
                 bottomText = "Собственные вакансии",
                 bottomTextStyle = bottomTextStyle,
-                colorBottomText = Color_MainText.value
+                colorBottomText = Color_MainText
             )
             Clickable_Icon(
                 navigator = navigator,
                 screen = Profile_Screen(),
                 iconId = R.drawable.profile_circle,
                 sizeIcon = sizeIcon,
-                colorIcon = Color_MainText.value,
+                colorIcon = Color_MainText,
                 bottomText = "Профиль",
                 bottomTextStyle = bottomTextStyle,
-                colorBottomText = Color_MainText.value
+                colorBottomText = Color_MainText
             )
         }
     }

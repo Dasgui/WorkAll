@@ -28,17 +28,17 @@ fun Public_Button(
     colors: ButtonColors =
         if (fillButton) {
             ButtonDefaults.buttonColors(
-                containerColor = Color_MainText.value,
-                contentColor = Color_Background.value
+                containerColor = Color_MainText,
+                contentColor = Color_Background
             )
         } else {
             ButtonDefaults.buttonColors(
-                containerColor = Color_Background.value,
-                contentColor = Color_MainText.value
+                containerColor = Color_Background,
+                contentColor = Color_MainText
             )
         },
     elevation: ButtonElevation? = ButtonDefaults.buttonElevation(),
-    border: BorderStroke? = BorderStroke(BorderSize, Color_MainText.value),
+    border: BorderStroke? = BorderStroke(BorderSize, Color_MainText),
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable() (RowScope.() -> Unit)

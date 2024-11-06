@@ -33,9 +33,9 @@ fun SignUp_LogIn_Button(
         .height(46.dp),
     enabled: Boolean = true,
     shape: Shape = RectangleShape,
-    colors: ButtonColors = ButtonDefaults.buttonColors(containerColor = Color_Background.value, contentColor = Color_MainText.value),
+    colors: ButtonColors = ButtonDefaults.buttonColors(containerColor = Color_Background, contentColor = Color_MainText),
     elevation: ButtonElevation? = ButtonDefaults.buttonElevation(),
-    border: BorderStroke? = BorderStroke(BorderSize, Color_MainText.value),
+    border: BorderStroke? = BorderStroke(BorderSize, Color_MainText),
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable() (RowScope.() -> Unit)

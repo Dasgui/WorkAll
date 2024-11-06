@@ -21,9 +21,9 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
 fun Public_Card(
     modifier: Modifier,
     shape: Shape = RectangleShape,
-    colors: CardColors = CardDefaults.cardColors(containerColor = Color_Background.value),
+    colors: CardColors = CardDefaults.cardColors(containerColor = Color_Background),
     elevation: CardElevation = CardDefaults.cardElevation(),
-    border: BorderStroke? = BorderStroke(1.dp, Color_MainText.value),
+    border: BorderStroke? = BorderStroke(1.dp, Color_MainText),
     content: @Composable() (ColumnScope.() -> Unit)
 )
 {

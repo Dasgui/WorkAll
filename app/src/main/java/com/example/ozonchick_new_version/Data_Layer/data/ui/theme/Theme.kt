@@ -1,6 +1,5 @@
 package com.example.ozonchick_new_version.Data_Layer.data.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -9,20 +8,15 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
-import com.example.ozonchick_new_version.Data_Layer.data.db.isDark
 
 private val DarkColorScheme = darkColorScheme(
     primary = Color.Red/*BackgroundTop_Color_DarkMode*/,
     secondary = Color.Red/*Gray_Color_Passive_Secondary*/,
     tertiary = Pink80,
     background = Background_Color_DarkMode,
-    onPrimary = Text_Color_Active_DarkMode,
+    onPrimary = Color_MainText,
     onSecondaryContainer = Gray_Color_Active_SideText,
     primaryContainer = BackgroundTop_Color_DarkMode,
     onSecondary =Color.White,

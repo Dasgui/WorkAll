@@ -6,20 +6,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Button_Color_Blue
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Gray_Color_Active_SideText
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Gray_Color_Passive_Secondary
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.MainFontFamily
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Primary_Color
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.RobotoFamily
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Text_Color_Active
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Text_Color_Orange
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Text_Color_Passive
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
 
 object Tema {
     val TextField_Litch = TextStyle(
         fontSize = 12.sp,
         lineHeight = 16.sp,
-        color = Text_Color_Passive,
+        color = Color_Background,
         textAlign = TextAlign.Justify
     )
     val TextField_Black = TextStyle(

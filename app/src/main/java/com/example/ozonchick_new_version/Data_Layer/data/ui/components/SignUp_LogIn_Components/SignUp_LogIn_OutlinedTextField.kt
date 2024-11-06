@@ -62,12 +62,12 @@ fun SignUp_LogIn_OutlinedTextField(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = TextFieldDefaults.shape,
     colors: TextFieldColors = TextFieldDefaults.colors(
-        focusedContainerColor = Color_Background.value,
-        unfocusedContainerColor = Color_Background.value,
-        focusedIndicatorColor = Color_MainText.value,
-        unfocusedIndicatorColor = Color_MainText.value,
-        focusedTextColor = Color_MainText.value,
-        unfocusedTextColor = Color_MainText.value
+        focusedContainerColor = Color_Background,
+        unfocusedContainerColor = Color_Background,
+        focusedIndicatorColor = Color_MainText,
+        unfocusedIndicatorColor = Color_MainText,
+        focusedTextColor = Color_MainText,
+        unfocusedTextColor = Color_MainText
     )
 ) {
     OutlinedTextField(
