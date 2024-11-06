@@ -1,38 +1,25 @@
 package com.example.ozonchick_new_version.Data_Layer.data.ui.components.SignUp_LogIn_Components
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Gray_Color_Passive_Secondary
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Text_Color_Active
-import com.example.ozonchick_new_version.R
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainColor
 
 
 @Composable
@@ -64,10 +51,10 @@ fun SignUp_LogIn_OutlinedTextField(
     colors: TextFieldColors = TextFieldDefaults.colors(
         focusedContainerColor = Color_Background,
         unfocusedContainerColor = Color_Background,
-        focusedIndicatorColor = Color_MainText,
-        unfocusedIndicatorColor = Color_MainText,
-        focusedTextColor = Color_MainText,
-        unfocusedTextColor = Color_MainText
+        focusedIndicatorColor = mainColor,
+        unfocusedIndicatorColor = mainColor,
+        focusedTextColor = mainColor,
+        unfocusedTextColor = mainColor
     )
 ) {
     OutlinedTextField(

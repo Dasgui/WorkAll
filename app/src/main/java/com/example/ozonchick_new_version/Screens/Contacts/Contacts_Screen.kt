@@ -23,7 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -33,7 +32,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Scaffold
 import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainColor
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Ozonchick_new_versionTheme
 import com.example.ozonchick_new_version.Data_Layer.model.Vakans_contacts
 import com.example.ozonchick_new_version.Screens.Otkliks.Spisok_ViewModel
@@ -107,7 +106,7 @@ fun Contacts_construct(vm: Spisok_ViewModel = koinViewModel(), /*list:MutableLis
 
                                     navigator?.pop()
                                 },
-                            tint = Color_MainText
+                            tint = mainColor
                         )
                     }
                 },

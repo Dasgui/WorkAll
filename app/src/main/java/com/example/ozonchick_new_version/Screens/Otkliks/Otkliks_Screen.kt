@@ -21,7 +21,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
@@ -32,7 +31,6 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Ca
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Loading
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Scaffold
 import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Ozonchick_new_versionTheme
 import com.example.ozonchick_new_version.Data_Layer.model.Vakans_information
 import com.example.ozonchick_new_version.Screens.Contacts.Contacts_Screen

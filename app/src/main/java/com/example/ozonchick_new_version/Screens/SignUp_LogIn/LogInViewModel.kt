@@ -1,26 +1,12 @@
 package com.example.ozonchick_new_version.Screens.SignUp_LogIn
 
-import android.content.Context
-import androidx.compose.material3.TextFieldColors
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ozonchick_new_version.Data_Layer.data.db.accessSharedRegistrait
 import com.example.ozonchick_new_version.Domain.postAuth
-import com.example.ozonchick_new_version.Domain.postRegistrait
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import com.example.ozonchick_new_version.Data_Layer.data.dto.userType
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Red
 
 class LogInViewModel() : ViewModel() {
     private val _accessSharedAuth: MutableStateFlow<Boolean> = MutableStateFlow(false)

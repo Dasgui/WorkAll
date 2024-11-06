@@ -25,7 +25,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Button
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Card
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Scaffold
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainColor
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.middleTextStyle
 import com.example.ozonchick_new_version.Data_Layer.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data_Layer.model.Vakans_information
@@ -84,7 +84,7 @@ fun ListOfCandidate_construct(vm: ListOfCandidate_ViewModel = koinViewModel())
                                     Text(
                                         text = "Алексей",
                                         style = middleTextStyle.value,
-                                        color = Color_MainText
+                                        color = mainColor
                                     )
                                 }
                                 Column(
@@ -148,7 +148,7 @@ fun ListOfCandidate_construct(vm: ListOfCandidate_ViewModel = koinViewModel())
                                     Text(
                                         text = "Николай",
                                         style = middleTextStyle.value,
-                                        color = Color_MainText
+                                        color = mainColor
                                     )
                                 }
                                 Column(
@@ -213,7 +213,7 @@ fun ListOfCandidate_construct(vm: ListOfCandidate_ViewModel = koinViewModel())
                                     Text(
                                         text = "Дмитрий",
                                         style = middleTextStyle.value,
-                                        color = Color_MainText
+                                        color = mainColor
                                     )
                                 }
                                 Column(
@@ -303,7 +303,7 @@ fun Card_Candidate(number: Int, list: MutableList<Vakans_information>)
                     Text(
                         text = list[number].vakans_name/*"Инженер"*/,
                         style = middleTextStyle.value,
-                        color = Color_MainText
+                        color = mainColor
                     )
                 }
                 Column(

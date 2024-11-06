@@ -18,7 +18,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainColor
 import com.example.ozonchick_new_version.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -45,7 +45,7 @@ fun Public_Loading(isLoading:Boolean) {
                 .padding(top = 100.dp)
                 .size(120.dp)
                 .rotate(rorate),
-            colorFilter = ColorFilter.tint(Color_MainText)
+            colorFilter = ColorFilter.tint(mainColor)
         )
         LaunchedEffect(key1 = true) {
 

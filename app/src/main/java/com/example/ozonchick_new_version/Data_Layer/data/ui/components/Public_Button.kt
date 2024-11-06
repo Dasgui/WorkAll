@@ -8,7 +8,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonElevation
-import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -16,7 +15,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.BorderSize
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainColor
 
 @Composable
 fun Public_Button(
@@ -28,17 +27,17 @@ fun Public_Button(
     colors: ButtonColors =
         if (fillButton) {
             ButtonDefaults.buttonColors(
-                containerColor = Color_MainText,
+                containerColor = mainColor,
                 contentColor = Color_Background
             )
         } else {
             ButtonDefaults.buttonColors(
                 containerColor = Color_Background,
-                contentColor = Color_MainText
+                contentColor = mainColor
             )
         },
     elevation: ButtonElevation? = ButtonDefaults.buttonElevation(),
-    border: BorderStroke? = BorderStroke(BorderSize, Color_MainText),
+    border: BorderStroke? = BorderStroke(BorderSize, mainColor),
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable() (RowScope.() -> Unit)

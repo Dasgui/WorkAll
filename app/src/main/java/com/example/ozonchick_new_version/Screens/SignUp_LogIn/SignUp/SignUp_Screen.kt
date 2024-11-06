@@ -39,8 +39,7 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.components.SignUp_Lo
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.SignUp_LogIn_Components.SignUp_LogIn_OutlinedTextField
 import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Gray_Color_Passive_Secondary
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainColor
 import com.example.ozonchick_new_version.Data_Layer.data.variables.firstType_OfRegistration
 import com.example.ozonchick_new_version.Data_Layer.data.variables.secondType_OfRegistration
 import com.example.ozonchick_new_version.R
@@ -102,11 +101,11 @@ private fun TextHead() {
         Text(
             text = "Создать аккаунт",
             style = Tema.Text_24_24_Bold,
-            color = Color_MainText
+            color = mainColor
         )
         Text(
             text = "Завершите процесс регистрации, чтобы начать",
-            color = Color_MainText,
+            color = mainColor,
             modifier = Modifier.padding(top = 8.dp),
             style = Tema.Text_16_16_Medium
         )
@@ -123,7 +122,7 @@ private fun MainBody(viewModel: SignUpViewModel) {
 @Composable
 private fun MainBody_PartContacts(viewModel: SignUpViewModel) {
     Column(modifier = Modifier.padding(top = 24.dp)) {
-        Text(text = "Имя", style = Tema.Text_24_24_Bold, maxLines = 1, color = Color_MainText)
+        Text(text = "Имя", style = Tema.Text_24_24_Bold, maxLines = 1, color = mainColor)
         SignUp_LogIn_OutlinedTextField(
             value = viewModel.name.collectAsState().value,
             onValueChange = { viewModel.setNameUserFieldValue(it) },
@@ -140,7 +139,7 @@ private fun MainBody_PartContacts(viewModel: SignUpViewModel) {
             text = "Номер телефона",
             style = Tema.Text_24_24_Bold,
             maxLines = 1,
-            color = Color_MainText
+            color = mainColor
         )
         SignUp_LogIn_OutlinedTextField(
             value = viewModel.phoneNumber.collectAsState().value,
@@ -158,7 +157,7 @@ private fun MainBody_PartContacts(viewModel: SignUpViewModel) {
             text = "Адрес почты",
             style = Tema.Text_24_24_Bold,
             maxLines = 1,
-            color = Color_MainText
+            color = mainColor
         )
         SignUp_LogIn_OutlinedTextField(
             value = viewModel.email.collectAsState().value,
@@ -181,7 +180,7 @@ private fun MainBody_PartPassword(viewModel: SignUpViewModel) {
             text = "Пароль",
             style = Tema.Text_24_24_Bold,
             maxLines = 1,
-            color = Color_MainText
+            color = mainColor
         )
         SignUp_LogIn_OutlinedTextField(
             value = viewModel.password.collectAsState().value,
@@ -202,7 +201,7 @@ private fun MainBody_PartPassword(viewModel: SignUpViewModel) {
                         .clickable {
                             viewModel.setPasswordVisibleFirst(true)
                         },
-                    colorFilter = ColorFilter.tint(Color_MainText)
+                    colorFilter = ColorFilter.tint(mainColor)
                 )
             },
             visualTransformation = if (viewModel.passwordVisibleFirst.collectAsState().value) VisualTransformation.None else PasswordVisualTransformation(),
@@ -214,7 +213,7 @@ private fun MainBody_PartPassword(viewModel: SignUpViewModel) {
             text = "Подтвердите пароль",
             style = Tema.Text_24_24_Bold,
             maxLines = 1,
-            color = Color_MainText
+            color = mainColor
         )
         SignUp_LogIn_OutlinedTextField(
             value = viewModel.confirmPassword.collectAsState().value,
@@ -235,7 +234,7 @@ private fun MainBody_PartPassword(viewModel: SignUpViewModel) {
                         .clickable {
                             viewModel.setPasswordVisibleSecond(true)
                         },
-                    colorFilter = ColorFilter.tint(Color_MainText)
+                    colorFilter = ColorFilter.tint(mainColor)
                 )
             },
             visualTransformation = if (viewModel.passwordVisibleSecond.collectAsState().value) VisualTransformation.None else PasswordVisualTransformation(),
@@ -251,7 +250,7 @@ private fun MainBody_PartTypeUsers(viewModel: SignUpViewModel) {
                 text = "Подтвердите ИНН",
                 style = Tema.Text_24_24_Bold,
                 maxLines = 1,
-                color = Color_MainText
+                color = mainColor
             )
             SignUp_LogIn_OutlinedTextField(
                 value = viewModel.INN.collectAsState().value,
@@ -271,12 +270,12 @@ private fun BottomTypeRegistraion(viewModel: SignUpViewModel) {
         Text(
             text = firstType_OfRegistration,
             style = Tema.Text_24_24_Bold,
-            color = Color_MainText,
+            color = mainColor,
             modifier = Modifier.clickable { viewModel.setUserRoleFieldValue(userType.soiskat) })
         Text(
             text = secondType_OfRegistration,
             style = Tema.Text_24_24_Bold,
-            color = Color_MainText,
+            color = mainColor,
             modifier = Modifier.clickable { viewModel.setUserRoleFieldValue(userType.nesoiskat) })
     }
 }
@@ -302,7 +301,7 @@ private fun BottomButton(viewModel: SignUpViewModel) {
             viewModel.Registrait()
         },
         colors = if (viewModel.Proverka()) {
-            ButtonDefaults.buttonColors(containerColor = Color_MainText)
+            ButtonDefaults.buttonColors(containerColor = mainColor)
         } else {
             ButtonDefaults.buttonColors(containerColor = Color_Background)
         }
@@ -313,7 +312,7 @@ private fun BottomButton(viewModel: SignUpViewModel) {
             color = if (viewModel.Proverka()) {
                 Color_Background
             } else {
-                Color_MainText
+                mainColor
             }
         )
     }
@@ -326,7 +325,7 @@ private fun BottomText() {
     val signInText = buildAnnotatedString {
         withStyle(
             style = SpanStyle(
-                color = Color_MainText,
+                color = mainColor,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Medium,
 

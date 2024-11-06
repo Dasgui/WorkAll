@@ -32,7 +32,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Test_Components.Scafold_BottomBar
 import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainColor
 import com.example.ozonchick_new_version.R
 
 
@@ -55,7 +55,7 @@ fun Public_Scaffold(
                     .fillMaxWidth()
                     .drawBehind {
                         drawLine(
-                            Color_MainText,
+                            mainColor,
                             Offset(0f, size.height),
                             Offset(size.width, size.height),
                             5f
@@ -76,7 +76,7 @@ fun Public_Scaffold(
                                 modifier = Modifier
                                     .size(30.dp)
                                     .clickable { navigator?.pop() },
-                                tint = Color_MainText
+                                tint = mainColor
                             )
                         }
                     },
@@ -91,7 +91,7 @@ fun Public_Scaffold(
                     .fillMaxWidth()
                     .drawBehind {
                         drawLine(
-                            Color_MainText,
+                            mainColor,
                             Offset(0f, size.height),
                             Offset(size.width, size.height),
                             5f
@@ -109,7 +109,7 @@ fun Public_Scaffold(
                             Text(
                                 text = mainText,
                                 style = BigTextStyle/*Tema.Text_16_16_Medium*/,
-                                color = Color_MainText,
+                                color = mainColor,
                             )
                         }
                     },

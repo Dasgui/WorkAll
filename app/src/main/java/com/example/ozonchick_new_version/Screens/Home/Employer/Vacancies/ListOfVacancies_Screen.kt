@@ -31,7 +31,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Button
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Card
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Scaffold
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainColor
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.middleTextStyle
 import com.example.ozonchick_new_version.Data_Layer.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data_Layer.model.Vakans_information
@@ -132,31 +132,31 @@ fun Card_Vakans(number: Int, list: MutableList<Vakans_information>)
                     Text(
                         text = list[number].vakans_name/*"Инженер"*/,
                         style = middleTextStyle.value,
-                        color = Color_MainText
+                        color = mainColor
                     )
                     //Заработная плата Price
                     Text(
                         text = list[number].vakans_price/*"90 000 - 130 000"*/,
                         style = middleTextStyle.value,
-                        color = Color_MainText
+                        color = mainColor
                     )
                     //Организация Organization
                     Text(
                         text = list[number].vakans_organization/*"ООО Некронтиры"*/,
                         style = middleTextStyle.value,
-                        color = Color_MainText
+                        color = mainColor
                     )
                     //Расположение Location
                     Text(
                         text = list[number].vakans_location/*"Челябинск"*/,
                         style = middleTextStyle.value,
-                        color = Color_MainText
+                        color = mainColor
                     )
                     //Опыт работы Experience
                     Text(
                         text = list[number].vakans_experience/*"Опыт работы 3 до 6 лет"*/,
                         style = middleTextStyle.value,
-                        color = Color_MainText
+                        color = mainColor
                     )
                 }
                 Column(

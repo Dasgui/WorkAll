@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Data_Layer.data.dto.userType
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainColor
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Red
 import com.example.ozonchick_new_version.Domain.postRegistrait
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -126,10 +126,10 @@ class SignUpViewModel : ViewModel() {
             getColor = TextFieldDefaults.colors(
                 focusedContainerColor = Color_Background,
                 unfocusedContainerColor = Color_Background,
-                focusedIndicatorColor = Color_MainText,
-                unfocusedIndicatorColor = Color_MainText,
-                focusedTextColor = Color_MainText,
-                unfocusedTextColor = Color_MainText
+                focusedIndicatorColor = mainColor,
+                unfocusedIndicatorColor = mainColor,
+                focusedTextColor = mainColor,
+                unfocusedTextColor = mainColor
             )
         } else {
             getColor = TextFieldDefaults.colors(

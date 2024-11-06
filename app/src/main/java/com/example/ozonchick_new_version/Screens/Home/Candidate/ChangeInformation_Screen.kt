@@ -35,7 +35,7 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Sc
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.SignUp_LogIn_Components.SignUp_LogIn_Button
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.SignUp_LogIn_Components.SignUp_LogIn_OutlinedTextField
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Background
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_MainText
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainColor
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Ozonchick_new_versionTheme
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainTextStyle
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.middleTextStyle
@@ -47,8 +47,8 @@ private var paddingBetween_Text = 5.dp
 private var paddingBetween_Lines = 10.dp
 private var paddingBetween_MainTitles = 15.dp
 private var textField_Color_Error = Color.Red
-private var textField_Number_Color = Color_MainText
-private var textField_Mail_Color = Color_MainText
+private var textField_Number_Color = mainColor
+private var textField_Mail_Color = mainColor
 
 class ChangeInformation_Screen : Screen {
     @Preview
@@ -83,7 +83,7 @@ fun ChangeInformation_construct(vm: VakansCreate_ViewModel = koinViewModel()) {
                                 .clickable {
                                     navigator?.pop()
                                 },
-                            tint = Color_MainText
+                            tint = mainColor
                         )
                     }
                 },
@@ -216,7 +216,7 @@ fun ChangeInformation_part_main_contacts(vm: VakansCreate_ViewModel = koinViewMo
                 .padding(start = 15.dp, top = 10.dp, bottom = 15.dp)
                 .drawBehind {
                     drawLine(
-                        Color_MainText,
+                        mainColor,
                         Offset(-10f, size.height - 15f),
                         Offset(-10f, 45f),
                         20f
@@ -246,9 +246,9 @@ fun ChangeInformation_part_main_contacts(vm: VakansCreate_ViewModel = koinViewMo
                         textField_Number_Color = if (!(it.contains("[+]".toRegex()))) {
                             Color.Red
                         } else if (it.isEmpty()) {
-                            Color_MainText
+                            mainColor
                         } else {
-                            Color_MainText
+                            mainColor
                         }
                     },
                     placeholder = {
@@ -292,11 +292,11 @@ fun ChangeInformation_part_main_contacts(vm: VakansCreate_ViewModel = koinViewMo
                         }
                         else if (it.isEmpty())
                         {
-                            textField_Mail_Color = Color_MainText
+                            textField_Mail_Color = mainColor
                         }
                         else
                         {
-                            textField_Mail_Color = Color_MainText
+                            textField_Mail_Color = mainColor
                         }
                     },
                     placeholder = {
