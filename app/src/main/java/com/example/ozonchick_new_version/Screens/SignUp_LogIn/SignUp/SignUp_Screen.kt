@@ -19,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -128,7 +127,8 @@ private fun MainBody_PartContacts(viewModel: SignUpViewModel) {
             value = viewModel.name.collectAsState().value,
             onValueChange = {
                 viewModel.setNameUserFieldValue(it)
-                viewModel.Proverka() },
+                viewModel.checkNameTextField()
+                viewModel.dataIsEnteredCorrectly()},
             placeholder = {
                 Text(
                     text = "Василий",
@@ -137,6 +137,7 @@ private fun MainBody_PartContacts(viewModel: SignUpViewModel) {
             },
         )
     }
+
     Column(modifier = Modifier.padding(top = 24.dp)) {
         Text(
             text = "Номер телефона",
@@ -148,7 +149,8 @@ private fun MainBody_PartContacts(viewModel: SignUpViewModel) {
             value = viewModel.phoneNumber.collectAsState().value,
             onValueChange = {
                 viewModel.setPhoneNumberFieldValue(it)
-                viewModel.Proverka() },
+                viewModel.checkPhoneNumberTextField()
+                viewModel.dataIsEnteredCorrectly()},
             placeholder = {
                 Text(
                     text = "+7*****",
@@ -157,6 +159,7 @@ private fun MainBody_PartContacts(viewModel: SignUpViewModel) {
             },
         )
     }
+
     Column(modifier = Modifier.padding(top = 24.dp)) {
         Text(
             text = "Адрес почты",
@@ -168,7 +171,8 @@ private fun MainBody_PartContacts(viewModel: SignUpViewModel) {
             value = viewModel.email.collectAsState().value,
             onValueChange = {
                 viewModel.setEmailUserFieldValue(it)
-                viewModel.Proverka() },
+                viewModel.checkEmailTextField()
+                viewModel.dataIsEnteredCorrectly()},
             placeholder = {
                 Text(
                     text = "vasili@mail.ru",
@@ -193,7 +197,8 @@ private fun MainBody_PartPassword(viewModel: SignUpViewModel) {
             value = viewModel.password.collectAsState().value,
             onValueChange = {
                 viewModel.setPasswordUserFieldValue(it)
-                viewModel.Proverka()},
+                viewModel.checkPasswordTextField()
+                viewModel.dataIsEnteredCorrectly()},
             placeholder = {
                 Text(
                     text = "******",
@@ -228,7 +233,8 @@ private fun MainBody_PartPassword(viewModel: SignUpViewModel) {
             value = viewModel.confirmPassword.collectAsState().value,
             onValueChange = {
                 viewModel.setConfirmPasswordFieldValue(it)
-                viewModel.Proverka() },
+                viewModel.checkPasswordTextField()
+                viewModel.dataIsEnteredCorrectly()},
             placeholder = {
                 Text(
                     text = "*******",
@@ -311,11 +317,12 @@ private fun BottomButton(viewModel: SignUpViewModel) {
         onClick = {
             viewModel.Registrait()
         },
-        colors = if (viewModel.isOkay.value) {
+        colors = if (viewModel.isWrittenCorrectly.collectAsState().value) {
             ButtonDefaults.buttonColors(containerColor = mainColor, contentColor = backgroundColor)
         } else {
             ButtonDefaults.buttonColors(containerColor = backgroundColor, contentColor = mainColor)
-        }
+        },
+        enabled = viewModel.isWrittenCorrectly.collectAsState().value
     ) {
         Text(
             text = "Зарегистрироваться",

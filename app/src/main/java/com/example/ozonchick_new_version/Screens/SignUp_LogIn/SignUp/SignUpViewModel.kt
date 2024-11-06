@@ -1,11 +1,8 @@
 package com.example.ozonchick_new_version.Screens.SignUp_LogIn.SignUp
 
-import android.util.Log
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Data_Layer.data.dto.userType
@@ -19,7 +16,19 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class SignUpViewModel : ViewModel() {
-    var isOkay : MutableState<Boolean> = mutableStateOf(false)
+    private val _countWrittenCorrectly : MutableStateFlow<Int> = MutableStateFlow(0)
+    var countWrittenCorrectly : StateFlow<Int> = _countWrittenCorrectly.asStateFlow()
+
+    fun setCountWrittenCorrectly(newValue: Int) {
+        _countWrittenCorrectly.value = newValue
+    }
+
+    private val _isWrittenCorrectly : MutableStateFlow<Boolean> = MutableStateFlow(false)
+    var isWrittenCorrectly : StateFlow<Boolean> = _isWrittenCorrectly.asStateFlow()
+
+    fun setIsWrittenCorrectly(newValue: Boolean) {
+        _isWrittenCorrectly.value = newValue
+    }
 
     private val _name: MutableStateFlow<String> = MutableStateFlow("")
     var name: StateFlow<String> = _name.asStateFlow()
@@ -116,20 +125,46 @@ class SignUpViewModel : ViewModel() {
         }
     }
 
+    fun dataIsEnteredCorrectly() {
+        _isWrittenCorrectly.value = _countWrittenCorrectly.value == 5
+    }
 
-    fun Proverka() {
-        if (name.value.isNotEmpty() && phoneNumber.value.isNotEmpty()
-                && email.value.isNotEmpty() && password.value.isNotEmpty()
-                && confirmPassword.value.isNotEmpty()
-                && isMail() && password.value == confirmPassword.value) {
-            isOkay.value = true
+    fun checkNameTextField() {
+        if (name.value.isNotEmpty()) {
+            _countWrittenCorrectly.value++
         } else {
-            isOkay.value = false
+            _countWrittenCorrectly.value--
         }
 //        return (name.value.isNotEmpty() && phoneNumber.value.isNotEmpty()
 //                && email.value.isNotEmpty() && password.value.isNotEmpty()
 //                && confirmPassword.value.isNotEmpty()
 //                && isMail() && password.value == confirmPassword.value)
+    }
+
+    fun checkPhoneNumberTextField() {
+        if (phoneNumber.value.isNotEmpty()) {
+            _countWrittenCorrectly.value++
+        } else {
+            _countWrittenCorrectly.value--
+        }
+    }
+
+    fun checkEmailTextField() {
+        if (_email.value.isNotEmpty() && isMail()) {
+            _countWrittenCorrectly.value++
+        } else {
+            _countWrittenCorrectly.value--
+        }
+    }
+
+    fun checkPasswordTextField() {
+        if (_password.value.isNotEmpty()
+            && _confirmPassword.value.isNotEmpty()
+            && _password.value == _confirmPassword.value) {
+            _countWrittenCorrectly.value++
+        } else {
+            _countWrittenCorrectly.value--
+        }
     }
 
     @Composable
@@ -158,8 +193,8 @@ class SignUpViewModel : ViewModel() {
     }
 
     private fun isMail(): Boolean {
-        val answer : Boolean = (email.value == email.value.toLowerCase()
-                && email.value.contains('@'))
+        val answer : Boolean = (_email.value == _email.value.toLowerCase()
+                && _email.value.contains('@'))
         return answer
     }
 }
