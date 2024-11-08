@@ -103,7 +103,7 @@ private fun TextHead() {
         Text(
             text = "Создать аккаунт",
             style = Tema.Text_24_24_Bold,
-            color = mainColor
+            color = mainColor,
         )
         Text(
             text = "Завершите процесс регистрации, чтобы начать",
@@ -202,6 +202,7 @@ private fun MainBody_PartPassword(viewModel: SignUpViewModel) {
         )
         SignUp_LogIn_OutlinedTextField(
             value = viewModel.password.collectAsState().value,
+            modifier = Modifier.testTag("password"),
             onValueChange = {
                 viewModel.setPasswordUserFieldValue(it)
                 viewModel.checkPasswordTextField()
@@ -239,6 +240,7 @@ private fun MainBody_PartPassword(viewModel: SignUpViewModel) {
         )
         SignUp_LogIn_OutlinedTextField(
             value = viewModel.confirmPassword.collectAsState().value,
+            modifier = Modifier.testTag("confirm password"),
             onValueChange = {
                 viewModel.setConfirmPasswordFieldValue(it)
                 viewModel.checkPasswordTextField()
@@ -321,14 +323,16 @@ private fun Bottom(viewModel: SignUpViewModel) {
 
 @Composable
 private fun BottomButton(viewModel: SignUpViewModel) {
-    ButtonPendingCondition(
-        enabled = viewModel.isWrittenCorrectly.collectAsState().value,
-        text = "Зарегистрироваться"
-    )
-    {
+    if(viewModel.isWrittenCorrectly.collectAsState().value){
+        ButtonPendingCondition(
+            enabled = viewModel.isWrittenCorrectly.collectAsState().value,
+            text = "Зарегистрироваться"
+        )
+        {
 //        Тестовая регистрация
 //        Основная регистрация
-//        viewModel.Registrait()
+            viewModel.Registrait()
+        }
     }
 }
 

@@ -23,9 +23,10 @@ class RegistraitTest {
         val nameField = "Василий"
         val phoneNumberField = "+7**********"
         val mailField = "vasili@mail.ru"
-        val passwordField = "******"
+        val passwordField = "password"
+        val confirmPasswordField = "confirm password"
 
-        val name = "Test02"
+        val name = "Апа "
         val phoneNumber = "+79514414145"
         val mail = "test02@mail.ru"
         val password = "123456"
@@ -38,9 +39,12 @@ class RegistraitTest {
         onNodeWithText(nameField).performTextInput(name)
         onNodeWithText(phoneNumberField).performTextInput(phoneNumber)
         onNodeWithText(mailField).performTextInput(mail)
-        onNodeWithText(passwordField).performTextInput(password)
+        onNodeWithTag(passwordField).performTextInput(password)
+        onNodeWithTag(confirmPasswordField).performTextInput(password)
 
-        onNodeWithText("Зарегистрироваться").performClick()
+        waitUntil(timeoutMillis = 3000) {
+            onNodeWithText("Зарегистрироваться").isDisplayed()
+        }
 
 
 

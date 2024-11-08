@@ -38,7 +38,7 @@ class SignUpViewModel : ViewModel() {
 
     fun setNameUserFieldValue(newValue: String)
     {
-        _name.value = newValue
+        _name.value = newValue.trim().replace("\\s+".toRegex(), " ")
     }
 
 
@@ -137,7 +137,7 @@ class SignUpViewModel : ViewModel() {
     }
 
     fun checkNameTextField() {
-        if (name.value.isNotEmpty()) {
+        if (_name.value.matches(Regex("[А-Яа-яЁё]{3,21}"))) {
             numberCorrectFields[0] = true
         } else {
             numberCorrectFields[0] = false
@@ -161,7 +161,7 @@ class SignUpViewModel : ViewModel() {
     }
 
     fun checkPasswordTextField() {
-        if (_password.value.isNotEmpty()
+        if (_password.value.matches(Regex(".{6,20}"))
             && _confirmPassword.value.isNotEmpty()
             && _password.value == _confirmPassword.value) {
             numberCorrectFields[3] = true
