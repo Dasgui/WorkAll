@@ -13,7 +13,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Data_Layer.data.db.userAuthInformation
 import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Screens.SpisokPredlogenii.Spisok_Predlogenii_Screen
-import com.example.ozonchick_new_version.Screens.SignUp_LogIn.LogIn_Screen
+import com.example.ozonchick_new_version.Screens.SignUp_LogIn.LogIn.LogIn_Screen
 
 class Splash_Screen : Screen {
     @Composable

@@ -1,4 +1,4 @@
-package com.example.ozonchick_new_version.Screens.SignUp_LogIn
+package com.example.ozonchick_new_version.Screens.SignUp_LogIn.LogIn
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

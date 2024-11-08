@@ -1,18 +1,13 @@
 package com.example.ozonchick_new_version
 
-import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.isDisplayed
-import androidx.compose.ui.test.isNotDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.printToLog
 import com.example.ozonchick_new_version.Screens.MainActivity
-import com.example.ozonchick_new_version.Screens.SignUp_LogIn.LogIn_Screen
 import org.junit.Rule
 import org.junit.Test
 

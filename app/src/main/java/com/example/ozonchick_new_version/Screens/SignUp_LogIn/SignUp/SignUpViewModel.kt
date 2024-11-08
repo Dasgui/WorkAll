@@ -1,19 +1,13 @@
 package com.example.ozonchick_new_version.Screens.SignUp_LogIn.SignUp
 
-import androidx.compose.material3.TextFieldColors
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Data_Layer.data.dto.userType
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.backgroundColor
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainColor
-import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Red
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.secondaryElementColor
 import com.example.ozonchick_new_version.Domain.postRegistrait
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,17 +16,17 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class SignUpViewModel : ViewModel() {
-    val maxLengthPhoneNumber : Int = 13
+    val maxLengthPhoneNumber: Int = 13
 
-    var numberCorrectFields : MutableList<Boolean> = MutableList (4) {false}
-    private val _countWrittenCorrectly : MutableStateFlow<Int> = MutableStateFlow(0)
+    var numberCorrectFields: MutableList<Boolean> = MutableList(4) { false }
+    private val _countWrittenCorrectly: MutableStateFlow<Int> = MutableStateFlow(0)
 
     fun setCountWrittenCorrectly(newValue: Int) {
         _countWrittenCorrectly.value = newValue
     }
 
-    private val _isWrittenCorrectly : MutableStateFlow<Boolean> = MutableStateFlow(false)
-    var isWrittenCorrectly : StateFlow<Boolean> = _isWrittenCorrectly.asStateFlow()
+    private val _isWrittenCorrectly: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    var isWrittenCorrectly: StateFlow<Boolean> = _isWrittenCorrectly.asStateFlow()
 
     fun setIsWrittenCorrectly(newValue: Boolean) {
         _isWrittenCorrectly.value = newValue
@@ -41,8 +35,7 @@ class SignUpViewModel : ViewModel() {
     private val _name: MutableStateFlow<String> = MutableStateFlow("")
     var name: StateFlow<String> = _name.asStateFlow()
 
-    fun setNameUserFieldValue(newValue: String)
-    {
+    fun setNameUserFieldValue(newValue: String) {
         _name.value = newValue/*.trim().replace("\\s+".toRegex(), " ")*/
     }
 
@@ -50,8 +43,7 @@ class SignUpViewModel : ViewModel() {
     private val _phoneNumber: MutableStateFlow<String> = MutableStateFlow("")
     var phoneNumber: StateFlow<String> = _phoneNumber.asStateFlow()
 
-    fun setPhoneNumberFieldValue(newValue: String)
-    {
+    fun setPhoneNumberFieldValue(newValue: String) {
         _phoneNumber.value = newValue
     }
 
@@ -59,8 +51,7 @@ class SignUpViewModel : ViewModel() {
     private val _email: MutableStateFlow<String> = MutableStateFlow("")
     var email: StateFlow<String> = _email.asStateFlow()
 
-    fun setEmailUserFieldValue(newValue: String)
-    {
+    fun setEmailUserFieldValue(newValue: String) {
         _email.value = newValue
     }
 
@@ -68,8 +59,7 @@ class SignUpViewModel : ViewModel() {
     private val _password: MutableStateFlow<String> = MutableStateFlow("")
     var password: StateFlow<String> = _password.asStateFlow()
 
-    fun setPasswordUserFieldValue(newValue: String)
-    {
+    fun setPasswordUserFieldValue(newValue: String) {
         _password.value = newValue
     }
 
@@ -77,13 +67,12 @@ class SignUpViewModel : ViewModel() {
     private val _confirmPassword: MutableStateFlow<String> = MutableStateFlow("")
     var confirmPassword: StateFlow<String> = _confirmPassword.asStateFlow()
 
-    fun setConfirmPasswordFieldValue(newValue: String)
-    {
+    fun setConfirmPasswordFieldValue(newValue: String) {
         _confirmPassword.value = newValue
     }
 
 
-    private val  _passwordVisibleFirst: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    private val _passwordVisibleFirst: MutableStateFlow<Boolean> = MutableStateFlow(false)
     var passwordVisibleFirst: StateFlow<Boolean> = _passwordVisibleFirst.asStateFlow()
 
     fun setPasswordVisibleFirst(newValue: Boolean) {
@@ -107,29 +96,30 @@ class SignUpViewModel : ViewModel() {
     }
 
 
-    private val _userRole:MutableStateFlow<userType> = MutableStateFlow(userType.soiskat)
-    var userRole:StateFlow<userType> = _userRole.asStateFlow()
+    private val _userRole: MutableStateFlow<userType> = MutableStateFlow(userType.soiskat)
+    var userRole: StateFlow<userType> = _userRole.asStateFlow()
 
-    fun setUserRoleFieldValue(newValue: userType)
-    {
+    fun setUserRoleFieldValue(newValue: userType) {
         _userRole.value = newValue
     }
 
 
-    private val _INN:MutableStateFlow<String> = MutableStateFlow("")
-    var INN:StateFlow<String> = _INN.asStateFlow()
+    private val _INN: MutableStateFlow<String> = MutableStateFlow("")
+    var INN: StateFlow<String> = _INN.asStateFlow()
 
-    fun setInnFieldValue(newValue: String)
-    {
+    fun setInnFieldValue(newValue: String) {
         _INN.value = newValue
     }
 
 
-
-    fun Registrait()
-    {
+    fun Registrait() {
         viewModelScope.launch {
-            postRegistrait().postRegistraitEmail(name.value, phoneNumber.value, email.value, password.value)
+            postRegistrait().postRegistraitEmail(
+                name.value,
+                phoneNumber.value,
+                email.value,
+                password.value
+            )
         }
     }
 
@@ -168,7 +158,8 @@ class SignUpViewModel : ViewModel() {
     fun checkPasswordTextField() {
         if (_password.value.matches(Regex(".{6,20}"))
             && _confirmPassword.value.isNotEmpty()
-            && _password.value == _confirmPassword.value) {
+            && _password.value == _confirmPassword.value
+        ) {
             numberCorrectFields[3] = true
         } else {
             numberCorrectFields[3] = false
@@ -176,8 +167,8 @@ class SignUpViewModel : ViewModel() {
     }
 
     @Composable
-    fun getErrorDisplay(value : Boolean) : TextDecoration {
-        val answer : TextDecoration
+    fun getErrorDisplay(value: Boolean): TextDecoration {
+        val answer: TextDecoration
         if (value) {
             answer = TextDecoration.None
         } else {
@@ -187,8 +178,8 @@ class SignUpViewModel : ViewModel() {
     }
 
     @Composable
-    fun isSecondaryElement () : Color {
-        val answer : Color
+    fun isSecondaryElement(): Color {
+        val answer: Color
         if (userRole.collectAsState().value == userType.soiskat) {
             answer = mainColor
         } else if (userRole.collectAsState().value == userType.nesoiskat) {
@@ -200,7 +191,7 @@ class SignUpViewModel : ViewModel() {
     }
 
     private fun isMail(): Boolean {
-        val answer : Boolean = (_email.value == _email.value.toLowerCase()
+        val answer: Boolean = (_email.value == _email.value.toLowerCase()
                 && _email.value.contains('@'))
         return answer
     }
