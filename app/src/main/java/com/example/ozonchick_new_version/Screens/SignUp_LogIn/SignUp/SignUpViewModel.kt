@@ -1,5 +1,6 @@
 package com.example.ozonchick_new_version.Screens.SignUp_LogIn.SignUp
 
+import android.util.Log
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -16,9 +17,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class SignUpViewModel : ViewModel() {
-    private var countCorrectFields : MutableList<Boolean> = MutableList (4) {false}
+    val maxLengthPhoneNumber : Int = 13
+
+    private var numberCorrectFields : MutableList<Boolean> = MutableList (4) {false}
     private val _countWrittenCorrectly : MutableStateFlow<Int> = MutableStateFlow(0)
-    var countWrittenCorrectly : StateFlow<Int> = _countWrittenCorrectly.asStateFlow()
 
     fun setCountWrittenCorrectly(newValue: Int) {
         _countWrittenCorrectly.value = newValue
@@ -127,46 +129,34 @@ class SignUpViewModel : ViewModel() {
     }
 
     fun dataIsEnteredCorrectly() {
-        if (countCorrectFields.all { it == true }) {
+        if (numberCorrectFields.all { it == true }) {
             _isWrittenCorrectly.value = true
         } else {
             _isWrittenCorrectly.value = false
         }
-//        _isWrittenCorrectly.value = _countWrittenCorrectly.value == 5
-//        Log.d("Количество правильных данных", _countWrittenCorrectly.value.toString())
     }
 
     fun checkNameTextField() {
         if (name.value.isNotEmpty()) {
-            countCorrectFields[0] = true
-//            _countWrittenCorrectly.value++
+            numberCorrectFields[0] = true
         } else {
-            countCorrectFields[0] = false
-//            _countWrittenCorrectly.value--
+            numberCorrectFields[0] = false
         }
-//        return (name.value.isNotEmpty() && phoneNumber.value.isNotEmpty()
-//                && email.value.isNotEmpty() && password.value.isNotEmpty()
-//                && confirmPassword.value.isNotEmpty()
-//                && isMail() && password.value == confirmPassword.value)
     }
 
     fun checkPhoneNumberTextField() {
-        if (phoneNumber.value.isNotEmpty()) {
-            countCorrectFields[1] = true
-//            _countWrittenCorrectly.value++
+        if (phoneNumber.value.matches(Regex("^\\+\\d{11}"))) {
+            numberCorrectFields[1] = true
         } else {
-            countCorrectFields[1] = false
-//            _countWrittenCorrectly.value--
+            numberCorrectFields[1] = false
         }
     }
 
     fun checkEmailTextField() {
         if (_email.value.isNotEmpty() && isMail()) {
-            countCorrectFields[2] = true
-//            _countWrittenCorrectly.value++
+            numberCorrectFields[2] = true
         } else {
-            countCorrectFields[2] = false
-//            _countWrittenCorrectly.value--
+            numberCorrectFields[2] = false
         }
     }
 
@@ -174,11 +164,9 @@ class SignUpViewModel : ViewModel() {
         if (_password.value.isNotEmpty()
             && _confirmPassword.value.isNotEmpty()
             && _password.value == _confirmPassword.value) {
-            countCorrectFields[3] = true
-//            _countWrittenCorrectly.value++
+            numberCorrectFields[3] = true
         } else {
-            countCorrectFields[3] = false
-//            _countWrittenCorrectly.value--
+            numberCorrectFields[3] = false
         }
     }
 

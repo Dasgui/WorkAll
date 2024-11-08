@@ -45,6 +45,7 @@ import com.example.ozonchick_new_version.Data_Layer.data.variables.secondType_Of
 import com.example.ozonchick_new_version.R
 import org.koin.androidx.compose.koinViewModel
 import com.example.ozonchick_new_version.Data_Layer.data.dto.userType
+import com.example.ozonchick_new_version.Data_Layer.data.ui.components.ButtonPendingCondition
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Primary_Color
 import com.example.ozonchick_new_version.Screens.SignUp_LogIn.LogIn_Screen
 
@@ -128,7 +129,8 @@ private fun MainBody_PartContacts(viewModel: SignUpViewModel) {
             onValueChange = {
                 viewModel.setNameUserFieldValue(it)
                 viewModel.checkNameTextField()
-                viewModel.dataIsEnteredCorrectly()},
+                viewModel.dataIsEnteredCorrectly()
+            },
             placeholder = {
                 Text(
                     text = "Василий",
@@ -148,9 +150,12 @@ private fun MainBody_PartContacts(viewModel: SignUpViewModel) {
         SignUp_LogIn_OutlinedTextField(
             value = viewModel.phoneNumber.collectAsState().value,
             onValueChange = {
-                viewModel.setPhoneNumberFieldValue(it)
-                viewModel.checkPhoneNumberTextField()
-                viewModel.dataIsEnteredCorrectly()},
+                if (it.length < viewModel.maxLengthPhoneNumber) {
+                    viewModel.setPhoneNumberFieldValue(it)
+                    viewModel.checkPhoneNumberTextField()
+                    viewModel.dataIsEnteredCorrectly()
+                }
+            },
             placeholder = {
                 Text(
                     text = "+7*****",
@@ -172,7 +177,8 @@ private fun MainBody_PartContacts(viewModel: SignUpViewModel) {
             onValueChange = {
                 viewModel.setEmailUserFieldValue(it)
                 viewModel.checkEmailTextField()
-                viewModel.dataIsEnteredCorrectly()},
+                viewModel.dataIsEnteredCorrectly()
+            },
             placeholder = {
                 Text(
                     text = "vasili@mail.ru",
@@ -198,7 +204,8 @@ private fun MainBody_PartPassword(viewModel: SignUpViewModel) {
             onValueChange = {
                 viewModel.setPasswordUserFieldValue(it)
                 viewModel.checkPasswordTextField()
-                viewModel.dataIsEnteredCorrectly()},
+                viewModel.dataIsEnteredCorrectly()
+            },
             placeholder = {
                 Text(
                     text = "******",
@@ -234,7 +241,8 @@ private fun MainBody_PartPassword(viewModel: SignUpViewModel) {
             onValueChange = {
                 viewModel.setConfirmPasswordFieldValue(it)
                 viewModel.checkPasswordTextField()
-                viewModel.dataIsEnteredCorrectly()},
+                viewModel.dataIsEnteredCorrectly()
+            },
             placeholder = {
                 Text(
                     text = "*******",
@@ -312,28 +320,25 @@ private fun Bottom(viewModel: SignUpViewModel) {
 
 @Composable
 private fun BottomButton(viewModel: SignUpViewModel) {
-
-    SignUp_LogIn_Button(
-        onClick = {
-            viewModel.Registrait()
-        },
-        colors = if (viewModel.isWrittenCorrectly.collectAsState().value) {
-            ButtonDefaults.buttonColors(containerColor = mainColor, contentColor = backgroundColor)
-        } else {
-            ButtonDefaults.buttonColors(containerColor = backgroundColor, contentColor = mainColor)
-        },
-        enabled = viewModel.isWrittenCorrectly.collectAsState().value
-    ) {
-        Text(
-            text = "Зарегистрироваться",
-            style = Tema.Text_24_24_Bold,
-//            color = if (viewModel.Proverka()) {
-//                backgroundColor
-//            } else {
-//                mainColor
-//            }
-        )
+    ButtonPendingCondition(
+        enabled = viewModel.isWrittenCorrectly.collectAsState().value,
+        text = "Зарегистрироваться"
+    )
+    {
+        viewModel.Registrait()
     }
+//    SignUp_LogIn_Button(
+//        onClick = {
+//            viewModel.Registrait()
+//        },
+//        colors = ButtonDefaults.buttonColors(containerColor = backgroundColor, contentColor = mainColor),
+//        enabled = viewModel.isWrittenCorrectly.collectAsState().value
+//    ) {
+//        Text(
+//            text = "Зарегистрироваться",
+//            style = Tema.Text_24_24_Bold
+//        )
+//    }
 }
 
 @Composable
