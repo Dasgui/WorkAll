@@ -25,6 +25,7 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.BorderSize
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.backgroundColor
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainColor
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.secondaryElementColor
 
 @Composable
 fun ButtonPendingCondition(
@@ -43,7 +44,7 @@ fun ButtonPendingCondition(
         colors = if (enabled) {
             ButtonDefaults.buttonColors(containerColor = backgroundColor, contentColor = mainColor)
         } else {
-            ButtonDefaults.buttonColors(containerColor = backgroundColor, contentColor = Color.Gray)
+            ButtonDefaults.buttonColors(containerColor = backgroundColor, contentColor = secondaryElementColor)
         },
         elevation = ButtonDefaults.buttonElevation(),
         border = BorderStroke(BorderSize, mainColor),

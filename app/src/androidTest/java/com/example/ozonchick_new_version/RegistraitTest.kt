@@ -26,7 +26,7 @@ class RegistraitTest {
         val passwordField = "password"
         val confirmPasswordField = "confirm password"
 
-        val name = "Апа "
+        val name = "Апа"
         val phoneNumber = "+79514414145"
         val mail = "test02@mail.ru"
         val password = "123456"

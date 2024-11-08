@@ -3,9 +3,8 @@ package com.example.ozonchick_new_version.Data_Layer.data.ui.theme
 import androidx.compose.ui.graphics.Color
 //Основные цвета
 val mainColor = Color(0xFFFFFFFF)
+val secondaryElementColor = Color(0xFF808080)
 val backgroundColor = Color(0xFF141414)
-
-
 
 //основные цвета текста
 val Gray_Color_Passive_Secondary = Color(0xFFA7A7A7)

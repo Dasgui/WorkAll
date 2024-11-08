@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -29,6 +30,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,6 +50,7 @@ import org.koin.androidx.compose.koinViewModel
 import com.example.ozonchick_new_version.Data_Layer.data.dto.userType
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.ButtonPendingCondition
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Primary_Color
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.secondaryElementColor
 import com.example.ozonchick_new_version.Screens.SignUp_LogIn.LogIn_Screen
 
 class SignUp_Screen : Screen {
@@ -124,7 +127,13 @@ private fun MainBody(viewModel: SignUpViewModel) {
 @Composable
 private fun MainBody_PartContacts(viewModel: SignUpViewModel) {
     Column(modifier = Modifier.padding(top = 24.dp)) {
-        Text(text = "Имя", style = Tema.Text_24_24_Bold, maxLines = 1, color = mainColor)
+        Text(
+            text = "Имя",
+            style = Tema.Text_24_24_Bold,
+            maxLines = 1,
+            color = mainColor,
+            textDecoration = viewModel.getErrorDisplay(viewModel.numberCorrectFields[0])
+        )
         SignUp_LogIn_OutlinedTextField(
             value = viewModel.name.collectAsState().value,
             onValueChange = {
@@ -146,7 +155,8 @@ private fun MainBody_PartContacts(viewModel: SignUpViewModel) {
             text = "Номер телефона",
             style = Tema.Text_24_24_Bold,
             maxLines = 1,
-            color = mainColor
+            color = mainColor,
+            textDecoration = viewModel.getErrorDisplay(viewModel.numberCorrectFields[1])
         )
         SignUp_LogIn_OutlinedTextField(
             value = viewModel.phoneNumber.collectAsState().value,
@@ -171,7 +181,8 @@ private fun MainBody_PartContacts(viewModel: SignUpViewModel) {
             text = "Адрес почты",
             style = Tema.Text_24_24_Bold,
             maxLines = 1,
-            color = mainColor
+            color = mainColor,
+            textDecoration = viewModel.getErrorDisplay(viewModel.numberCorrectFields[2])
         )
         SignUp_LogIn_OutlinedTextField(
             value = viewModel.email.collectAsState().value,
@@ -186,7 +197,6 @@ private fun MainBody_PartContacts(viewModel: SignUpViewModel) {
                     style = Tema.Text_16_16_Medium
                 )
             },
-            colors = viewModel.getColorScheme()
         )
     }
 }
@@ -198,11 +208,12 @@ private fun MainBody_PartPassword(viewModel: SignUpViewModel) {
             text = "Пароль",
             style = Tema.Text_24_24_Bold,
             maxLines = 1,
-            color = mainColor
+            color = mainColor,
+            textDecoration = viewModel.getErrorDisplay(viewModel.numberCorrectFields[3])
         )
         SignUp_LogIn_OutlinedTextField(
+            tagTest = "password",
             value = viewModel.password.collectAsState().value,
-            modifier = Modifier.testTag("password"),
             onValueChange = {
                 viewModel.setPasswordUserFieldValue(it)
                 viewModel.checkPasswordTextField()
@@ -236,11 +247,12 @@ private fun MainBody_PartPassword(viewModel: SignUpViewModel) {
             text = "Подтвердите пароль",
             style = Tema.Text_24_24_Bold,
             maxLines = 1,
-            color = mainColor
+            color = mainColor,
+            textDecoration = viewModel.getErrorDisplay(viewModel.numberCorrectFields[3])
         )
         SignUp_LogIn_OutlinedTextField(
+            tagTest = "confirm password",
             value = viewModel.confirmPassword.collectAsState().value,
-            modifier = Modifier.testTag("confirm password"),
             onValueChange = {
                 viewModel.setConfirmPasswordFieldValue(it)
                 viewModel.checkPasswordTextField()
@@ -298,12 +310,20 @@ private fun BottomTypeRegistraion(viewModel: SignUpViewModel) {
         Text(
             text = firstType_OfRegistration,
             style = Tema.Text_24_24_Bold,
-            color = mainColor,
+            color = if (viewModel.userRole.collectAsState().value == userType.soiskat) {
+                mainColor
+            } else {
+                secondaryElementColor
+            },
             modifier = Modifier.clickable { viewModel.setUserRoleFieldValue(userType.soiskat) })
         Text(
             text = secondType_OfRegistration,
             style = Tema.Text_24_24_Bold,
-            color = mainColor,
+            color = if (viewModel.userRole.collectAsState().value == userType.nesoiskat) {
+                mainColor
+            } else {
+                secondaryElementColor
+            },
             modifier = Modifier.clickable { viewModel.setUserRoleFieldValue(userType.nesoiskat) })
     }
 }
@@ -323,7 +343,7 @@ private fun Bottom(viewModel: SignUpViewModel) {
 
 @Composable
 private fun BottomButton(viewModel: SignUpViewModel) {
-    if(viewModel.isWrittenCorrectly.collectAsState().value){
+    if (viewModel.isWrittenCorrectly.collectAsState().value) {
         ButtonPendingCondition(
             enabled = viewModel.isWrittenCorrectly.collectAsState().value,
             text = "Зарегистрироваться"

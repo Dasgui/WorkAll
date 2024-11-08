@@ -1,15 +1,20 @@
 package com.example.ozonchick_new_version.Screens.SignUp_LogIn.SignUp
 
-import android.util.Log
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Data_Layer.data.dto.userType
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.backgroundColor
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainColor
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Color_Red
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.secondaryElementColor
 import com.example.ozonchick_new_version.Domain.postRegistrait
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,7 +24,7 @@ import kotlinx.coroutines.launch
 class SignUpViewModel : ViewModel() {
     val maxLengthPhoneNumber : Int = 13
 
-    private var numberCorrectFields : MutableList<Boolean> = MutableList (4) {false}
+    var numberCorrectFields : MutableList<Boolean> = MutableList (4) {false}
     private val _countWrittenCorrectly : MutableStateFlow<Int> = MutableStateFlow(0)
 
     fun setCountWrittenCorrectly(newValue: Int) {
@@ -38,7 +43,7 @@ class SignUpViewModel : ViewModel() {
 
     fun setNameUserFieldValue(newValue: String)
     {
-        _name.value = newValue.trim().replace("\\s+".toRegex(), " ")
+        _name.value = newValue/*.trim().replace("\\s+".toRegex(), " ")*/
     }
 
 
@@ -145,7 +150,7 @@ class SignUpViewModel : ViewModel() {
     }
 
     fun checkPhoneNumberTextField() {
-        if (phoneNumber.value.matches(Regex("^\\+\\d{11}"))) {
+        if (_phoneNumber.value.matches(Regex("^\\+\\d{11}"))) {
             numberCorrectFields[1] = true
         } else {
             numberCorrectFields[1] = false
@@ -171,28 +176,27 @@ class SignUpViewModel : ViewModel() {
     }
 
     @Composable
-    fun getColorScheme() : TextFieldColors {
-        val getColor : TextFieldColors
-        if (isMail()) {
-            getColor = TextFieldDefaults.colors(
-                focusedContainerColor = backgroundColor,
-                unfocusedContainerColor = backgroundColor,
-                focusedIndicatorColor = mainColor,
-                unfocusedIndicatorColor = mainColor,
-                focusedTextColor = mainColor,
-                unfocusedTextColor = mainColor
-            )
+    fun getErrorDisplay(value : Boolean) : TextDecoration {
+        val answer : TextDecoration
+        if (value) {
+            answer = TextDecoration.None
         } else {
-            getColor = TextFieldDefaults.colors(
-                focusedContainerColor = backgroundColor,
-                unfocusedContainerColor = backgroundColor,
-                focusedIndicatorColor = Color_Red,
-                unfocusedIndicatorColor = Color_Red,
-                focusedTextColor = Color_Red,
-                unfocusedTextColor = Color_Red,
-            )
+            answer = TextDecoration.Underline
         }
-        return getColor
+        return answer
+    }
+
+    @Composable
+    fun isSecondaryElement () : Color {
+        val answer : Color
+        if (userRole.collectAsState().value == userType.soiskat) {
+            answer = mainColor
+        } else if (userRole.collectAsState().value == userType.nesoiskat) {
+            answer = secondaryElementColor
+        } else {
+            answer = secondaryElementColor
+        }
+        return answer
     }
 
     private fun isMail(): Boolean {
