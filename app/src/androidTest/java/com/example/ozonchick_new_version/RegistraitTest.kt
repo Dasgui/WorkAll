@@ -2,14 +2,12 @@ package com.example.ozonchick_new_version
 
 import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import androidx.compose.ui.test.printToLog
 import com.example.ozonchick_new_version.Screens.MainActivity
+import okhttp3.internal.wait
 import org.junit.Rule
 import org.junit.Test
 
@@ -18,7 +16,7 @@ class RegistraitTest {
     val rule = createAndroidComposeRule<MainActivity>()
 
     @Test
-    fun LogIn_Test() : Unit = with(rule)
+    fun LogInCorrect_Test() : Unit = with(rule)
     {
         val nameField = "Василий"
         val phoneNumberField = "+7**********"
@@ -26,9 +24,9 @@ class RegistraitTest {
         val passwordField = "password"
         val confirmPasswordField = "confirm password"
 
-        val name = "Апа"
+        val name = "Ana"
         val phoneNumber = "+79514414145"
-        val mail = "test02@mail.ru"
+        val mail = "tana@mail.ru"
         val password = "123456"
 
         onNodeWithTag("Registrait").performClick()
@@ -45,16 +43,45 @@ class RegistraitTest {
         waitUntil(timeoutMillis = 3000) {
             onNodeWithText("Зарегистрироваться").isDisplayed()
         }
+        onNodeWithText("Зарегистрироваться").performClick()
 
+    }
 
+    @Test
+    fun LogInUnCorrect_Test() : Unit = with(rule)
+    {
+        val nameField = "Василий"
+        val phoneNumberField = "+7**********"
+        val mailField = "vasili@mail.ru"
+        val passwordField = "password"
+        val confirmPasswordField = "confirm password"
 
-//        onRoot().printToLog("UI Test")
-//        onNodeWithText(mailText).performTextInput(mail)
-//        onNodeWithText(passwordText).performTextInput(password)
-//        onNodeWithText("Войти").performClick()
-//        waitUntil(timeoutMillis = 3000) {
-//            onNodeWithText("Test02").isDisplayed()
-//        }
+        val name = "Апа"
+        val phoneNumber = "+79514414145"
+        val mail = "test02@mail.ru"
+        val password = "123456"
+
+        val repeatname = "Тест"
+        val repeatphoneNumber = "+79056554562"
+        val repeatmail = "test06@inbox.ru"
+        val repeatpassword = "1234567"
+
+        onNodeWithTag("Registrait").performClick()
+        waitUntil(timeoutMillis = 3000) {
+            onNodeWithText("Создать аккаунт").isDisplayed()
+        }
+
+        onNodeWithText(nameField).performTextInput(repeatname)
+        onNodeWithText(phoneNumberField).performTextInput(repeatphoneNumber)
+        onNodeWithText(mailField).performTextInput(repeatmail)
+        onNodeWithTag(passwordField).performTextInput(repeatpassword)
+        onNodeWithTag(confirmPasswordField).performTextInput(repeatpassword)
+
+        waitUntil(timeoutMillis = 3000) {
+            onNodeWithText("Зарегистрироваться").isDisplayed()
+        }
+
+        onNodeWithText("Зарегистрироваться").performClick()
 
     }
 }

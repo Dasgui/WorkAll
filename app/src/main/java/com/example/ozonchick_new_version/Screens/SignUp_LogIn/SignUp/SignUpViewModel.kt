@@ -132,7 +132,7 @@ class SignUpViewModel : ViewModel() {
     }
 
     fun checkNameTextField() {
-        if (_name.value.matches(Regex("[А-Яа-яЁё]{3,21}"))) {
+        if (_name.value.matches(Regex("[А-Яа-яЁёa-zA-Z]{3,21}"))) {
             numberCorrectFields[0] = true
         } else {
             numberCorrectFields[0] = false
