@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -158,7 +159,7 @@ private fun MainBody_PartContacts(viewModel: SignUpViewModel) {
             },
             placeholder = {
                 Text(
-                    text = "+7*****",
+                    text = "+7**********",
                     style = Tema.Text_16_16_Medium
                 )
             },
@@ -325,20 +326,10 @@ private fun BottomButton(viewModel: SignUpViewModel) {
         text = "Зарегистрироваться"
     )
     {
-        viewModel.Registrait()
+//        Тестовая регистрация
+//        Основная регистрация
+//        viewModel.Registrait()
     }
-//    SignUp_LogIn_Button(
-//        onClick = {
-//            viewModel.Registrait()
-//        },
-//        colors = ButtonDefaults.buttonColors(containerColor = backgroundColor, contentColor = mainColor),
-//        enabled = viewModel.isWrittenCorrectly.collectAsState().value
-//    ) {
-//        Text(
-//            text = "Зарегистрироваться",
-//            style = Tema.Text_24_24_Bold
-//        )
-//    }
 }
 
 @Composable
