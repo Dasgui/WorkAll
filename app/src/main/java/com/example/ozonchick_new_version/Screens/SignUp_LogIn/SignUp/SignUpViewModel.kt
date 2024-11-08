@@ -1,6 +1,5 @@
 package com.example.ozonchick_new_version.Screens.SignUp_LogIn.SignUp
 
-import android.util.Log
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -17,7 +16,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class SignUpViewModel : ViewModel() {
-    var listGoodOtvet : MutableList<Boolean> = MutableList (4) {false}
+    private var countCorrectFields : MutableList<Boolean> = MutableList (4) {false}
     private val _countWrittenCorrectly : MutableStateFlow<Int> = MutableStateFlow(0)
     var countWrittenCorrectly : StateFlow<Int> = _countWrittenCorrectly.asStateFlow()
 
@@ -128,7 +127,7 @@ class SignUpViewModel : ViewModel() {
     }
 
     fun dataIsEnteredCorrectly() {
-        if (listGoodOtvet.all { it == true }) {
+        if (countCorrectFields.all { it == true }) {
             _isWrittenCorrectly.value = true
         } else {
             _isWrittenCorrectly.value = false
@@ -139,10 +138,10 @@ class SignUpViewModel : ViewModel() {
 
     fun checkNameTextField() {
         if (name.value.isNotEmpty()) {
-            listGoodOtvet[0] = true
+            countCorrectFields[0] = true
 //            _countWrittenCorrectly.value++
         } else {
-            listGoodOtvet[0] = false
+            countCorrectFields[0] = false
 //            _countWrittenCorrectly.value--
         }
 //        return (name.value.isNotEmpty() && phoneNumber.value.isNotEmpty()
@@ -153,20 +152,20 @@ class SignUpViewModel : ViewModel() {
 
     fun checkPhoneNumberTextField() {
         if (phoneNumber.value.isNotEmpty()) {
-            listGoodOtvet[1] = true
+            countCorrectFields[1] = true
 //            _countWrittenCorrectly.value++
         } else {
-            listGoodOtvet[1] = false
+            countCorrectFields[1] = false
 //            _countWrittenCorrectly.value--
         }
     }
 
     fun checkEmailTextField() {
         if (_email.value.isNotEmpty() && isMail()) {
-            listGoodOtvet[2] = true
+            countCorrectFields[2] = true
 //            _countWrittenCorrectly.value++
         } else {
-            listGoodOtvet[2] = false
+            countCorrectFields[2] = false
 //            _countWrittenCorrectly.value--
         }
     }
@@ -175,10 +174,10 @@ class SignUpViewModel : ViewModel() {
         if (_password.value.isNotEmpty()
             && _confirmPassword.value.isNotEmpty()
             && _password.value == _confirmPassword.value) {
-            listGoodOtvet[3] = true
+            countCorrectFields[3] = true
 //            _countWrittenCorrectly.value++
         } else {
-            listGoodOtvet[3] = false
+            countCorrectFields[3] = false
 //            _countWrittenCorrectly.value--
         }
     }

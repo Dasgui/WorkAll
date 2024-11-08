@@ -48,7 +48,7 @@ fun Splash(onNavigateForLogin: () -> Unit, onNavigateForPredlogenii: () -> Unit)
     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize())
     {
         Image(
-            painter = painterResource(id = R.drawable.pro_dobro_logo),
+            painter = painterResource(id = R.drawable.workall_logo),
             contentDescription = "Лого",
             modifier = Modifier.fillMaxSize(0.7f)
         )
