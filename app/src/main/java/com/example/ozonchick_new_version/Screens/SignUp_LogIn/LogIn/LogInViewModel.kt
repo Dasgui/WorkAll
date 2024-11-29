@@ -1,5 +1,9 @@
 package com.example.ozonchick_new_version.Screens.SignUp_LogIn.LogIn
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Domain.postAuth
@@ -12,6 +16,12 @@ class LogInViewModel() : ViewModel() {
     private val _accessSharedAuth: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val accessSharedAuth: StateFlow<Boolean> = _accessSharedAuth.asStateFlow()
 
+    private val _passwordVisible : MutableStateFlow<Boolean> = MutableStateFlow(false)
+    var passwordVisible : StateFlow<Boolean> = _passwordVisible.asStateFlow()
+
+    fun setPasswordVisible (newValue: Boolean) {
+        _passwordVisible.value = newValue
+    }
 
 
     private val _emailUser: MutableStateFlow<String> = MutableStateFlow("")
