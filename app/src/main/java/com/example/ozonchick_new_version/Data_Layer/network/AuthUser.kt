@@ -1,5 +1,6 @@
 package com.example.ozonchick_new_version.Data_Layer.network
 
+import com.example.ozonchick_new_version.Data_Layer.data.db.idSharedUser
 import com.example.ozonchick_new_version.Data_Layer.data.db.userAuthInformation
 import com.example.ozonchick_new_version.Data_Layer.model.DTOMessage
 import com.example.ozonchick_new_version.Data_Layer.model.SignUp_LogIn_Model.UserInformationAuth
@@ -20,7 +21,7 @@ class AuthUser() {
     suspend fun AuthEmail(email: String, password: String, rememberUser: Boolean): DTOMessage {
         var Info = CompletableDeferred<DTOMessage>()
         val user = supabase.from("user_information")
-            .select(columns = Columns.list("email, password")) {
+            .select(columns = Columns.list("user_id, email, password")) {
                 filter {
                     UserInformationAuth::email eq email
                     UserInformationAuth::password eq password
@@ -33,6 +34,7 @@ class AuthUser() {
 //                userAuthInformation.add(UserInformationAuth(email, password))
 //                Paper.book().write("User", userAuthInformation)
 //            }
+            idSharedUser.value = user[0].user_id
             Info.complete(DTOMessage(true, "Успешная авторизация"))
         }
         return Info.await()

@@ -5,5 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserInformationAuth(
     var email : String,
-    var password : String
+    var password : String,
+    var user_id: Int
 )

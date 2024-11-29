@@ -54,7 +54,7 @@ class LogInViewModel() : ViewModel() {
     fun Auth(/*contextAuth:Context*/)
     {
         viewModelScope.launch {
-            _accessSharedAuth.value = postAuth(/*contextAuth*/).postAuthEmail(emailUser.value,passwordUser.value, rememberUser.value)
+            _accessSharedAuth.value = postAuth().postAuthEmail(emailUser.value,passwordUser.value, rememberUser.value)
         }
     }
 
