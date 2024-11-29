@@ -92,7 +92,7 @@ private fun ScreenHead(
             ) {
                 Log.d("Имя 2", viewModel.nameUser.collectAsState().value)
                 Text(
-                    text = viewModel.getNameForBD(),
+                    text = "Имя"/*viewModel.getNameForBD()*/,
                     style = Tema.Text_24_24_Bold,
                     color = MaterialTheme.colorScheme.primary
                 )

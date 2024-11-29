@@ -16,18 +16,17 @@ class postAuth(/*context:Context*/) {
         var response = AuthUser().AuthEmail(mail,password, rememberUser)
         access.complete(response.acess)
         access.await()
-        if (response.acess){
-/*            val toast =Toast.makeText(context,response.message,Toast.LENGTH_LONG)
+    return if (response.acess){
+        /*            val toast =Toast.makeText(context,response.message,Toast.LENGTH_LONG)
             toast.setGravity(Gravity.FILL_VERTICAL,0,0)
             toast.show()*/
-            return true
-        }
-        else{
-/*            val toast =Toast.makeText(context,response.message,Toast.LENGTH_LONG)
+        true
+    } else{
+        /*            val toast =Toast.makeText(context,response.message,Toast.LENGTH_LONG)
             toast.setGravity(Gravity.FILL_VERTICAL,0,0)
             toast.show()*/
-            return false
-        }
+        false
+    }
     }
 
 }

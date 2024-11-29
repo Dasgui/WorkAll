@@ -55,29 +55,6 @@ class HomeViewModel() : ViewModel() {
         _nameUser.value = newValue
     }
 
-
-/*    fun Balance_for_base(): Int {
-        CoroutineScope(Dispatchers.IO).launch {
-            val result =
-                supabase.from("user_information").select(Columns.list("user_id", "email")) {
-                    filter {
-                        User_name_email::user_email eq emailUser.value
-                    }
-                }
-            val note = Gson().fromJson(result.data, Array<User_id_name_email>::class.java)
-            Log.d("База", note[0].user_id.toString())
-            val result_id = supabase.from("user_balance").select() {
-                filter {
-                    User_balance::user_id eq note[0].user_id
-                }
-            }
-            val note_id = Gson().fromJson(result_id.data, Array<User_balance>::class.java)
-            Log.d("id с базы", note_id[0].balance.toString())
-            userBalance.value = note_id[0].balance
-        }
-        return userBalance.value
-    }*/
-
     fun Exit(navigator: Navigator?)
     {
         viewModelScope.launch {
