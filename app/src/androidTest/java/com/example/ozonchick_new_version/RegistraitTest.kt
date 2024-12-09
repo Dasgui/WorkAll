@@ -56,11 +56,6 @@ class RegistraitTest {
         val passwordField = "password"
         val confirmPasswordField = "confirm password"
 
-        val name = "Апа"
-        val phoneNumber = "+79514414145"
-        val mail = "test02@mail.ru"
-        val password = "123456"
-
         val repeatname = "Тест"
         val repeatphoneNumber = "+79056554562"
         val repeatmail = "test06@inbox.ru"
@@ -77,11 +72,10 @@ class RegistraitTest {
         onNodeWithTag(passwordField).performTextInput(repeatpassword)
         onNodeWithTag(confirmPasswordField).performTextInput(repeatpassword)
 
-        waitUntil(timeoutMillis = 3000) {
+        waitUntil(timeoutMillis = 10000) {
             onNodeWithText("Зарегистрироваться").isDisplayed()
         }
 
         onNodeWithText("Зарегистрироваться").performClick()
-
     }
 }

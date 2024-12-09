@@ -1,6 +1,7 @@
 package com.example.ozonchick_new_version.Screens.Otkliks
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -34,61 +35,24 @@ import kotlinx.coroutines.runBlocking
 class Spisok_ViewModel() : ViewModel() {
     val response: MutableState<DataState> = mutableStateOf(DataState.Empty)
 
-    init {
-        viewModelScope.launch {
-            GetInformation()
-            delay(1000)
-            GetUserId()
-        }
-    }
+//    init {
+//        viewModelScope.launch {
+//            getInformation()
+//            getSize()
+//            Log.d("Список вакансий", spisokVakans.value.toString())
+//        }
+//    }
 
-    /*    init {
-            viewModelScope.launch {
-                spisokVakans = GetInformation()
-            }
-        }*/
-    /*    sealed class State {
-            object Loading: State()
-            data class Data(val data: String): State()
-        }
-        private var _state = MutableStateFlow<State>(State.Loading)
-        val state = _state.asStateFlow()
-        init {
-            viewModelScope.launch {
-    *//*            while (isActive) {
-                val data = makeDataLoadCallOnEntry()
-                _state.value = State.Data(data)
-                // wait one minute and repeat your request
-                delay(60 * 1000L)
-            }*//*
-            GetInformation()
-        }
-    }*/
-    fun fetchData() {
-        var name: String = ""
-        val listA = mutableListOf<Vakans_information>()
-        response.value = DataState.Loading
-        viewModelScope.launch {
-            CoroutineScope(Dispatchers.IO).launch {
-                val result = supabase.from("vakans").select(
-                    Columns.list(
-                        "vakans_name",
-                        "vakans_price",
-                        "vakans_organization",
-                        "vakans_location",
-                        "vakans_experience",
-                        "vakans_mail"
-                    )
-                ).decodeSingle<Vakans_information>()
-                listA.add(result)
 
-                /*name = spisokVakans[0].vakans_name*/
-            }
-        }
-        response.value = DataState.Success(listA)
-    }
     private var _spisokVakans: MutableStateFlow<List<Vakans_information>> = MutableStateFlow(emptyList())
     var spisokVakans = _spisokVakans.asStateFlow()
+
+    private val _sizeVakans: MutableStateFlow<Int> = MutableStateFlow(0)
+    var sizeVakans = _sizeVakans.asStateFlow()
+
+    fun setSizeVakans (newValue : Int) {
+        _sizeVakans.value = newValue
+    }
 
     private val _spisokOtkliks: MutableStateFlow<List<Vakans_information>> = MutableStateFlow(emptyList())
     var spisokOtkliks = _spisokVakans.asStateFlow()
@@ -108,33 +72,24 @@ class Spisok_ViewModel() : ViewModel() {
     var userIdfremeno: MutableState<Int> = mutableIntStateOf(0)
 
 
-    /*suspend*/ fun GetInformation() {
-        var name: String = ""
-        viewModelScope.launch {
-            CoroutineScope(Dispatchers.IO).launch {
-                val result = supabase.from("vakans").select(
-                    Columns.list(
-                        "vakans_id",
-                        "vakans_name",
-                        "vakans_price",
-                        "vakans_organization",
-                        "vakans_location",
-                        "vakans_experience",
-                        "vakans_mail",
-                        "employer_id"
-                    )
-                ).decodeList<Vakans_information>()
-                _spisokVakans.value = result
-
-                /*name = spisokVakans[0].vakans_name*/
-            }
-        }
-        /*delay(1000)*/
+    suspend fun getInformation() {
+        val result = supabase.from("vakans").select(
+            Columns.list(
+                "vakans_id",
+                "vakans_name",
+                "vakans_price",
+                "vakans_organization",
+                "vakans_location",
+                "vakans_experience",
+                "vakans_mail",
+                "employer_id"
+            )
+        ).decodeList<Vakans_information>()
+        _spisokVakans.value = result
     }
 
-    suspend fun GetSize(): Int {
-        delay(1000)
-        return spisokVakans.value.size
+    fun getSize() {
+        _sizeVakans.value = spisokVakans.value.size
     }
 
     suspend fun GetMail(): String {
@@ -164,7 +119,7 @@ class Spisok_ViewModel() : ViewModel() {
         }
         return listA
     }
-     fun GetCONTACTTEST(id:Int): MutableList<Vakans_contacts> {
+    fun GetCONTACTTEST(id:Int): MutableList<Vakans_contacts> {
         var listA: MutableList<Vakans_contacts> = mutableListOf()
         CoroutineScope(Dispatchers.IO).launch {
             val result = supabase.from("vakans_contacts")
@@ -180,13 +135,6 @@ class Spisok_ViewModel() : ViewModel() {
     }
 
     fun Geting(context: Context, mail: String, number: Int) {
-        /*        viewModelScope.launch {
-                    var responseRegistrait: Boolean
-                    runBlocking {
-                        responseRegistrait = postRegistrait(context).postRegistraitEmail(nameUser.value,phoneNumber.value,emailUser.value,passwordUser.value)
-                    }
-                    accessRegistrait.value = responseRegistrait
-                }*/
         var responseGeting: TestModel_Get
         runBlocking {
             responseGeting = postGetContacts(context).postGetContact(mail, number)
@@ -212,21 +160,6 @@ class Spisok_ViewModel() : ViewModel() {
 
     fun PushOtklik(id: Int) {
         CoroutineScope(Dispatchers.IO).launch {
-/*            val result = supabase.from("vakans").select(
-                Columns.list(
-                    "vakans_id",
-                    "vakans_name",
-                    "vakans_price",
-                    "vakans_organization",
-                    "vakans_location",
-                    "vakans_experience",
-                    "vakans_mail"
-                )
-            ) {
-                filter {
-                    Vakans_information::vakans_id eq id
-                }
-            }.decodeList<Vakans_information>()*/
             val push = supabase.from("vakans_user_otklik").insert(
                 Vakans_otklik(
                     user_long_id = userSharedId.value/*GetUserId()*/,
@@ -237,47 +170,8 @@ class Spisok_ViewModel() : ViewModel() {
         }
     }
 
-    fun GetUserId(): Int {
-        var id: MutableState<Int> = mutableIntStateOf(0)
-        CoroutineScope(Dispatchers.IO).launch {
-            val user = supabase.auth.currentSessionOrNull()
-            val userGetId = supabase.from("user_information").select(
-                Columns.list(
-                    "user_id",
-                    "name",
-                    "phoneNumber",
-                    "email"
-                )
-            ) {
-                filter {
-                    UserInformation::email eq user?.user?.email.toString()
-                }
-            }.decodeSingle<UserInformation>()
 
-            id.value = userGetId.user_id
-            userSharedId.value = userGetId.user_id
-        }
-        return id.value
-    }
-
-    fun GetOtkliks(userId: Int = userIdfremeno.value/*GetUserId()*/) {
-        var id: MutableState<Int> = mutableIntStateOf(userId)
-        var otklik_information = CoroutineScope(Dispatchers.IO).launch {
-            val user = supabase.auth.retrieveUserForCurrentSession(updateSession = true)
-            val userGetId = supabase.from("vakans_user_otklik").select(
-                Columns.list(
-                    "user_id",
-                    "vakans_id",
-                    "otvet",
-                )
-            ) {
-                filter {
-                    Vakans_otklik::/*user_id*/user_long_id eq id
-                }
-            }.decodeList<Vakans_otklik>()
-        }
-    }
-   suspend fun GetOtvetOtkliks(number: Int):String
+    fun GetOtvetOtkliks(number: Int):String
     {
         var otvet: MutableState<String> = mutableStateOf("")
         CoroutineScope(Dispatchers.IO).launch {
@@ -325,7 +219,6 @@ class Spisok_ViewModel() : ViewModel() {
 
     fun GetVakans(userId: Int) {
         CoroutineScope(Dispatchers.IO).launch {
-/*            val user = supabase.auth.retrieveUserForCurrentSession(updateSession = true)*/
             var vakans_id = supabase.from("vakans_user_otklik").select(
                 Columns.list(
                     "vakans_id",
@@ -336,30 +229,8 @@ class Spisok_ViewModel() : ViewModel() {
                 filter {
                     Vakans_otklik::/*user_id*/user_long_id isIn listOf(userId)
                 }
-/*                filter {
-                    Vakans_otklik::user_id eq userId
-                }*/
             }.decodeList<Vakans_otklik>()
             testPeredacha = vakans_id.toMutableList()
-//            spisokOtkliks = vakans_id.toMutableList()
-//            var size:MutableState<Int> = mutableIntStateOf(vakans_id.size)
-/*            var vakans_information = supabase.from("vakans").select(
-                Columns.list(
-                    "vakans_id",
-                    "vakans_name",
-                    "vakans_price",
-                    "vakans_organization",
-                    "vakans_location",
-                    "vakans_experience",
-                    "vakans_mail"
-                )
-            )
-            {
-                filter {
-                    Vakans_information::vakans_id eq vakans_id.vakans_id
-                }
-            }.decodeList<Vakans_information>()
-            spisokOtkliks = vakans_information.toMutableList()*/
         }
     }
 }

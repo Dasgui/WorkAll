@@ -51,27 +51,23 @@ import com.example.ozonchick_new_version.Screens.SignUp_LogIn.LogIn.LogIn_Screen
 class SignUp_Screen : Screen {
     @Composable
     override fun Content() {
-        Create_Account()
+        val navigator = LocalNavigator.current
+        Create_Account(
+            onNavigateForLogIn = {
+                navigator?.replaceAll(LogIn_Screen())
+            }
+        )
     }
 }
 
-@Composable
-fun SignUp_Construct() {
-
-}
 
 @Composable
-fun Create_Account(viewModel: SignUpViewModel = koinViewModel()) {
-//    val screen = rememberScreen(provider = SignUp_LogIn_Provider.LogIn)
-    val context = LocalContext.current
-    val navigator = LocalNavigator.current
+fun Create_Account(viewModel: SignUpViewModel = koinViewModel(), onNavigateForLogIn:() -> Unit) {
     if (accessSharedRegistrait.value) {
         emailSharedUser.value = viewModel.email.collectAsState().value
-        navigator?.replaceAll(LogIn_Screen())
+        onNavigateForLogIn()
     }
-//    val accessRegistrait = vm.accessRegistrait.collectAsState()
-    /*    var text by remember { mutableStateOf("") }
-        val checkedState = remember { mutableStateOf(false) }*/
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -87,7 +83,7 @@ fun Create_Account(viewModel: SignUpViewModel = koinViewModel()) {
                 TextHead()
                 MainBody(viewModel)
                 BottomTypeRegistraion(viewModel)
-                Bottom(viewModel)
+                Bottom(viewModel, onNavigateForLogIn)
             }
         }
     }
@@ -272,7 +268,8 @@ private fun MainBody_PartPassword(viewModel: SignUpViewModel) {
                     colorFilter = ColorFilter.tint(mainColor)
                 )
             },
-            visualTransformation = if (viewModel.passwordVisibleSecond.collectAsState().value) VisualTransformation.None else PasswordVisualTransformation(),
+            visualTransformation = if (viewModel.passwordVisibleSecond.collectAsState().value)
+                VisualTransformation.None else PasswordVisualTransformation(),
         )
     }
 }
@@ -325,14 +322,14 @@ private fun BottomTypeRegistraion(viewModel: SignUpViewModel) {
 
 
 @Composable
-private fun Bottom(viewModel: SignUpViewModel) {
+private fun Bottom(viewModel: SignUpViewModel, onNavigateForLogIn:() -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.padding(top = 30.dp, bottom = 30.dp)
     ) {
         BottomButton(viewModel)
-        BottomText()
+        BottomText(onNavigateForLogIn)
     }
 }
 
@@ -352,8 +349,7 @@ private fun BottomButton(viewModel: SignUpViewModel) {
 }
 
 @Composable
-private fun BottomText() {
-    val navigator = LocalNavigator.current
+private fun BottomText(onNavigateForLogIn:() -> Unit) {
 
     val signInText = buildAnnotatedString {
         withStyle(
@@ -386,7 +382,7 @@ private fun BottomText() {
         onClick = {
             signInText.getStringAnnotations(tag = "click", start = it, end = it).firstOrNull()
                 ?.let {
-                    navigator?.replaceAll(LogIn_Screen())
+                    onNavigateForLogIn()
                 }
         },
         modifier = Modifier.padding(top = 20.dp)

@@ -1,5 +1,6 @@
 package com.example.ozonchick_new_version.Screens
 
+import com.example.ozonchick_new_version.Screens.Contacts.ContactsViewModel
 import com.example.ozonchick_new_version.Screens.Home.HomeViewModel
 import com.example.ozonchick_new_version.Screens.Home.Employer.Candidate.ListOfCandidate_ViewModel
 import com.example.ozonchick_new_version.Screens.Home.Employer.Vacancies.ListOfVacancies_ViewModel
@@ -21,19 +22,19 @@ var AppModule = module {
     single {
         HomeViewModel()
     }
-
-
     single {
         Spisok_ViewModel()
     }
+    single {
+        ContactsViewModel()
+    }
+
     single {
         ListOfVacancies_ViewModel()
     }
     single {
         ListOfCandidate_ViewModel()
     }
-
-
     single {
         VakansCreate_ViewModel()
     }

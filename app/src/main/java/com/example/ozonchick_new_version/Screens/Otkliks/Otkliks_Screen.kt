@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Data_Layer.data.db.userSharedId
+import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Otkliks.JobCard
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Button
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Card
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Loading
@@ -164,7 +165,7 @@ fun Card_V(number: Int,
                                 vm.GetCONTACTTEST(vm.spisokOtkliks.value[number].vakans_id)
                                 delay(1000)
                                 Log.d("Приём контактов", vm.list.toString())
-                                navigator?.push(Contacts_Screen())
+                                navigator?.push(Contacts_Screen(vm.spisokOtkliks.value[number].vakans_id))
                             }
 
 
@@ -205,7 +206,8 @@ fun MainScreen(vm: Spisok_ViewModel = koinViewModel(), isLoading:Boolean)
                 items(vm.testPeredacha.size)
                 {
                         item->
-                    Card_V(item, vm.spisokOtkliks, vm)
+                    JobCard(item, vm.spisokOtkliks, vm)
+//                    Card_V(item, vm.spisokOtkliks, vm)
                 }
             }
         }

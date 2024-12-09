@@ -56,15 +56,24 @@ import org.koin.androidx.compose.koinViewModel
 class LogIn_Screen : Screen {
     @Composable
     override fun Content() {
+        val navigator = LocalNavigator.current
         Ozonchick_new_versionTheme {
-            LogIn_Construct()
+            LogIn_Construct(
+                onNavigateForProfile = {
+                    navigator?.replaceAll(Profile_Screen())
+                },
+                onNavigateForSignUp = {
+                    navigator?.replaceAll(SignUp_Screen())
+                }
+            )
         }
     }
 }
 
 @Composable
-fun LogIn_Construct(viewModel: LogInViewModel = koinViewModel()) {
-    val navigator = LocalNavigator.current
+fun LogIn_Construct(viewModel: LogInViewModel = koinViewModel(),
+                    onNavigateForProfile: () -> Unit, onNavigateForSignUp: () -> Unit) {
+
 //    val authState = vm.accessSharedAuth.collectAsState()
 
     MaterialTheme.colorScheme
@@ -85,9 +94,9 @@ fun LogIn_Construct(viewModel: LogInViewModel = koinViewModel()) {
             BottomBody(viewModel)
             if (viewModel.accessSharedAuth.collectAsState().value) {
                 emailSharedUser.value = viewModel.emailUser.collectAsState().value
-                navigator?.replaceAll(Profile_Screen())
+                onNavigateForProfile()
             }
-            BottomText(viewModel, onNavigateForSignUp = {navigator?.replaceAll(SignUp_Screen())})
+            BottomText(viewModel, onNavigateForSignUp = onNavigateForSignUp)
         }
     }
 
@@ -140,7 +149,7 @@ private fun MainBody(viewModel: LogInViewModel)
                     )
                 }
             )
-            var passwordVisible by rememberSaveable { mutableStateOf(false) }
+
             Column(
                 modifier = Modifier.padding(top = 24.dp)
             ) {
@@ -168,12 +177,13 @@ private fun MainBody(viewModel: LogInViewModel)
                                     } else {
                                         localImage.value = R.drawable.eye_slash
                                     }
-                                    passwordVisible = !passwordVisible
+                                    viewModel.setPasswordVisible(!viewModel.passwordVisible.value)
                                 },
                             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
                         )
                     },
-                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                    visualTransformation = if (viewModel.passwordVisible.collectAsState().value)
+                        VisualTransformation.None else PasswordVisualTransformation(),
                 )
             }
         }
@@ -268,7 +278,6 @@ private fun BottomText(viewModel: LogInViewModel, onNavigateForSignUp: () -> Uni
                 SignUpText.getStringAnnotations(tag = "click", start = it, end = it).firstOrNull()
                     ?.let {
                         onNavigateForSignUp()
-//                        navigator?.replaceAll(SignUp_Screen())
                     }
             },
             modifier = Modifier.padding(top = 20.dp).testTag("Registrait")

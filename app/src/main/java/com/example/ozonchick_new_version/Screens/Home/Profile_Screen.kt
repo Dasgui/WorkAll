@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +19,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,6 +35,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Card
+import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Loading
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Scaffold
 import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Ozonchick_new_versionTheme
@@ -42,8 +48,17 @@ import org.koin.androidx.compose.koinViewModel
 class Profile_Screen() : Screen {
     @Composable
     override fun Content() {
+        val navigator = LocalNavigator.current
+        var isLoading: MutableState<Boolean> = remember {
+            mutableStateOf(false)
+        }
+        val viewModel: HomeViewModel = koinViewModel()
         Ozonchick_new_versionTheme {
-            Profile_Construct()
+            LaunchedEffect(true) {
+                viewModel.getName()
+                isLoading.value = true
+            }
+            Profile_Construct(isLoading.value, navigator)
         }
     }
 }
@@ -51,18 +66,23 @@ class Profile_Screen() : Screen {
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Profile_Construct() {
-    var navigator = LocalNavigator.current
-    Public_Scaffold(mainText = "Профиль", bottomButton = true) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 15.dp, end = 15.dp, top = 90.dp)
-        ) {
-            ScreenHead(navigator = navigator)
-            ScreenBody(navigator = navigator)
+fun Profile_Construct(isLoading:Boolean, navigator: Navigator?) {
+
+    if (isLoading) {
+        Public_Scaffold(mainText = "Профиль", bottomButton = true) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 15.dp, end = 15.dp, top = 90.dp)
+            ) {
+                ScreenHead(navigator = navigator)
+                ScreenBody(navigator = navigator)
+            }
         }
+    } else {
+        Public_Loading(isLoading)
     }
+
 
 
 }
@@ -92,7 +112,7 @@ private fun ScreenHead(
             ) {
                 Log.d("Имя 2", viewModel.nameUser.collectAsState().value)
                 Text(
-                    text = viewModel.getNameForBD(),
+                    text = viewModel.nameUser.collectAsState().value/*"Имя"*/,
                     style = Tema.Text_24_24_Bold,
                     color = MaterialTheme.colorScheme.primary
                 )
