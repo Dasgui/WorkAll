@@ -7,10 +7,8 @@ import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.navigator.Navigator
 import com.example.ozonchick_new_version.Data_Layer.data.db.accessSharedRegistrait
 import com.example.ozonchick_new_version.Data_Layer.data.db.emailSharedUser
-import com.example.ozonchick_new_version.Data_Layer.data.db.idSharedUser
 import com.example.ozonchick_new_version.Data_Layer.data.db.userAuthInformation
 import com.example.ozonchick_new_version.Data_Layer.data.db.userSharedId
-import com.example.ozonchick_new_version.Data_Layer.model.SignUp_LogIn_Model.UserName
 import com.example.ozonchick_new_version.Data_Layer.model.SignUp_LogIn_Model.User_id_name_email
 import com.example.ozonchick_new_version.Data_Layer.model.SignUp_LogIn_Model.User_name_email
 import com.example.ozonchick_new_version.Data_Layer.network.supabase
@@ -36,19 +34,49 @@ class HomeViewModel() : ViewModel() {
             mutableStateOf(userAuthInformation[0].email)
         }
 
-    suspend fun getName() {
-        val result =
-            supabase.from("user_information").select(columns = Columns.list("name")) {
-                filter {
-                    eq("user_id", idSharedUser.value)
+    fun getNameForBD(): String {
+        val session = supabase.auth.currentSessionOrNull()
+
+/*        Log.d("Сессия", session?.user?.email.toString())*/
+        viewModelScope.launch {
+            val result =
+                supabase.from("user_information").select(columns = Columns.list("user_name", "user_email")) {
+                    filter {
+                        User_name_email::user_email eq session?.user?.email/*emailUser.value*/
+                    }
                 }
-            }.decodeList<UserName>()
-        _nameUser.value = result[0].name
+            val note = Gson().fromJson(result.data, Array<User_id_name_email>::class.java)
+            setNameUserValue(note[0].user_name)
+        }
+        return nameUser.value
     }
     private fun setNameUserValue(newValue : String)
     {
         _nameUser.value = newValue
     }
+
+
+/*    fun Balance_for_base(): Int {
+        CoroutineScope(Dispatchers.IO).launch {
+            val result =
+                supabase.from("user_information").select(Columns.list("user_id", "email")) {
+                    filter {
+                        User_name_email::user_email eq emailUser.value
+                    }
+                }
+            val note = Gson().fromJson(result.data, Array<User_id_name_email>::class.java)
+            Log.d("База", note[0].user_id.toString())
+            val result_id = supabase.from("user_balance").select() {
+                filter {
+                    User_balance::user_id eq note[0].user_id
+                }
+            }
+            val note_id = Gson().fromJson(result_id.data, Array<User_balance>::class.java)
+            Log.d("id с базы", note_id[0].balance.toString())
+            userBalance.value = note_id[0].balance
+        }
+        return userBalance.value
+    }*/
 
     fun Exit(navigator: Navigator?)
     {
