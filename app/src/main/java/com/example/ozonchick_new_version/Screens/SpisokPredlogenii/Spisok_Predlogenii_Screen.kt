@@ -192,7 +192,6 @@ private fun MainButtons(
         Public_Button(
             fillButton = true,
             onClick = {
-//                Log.d("Id нанимателя",list[number].vakans_id.toString() );
                 navigator?.push(Contacts_Screen(list[number].vakans_id))
             },
             modifier = Modifier.width(180.dp)

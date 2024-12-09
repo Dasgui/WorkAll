@@ -24,7 +24,7 @@ class LogInViewModel() : ViewModel() {
     }
 
 
-    private val _emailUser: MutableStateFlow<String> = MutableStateFlow("")
+    private val _emailUser: MutableStateFlow<String> = MutableStateFlow("test07@inbox.ru")
     var emailUser: StateFlow<String> = _emailUser.asStateFlow()
 
     fun setEmailUserFieldValue(newValue: String)
@@ -33,7 +33,7 @@ class LogInViewModel() : ViewModel() {
     }
 
 
-    private val _passwordUser: MutableStateFlow<String> = MutableStateFlow("")
+    private val _passwordUser: MutableStateFlow<String> = MutableStateFlow("test07")
     var passwordUser: StateFlow<String> = _passwordUser.asStateFlow()
 
     fun setPasswordUserFieldValue(newValue: String)

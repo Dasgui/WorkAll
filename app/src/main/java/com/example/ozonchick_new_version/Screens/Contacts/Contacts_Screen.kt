@@ -3,15 +3,18 @@ package com.example.ozonchick_new_version.Screens.Contacts
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -23,6 +26,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -35,11 +40,10 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Sc
 import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.mainColor
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Ozonchick_new_versionTheme
+import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.backgroundColor
 import com.example.ozonchick_new_version.R
 import org.koin.androidx.compose.koinViewModel
 
-private var mainTextStyle: TextStyle = Tema.Text_24_24_Medium
-private var paddimgBetween_Text = 10.dp
 var isLoading: MutableState<Boolean> = mutableStateOf(false)
 
 class Contacts_Screen (private val sharedId: Int) : Screen {
@@ -47,7 +51,7 @@ class Contacts_Screen (private val sharedId: Int) : Screen {
     override fun Content() {
         val viewModel: ContactsViewModel = koinViewModel()
         Ozonchick_new_versionTheme {
-            LaunchedEffect(true)
+            LaunchedEffect(viewModel.informationList.collectAsState().value.isEmpty())
             {
                 viewModel.getInformation(sharedId)
                 isLoading.value = true
@@ -57,99 +61,177 @@ class Contacts_Screen (private val sharedId: Int) : Screen {
 
     }
 }
-
+@Preview
+@Composable
+fun PreviewContacts() {
+    Contacts_construct()
+}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Contacts_construct(viewModel: ContactsViewModel = koinViewModel()) {
-
     if (isLoading.value) {
         val navigator = LocalNavigator.current
-        Public_Scaffold(
-            mainText = "Контакты",
-            backButton = true,
+        Scaffold (
             topBar = {
                 TopAppBar(
-                    title = {
-                        Row(
-                            modifier = Modifier.fillMaxSize(),
-                            horizontalArrangement = Arrangement.Start,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.arrow_square_right),
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .size(30.dp)
-                                    .clickable {
-
-                                        navigator?.pop()
-                                    },
-                                tint = mainColor
-                            )
-                        }
+                    title = {},
+                    navigationIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.arrow_square_right),
+                            contentDescription = "",
+                            modifier = Modifier
+                                .size(35.dp)
+                                .clickable { navigator?.pop() },
+                            tint = mainColor,
+                        )
                     },
-                    colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
+                    colors = TopAppBarDefaults.topAppBarColors(containerColor = backgroundColor),
                     modifier = Modifier
                         .fillMaxWidth(),
                 )
-            }
-        ) {
+            },
+
+        ) { innerPadding ->
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 80.dp, start = 5.dp, end = 5.dp),
+                    .padding(innerPadding),
                 horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.SpaceBetween
+                verticalArrangement = Arrangement.SpaceBetween,
             ) {
-
-
                 item {
-//                LaunchedEffect(true) {
-//                    email.value = viewModel.GetMail()
-//                }
                     Text(
-                        modifier = Modifier
-                            .padding(top = paddimgBetween_Text),
-                        text = "Номер телефона: ${viewModel.informationList.collectAsState().value[0].vakans_number}"/*"Номер телефона: ${vm.number_phone.value}"*/, /*"Номер телефона: +79000"*/ /*vm.list[vm.number_contacts.value].vakans_mail*/
-                        style = mainTextStyle,
+                        text = "Номер телефона: ${viewModel.informationList.collectAsState().value[0].vakans_number}",
+                        style = Tema.Text_24_24_Medium,
                         color = MaterialTheme.colorScheme.primary,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.padding(horizontal = 5.dp)
                     )
                     Text(
-                        modifier = Modifier
-                            .padding(top = paddimgBetween_Text),
                         text ="Почта: ${viewModel.informationList.collectAsState().value[0].vakans_mail}",
-                        style = mainTextStyle,
+                        style = Tema.Text_24_24_Medium,
                         color = MaterialTheme.colorScheme.primary,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.padding(horizontal = 5.dp)
                     )
                     Text(
-                        modifier = Modifier
-                            .padding(top = paddimgBetween_Text),
                         text = "Расположение: ${viewModel.informationList.collectAsState().value[0].vakans_raspolog}",
-                        style = mainTextStyle,
+                        style = Tema.Text_24_24_Medium,
                         color = MaterialTheme.colorScheme.primary,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.fillMaxWidth()
+                            .drawBehind {
+                                drawLine(
+                                    mainColor,
+                                    Offset(0f, size.height),
+                                    Offset(size.width, size.height),
+                                    10f
+                                )
+                            }
+                            .padding(start = 5.dp, end = 5.dp, bottom = 10.dp)
                     )
                     Text(
-                        modifier = Modifier
-                            .padding(top = paddimgBetween_Text),
                         text = "О работе:",
-                        style = mainTextStyle,
+                        style = Tema.Text_24_24_Medium,
                         color = MaterialTheme.colorScheme.primary,
-                        textAlign = TextAlign.Start
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.padding( top = 30.dp).padding(start =  5.dp, end = 5.dp),
                     )
                     Text(
-                        modifier = Modifier
-                            .padding(top = paddimgBetween_Text),
                         text = viewModel.informationList.collectAsState().value[0].vakans_aboutWork,
-                        style = mainTextStyle,
+                        style = Tema.Text_24_24_Medium,
                         color = MaterialTheme.colorScheme.primary,
-                        textAlign = TextAlign.Start
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.padding(start = 5.dp, end = 10.dp)
                     )
                 }
             }
         }
+//        Public_Scaffold(
+//            mainText = "Контакты",
+//            backButton = true,
+//            topBar = {
+//                TopAppBar(
+//                    title = {
+//                        Row(
+//                            modifier = Modifier.fillMaxSize(),
+//                            horizontalArrangement = Arrangement.Start,
+//                            verticalAlignment = Alignment.CenterVertically
+//                        ) {
+//                            Icon(
+//                                painter = painterResource(id = R.drawable.arrow_square_right),
+//                                contentDescription = "",
+//                                modifier = Modifier
+//                                    .size(30.dp)
+//                                    .clickable {
+//
+//                                        navigator?.pop()
+//                                    },
+//                                tint = mainColor
+//                            )
+//                        }
+//                    },
+//                    colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
+//                    modifier = Modifier
+//                        .fillMaxWidth(),
+//                )
+//            }
+//        ) {
+//            LazyColumn(
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .padding(top = 65.dp),
+//                horizontalAlignment = Alignment.Start,
+//                verticalArrangement = Arrangement.SpaceBetween,
+//            ) {
+//                item {
+//                    Text(
+//                        text = "Номер телефона: ${viewModel.informationList.collectAsState().value[0].vakans_number}",
+//                        style = Tema.Text_24_24_Medium,
+//                        color = MaterialTheme.colorScheme.primary,
+//                        textAlign = TextAlign.Start,
+//                        modifier = Modifier.padding(horizontal = 5.dp)
+//                    )
+//                    Text(
+//                        text ="Почта: ${viewModel.informationList.collectAsState().value[0].vakans_mail}",
+//                        style = Tema.Text_24_24_Medium,
+//                        color = MaterialTheme.colorScheme.primary,
+//                        textAlign = TextAlign.Start,
+//                        modifier = Modifier.padding(horizontal = 5.dp)
+//                    )
+//                    Text(
+//                        text = "Расположение: ${viewModel.informationList.collectAsState().value[0].vakans_raspolog}",
+//                        style = Tema.Text_24_24_Medium,
+//                        color = MaterialTheme.colorScheme.primary,
+//                        textAlign = TextAlign.Start,
+//                        modifier = Modifier.fillMaxWidth()
+//                            .drawBehind {
+//                            drawLine(
+//                                mainColor,
+//                                Offset(0f, size.height),
+//                                Offset(size.width, size.height),
+//                                10f
+//                            )
+//                        }
+//                            .padding(start = 5.dp, end = 5.dp, bottom = 10.dp)
+//                    )
+//                    Text(
+//                        text = "О работе:",
+//                        style = Tema.Text_24_24_Medium,
+//                        color = MaterialTheme.colorScheme.primary,
+//                        textAlign = TextAlign.Start,
+//                        modifier = Modifier.padding( top = 30.dp).padding(start =  5.dp, end = 5.dp),
+//                    )
+//                    Text(
+//                        text = viewModel.informationList.collectAsState().value[0].vakans_aboutWork,
+//                        style = Tema.Text_24_24_Medium,
+//                        color = MaterialTheme.colorScheme.primary,
+//                        textAlign = TextAlign.Start,
+//                        modifier = Modifier.padding(start = 5.dp, end = 10.dp)
+//                    )
+//                }
+//            }
+//        }
     } else {
         Public_Loading(isLoading = isLoading.value)
     }
