@@ -1,4 +1,4 @@
-package com.example.ozonchick_new_version.Screens.SignUp_LogIn.LogIn
+package com.example.ozonchick_new_version.Screens.SignUpLogIn.LogIn
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,11 +20,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -50,15 +47,16 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.MainFontFamily
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Ozonchick_new_versionTheme
 import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Screens.Home.Profile_Screen
-import com.example.ozonchick_new_version.Screens.SignUp_LogIn.SignUp.SignUp_Screen
+import com.example.ozonchick_new_version.Screens.SignUpLogIn.SignUp.SignUp_Screen
+import com.example.ozonchick_new_version.Screens.SignUp_LogIn.LogIn.LogInViewModel
 import org.koin.androidx.compose.koinViewModel
 
-class LogIn_Screen : Screen {
+class LogInScreen : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.current
         Ozonchick_new_versionTheme {
-            LogIn_Construct(
+            LogInConstruct(
                 onNavigateForProfile = {
                     navigator?.replaceAll(Profile_Screen())
                 },
@@ -71,10 +69,9 @@ class LogIn_Screen : Screen {
 }
 
 @Composable
-fun LogIn_Construct(viewModel: LogInViewModel = koinViewModel(),
-                    onNavigateForProfile: () -> Unit, onNavigateForSignUp: () -> Unit) {
+private fun LogInConstruct(viewModel: LogInViewModel = koinViewModel(),
+                           onNavigateForProfile: () -> Unit, onNavigateForSignUp: () -> Unit) {
 
-//    val authState = vm.accessSharedAuth.collectAsState()
 
     MaterialTheme.colorScheme
     Box(

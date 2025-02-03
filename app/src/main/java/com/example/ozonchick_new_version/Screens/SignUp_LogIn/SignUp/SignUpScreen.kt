@@ -1,4 +1,4 @@
-package com.example.ozonchick_new_version.Screens.SignUp_LogIn.SignUp
+package com.example.ozonchick_new_version.Screens.SignUpLogIn.SignUp
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -46,7 +45,8 @@ import com.example.ozonchick_new_version.Data_Layer.data.dto.userType
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.ButtonPendingCondition
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Primary_Color
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.secondaryElementColor
-import com.example.ozonchick_new_version.Screens.SignUp_LogIn.LogIn.LogIn_Screen
+import com.example.ozonchick_new_version.Screens.SignUpLogIn.LogIn.LogInScreen
+import com.example.ozonchick_new_version.Screens.SignUp_LogIn.SignUp.SignUpViewModel
 
 class SignUp_Screen : Screen {
     @Composable
@@ -54,7 +54,7 @@ class SignUp_Screen : Screen {
         val navigator = LocalNavigator.current
         Create_Account(
             onNavigateForLogIn = {
-                navigator?.replaceAll(LogIn_Screen())
+                navigator?.replaceAll(LogInScreen())
             }
         )
     }

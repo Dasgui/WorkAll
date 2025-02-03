@@ -11,11 +11,8 @@ import com.example.ozonchick_new_version.Data_Layer.data.db.idSharedUser
 import com.example.ozonchick_new_version.Data_Layer.data.db.userAuthInformation
 import com.example.ozonchick_new_version.Data_Layer.data.db.userSharedId
 import com.example.ozonchick_new_version.Data_Layer.model.SignUp_LogIn_Model.UserName
-import com.example.ozonchick_new_version.Data_Layer.model.SignUp_LogIn_Model.User_id_name_email
-import com.example.ozonchick_new_version.Data_Layer.model.SignUp_LogIn_Model.User_name_email
 import com.example.ozonchick_new_version.Data_Layer.network.supabase
-import com.example.ozonchick_new_version.Screens.SignUp_LogIn.LogIn.LogIn_Screen
-import com.google.gson.Gson
+import com.example.ozonchick_new_version.Screens.SignUpLogIn.LogIn.LogInScreen
 import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.query.Columns
@@ -59,7 +56,7 @@ class HomeViewModel() : ViewModel() {
             supabase.auth.signOut()
         }
         Paper.book().delete("User")
-        navigator?.replaceAll(LogIn_Screen())
+        navigator?.replaceAll(LogInScreen())
     }
 
 }
