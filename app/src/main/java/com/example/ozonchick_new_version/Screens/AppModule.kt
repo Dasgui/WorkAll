@@ -6,38 +6,41 @@ import com.example.ozonchick_new_version.Screens.Home.Employer.Candidate.ListOfC
 import com.example.ozonchick_new_version.Screens.Home.Employer.Vacancies.ListOfVacancies_ViewModel
 import com.example.ozonchick_new_version.Screens.SignUp_LogIn.LogIn.LogInViewModel
 import com.example.ozonchick_new_version.Screens.Home.Candidate.VakansCreate_ViewModel
+import com.example.ozonchick_new_version.Screens.Home.ProfileViewModel
 import com.example.ozonchick_new_version.Screens.Responses.ResponsesViewModel
 import com.example.ozonchick_new_version.Screens.SignUp_LogIn.SignUp.SignUpViewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 var AppModule = module {
     single {
         LogInViewModel()
     }
-    single {
+    viewModel {
         SignUpViewModel()
     }
 
+    viewModel {
+        (userId : Int) -> ProfileViewModel(userId)
+    }
 
-    single {
+    viewModel {
         HomeViewModel()
     }
-    single {
+    viewModel {
         ResponsesViewModel()
     }
-    single {
+    viewModel {
         ContactsViewModel()
     }
 
-    single {
+    viewModel {
         ListOfVacancies_ViewModel()
     }
-    single {
+    viewModel {
         ListOfCandidate_ViewModel()
     }
-    single {
+    viewModel {
         VakansCreate_ViewModel()
     }
-
-
 }

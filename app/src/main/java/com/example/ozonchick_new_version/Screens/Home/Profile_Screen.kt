@@ -38,26 +38,20 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Lo
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Scaffold
 import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Ozonchick_new_versionTheme
+import com.example.ozonchick_new_version.Presentation.ScreenState
 import com.example.ozonchick_new_version.R
+import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 
-
-
-class Profile_Screen() : Screen {
+class Profile_Screen(val userId : Int) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.current
-        var isLoading: MutableState<Boolean> = remember {
-            mutableStateOf(false)
-        }
-        val viewModel: HomeViewModel = koinViewModel()
+        val viewModel: ProfileViewModel = get{ parametersOf(userId)}
         Ozonchick_new_versionTheme {
-            LaunchedEffect(true) {
-                viewModel.getName()
-                isLoading.value = true
-            }
-            Profile_Construct(isLoading.value, navigator)
+            Profile_Construct(navigator, viewModel)
         }
     }
 }
@@ -65,21 +59,23 @@ class Profile_Screen() : Screen {
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Profile_Construct(isLoading:Boolean, navigator: Navigator?) {
-
-    if (isLoading) {
-        Public_Scaffold(mainText = "Профиль", bottomButton = true) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 15.dp, end = 15.dp, top = 90.dp)
-            ) {
-                ScreenHead(navigator = navigator)
-                ScreenBody(navigator = navigator)
+fun Profile_Construct(navigator: Navigator?, viewModel: ProfileViewModel) {
+    val screenState = viewModel.informationProfileState.collectAsState()
+    when (val curState = screenState.value) {
+        is ScreenState.Failure -> Unit
+        ScreenState.Loading -> Unit
+        is ScreenState.Success -> {
+            Public_Scaffold(mainText = "Профиль", bottomButton = true) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 15.dp, end = 15.dp, top = 90.dp)
+                ) {
+                    ScreenHead(navigator = navigator, curState.data.name)
+                    ScreenBody(navigator = navigator)
+                }
             }
         }
-    } else {
-        Public_Loading(isLoading)
     }
 
 
@@ -88,8 +84,8 @@ fun Profile_Construct(isLoading:Boolean, navigator: Navigator?) {
 
 @Composable
 private fun ScreenHead(
-    viewModel: HomeViewModel = koinViewModel(),
-    navigator: Navigator?
+    navigator: Navigator?,
+    name : String
 ) {
     Row(modifier = Modifier.fillMaxWidth()) {
         Image(
@@ -109,9 +105,8 @@ private fun ScreenHead(
                 horizontalAlignment = Alignment.Start,
                 modifier = Modifier.padding(start = 10.dp)
             ) {
-                Log.d("Имя 2", viewModel.nameUser.collectAsState().value)
                 Text(
-                    text = viewModel.nameUser.collectAsState().value/*"Имя"*/,
+                    text = name,
                     style = Tema.Text_24_24_Bold,
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -125,7 +120,7 @@ private fun ScreenHead(
                     contentDescription = "Выход",
                     modifier = Modifier
                         .size(50.dp)
-                        .clickable { viewModel.Exit(navigator) },
+/*                        .clickable { viewModel.Exit(navigator) }*/,
                     colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
                 )
             }

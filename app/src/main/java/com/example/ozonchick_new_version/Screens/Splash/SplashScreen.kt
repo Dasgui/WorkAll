@@ -15,7 +15,7 @@ import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Screens.SignUpLogIn.LogIn.LogInScreen
 import com.example.ozonchick_new_version.Screens.ListVacancies.ListVacanciesScreen
 
-class Splash_Screen : Screen {
+class SplashScreen : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.current
@@ -23,7 +23,7 @@ class Splash_Screen : Screen {
             onNavigateForLogin = {
                 navigator?.replaceAll(LogInScreen())
             },
-            onNavigateForPredlogenii = {
+            onNavigateForHome = {
                 navigator?.replaceAll(ListVacanciesScreen())
             }
         )
@@ -31,17 +31,13 @@ class Splash_Screen : Screen {
 }
 
 @Composable
-fun Splash(onNavigateForLogin: () -> Unit, onNavigateForPredlogenii: () -> Unit) {
-    val navigator = LocalNavigator.current
+fun Splash(onNavigateForLogin: () -> Unit, onNavigateForHome: () -> Unit) {
 
     LaunchedEffect(key1 = true) {
-//        Paper.book().delete("User")
         if (userAuthInformation.isNotEmpty()) {
-            onNavigateForPredlogenii()
-            /*navigator?.replaceAll(Spisok_Predlogenii_Screen())*/
+            onNavigateForHome()
         } else {
             onNavigateForLogin()
-            /*navigator?.replaceAll(LogIn_Screen())*/
         }
 
     }

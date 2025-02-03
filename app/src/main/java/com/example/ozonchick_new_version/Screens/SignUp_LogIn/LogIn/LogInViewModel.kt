@@ -1,18 +1,27 @@
 package com.example.ozonchick_new_version.Screens.SignUp_LogIn.LogIn
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.ozonchick_new_version.Data_Layer.model.SignUp_LogIn_Model.UserInformationAuth
+import com.example.ozonchick_new_version.Data_Layer.network.supabase
 import com.example.ozonchick_new_version.Domain.postAuth
+import com.example.ozonchick_new_version.Presentation.ScreenState
+import io.github.jan.supabase.postgrest.from
+import io.github.jan.supabase.postgrest.query.Columns
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class LogInViewModel() : ViewModel() {
+    private val _userInformation:MutableStateFlow<List<UserInformationAuth>> = MutableStateFlow(emptyList())
+    var userInformation:StateFlow<List<UserInformationAuth>> = _userInformation.asStateFlow()
+
     private val _accessSharedAuth: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val accessSharedAuth: StateFlow<Boolean> = _accessSharedAuth.asStateFlow()
 
@@ -50,11 +59,25 @@ class LogInViewModel() : ViewModel() {
         _rememberUser.value = newValue
     }
 
-
-    fun Auth(/*contextAuth:Context*/)
+    val logInState : MutableStateFlow<ScreenState<UserInformationAuth>> = MutableStateFlow(ScreenState.Loading)
+    fun Auth()
     {
         viewModelScope.launch {
-            _accessSharedAuth.value = postAuth().postAuthEmail(emailUser.value,passwordUser.value, rememberUser.value)
+            try {
+                val user = supabase.from("user_information")
+                    .select(columns = Columns.list("user_id, email, password")) {
+                        filter {
+                            UserInformationAuth::email eq _emailUser.value
+                            UserInformationAuth::password eq _passwordUser.value
+                        }
+                    }.decodeList<UserInformationAuth>()
+                logInState.value = ScreenState.Success(UserInformationAuth(user[0].email, user[0].password, user[0].user_id))
+                Log.d("ИНФОРМАЦИЯ О ПОЛЬЗОВАТЕЛЕ", user.toString())
+            }
+            catch (ex : Exception) {
+                Log.d("ОШИБКА ВХОДА", ex.toString())
+                logInState.value = ScreenState.Failure(122, ex.toString())
+            }
         }
     }
 

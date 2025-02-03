@@ -1,0 +1,33 @@
+package com.example.ozonchick_new_version.Screens.Home
+
+import androidx.compose.runtime.MutableState
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.ozonchick_new_version.Data_Layer.data.db.idSharedUser
+import com.example.ozonchick_new_version.Data_Layer.model.ProfileUIModel
+import com.example.ozonchick_new_version.Data_Layer.model.SignUp_LogIn_Model.UserName
+import com.example.ozonchick_new_version.Data_Layer.network.supabase
+import com.example.ozonchick_new_version.Presentation.ScreenState
+import io.github.jan.supabase.postgrest.from
+import io.github.jan.supabase.postgrest.query.Columns
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
+
+class ProfileViewModel(userId : Int) : ViewModel() {
+    init {
+        getName(userId)
+    }
+    val informationProfileState : MutableStateFlow<ScreenState<ProfileUIModel>> = MutableStateFlow(ScreenState.Loading)
+    fun getName(userId: Int) {
+        viewModelScope.launch (Dispatchers.IO) {
+            val result =
+                supabase.from("user_information").select(columns = Columns.list("name")) {
+                    filter {
+                        eq("user_id", userId)
+                    }
+                }.decodeList<UserName>()
+            informationProfileState.value = ScreenState.Success(ProfileUIModel(result[0].name))
+        }
+    }
+}

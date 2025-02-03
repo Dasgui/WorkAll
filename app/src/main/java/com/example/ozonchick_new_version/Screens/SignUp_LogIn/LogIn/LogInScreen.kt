@@ -1,5 +1,6 @@
 package com.example.ozonchick_new_version.Screens.SignUpLogIn.LogIn
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -45,6 +46,7 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.backgroundColor
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.MainFontFamily
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Ozonchick_new_versionTheme
+import com.example.ozonchick_new_version.Presentation.ScreenState
 import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Screens.Home.Profile_Screen
 import com.example.ozonchick_new_version.Screens.SignUpLogIn.SignUp.SignUp_Screen
@@ -54,25 +56,17 @@ import org.koin.androidx.compose.koinViewModel
 class LogInScreen : Screen {
     @Composable
     override fun Content() {
-        val navigator = LocalNavigator.current
         Ozonchick_new_versionTheme {
-            LogInConstruct(
-                onNavigateForProfile = {
-                    navigator?.replaceAll(Profile_Screen())
-                },
-                onNavigateForSignUp = {
-                    navigator?.replaceAll(SignUp_Screen())
-                }
-            )
+            LogInConstruct()
         }
     }
 }
 
 @Composable
-private fun LogInConstruct(viewModel: LogInViewModel = koinViewModel(),
-                           onNavigateForProfile: () -> Unit, onNavigateForSignUp: () -> Unit) {
-
-
+private fun LogInConstruct(
+    viewModel: LogInViewModel = koinViewModel()
+) {
+    val navigator = LocalNavigator.current
     MaterialTheme.colorScheme
     Box(
         modifier = Modifier
@@ -89,19 +83,16 @@ private fun LogInConstruct(viewModel: LogInViewModel = koinViewModel(),
             TextHead()
             MainBody(viewModel)
             BottomBody(viewModel)
-            if (viewModel.accessSharedAuth.collectAsState().value) {
-                emailSharedUser.value = viewModel.emailUser.collectAsState().value
-                onNavigateForProfile()
-            }
-            BottomText(viewModel, onNavigateForSignUp = onNavigateForSignUp)
+            BottomText(
+                viewModel,
+                onNavigateForSignUp = { navigator?.replaceAll(SignUp_Screen()) })
         }
     }
 
 }
 
 @Composable
-private fun TextHead()
-{
+private fun TextHead() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -122,8 +113,7 @@ private fun TextHead()
 }
 
 @Composable
-private fun MainBody(viewModel: LogInViewModel)
-{
+private fun MainBody(viewModel: LogInViewModel) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -138,7 +128,7 @@ private fun MainBody(viewModel: LogInViewModel)
             )
             SignUp_LogIn_OutlinedTextField(
                 value = viewModel.emailUser.collectAsState().value,
-                onValueChange = { viewModel.setEmailUserFieldValue (it) },
+                onValueChange = { viewModel.setEmailUserFieldValue(it) },
                 placeholder = {
                     Text(
                         text = "*******@mail.com",
@@ -150,10 +140,15 @@ private fun MainBody(viewModel: LogInViewModel)
             Column(
                 modifier = Modifier.padding(top = 24.dp)
             ) {
-                Text(text = "Пароль", style = Tema.Text_24_24_Bold, maxLines = 1, color = MaterialTheme.colorScheme.primary)
+                Text(
+                    text = "Пароль",
+                    style = Tema.Text_24_24_Bold,
+                    maxLines = 1,
+                    color = MaterialTheme.colorScheme.primary
+                )
                 SignUp_LogIn_OutlinedTextField(
                     value = viewModel.passwordUser.collectAsState().value,
-                    onValueChange = { viewModel.setPasswordUserFieldValue (it) },
+                    onValueChange = { viewModel.setPasswordUserFieldValue(it) },
                     placeholder = {
                         Text(
                             text = "***********",
@@ -161,7 +156,8 @@ private fun MainBody(viewModel: LogInViewModel)
                         )
                     },
                     trailingIcon = {
-                        val localImage:MutableState<Int> =remember { mutableStateOf(R.drawable.eye_slash) }
+                        val localImage: MutableState<Int> =
+                            remember { mutableStateOf(R.drawable.eye_slash) }
                         Image(
                             painter = painterResource(id = localImage.value),
                             contentDescription = "Показать пароль",
@@ -188,8 +184,7 @@ private fun MainBody(viewModel: LogInViewModel)
 }
 
 @Composable
-private fun BottomBody(viewModel: LogInViewModel)
-{
+private fun BottomBody(viewModel: LogInViewModel) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -199,7 +194,7 @@ private fun BottomBody(viewModel: LogInViewModel)
     ) {
         Checkbox(
             checked = viewModel.rememberUser.collectAsState().value,
-            onCheckedChange = { viewModel.setRememberUserCheckBoxValue  (it) },
+            onCheckedChange = { viewModel.setRememberUserCheckBoxValue(it) },
             modifier = Modifier
                 .size(35.dp),
             colors = CheckboxDefaults.colors(
@@ -223,15 +218,22 @@ private fun BottomBody(viewModel: LogInViewModel)
 }
 
 @Composable
-private fun BottomText(viewModel: LogInViewModel, onNavigateForSignUp: () -> Unit)
-{
+private fun BottomText(
+    viewModel: LogInViewModel,
+    onNavigateForSignUp: () -> Unit
+) {
+    val screenState = viewModel.logInState.collectAsState()
+    val navigator = LocalNavigator.current
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.padding(top = 64.dp)
     ) {
         SignUp_LogIn_Button(
-            enabled = viewModel.ConstructProverka(viewModel.emailUser.collectAsState().value, viewModel.passwordUser.collectAsState().value),
+            enabled = viewModel.ConstructProverka(
+                viewModel.emailUser.collectAsState().value,
+                viewModel.passwordUser.collectAsState().value
+            ),
             onClick = {
                 viewModel.Auth()
             },
@@ -243,11 +245,16 @@ private fun BottomText(viewModel: LogInViewModel, onNavigateForSignUp: () -> Uni
                 color = MaterialTheme.colorScheme.primary
             )
         }
+        when (val curState = screenState.value) {
+            is ScreenState.Failure -> Log.d("ОШИБКА ВХОДА", curState.message)
+            ScreenState.Loading -> Unit
+            is ScreenState.Success -> navigator?.replaceAll(Profile_Screen(curState.data.user_id))
+        }
 
         val SignUpText = buildAnnotatedString {
             withStyle(
                 style = SpanStyle(
-                    color =  MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.primary,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium,
                     fontFamily = MainFontFamily
@@ -277,7 +284,9 @@ private fun BottomText(viewModel: LogInViewModel, onNavigateForSignUp: () -> Uni
                         onNavigateForSignUp()
                     }
             },
-            modifier = Modifier.padding(top = 20.dp).testTag("Registrait")
+            modifier = Modifier
+                .padding(top = 20.dp)
+                .testTag("Registrait")
         )
     }
 }

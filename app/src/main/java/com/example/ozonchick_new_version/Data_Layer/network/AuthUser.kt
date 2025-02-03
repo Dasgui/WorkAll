@@ -30,10 +30,6 @@ class AuthUser() {
         if (user.isEmpty()) {
             Info.complete(DTOMessage(false, "Ошибка входа в систему"))
         } else {
-//            if (rememberUser) {
-//                userAuthInformation.add(UserInformationAuth(email, password))
-//                Paper.book().write("User", userAuthInformation)
-//            }
             idSharedUser.value = user[0].user_id
             Info.complete(DTOMessage(true, "Успешная авторизация"))
         }
