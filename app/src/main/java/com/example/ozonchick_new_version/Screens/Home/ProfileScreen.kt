@@ -1,7 +1,6 @@
 package com.example.ozonchick_new_version.Screens.Home
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,11 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,24 +29,22 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Card
-import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Loading
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.Public_Scaffold
 import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Ozonchick_new_versionTheme
 import com.example.ozonchick_new_version.Presentation.ScreenState
 import com.example.ozonchick_new_version.R
-import org.koin.androidx.compose.get
-import org.koin.androidx.compose.koinViewModel
+import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
 
 
-class Profile_Screen(val userId : Int) : Screen {
+class ProfileScreen(private val userId : Int) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.current
-        val viewModel: ProfileViewModel = get{ parametersOf(userId)}
+        val viewModel: ProfileViewModel = getViewModel { parametersOf(userId)}
         Ozonchick_new_versionTheme {
-            Profile_Construct(navigator, viewModel)
+            ProfileConstruct(navigator, viewModel)
         }
     }
 }
@@ -59,7 +52,7 @@ class Profile_Screen(val userId : Int) : Screen {
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Profile_Construct(navigator: Navigator?, viewModel: ProfileViewModel) {
+private fun ProfileConstruct(navigator: Navigator?, viewModel: ProfileViewModel) {
     val screenState = viewModel.informationProfileState.collectAsState()
     when (val curState = screenState.value) {
         is ScreenState.Failure -> Unit

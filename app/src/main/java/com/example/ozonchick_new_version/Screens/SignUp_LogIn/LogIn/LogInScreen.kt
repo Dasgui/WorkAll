@@ -39,7 +39,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import com.example.ozonchick_new_version.Data_Layer.data.db.emailSharedUser
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.SignUp_LogIn_Components.SignUp_LogIn_Button
 import com.example.ozonchick_new_version.Data_Layer.data.ui.components.SignUp_LogIn_Components.SignUp_LogIn_OutlinedTextField
 import com.example.ozonchick_new_version.Data_Layer.data.ui.text_tema.Tema
@@ -48,7 +47,7 @@ import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.MainFontFamily
 import com.example.ozonchick_new_version.Data_Layer.data.ui.theme.Ozonchick_new_versionTheme
 import com.example.ozonchick_new_version.Presentation.ScreenState
 import com.example.ozonchick_new_version.R
-import com.example.ozonchick_new_version.Screens.Home.Profile_Screen
+import com.example.ozonchick_new_version.Screens.Home.ProfileScreen
 import com.example.ozonchick_new_version.Screens.SignUpLogIn.SignUp.SignUp_Screen
 import com.example.ozonchick_new_version.Screens.SignUp_LogIn.LogIn.LogInViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -248,7 +247,7 @@ private fun BottomText(
         when (val curState = screenState.value) {
             is ScreenState.Failure -> Log.d("ОШИБКА ВХОДА", curState.message)
             ScreenState.Loading -> Unit
-            is ScreenState.Success -> navigator?.replaceAll(Profile_Screen(curState.data.user_id))
+            is ScreenState.Success -> navigator?.replaceAll(ProfileScreen(curState.data.user_id))
         }
 
         val SignUpText = buildAnnotatedString {

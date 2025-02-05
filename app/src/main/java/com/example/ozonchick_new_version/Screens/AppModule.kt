@@ -21,7 +21,8 @@ var AppModule = module {
     }
 
     viewModel {
-        (userId : Int) -> ProfileViewModel(userId)
+        (userId : Int) ->
+        ProfileViewModel(userId)
     }
 
     viewModel {
