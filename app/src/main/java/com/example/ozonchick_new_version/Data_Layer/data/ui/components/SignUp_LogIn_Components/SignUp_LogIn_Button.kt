@@ -28,7 +28,7 @@ fun SignUp_LogIn_Button(
         .height(46.dp),
     enabled: Boolean = true,
     shape: Shape = RectangleShape,
-    colors: ButtonColors = ButtonDefaults.buttonColors(containerColor = backgroundColor, contentColor = mainColor),
+    colors: ButtonColors,
     elevation: ButtonElevation? = ButtonDefaults.buttonElevation(),
     border: BorderStroke? = BorderStroke(BorderSize, mainColor),
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,

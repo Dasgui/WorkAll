@@ -25,7 +25,7 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Color(0xFFFFFFFF) /*Text_Color_Active_DarkMode*/ /*Color_Background.value*/,
+    primary = Color.Red/*Color(0xFFFFFFFF)*/,
     secondary = Color(0xFF0560FA) /*Color.Yellow*/ /*Gray_Color_Passive_Secondary*/,
     tertiary = Pink40,
     background = Color(0xFF141414)/*Color_Background.value*/,

@@ -23,11 +23,12 @@ fun FailAlertDialog(
     onOkClick : () -> Unit,
 ) {
     AlertDialog(
+        containerColor = backgroundColor,
         title = {
-            Text(text = title, style = Tema.Text_20_20_Medium)
+            Text(text = title, style = Tema.Text_20_20_Medium, color = mainColor)
         },
         text = {
-            Text(text = text, style = Tema.Text_16_16_Medium)
+            Text(text = text, style = Tema.Text_16_16_Medium, color = mainColor)
         },
         onDismissRequest = {
             onOkClick()
@@ -38,11 +39,9 @@ fun FailAlertDialog(
                     onOkClick()
                 }
             ) {
-                Text("Хорошо", style = Tema.Text_16_16_Medium)
+                Text("Хорошо", style = Tema.Text_16_16_Medium, color = mainColor)
             }
         },
-        containerColor = backgroundColor,
-        textContentColor = mainColor,
-        titleContentColor = mainColor
+
     )
 }
