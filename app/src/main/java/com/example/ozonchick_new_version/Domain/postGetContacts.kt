@@ -1,12 +1,8 @@
 package com.example.ozonchick_new_version.Domain
 
 import android.content.Context
-import android.view.Gravity
-import android.widget.Toast
-import com.example.ozonchick_new_version.Data_Layer.model.TestModel_Get
-import com.example.ozonchick_new_version.Data_Layer.model.Vakans_information
-import com.example.ozonchick_new_version.Data_Layer.network.AuthUser
-import com.example.ozonchick_new_version.Data_Layer.network.GetContacts
+import com.example.ozonchick_new_version.Data.model.TestModel_Get
+import com.example.ozonchick_new_version.Data.network.GetContacts
 import kotlinx.coroutines.CompletableDeferred
 
 class postGetContacts(context: Context) {

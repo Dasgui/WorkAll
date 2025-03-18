@@ -7,7 +7,7 @@ import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.printToLog
-import com.example.ozonchick_new_version.Screens.MainActivity
+import com.example.ozonchick_new_version.Presentation.MainActivity
 import org.junit.Rule
 import org.junit.Test
 

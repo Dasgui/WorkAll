@@ -1,6 +1,6 @@
 package com.example.ozonchick_new_version.Domain
 
-import com.example.ozonchick_new_version.Data_Layer.network.RegistraitUser
+import com.example.ozonchick_new_version.Data.network.RegistraitUser
 import kotlinx.coroutines.CompletableDeferred
 
 class postRegistrait() {

@@ -1,0 +1,39 @@
+package com.example.ozonchick_new_version.Data.data.ui.components
+
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import com.example.ozonchick_new_version.Data.data.ui.text_tema.Tema
+import com.example.ozonchick_new_version.Data.data.ui.theme.backgroundColor
+import com.example.ozonchick_new_version.Data.data.ui.theme.mainColor
+
+@Composable
+fun FailAlertDialog(
+    title: String,
+    text: String,
+    onOkClick : () -> Unit,
+) {
+    AlertDialog(
+        containerColor = backgroundColor,
+        title = {
+            Text(text = title, style = Tema.Text_20_20_Medium, color = mainColor)
+        },
+        text = {
+            Text(text = text, style = Tema.Text_16_16_Medium, color = mainColor)
+        },
+        onDismissRequest = {
+            onOkClick()
+        },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onOkClick()
+                }
+            ) {
+                Text("Хорошо", style = Tema.Text_16_16_Medium, color = mainColor)
+            }
+        },
+
+    )
+}
