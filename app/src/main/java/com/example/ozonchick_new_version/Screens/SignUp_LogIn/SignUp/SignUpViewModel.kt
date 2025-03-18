@@ -191,7 +191,7 @@ class SignUpViewModel : ViewModel() {
     }
 
     private fun isMail(): Boolean {
-        val answer: Boolean = (_email.value == _email.value.toLowerCase()
+        val answer: Boolean = (_email.value == _email.value/*.toLowerCase()*/
                 && _email.value.contains('@'))
         return answer
     }

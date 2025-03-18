@@ -62,9 +62,9 @@ fun NIaTextField(
         } else {
             Tema.TextField_Black
         },
-        colors = TextFieldDefaults.textFieldColors(
+        colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Gray_Color_Passive_Secondary,
-            containerColor = Color.White
+            focusedContainerColor = Color.White
         ),
     )
 

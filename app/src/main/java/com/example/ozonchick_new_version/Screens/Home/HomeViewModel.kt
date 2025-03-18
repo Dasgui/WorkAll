@@ -13,7 +13,6 @@ import com.example.ozonchick_new_version.Data_Layer.data.db.userSharedId
 import com.example.ozonchick_new_version.Data_Layer.model.SignUp_LogIn_Model.UserName
 import com.example.ozonchick_new_version.Data_Layer.network.supabase
 import com.example.ozonchick_new_version.Screens.SignUpLogIn.LogIn.LogInScreen
-import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.query.Columns
 import io.paperdb.Paper
@@ -53,7 +52,6 @@ class HomeViewModel() : ViewModel() {
             userSharedId.value = 0
             accessSharedRegistrait.value = false
             userAuthInformation.clear()
-            supabase.auth.signOut()
         }
         Paper.book().delete("User")
         navigator?.replaceAll(LogInScreen())
