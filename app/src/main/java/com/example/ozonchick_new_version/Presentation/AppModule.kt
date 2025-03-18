@@ -1,5 +1,8 @@
 package com.example.ozonchick_new_version.Presentation
 
+import com.example.ozonchick_new_version.Data.network.Repository
+import com.example.ozonchick_new_version.Data.network.RepositoryImpl
+import com.example.ozonchick_new_version.Domain.AuthUseCase
 import com.example.ozonchick_new_version.Presentation.ViewModels.ContactsViewModel
 import com.example.ozonchick_new_version.Presentation.ViewModels.HomeViewModel
 import com.example.ozonchick_new_version.Presentation.ViewModels.ListOfCandidate_ViewModel
@@ -12,9 +15,12 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 var AppModule = module {
-    single {
-        LogInViewModel()
+    factory<Repository> { RepositoryImpl() }
+    factory { AuthUseCase(get()) }
+    viewModel {
+        LogInViewModel(get())
     }
+
     viewModel {
         SignUpViewModel()
     }

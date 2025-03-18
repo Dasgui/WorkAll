@@ -33,6 +33,7 @@ import com.example.ozonchick_new_version.Presentation.ViewModels.ProfileViewMode
 import com.example.ozonchick_new_version.Presentation.ui.components.Public_Card
 import com.example.ozonchick_new_version.Presentation.ui.components.Public_Scaffold
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
+import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.Ozonchick_new_versionTheme
 import com.example.ozonchick_new_version.R
 import org.koin.androidx.compose.getViewModel
@@ -43,9 +44,7 @@ class ProfileScreen(private val userId : Int) : Screen {
     override fun Content() {
         val navigator = LocalNavigator.current
         val viewModel: ProfileViewModel = getViewModel { parametersOf(userId) }
-        Ozonchick_new_versionTheme {
-            ProfileConstruct(navigator, viewModel)
-        }
+        ProfileConstruct(navigator, viewModel)
     }
 }
 
@@ -101,7 +100,7 @@ private fun ScreenHead(
                 Text(
                     text = name,
                     style = Tema.Text_24_24_Bold,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MainColor
                 )
             }
             Column(
@@ -114,7 +113,7 @@ private fun ScreenHead(
                     modifier = Modifier.Companion
                         .size(50.dp)
                     /*                        .clickable { viewModel.Exit(navigator) }*/,
-                    colorFilter = ColorFilter.Companion.tint(MaterialTheme.colorScheme.primary)
+                    colorFilter = ColorFilter.Companion.tint(MainColor)
                 )
             }
         }
@@ -154,11 +153,11 @@ private fun Card_construct(
         modifier = Modifier.Companion
             .fillMaxWidth()
             .padding(top = 20.dp)
-            .height(60.dp)
+            .height(80.dp)
             .clickable { localNavigator?.push(Settings_Screen()) },
     ) {
         Row(
-            modifier = Modifier.Companion.fillMaxSize(),
+            modifier = Modifier.padding(start = 5.dp, end = 5.dp).fillMaxSize(),
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.Companion.CenterVertically
         ) {
@@ -181,7 +180,7 @@ private fun CardMain(
             modifier = Modifier.Companion.size(25.dp),
             painter = painterResource(id = icon),
             contentDescription = "Значок",
-            tint = MaterialTheme.colorScheme.primary
+            tint = MainColor
         )
         Column(
             horizontalAlignment = Alignment.Companion.Start,
@@ -191,12 +190,12 @@ private fun CardMain(
             Text(
                 text = mainText,
                 style = Tema.Text_24_24_Bold,
-                color = MaterialTheme.colorScheme.primary,
+                color = MainColor,
             )
             Text(
                 text = secondText,
-                style = Tema.Text_18_18_Medium,
-                color = MaterialTheme.colorScheme.primary,
+                style = Tema.Text_20_20_Medium,
+                color = MainColor,
             )
         }
     }
@@ -204,6 +203,6 @@ private fun CardMain(
         modifier = Modifier.Companion.size(20.dp),
         painter = painterResource(id = R.drawable.vector),
         contentDescription = "",
-        tint = MaterialTheme.colorScheme.primary
+        tint = MainColor
     )
 }

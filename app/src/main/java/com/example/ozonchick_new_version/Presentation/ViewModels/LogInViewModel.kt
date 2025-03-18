@@ -3,19 +3,24 @@ package com.example.ozonchick_new_version.Presentation.ViewModels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.ozonchick_new_version.Common.CustomResult
+import com.example.ozonchick_new_version.Data.model.SigLogInModels.User
 import com.example.ozonchick_new_version.Data.model.SignUp_LogIn_Model.UserInformationAuth
 import com.example.ozonchick_new_version.Data.network.supabase
+import com.example.ozonchick_new_version.Domain.AuthUseCase
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import io.github.jan.supabase.exceptions.HttpRequestException
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.query.Columns
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.lang.IndexOutOfBoundsException
+import kotlin.invoke
 
-class LogInViewModel() : ViewModel() {
+class LogInViewModel(private val Auth : AuthUseCase) : ViewModel() {
     private val _userInformation: MutableStateFlow<List<UserInformationAuth>> =
         MutableStateFlow(emptyList())
     var userInformation: StateFlow<List<UserInformationAuth>> = _userInformation.asStateFlow()
@@ -31,7 +36,7 @@ class LogInViewModel() : ViewModel() {
     }
 
 
-    private val _emailUser: MutableStateFlow<String> = MutableStateFlow("")
+    private val _emailUser: MutableStateFlow<String> = MutableStateFlow("test07@inbox.ru")
     var emailUser: StateFlow<String> = _emailUser.asStateFlow()
 
     fun setEmailUserFieldValue(newValue: String)
@@ -60,43 +65,49 @@ class LogInViewModel() : ViewModel() {
     private val _isDataCorrect : MutableStateFlow<Boolean> = MutableStateFlow(false)
     var isDataCorrect : StateFlow<Boolean> = _isDataCorrect.asStateFlow()
 
-    val logInState : MutableStateFlow<ScreenState<UserInformationAuth>> =
+    val logInState : MutableStateFlow<ScreenState<User>> =
         MutableStateFlow(ScreenState.Loading)
     fun Auth()
     {
-        if (isDataValid()) {
-            logInState.value = ScreenState.Failure(4, "Проверьте адрес почты или пароль")
-            return
-        }
-        viewModelScope.launch {
-            try {
-                val user = supabase.from("user_information")
-                    .select(columns = Columns.Companion.list("user_id, email, password")) {
-                        filter {
-                            UserInformationAuth::email eq _emailUser.value
-                            UserInformationAuth::password eq _passwordUser.value
-                        }
-                    }.decodeList<UserInformationAuth>()
-                logInState.value = ScreenState.Success(
-                    UserInformationAuth(
-                        user[0].email,
-                        user[0].password,
-                        user[0].user_id
-                    )
-                )
-                Log.d("ИНФОРМАЦИЯ О ПОЛЬЗОВАТЕЛЕ", user.toString())
-            }
-            catch (ex : HttpRequestException) {
-                logInState.value = ScreenState.Failure(1, "Проверьте своё соединение с интернетом.")
-            }
-            catch (ex : IndexOutOfBoundsException) {
-                logInState.value = ScreenState.Failure(2, "Возможно, пользователя не существует. Проверьте введенные данные.")
-            }
-            catch (ex : Exception) {
-                Log.d("ОШИБКА ВХОДА", ex.toString())
-                logInState.value = ScreenState.Failure(3, "Неизвестная ошибка")
+        viewModelScope.launch (Dispatchers.IO) {
+            when (val curResult = Auth.invoke(_emailUser.value, _passwordUser.value)) {
+                is CustomResult.Failure -> logInState.value = ScreenState.Failure(curResult.code, curResult.message)
+                is CustomResult.Success -> logInState.value = ScreenState.Success(data = curResult.data)
             }
         }
+//        if (isDataValid()) {
+//            logInState.value = ScreenState.Failure(4, "Проверьте адрес почты или пароль")
+//            return
+//        }
+//        viewModelScope.launch {
+//            try {
+//                val user = supabase.from("user_information")
+//                    .select(columns = Columns.Companion.list("user_id, email, password")) {
+//                        filter {
+//                            UserInformationAuth::email eq _emailUser.value
+//                            UserInformationAuth::password eq _passwordUser.value
+//                        }
+//                    }.decodeList<UserInformationAuth>()
+//                logInState.value = ScreenState.Success(
+//                    UserInformationAuth(
+//                        user[0].email,
+//                        user[0].password,
+//                        user[0].user_id
+//                    )
+//                )
+//                Log.d("ИНФОРМАЦИЯ О ПОЛЬЗОВАТЕЛЕ", user.toString())
+//            }
+//            catch (ex : HttpRequestException) {
+//                logInState.value = ScreenState.Failure(1, "Проверьте своё соединение с интернетом.")
+//            }
+//            catch (ex : IndexOutOfBoundsException) {
+//                logInState.value = ScreenState.Failure(2, "Возможно, пользователя не существует. Проверьте введенные данные.")
+//            }
+//            catch (ex : Exception) {
+//                Log.d("ОШИБКА ВХОДА", ex.toString())
+//                logInState.value = ScreenState.Failure(3, "Неизвестная ошибка")
+//            }
+//        }
     }
 
     fun isDataValid() : Boolean
