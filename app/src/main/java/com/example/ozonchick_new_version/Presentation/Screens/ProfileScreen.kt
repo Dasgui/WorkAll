@@ -28,12 +28,12 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
-import com.example.ozonchick_new_version.Data.data.ui.components.Public_Card
-import com.example.ozonchick_new_version.Data.data.ui.components.Public_Scaffold
-import com.example.ozonchick_new_version.Data.data.ui.text_tema.Tema
-import com.example.ozonchick_new_version.Data.data.ui.theme.Ozonchick_new_versionTheme
-import com.example.ozonchick_new_version.Presentation.ScreenState
+import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ViewModels.ProfileViewModel
+import com.example.ozonchick_new_version.Presentation.ui.components.Public_Card
+import com.example.ozonchick_new_version.Presentation.ui.components.Public_Scaffold
+import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
+import com.example.ozonchick_new_version.Presentation.ui.theme.Ozonchick_new_versionTheme
 import com.example.ozonchick_new_version.R
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf

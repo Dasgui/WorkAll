@@ -22,14 +22,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import com.example.ozonchick_new_version.Data.data.ui.components.Public_Button
-import com.example.ozonchick_new_version.Data.data.ui.components.Public_Card
-import com.example.ozonchick_new_version.Data.data.ui.components.Public_Scaffold
-import com.example.ozonchick_new_version.Data.data.ui.theme.mainColor
-import com.example.ozonchick_new_version.Data.data.ui.theme.middleTextStyle
 import com.example.ozonchick_new_version.Data.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data.model.Vakans_information
 import com.example.ozonchick_new_version.Presentation.ViewModels.ListOfCandidate_ViewModel
+import com.example.ozonchick_new_version.Presentation.ui.components.Public_Button
+import com.example.ozonchick_new_version.Presentation.ui.components.Public_Card
+import com.example.ozonchick_new_version.Presentation.ui.components.Public_Scaffold
+import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
+import com.example.ozonchick_new_version.Presentation.ui.theme.middleTextStyle
 import org.koin.androidx.compose.koinViewModel
 
 class ListOfCandidate_Screen: Screen {
@@ -85,7 +85,7 @@ fun ListOfCandidate_construct(vm: ListOfCandidate_ViewModel = koinViewModel())
                                     Text(
                                         text = "Алексей",
                                         style = middleTextStyle.value,
-                                        color = mainColor
+                                        color = MainColor
                                     )
                                 }
                                 Column(
@@ -149,7 +149,7 @@ fun ListOfCandidate_construct(vm: ListOfCandidate_ViewModel = koinViewModel())
                                     Text(
                                         text = "Николай",
                                         style = middleTextStyle.value,
-                                        color = mainColor
+                                        color = MainColor
                                     )
                                 }
                                 Column(
@@ -214,7 +214,7 @@ fun ListOfCandidate_construct(vm: ListOfCandidate_ViewModel = koinViewModel())
                                     Text(
                                         text = "Дмитрий",
                                         style = middleTextStyle.value,
-                                        color = mainColor
+                                        color = MainColor
                                     )
                                 }
                                 Column(
@@ -304,7 +304,7 @@ fun Card_Candidate(number: Int, list: MutableList<Vakans_information>)
                     Text(
                         text = list[number].vakans_name/*"Инженер"*/,
                         style = middleTextStyle.value,
-                        color = mainColor
+                        color = MainColor
                     )
                 }
                 Column(

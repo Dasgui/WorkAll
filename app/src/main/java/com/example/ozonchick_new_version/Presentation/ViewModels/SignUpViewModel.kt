@@ -7,9 +7,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Data.data.dto.userType
-import com.example.ozonchick_new_version.Data.data.ui.theme.mainColor
-import com.example.ozonchick_new_version.Data.data.ui.theme.secondaryElementColor
 import com.example.ozonchick_new_version.Domain.postRegistrait
+import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
+import com.example.ozonchick_new_version.Presentation.ui.theme.SecondColor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -181,11 +181,11 @@ class SignUpViewModel : ViewModel() {
     fun isSecondaryElement(): Color {
         val answer: Color
         if (userRole.collectAsState().value == userType.soiskat) {
-            answer = mainColor
+            answer = MainColor
         } else if (userRole.collectAsState().value == userType.nesoiskat) {
-            answer = secondaryElementColor
+            answer = SecondColor
         } else {
-            answer = secondaryElementColor
+            answer = SecondColor
         }
         return answer
     }

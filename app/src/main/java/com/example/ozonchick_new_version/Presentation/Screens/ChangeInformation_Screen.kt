@@ -32,25 +32,25 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import com.example.ozonchick_new_version.Data.data.ui.components.Public_Scaffold
-import com.example.ozonchick_new_version.Data.data.ui.components.SignUp_LogIn_Components.SignUp_LogIn_Button
-import com.example.ozonchick_new_version.Data.data.ui.components.SignUp_LogIn_Components.SignUp_LogIn_OutlinedTextField
-import com.example.ozonchick_new_version.Data.data.ui.theme.backgroundColor
-import com.example.ozonchick_new_version.Data.data.ui.theme.mainColor
-import com.example.ozonchick_new_version.Data.data.ui.theme.Ozonchick_new_versionTheme
-import com.example.ozonchick_new_version.Data.data.ui.theme.mainTextStyle
-import com.example.ozonchick_new_version.Data.data.ui.theme.middleTextStyle
-import com.example.ozonchick_new_version.Data.data.ui.theme.secondTextStyle
 import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Presentation.ViewModels.VakansCreate_ViewModel
+import com.example.ozonchick_new_version.Presentation.ui.components.Public_Scaffold
+import com.example.ozonchick_new_version.Presentation.ui.components.SignUp_LogIn_Components.SignUp_LogIn_Button
+import com.example.ozonchick_new_version.Presentation.ui.components.SignUp_LogIn_Components.SignUp_LogIn_OutlinedTextField
+import com.example.ozonchick_new_version.Presentation.ui.theme.Ozonchick_new_versionTheme
+import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
+import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
+import com.example.ozonchick_new_version.Presentation.ui.theme.mainTextStyle
+import com.example.ozonchick_new_version.Presentation.ui.theme.middleTextStyle
+import com.example.ozonchick_new_version.Presentation.ui.theme.secondTextStyle
 import org.koin.androidx.compose.koinViewModel
 
 private var paddingBetween_Text = 5.dp
 private var paddingBetween_Lines = 10.dp
 private var paddingBetween_MainTitles = 15.dp
 private var textField_Color_Error = Color.Red
-private var textField_Number_Color = mainColor
-private var textField_Mail_Color = mainColor
+private var textField_Number_Color = MainColor
+private var textField_Mail_Color = MainColor
 
 class ChangeInformation_Screen : Screen {
     @Preview
@@ -85,11 +85,11 @@ fun ChangeInformation_construct(vm: VakansCreate_ViewModel = koinViewModel()) {
                                 .clickable {
                                     navigator?.pop()
                                 },
-                            tint = mainColor
+                            tint = MainColor
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = backgroundColor),
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = BackgroundColor),
                 modifier = Modifier
                     .fillMaxWidth(),
             )
@@ -218,7 +218,7 @@ fun ChangeInformation_part_main_contacts(vm: VakansCreate_ViewModel = koinViewMo
                 .padding(start = 15.dp, top = 10.dp, bottom = 15.dp)
                 .drawBehind {
                     drawLine(
-                        mainColor,
+                        MainColor,
                         Offset(-10f, size.height - 15f),
                         Offset(-10f, 45f),
                         20f
@@ -248,9 +248,9 @@ fun ChangeInformation_part_main_contacts(vm: VakansCreate_ViewModel = koinViewMo
                         textField_Number_Color = if (!(it.contains("[+]".toRegex()))) {
                             Color.Red
                         } else if (it.isEmpty()) {
-                            mainColor
+                            MainColor
                         } else {
-                            mainColor
+                            MainColor
                         }
                     },
                     placeholder = {
@@ -294,11 +294,11 @@ fun ChangeInformation_part_main_contacts(vm: VakansCreate_ViewModel = koinViewMo
                         }
                         else if (it.isEmpty())
                         {
-                            textField_Mail_Color = mainColor
+                            textField_Mail_Color = MainColor
                         }
                         else
                         {
-                            textField_Mail_Color = mainColor
+                            textField_Mail_Color = MainColor
                         }
                     },
                     placeholder = {
@@ -378,7 +378,7 @@ fun ChangeInformation_part_confiramtion() {
         modifier = Modifier
             .fillMaxSize()
             .padding(bottom = 55.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = backgroundColor, contentColor = mainColor)
+        colors = ButtonDefaults.buttonColors(containerColor = BackgroundColor, contentColor = MainColor)
     )
     {
         Text(

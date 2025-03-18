@@ -29,13 +29,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import com.example.ozonchick_new_version.Data.data.ui.components.Public_Loading
-import com.example.ozonchick_new_version.Data.data.ui.text_tema.Tema
-import com.example.ozonchick_new_version.Data.data.ui.theme.mainColor
-import com.example.ozonchick_new_version.Data.data.ui.theme.Ozonchick_new_versionTheme
-import com.example.ozonchick_new_version.Data.data.ui.theme.backgroundColor
 import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Presentation.ViewModels.ContactsViewModel
+import com.example.ozonchick_new_version.Presentation.ui.components.Public_Loading
+import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
+import com.example.ozonchick_new_version.Presentation.ui.theme.Ozonchick_new_versionTheme
+import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
+import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import org.koin.androidx.compose.koinViewModel
 
 var isLoading: MutableState<Boolean> = mutableStateOf(false)
@@ -76,10 +76,10 @@ fun Contacts_construct(viewModel: ContactsViewModel = koinViewModel()) {
                             modifier = Modifier
                                 .size(35.dp)
                                 .clickable { navigator?.pop() },
-                            tint = mainColor,
+                            tint = MainColor,
                         )
                     },
-                    colors = TopAppBarDefaults.topAppBarColors(containerColor = backgroundColor),
+                    colors = TopAppBarDefaults.topAppBarColors(containerColor = BackgroundColor),
                     modifier = Modifier
                         .fillMaxWidth(),
                 )
@@ -116,7 +116,7 @@ fun Contacts_construct(viewModel: ContactsViewModel = koinViewModel()) {
                         modifier = Modifier.fillMaxWidth()
                             .drawBehind {
                                 drawLine(
-                                    mainColor,
+                                    MainColor,
                                     Offset(0f, size.height),
                                     Offset(size.width, size.height),
                                     10f

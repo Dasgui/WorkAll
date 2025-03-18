@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -26,6 +27,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
@@ -36,24 +38,29 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import com.example.ozonchick_new_version.Data.data.ui.components.FailAlertDialog
-import com.example.ozonchick_new_version.Data.data.ui.components.SignUp_LogIn_Components.SignUp_LogIn_OutlinedTextField
-import com.example.ozonchick_new_version.Data.data.ui.text_tema.Tema
-import com.example.ozonchick_new_version.Data.data.ui.theme.Button_Color_Blue
-import com.example.ozonchick_new_version.Data.data.ui.theme.MainFontFamily
-import com.example.ozonchick_new_version.Data.data.ui.theme.backgroundColor
-import com.example.ozonchick_new_version.Data.data.ui.theme.mainColor
-import com.example.ozonchick_new_version.Data.data.ui.theme.secondaryElementColor
-import com.example.ozonchick_new_version.Presentation.ScreenState
+import com.example.ozonchick_new_version.Presentation.States.ScreenState
+import com.example.ozonchick_new_version.Presentation.States.TextFieldStates
 import com.example.ozonchick_new_version.Presentation.ViewModels.LogInViewModel
+import com.example.ozonchick_new_version.Presentation.ui.components.CustomOutlinedTextField
+import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
+import com.example.ozonchick_new_version.Presentation.ui.components.SignUp_LogIn_Components.SignUp_LogIn_OutlinedTextField
+import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpacer
+import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
+import com.example.ozonchick_new_version.Presentation.ui.theme.Button_Color_Blue
+import com.example.ozonchick_new_version.Presentation.ui.theme.MainFontFamily
+import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
+import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
+import com.example.ozonchick_new_version.Presentation.ui.theme.SecondColor
 import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Screens.SignUpLogIn.SignUp.SignUp_Screen
 import org.koin.androidx.compose.koinViewModel
+import java.nio.file.WatchEvent
 
 class LogInScreen : Screen {
     @Composable
@@ -67,25 +74,28 @@ private fun LogInConstruct(
     viewModel: LogInViewModel = koinViewModel()
 ) {
     val navigator = LocalNavigator.current
-    Box(
+    LazyColumn(
         modifier = Modifier.Companion
             .fillMaxSize()
-            .background(backgroundColor)
+            .background(BackgroundColor)
     ) {
-        Column(
-            horizontalAlignment = Alignment.Companion.Start,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.Companion
-                .fillMaxWidth()
-                .padding(start = 24.dp, end = 24.dp)
-        ) {
-            TextHead()
-            MainBody(viewModel)
-            BottomBody(viewModel)
-            BottomText(
-                viewModel,
-                onNavigateForSignUp = { navigator?.replaceAll(SignUp_Screen()) })
+        item {
+            Column(
+                horizontalAlignment = Alignment.Companion.Start,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.Companion
+                    .fillMaxWidth()
+                    .padding(start = 24.dp, end = 24.dp)
+            ) {
+                TextHead()
+                MainBody(viewModel)
+                BottomBody(viewModel)
+                BottomText(
+                    viewModel,
+                    onNavigateForSignUp = { navigator?.replaceAll(SignUp_Screen()) })
+            }
         }
+
     }
 
 }
@@ -95,18 +105,22 @@ private fun TextHead() {
     Column(
         modifier = Modifier.Companion
             .fillMaxWidth()
-            .padding(top = 155.dp)
+            .padding(top = 120.dp)
     ) {
         Text(
             text = "Добро пожаловать",
             style = Tema.Text_24_24_Bold,
-            color = mainColor /*Color_MainText.value*/
+            color = MainColor,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center
         )
+        VerticalSpacer(10.dp)
         Text(
-            text = "Введите адрес электронной почты и пароль, чтобы продолжить",
-            style = Tema.Text_16_16_Medium,
-            color = mainColor,
-            modifier = Modifier.Companion.padding(top = 8.dp)
+            text = "Введите адрес электронной почты и пароль, чтобы продолжить.",
+            style = Tema.Text_20_20_Medium,
+            color = MainColor,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center
         )
     }
 }
@@ -116,72 +130,42 @@ private fun MainBody(viewModel: LogInViewModel) {
     Column(
         modifier = Modifier.Companion
             .fillMaxWidth()
-            .padding(top = 20.dp)
+            .padding(top = 40.dp)
     ) {
         Column(
         ) {
             Text(
                 text = "Адрес почты",
                 style = Tema.Text_24_24_Bold,
-                color = mainColor
+                color = MainColor
             )
-            SignUp_LogIn_OutlinedTextField(
+            VerticalSpacer(10.dp)
+            CustomOutlinedTextField(
                 value = viewModel.emailUser.collectAsState().value,
                 onValueChange = {
                     viewModel.setEmailUserFieldValue(it)
                     viewModel.isDataValid()
                 },
-                placeholder = {
-                    Text(
-                        text = "*******@mail.com",
-                        style = Tema.Text_16_16_Medium
-                    )
-                }
+                states = TextFieldStates.Email
             )
 
             Column(
-                modifier = Modifier.Companion.padding(top = 24.dp)
+                modifier = Modifier.Companion.padding(top = 20.dp)
             ) {
                 Text(
                     text = "Пароль",
                     style = Tema.Text_24_24_Bold,
                     maxLines = 1,
-                    color = mainColor
+                    color = MainColor
                 )
-                SignUp_LogIn_OutlinedTextField(
+                VerticalSpacer(10.dp)
+                CustomOutlinedTextField(
                     value = viewModel.passwordUser.collectAsState().value,
                     onValueChange = {
                         viewModel.setPasswordUserFieldValue(it)
                         viewModel.isDataValid()
                     },
-                    placeholder = {
-                        Text(
-                            text = "***********",
-                            style = Tema.Text_16_16_Medium
-                        )
-                    },
-                    trailingIcon = {
-                        val localImage: MutableState<Int> =
-                            remember { mutableStateOf(R.drawable.eye_slash) }
-                        Image(
-                            painter = painterResource(id = localImage.value),
-                            contentDescription = "Показать пароль",
-                            contentScale = ContentScale.Companion.Crop,
-                            modifier = Modifier.Companion
-                                .size(24.dp)
-                                .clickable {
-                                    if (localImage.value == R.drawable.eye_slash) {
-                                        localImage.value = R.drawable.eye
-                                    } else {
-                                        localImage.value = R.drawable.eye_slash
-                                    }
-                                    viewModel.setPasswordVisible(!viewModel.passwordVisible.value)
-                                },
-                            colorFilter = ColorFilter.Companion.tint(mainColor)
-                        )
-                    },
-                    visualTransformation = if (viewModel.passwordVisible.collectAsState().value)
-                        VisualTransformation.Companion.None else PasswordVisualTransformation(),
+                    states = TextFieldStates.Password
                 )
             }
         }
@@ -195,7 +179,7 @@ private fun BottomBody(viewModel: LogInViewModel) {
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.Companion
             .fillMaxWidth()
-            .padding(top = 10.dp)
+            .padding(top = 20.dp)
     ) {
         Checkbox(
             checked = viewModel.rememberUser.collectAsState().value,
@@ -203,23 +187,25 @@ private fun BottomBody(viewModel: LogInViewModel) {
             modifier = Modifier.Companion
                 .size(35.dp),
             colors = CheckboxDefaults.colors(
-                uncheckedColor = mainColor,
-                checkedColor = secondaryElementColor
+                checkedColor = MainColor,
+                uncheckedColor = MainColor,
+                checkmarkColor = BackgroundColor
             ),
         )
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.Companion.fillMaxWidth()
         ) {
             Text(
                 text = "Запомнить пароль",
-                color = mainColor,
-                style = Tema.Text_16_16_Medium
+                color = MainColor,
+                style = Tema.Text_20_20_Medium
             )
             Text(
                 text = "Забыли пароль?",
-                style = Tema.Text_16_16_Medium,
-                color = mainColor
+                style = Tema.Text_20_20_Medium,
+                color = MainColor
             )
         }
     }
@@ -244,13 +230,12 @@ private fun BottomText(
             },
             modifier = Modifier.Companion.fillMaxWidth().height(45.dp),
             shape = RectangleShape,
-            border = BorderStroke(1.dp, mainColor),
-            enabled = buttonState.value,
+            border = BorderStroke(1.dp, MainColor),
             colors = ButtonDefaults.buttonColors(
-                containerColor = mainColor,
-                contentColor = backgroundColor,
-                disabledContainerColor = backgroundColor,
-                disabledContentColor = mainColor
+                containerColor = BackgroundColor,
+                contentColor = MainColor,
+                disabledContainerColor = BackgroundColor,
+                disabledContentColor = MainColor
             )
         ) {
             Text(
@@ -275,10 +260,7 @@ private fun BottomText(
         val SignUpText = buildAnnotatedString {
             withStyle(
                 style = SpanStyle(
-                    color = mainColor,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Companion.Medium,
-                    fontFamily = MainFontFamily
+                    color = MainColor
                 )
             )
             {
@@ -288,10 +270,7 @@ private fun BottomText(
             pushStringAnnotation(tag = "click", annotation = "click")
             withStyle(
                 SpanStyle(
-                    color = Button_Color_Blue,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Companion.Medium,
-                    fontFamily = MainFontFamily
+                    color = Button_Color_Blue
                 )
             ) {
                 append("Зарегистрироваться")
@@ -305,8 +284,9 @@ private fun BottomText(
                         onNavigateForSignUp()
                     }
             },
+            style = Tema.Text_20_20_Medium,
             modifier = Modifier.Companion
-                .padding(top = 20.dp)
+                .padding(top = 40.dp)
                 .testTag("Registrait")
         )
     }

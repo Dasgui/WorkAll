@@ -17,11 +17,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import com.example.ozonchick_new_version.Data.data.ui.components.Public_Loading
-import com.example.ozonchick_new_version.Data.data.ui.components.Public_Scaffold
-import com.example.ozonchick_new_version.Data.data.ui.components.Responses.VacancyCard
-import com.example.ozonchick_new_version.Data.data.ui.theme.Ozonchick_new_versionTheme
 import com.example.ozonchick_new_version.Presentation.ViewModels.ResponsesViewModel
+import com.example.ozonchick_new_version.Presentation.ui.components.Public_Loading
+import com.example.ozonchick_new_version.Presentation.ui.components.Public_Scaffold
+import com.example.ozonchick_new_version.Presentation.ui.components.Responses.VacancyCard
+import com.example.ozonchick_new_version.Presentation.ui.theme.Ozonchick_new_versionTheme
 import org.koin.androidx.compose.koinViewModel
 
 class ListVacanciesScreen() : Screen {

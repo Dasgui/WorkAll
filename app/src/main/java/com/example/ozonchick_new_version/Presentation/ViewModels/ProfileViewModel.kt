@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Data.model.ProfileUIModel
 import com.example.ozonchick_new_version.Data.model.SignUp_LogIn_Model.UserName
 import com.example.ozonchick_new_version.Data.network.supabase
-import com.example.ozonchick_new_version.Presentation.ScreenState
+import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.query.Columns
 import kotlinx.coroutines.Dispatchers

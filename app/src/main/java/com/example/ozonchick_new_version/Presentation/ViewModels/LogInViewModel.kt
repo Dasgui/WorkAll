@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Data.model.SignUp_LogIn_Model.UserInformationAuth
 import com.example.ozonchick_new_version.Data.network.supabase
-import com.example.ozonchick_new_version.Presentation.ScreenState
+import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import io.github.jan.supabase.exceptions.HttpRequestException
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.query.Columns
@@ -31,7 +31,7 @@ class LogInViewModel() : ViewModel() {
     }
 
 
-    private val _emailUser: MutableStateFlow<String> = MutableStateFlow("test07@inbox.ru")
+    private val _emailUser: MutableStateFlow<String> = MutableStateFlow("")
     var emailUser: StateFlow<String> = _emailUser.asStateFlow()
 
     fun setEmailUserFieldValue(newValue: String)
@@ -64,6 +64,10 @@ class LogInViewModel() : ViewModel() {
         MutableStateFlow(ScreenState.Loading)
     fun Auth()
     {
+        if (isDataValid()) {
+            logInState.value = ScreenState.Failure(4, "Проверьте адрес почты или пароль")
+            return
+        }
         viewModelScope.launch {
             try {
                 val user = supabase.from("user_information")
@@ -95,9 +99,8 @@ class LogInViewModel() : ViewModel() {
         }
     }
 
-    fun isDataValid()
+    fun isDataValid() : Boolean
     {
-        _isDataCorrect.value = _emailUser.value.isNotEmpty() && _passwordUser.value.isNotEmpty() /*_emailUser.value.matches(Regex("[a-z-а-я-0-9]*@[a-z-а-я]{2,}")*/
-        Log.d("ПРОВЕРКА ЗНАЧЕНИЙ", _isDataCorrect.value.toString())
+        return _emailUser.value.trim().isNotEmpty() && _passwordUser.value.trim().isNotEmpty() && _emailUser.value.trim().matches(Regex("[a-zа-я0-9]+@[a-zа-я0-9]+.[a-zа-я]{2,}"))
     }
 }
