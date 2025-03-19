@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -31,15 +30,14 @@ import cafe.adriel.voyager.navigator.Navigator
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ViewModels.ProfileViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.Public_Card
-import com.example.ozonchick_new_version.Presentation.ui.components.Public_Scaffold
+import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
-import com.example.ozonchick_new_version.Presentation.ui.theme.Ozonchick_new_versionTheme
 import com.example.ozonchick_new_version.R
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
 
-class ProfileScreen(private val userId : Int) : Screen {
+class ProfileScreen(private val userId: Int) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.current
@@ -57,19 +55,21 @@ private fun ProfileConstruct(navigator: Navigator?, viewModel: ProfileViewModel)
         is ScreenState.Failure -> Unit
         ScreenState.Loading -> Unit
         is ScreenState.Success -> {
-            Public_Scaffold(mainText = "Профиль", bottomButton = true) {
-                Column(
-                    modifier = Modifier.Companion
-                        .fillMaxWidth()
-                        .padding(start = 15.dp, end = 15.dp, top = 90.dp)
-                ) {
-                    ScreenHead(navigator = navigator, curState.data.name)
-                    ScreenBody(navigator = navigator)
+            CustomScaffold(
+                mainText = "Профиль",
+                bottomButton = true,
+                mainBody = {
+                    Column(
+                        modifier = Modifier.Companion
+                            .fillMaxSize()
+                    ) {
+                        ScreenHead(navigator = navigator, curState.data.name)
+                        ScreenBody(navigator = navigator)
+                    }
                 }
-            }
+            )
         }
     }
-
 
 
 }
@@ -77,7 +77,7 @@ private fun ProfileConstruct(navigator: Navigator?, viewModel: ProfileViewModel)
 @Composable
 private fun ScreenHead(
     navigator: Navigator?,
-    name : String
+    name: String
 ) {
     Row(modifier = Modifier.Companion.fillMaxWidth()) {
         Image(
@@ -157,7 +157,9 @@ private fun Card_construct(
             .clickable { localNavigator?.push(Settings_Screen()) },
     ) {
         Row(
-            modifier = Modifier.padding(start = 5.dp, end = 5.dp).fillMaxSize(),
+            modifier = Modifier
+                .padding(start = 5.dp, end = 5.dp)
+                .fillMaxSize(),
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.Companion.CenterVertically
         ) {

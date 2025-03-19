@@ -15,7 +15,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import com.example.ozonchick_new_version.Data.data.db.idSharedUser
 import com.example.ozonchick_new_version.Presentation.ViewModels.ResponsesViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.Public_Loading
-import com.example.ozonchick_new_version.Presentation.ui.components.Public_Scaffold
+import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.components.Responses.VacancyCard
 import com.example.ozonchick_new_version.Presentation.ui.theme.Ozonchick_new_versionTheme
 import org.koin.androidx.compose.koinViewModel
@@ -54,7 +54,7 @@ private fun ResponseConstruct(viewModel: ResponsesViewModel = koinViewModel())
 @Composable
 private fun MainBody(viewModel: ResponsesViewModel = koinViewModel(), isLoading:Boolean)
 {
-    Public_Scaffold(
+    CustomScaffold(
         bottomButton = true,
         mainText = "Отклики"
     ) {

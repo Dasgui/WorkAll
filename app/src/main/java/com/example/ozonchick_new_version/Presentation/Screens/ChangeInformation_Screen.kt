@@ -34,7 +34,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Presentation.ViewModels.VakansCreate_ViewModel
-import com.example.ozonchick_new_version.Presentation.ui.components.Public_Scaffold
+import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.components.SignUp_LogIn_Components.SignUp_LogIn_Button
 import com.example.ozonchick_new_version.Presentation.ui.components.SignUp_LogIn_Components.SignUp_LogIn_OutlinedTextField
 import com.example.ozonchick_new_version.Presentation.ui.theme.Ozonchick_new_versionTheme
@@ -66,7 +66,7 @@ class ChangeInformation_Screen : Screen {
 @Composable
 fun ChangeInformation_construct(vm: VakansCreate_ViewModel = koinViewModel()) {
     val navigator = LocalNavigator.current
-    Public_Scaffold(
+    CustomScaffold(
         bottomButton = false,
         backButton = true,
         topBar = {

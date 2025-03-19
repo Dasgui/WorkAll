@@ -27,7 +27,7 @@ import com.example.ozonchick_new_version.Data.model.Vakans_information
 import com.example.ozonchick_new_version.Presentation.ViewModels.ListOfCandidate_ViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.Public_Button
 import com.example.ozonchick_new_version.Presentation.ui.components.Public_Card
-import com.example.ozonchick_new_version.Presentation.ui.components.Public_Scaffold
+import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.middleTextStyle
 import org.koin.androidx.compose.koinViewModel
@@ -43,11 +43,11 @@ class ListOfCandidate_Screen: Screen {
 @Composable
 fun ListOfCandidate_construct(vm: ListOfCandidate_ViewModel = koinViewModel())
 {
-    Public_Scaffold(
+    CustomScaffold(
         bottomButton = false,
         backButton = true
     ) {
-        Public_Scaffold(
+        CustomScaffold(
             bottomButton = true,
             mainText = "Ваши вакансии"
         ) {
