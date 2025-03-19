@@ -69,8 +69,12 @@ class LogInViewModel(private val Auth : AuthUseCase) : ViewModel() {
                 is CustomResult.Failure -> logInState.value = ScreenState.Failure(curResult.code, curResult.message)
                 is CustomResult.Success -> {
                     logInState.value = ScreenState.Success(data = curResult.data)
-                    publicUserId = curResult.data.user_id
-                    Paper.book().write("UserId", publicUserId)
+                    if (_rememberUser.value) {
+                        publicUserId = curResult.data.user_id
+                        Paper.book().write("UserId", publicUserId)
+                    } else {
+                        publicUserId = curResult.data.user_id
+                    }
                 }
             }
         }

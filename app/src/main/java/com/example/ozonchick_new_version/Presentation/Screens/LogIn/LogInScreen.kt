@@ -199,7 +199,6 @@ private fun BottomText(
     onNavigateForSignUp: () -> Unit
 ) {
     val screenState = viewModel.logInState.collectAsState()
-    val buttonState = viewModel.isDataCorrect.collectAsState()
     val navigator = LocalNavigator.current
     Column(
         horizontalAlignment = Alignment.Companion.CenterHorizontally,
