@@ -2,6 +2,7 @@ package com.example.ozonchick_new_version.Presentation.ViewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.ozonchick_new_version.Data.data.db.publicUserId
 import com.example.ozonchick_new_version.Data.model.ProfileUIModel
 import com.example.ozonchick_new_version.Data.model.SignUp_LogIn_Model.UserName
 import com.example.ozonchick_new_version.Data.network.supabase
@@ -12,13 +13,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class ProfileViewModel(userId : Int) : ViewModel() {
+class ProfileViewModel(/*userId : Int*/) : ViewModel() {
     init {
-        getName(userId)
+        getName(/*userId*/)
     }
     val informationProfileState : MutableStateFlow<ScreenState<ProfileUIModel>> =
         MutableStateFlow(ScreenState.Loading)
-    fun getName(userId: Int) {
+    fun getName(userId: Int = publicUserId) {
         viewModelScope.launch(Dispatchers.IO) {
             val result =
                 supabase.from("user_information").select(columns = Columns.Companion.list("name")) {

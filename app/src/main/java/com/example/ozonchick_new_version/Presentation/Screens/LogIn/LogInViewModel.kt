@@ -3,10 +3,12 @@ package com.example.ozonchick_new_version.Presentation.Screens.LogIn
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
+import com.example.ozonchick_new_version.Data.data.db.publicUserId
 import com.example.ozonchick_new_version.Data.model.SigLogInModels.User
 import com.example.ozonchick_new_version.Data.model.SignUp_LogIn_Model.UserInformationAuth
 import com.example.ozonchick_new_version.Domain.AuthUseCase
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
+import io.paperdb.Paper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -65,7 +67,11 @@ class LogInViewModel(private val Auth : AuthUseCase) : ViewModel() {
         viewModelScope.launch (Dispatchers.IO) {
             when (val curResult = Auth.invoke(_emailUser.value, _passwordUser.value)) {
                 is CustomResult.Failure -> logInState.value = ScreenState.Failure(curResult.code, curResult.message)
-                is CustomResult.Success -> logInState.value = ScreenState.Success(data = curResult.data)
+                is CustomResult.Success -> {
+                    logInState.value = ScreenState.Success(data = curResult.data)
+                    publicUserId = curResult.data.user_id
+                    Paper.book().write("UserId", publicUserId)
+                }
             }
         }
 //        if (isDataValid()) {

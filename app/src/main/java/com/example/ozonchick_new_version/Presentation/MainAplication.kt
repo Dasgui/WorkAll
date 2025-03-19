@@ -1,9 +1,9 @@
 package com.example.ozonchick_new_version.Presentation
 
 import android.app.Application
+import android.util.Log
 import cafe.adriel.voyager.core.registry.ScreenRegistry
-import com.example.ozonchick_new_version.Data.data.db.userAuthInformation
-import com.example.ozonchick_new_version.Data.data.db.users
+import com.example.ozonchick_new_version.Data.data.db.publicUserId
 
 import io.paperdb.Paper
 import org.koin.android.ext.koin.androidContext
@@ -23,9 +23,10 @@ class MainAplication: Application() {
             Send_a_PackageHost()*/
         }
         Paper.init(this)
-
-        users = Paper.book().read("Users",ArrayList()) ?: ArrayList()
-        userAuthInformation = Paper.book().read("User", ArrayList()) ?: ArrayList()
-
+        Paper.book().delete("Users")
+//        users = Paper.book().read("Users",ArrayList()) ?: ArrayList()
+//        userAuthInformation = Paper.book().read("User", ArrayList()) ?: ArrayList()
+        publicUserId = Paper.book().read<Int>("UserId") ?: 0
+        Log.d("Id пользователя", publicUserId.toString())
     }
 }

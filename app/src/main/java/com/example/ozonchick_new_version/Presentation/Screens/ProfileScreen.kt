@@ -35,21 +35,22 @@ import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.R
 import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
-class ProfileScreen(private val userId: Int) : Screen {
+class ProfileScreen() : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.current
-        val viewModel: ProfileViewModel = getViewModel { parametersOf(userId) }
-        ProfileConstruct(navigator, viewModel)
+//        val viewModel: ProfileViewModel = getViewModel { parametersOf(userId) }
+        ProfileConstruct(navigator/*, viewModel*/)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-private fun ProfileConstruct(navigator: Navigator?, viewModel: ProfileViewModel) {
+private fun ProfileConstruct(navigator: Navigator?, viewModel: ProfileViewModel = koinViewModel()) {
     val screenState = viewModel.informationProfileState.collectAsState()
     when (val curState = screenState.value) {
         is ScreenState.Failure -> Unit
