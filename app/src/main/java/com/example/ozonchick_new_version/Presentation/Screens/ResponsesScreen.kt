@@ -59,7 +59,7 @@ private fun MainBody(viewModel: ResponsesViewModel = koinViewModel(), isLoading:
         mainText = "Отклики"
     ) {
         if (isLoading) {
-            CustomLoading(isLoading = isLoading)
+            CustomLoading()
         } else {
             Column (
                 modifier = Modifier.Companion

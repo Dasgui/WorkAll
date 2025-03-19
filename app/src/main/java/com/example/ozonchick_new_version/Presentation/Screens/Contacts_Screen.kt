@@ -227,6 +227,6 @@ fun Contacts_construct(viewModel: ContactsViewModel = koinViewModel()) {
 //            }
 //        }
     } else {
-        CustomLoading(isLoading = isLoading.value)
+        CustomLoading()
     }
 }

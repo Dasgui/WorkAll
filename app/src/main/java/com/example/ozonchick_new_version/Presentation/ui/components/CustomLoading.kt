@@ -22,7 +22,7 @@ import com.example.ozonchick_new_version.R
 import kotlinx.coroutines.delay
 
 @Composable
-fun CustomLoading(isLoading:Boolean = true) {
+fun CustomLoading() {
     Column(
         modifier = Modifier.fillMaxSize().background(BackgroundColor),
         horizontalAlignment = Alignment.CenterHorizontally,

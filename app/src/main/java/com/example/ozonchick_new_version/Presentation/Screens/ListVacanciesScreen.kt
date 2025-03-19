@@ -62,7 +62,7 @@ private fun ListVacanciesScreenConstruct(viewModel: ResponsesViewModel = koinVie
 private fun MainScreen(viewModel: ResponsesViewModel = koinViewModel(), isLoading: Boolean) {
     CustomScaffold(mainText = "Вакансии", bottomButton = true) {
         if (isLoading) {
-            CustomLoading(isLoading = isLoading)
+            CustomLoading()
         } else {
             Column (
                 modifier = Modifier.Companion
