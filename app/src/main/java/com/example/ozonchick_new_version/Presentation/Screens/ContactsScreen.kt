@@ -1,58 +1,40 @@
 package com.example.ozonchick_new_version.Presentation.Screens
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
-import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Presentation.ViewModels.ContactsViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
+import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.Ozonchick_new_versionTheme
-import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import org.koin.androidx.compose.koinViewModel
 
 var isLoading: MutableState<Boolean> = mutableStateOf(false)
 
-class Contacts_Screen (private val sharedId: Int) : Screen {
+class ContactsScreen (private val sharedId: Int) : Screen {
     @Composable
     override fun Content() {
         val viewModel: ContactsViewModel = koinViewModel()
         Ozonchick_new_versionTheme {
-            LaunchedEffect(viewModel.informationList.collectAsState().value.isEmpty())
-            {
-                viewModel.getInformation(sharedId)
-                isLoading.value = true
-            }
             Contacts_construct()
         }
 
@@ -65,57 +47,66 @@ fun Contacts_construct(viewModel: ContactsViewModel = koinViewModel()) {
     val navigator = LocalNavigator.current
     val screenState = viewModel.contactsState.collectAsState()
     when (val curState = screenState.value) {
-        is ScreenState.Failure -> Unit
+        is ScreenState.Failure -> FailAlertDialog(
+            title = "Ошибка",
+            curState.message,
+            onOkClick = {
+                viewModel.contactsState.value = ScreenState.Loading
+            })
         is ScreenState.Loading -> CustomLoading()
         is ScreenState.Success -> {
             CustomScaffold(
-                mainText = "Профиль",
+                mainText = "Контактная информация",
                 bottomButton = true,
                 mainBody = {
-                    Text(
-                        text = "Номер телефона: ${viewModel.informationList.collectAsState().value[0].vakans_number}",
-                        style = Tema.Text_24_24_Medium,
-                        color = MaterialTheme.colorScheme.primary,
-                        textAlign = TextAlign.Start,
-                        modifier = Modifier.padding(horizontal = 5.dp)
-                    )
-                    Text(
-                        text ="Почта: ${viewModel.informationList.collectAsState().value[0].vakans_mail}",
-                        style = Tema.Text_24_24_Medium,
-                        color = MaterialTheme.colorScheme.primary,
-                        textAlign = TextAlign.Start,
-                        modifier = Modifier.padding(horizontal = 5.dp)
-                    )
-                    Text(
-                        text = "Расположение: ${viewModel.informationList.collectAsState().value[0].vakans_raspolog}",
-                        style = Tema.Text_24_24_Medium,
-                        color = MaterialTheme.colorScheme.primary,
-                        textAlign = TextAlign.Start,
-                        modifier = Modifier.fillMaxWidth()
-                            .drawBehind {
-                                drawLine(
-                                    MainColor,
-                                    Offset(0f, size.height),
-                                    Offset(size.width, size.height),
-                                    10f
-                                )
-                            }
-                            .padding(start = 5.dp, end = 5.dp, bottom = 10.dp)
-                    )
-                    Text(
-                        text = "О работе:",
-                        style = Tema.Text_24_24_Medium,
-                        color = MaterialTheme.colorScheme.primary,
-                        textAlign = TextAlign.Start,
-                        modifier = Modifier.padding( top = 30.dp).padding(start =  5.dp, end = 5.dp),
-                    )
-                    Text(
-                        text = viewModel.informationList.collectAsState().value[0].vakans_aboutWork,
-                        style = Tema.Text_24_24_Medium,
-                        color = MaterialTheme.colorScheme.primary,
-                        textAlign = TextAlign.Start,
-                        modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                    )
+                    Column (
+                        modifier = Modifier.padding(bottom = 80.dp).fillMaxWidth()
+                    ) {
+                        Text(
+                            text = "Номер телефона: ${viewModel.informationList.collectAsState().value[0].vakans_number}",
+                            style = Tema.Text_24_24_Medium,
+                            color = MainColor,
+                            textAlign = TextAlign.Start,
+                            modifier = Modifier.padding(horizontal = 5.dp)
+                        )
+                        Text(
+                            text ="Почта: ${viewModel.informationList.collectAsState().value[0].vakans_mail}",
+                            style = Tema.Text_24_24_Medium,
+                            color = MainColor,
+                            textAlign = TextAlign.Start,
+                            modifier = Modifier.padding(horizontal = 5.dp)
+                        )
+                        Text(
+                            text = "Расположение: ${viewModel.informationList.collectAsState().value[0].vakans_raspolog}",
+                            style = Tema.Text_24_24_Medium,
+                            color = MainColor,
+                            textAlign = TextAlign.Start,
+                            modifier = Modifier.fillMaxWidth()
+                                .drawBehind {
+                                    drawLine(
+                                        MainColor,
+                                        Offset(0f, size.height),
+                                        Offset(size.width, size.height),
+                                        10f
+                                    )
+                                }
+                                .padding(start = 5.dp, end = 5.dp, bottom = 10.dp)
+                        )
+                        Text(
+                            text = "О работе:",
+                            style = Tema.Text_24_24_Medium,
+                            color = MainColor,
+                            textAlign = TextAlign.Start,
+                            modifier = Modifier.padding( top = 30.dp),
+                        )
+                        Text(
+                            text = viewModel.informationList.collectAsState().value[0].vakans_aboutWork,
+                            style = Tema.Text_24_24_Medium,
+                            color = MainColor,
+                            textAlign = TextAlign.Start,
+                            modifier = Modifier.padding(start = 5.dp, end = 10.dp)
+                        )
+                    }
                 }
             )
         }

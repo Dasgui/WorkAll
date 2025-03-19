@@ -43,7 +43,7 @@ private fun ListVacanciesScreenConstruct(viewModel: ResponsesViewModel = koinVie
     val screenState = viewModel.responseState.collectAsState()
     when (val curState = screenState.value) {
         is ScreenState.Failure -> FailAlertDialog(
-            title = "Ошибка входа",
+            title = "Ошибка",
             curState.message,
             onOkClick = {
                 viewModel.responseState.value = ScreenState.Loading

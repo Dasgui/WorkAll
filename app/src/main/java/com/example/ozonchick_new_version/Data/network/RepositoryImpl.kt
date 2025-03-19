@@ -2,6 +2,7 @@ package com.example.ozonchick_new_version.Data.network
 
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Data.model.SigLogInModels.User
+import com.example.ozonchick_new_version.Data.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data.model.Vakans_information
 import io.github.jan.supabase.exceptions.HttpRequestException
 
@@ -11,6 +12,7 @@ import io.github.jan.supabase.postgrest.query.Columns
 interface Repository {
     suspend fun Auth(email: String, password: String): CustomResult<User>
     suspend fun getVacancies() : CustomResult<List<Vakans_information>>
+    suspend fun getContactInformation(id : Int) : CustomResult<List<Vakans_contacts>>
 }
 
 class RepositoryImpl : Repository {
@@ -49,6 +51,21 @@ class RepositoryImpl : Repository {
                     "employer_id"
                 )
             ).decodeList<Vakans_information>()
+            CustomResult.Success(result)
+        } catch (ex : Exception) {
+            CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
+        }
+    }
+
+    override suspend fun getContactInformation(id : Int): CustomResult<List<Vakans_contacts>> {
+        return try {
+            val result = supabase.from("vakans_contacts")
+                .select()
+                {
+                    filter {
+                        Vakans_contacts::vakans_id eq id
+                    }
+                }.decodeList<Vakans_contacts>()
             CustomResult.Success(result)
         } catch (ex : Exception) {
             CustomResult.Failure(1, "Проверьте своё соединение с интернетом")

@@ -33,6 +33,7 @@ import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ui.components.Public_Card
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
+import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.R
@@ -54,7 +55,12 @@ class ProfileScreen() : Screen {
 private fun ProfileConstruct(navigator: Navigator?, viewModel: ProfileViewModel = koinViewModel()) {
     val screenState = viewModel.informationProfileState.collectAsState()
     when (val curState = screenState.value) {
-        is ScreenState.Failure -> Unit
+        is ScreenState.Failure -> FailAlertDialog(
+            title = "Ошибка",
+            curState.message,
+            onOkClick = {
+                viewModel.informationProfileState.value = ScreenState.Loading
+            })
         is ScreenState.Loading -> CustomLoading()
         is ScreenState.Success -> {
             CustomScaffold(

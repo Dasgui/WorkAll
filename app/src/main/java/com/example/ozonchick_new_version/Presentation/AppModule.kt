@@ -3,6 +3,7 @@ package com.example.ozonchick_new_version.Presentation
 import com.example.ozonchick_new_version.Data.network.Repository
 import com.example.ozonchick_new_version.Data.network.RepositoryImpl
 import com.example.ozonchick_new_version.Domain.AuthUseCase
+import com.example.ozonchick_new_version.Domain.GetContactInformationUseCase
 import com.example.ozonchick_new_version.Domain.GetVacanciesUseCase
 import com.example.ozonchick_new_version.Presentation.ViewModels.ContactsViewModel
 import com.example.ozonchick_new_version.Presentation.ViewModels.HomeViewModel
@@ -39,8 +40,9 @@ var AppModule = module {
     viewModel {
         ResponsesViewModel(get())
     }
+    factory { GetContactInformationUseCase(get()) }
     viewModel {
-        ContactsViewModel()
+        (id : Int) -> ContactsViewModel(get(), id)
     }
 
 /*    viewModel {
