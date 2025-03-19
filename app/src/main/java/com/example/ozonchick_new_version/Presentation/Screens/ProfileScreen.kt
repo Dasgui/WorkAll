@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
+import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ViewModels.ProfileViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.Public_Card
@@ -34,6 +35,7 @@ import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffo
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.R
+import io.paperdb.Paper
 import org.koin.androidx.compose.getViewModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -113,7 +115,10 @@ private fun ScreenHead(
                     contentDescription = "Выход",
                     modifier = Modifier.Companion
                         .size(50.dp)
-                    /*                        .clickable { viewModel.Exit(navigator) }*/,
+                        .clickable {
+                            Paper.book().delete("UserId")
+                            navigator?.replaceAll(LogInScreen())
+                        },
                     colorFilter = ColorFilter.Companion.tint(MainColor)
                 )
             }

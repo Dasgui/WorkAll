@@ -23,9 +23,6 @@ class MainAplication: Application() {
             Send_a_PackageHost()*/
         }
         Paper.init(this)
-        Paper.book().delete("Users")
-//        users = Paper.book().read("Users",ArrayList()) ?: ArrayList()
-//        userAuthInformation = Paper.book().read("User", ArrayList()) ?: ArrayList()
         publicUserId = Paper.book().read<Int>("UserId") ?: 0
         Log.d("Id пользователя", publicUserId.toString())
     }
