@@ -12,7 +12,7 @@ import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Presentation.Screens.ListVacanciesScreen
 import cafe.adriel.voyager.navigator.Navigator
 import androidx.compose.ui.text.TextStyle
-import com.example.ozonchick_new_version.Presentation.Screens.ProfileScreen
+import com.example.ozonchick_new_version.Presentation.Screens.Profile.ProfileScreen
 import com.example.ozonchick_new_version.Presentation.Screens.ResponsesScreen
 import com.example.ozonchick_new_version.Presentation.ui.components.HorizontalSpacer
 import com.example.ozonchick_new_version.Presentation.ui.components.Test_Components.mini_components.CustomClickableIcon

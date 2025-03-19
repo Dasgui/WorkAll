@@ -1,4 +1,4 @@
-package com.example.ozonchick_new_version.Presentation.Screens
+package com.example.ozonchick_new_version.Presentation.Screens.Profile
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -28,17 +28,15 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
+import com.example.ozonchick_new_version.Presentation.Screens.Settings_Screen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
-import com.example.ozonchick_new_version.Presentation.ViewModels.ProfileViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.Public_Card
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.R
 import io.paperdb.Paper
-import org.koin.androidx.compose.getViewModel
 import org.koin.androidx.compose.koinViewModel
-import org.koin.core.parameter.parametersOf
 
 class ProfileScreen() : Screen {
     @Composable

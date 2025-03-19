@@ -1,4 +1,4 @@
-package com.example.ozonchick_new_version.Presentation.ViewModels
+package com.example.ozonchick_new_version.Presentation.Screens.Profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
