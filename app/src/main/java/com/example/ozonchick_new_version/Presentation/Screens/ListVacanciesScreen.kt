@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -19,11 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.example.ozonchick_new_version.Presentation.ViewModels.ResponsesViewModel
-import com.example.ozonchick_new_version.Presentation.ui.components.Public_Loading
+import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.components.Responses.VacancyCard
 import com.example.ozonchick_new_version.Presentation.ui.theme.Ozonchick_new_versionTheme
-import kotlinx.coroutines.flow.forEach
 import org.koin.androidx.compose.koinViewModel
 
 class ListVacanciesScreen() : Screen {
@@ -64,7 +62,7 @@ private fun ListVacanciesScreenConstruct(viewModel: ResponsesViewModel = koinVie
 private fun MainScreen(viewModel: ResponsesViewModel = koinViewModel(), isLoading: Boolean) {
     CustomScaffold(mainText = "Вакансии", bottomButton = true) {
         if (isLoading) {
-            Public_Loading(isLoading = isLoading)
+            CustomLoading(isLoading = isLoading)
         } else {
             Column (
                 modifier = Modifier.Companion

@@ -31,7 +31,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Presentation.ViewModels.ContactsViewModel
-import com.example.ozonchick_new_version.Presentation.ui.components.Public_Loading
+import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.Ozonchick_new_versionTheme
 import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
@@ -227,6 +227,6 @@ fun Contacts_construct(viewModel: ContactsViewModel = koinViewModel()) {
 //            }
 //        }
     } else {
-        Public_Loading(isLoading = isLoading.value)
+        CustomLoading(isLoading = isLoading.value)
     }
 }

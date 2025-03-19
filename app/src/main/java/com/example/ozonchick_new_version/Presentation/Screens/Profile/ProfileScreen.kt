@@ -32,6 +32,7 @@ import com.example.ozonchick_new_version.Presentation.Screens.Settings_Screen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ui.components.Public_Card
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
+import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.R
@@ -54,7 +55,7 @@ private fun ProfileConstruct(navigator: Navigator?, viewModel: ProfileViewModel 
     val screenState = viewModel.informationProfileState.collectAsState()
     when (val curState = screenState.value) {
         is ScreenState.Failure -> Unit
-        ScreenState.Loading -> Unit
+        is ScreenState.Loading -> CustomLoading()
         is ScreenState.Success -> {
             CustomScaffold(
                 mainText = "Профиль",
