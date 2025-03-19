@@ -53,7 +53,7 @@ fun Scafold_BottomBar(
             )
             Clickable_Icon(
                 navigator = navigator,
-                screen = ResponsesScreen()/*Profile_Screen()*/,
+                screen = ResponsesScreen(),
                 iconId = R.drawable.profile_circle,
                 sizeIcon = sizeIcon,
                 colorIcon = MainColor,

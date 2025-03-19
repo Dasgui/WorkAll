@@ -2,6 +2,7 @@ package com.example.ozonchick_new_version.Presentation.Screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -22,6 +23,7 @@ import com.example.ozonchick_new_version.Presentation.ui.components.Public_Loadi
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.components.Responses.VacancyCard
 import com.example.ozonchick_new_version.Presentation.ui.theme.Ozonchick_new_versionTheme
+import kotlinx.coroutines.flow.forEach
 import org.koin.androidx.compose.koinViewModel
 
 class ListVacanciesScreen() : Screen {
@@ -64,15 +66,15 @@ private fun MainScreen(viewModel: ResponsesViewModel = koinViewModel(), isLoadin
         if (isLoading) {
             Public_Loading(isLoading = isLoading)
         } else {
-            LazyColumn(
+            Column (
                 modifier = Modifier.Companion
-                    .padding(top = 70.dp, bottom = 80.dp, start = 15.dp, end = 15.dp)
+                    .padding(bottom = 80.dp)
                     .fillMaxWidth(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.Companion.CenterHorizontally
             ) {
-                items(viewModel.listVacancy.value.size) { item ->
-                    VacancyCard(viewModel.listVacancy.collectAsState().value[item])
+                viewModel.listVacancy.collectAsState().value.forEach { item ->
+                    VacancyCard(item)
                 }
 
             }

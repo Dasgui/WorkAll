@@ -1,6 +1,7 @@
 package com.example.ozonchick_new_version.Presentation.Screens
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -61,16 +62,15 @@ private fun MainBody(viewModel: ResponsesViewModel = koinViewModel(), isLoading:
         if (isLoading) {
             Public_Loading(isLoading = isLoading)
         } else {
-            LazyColumn(
+            Column (
                 modifier = Modifier.Companion
                     .fillMaxWidth()
-                    .padding(top = 70.dp, bottom = 80.dp, start = 15.dp, end = 15.dp),
+                    .padding(bottom = 80.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.Companion.CenterHorizontally
             ) {
-                items(viewModel.listResponses.value.size)
-                { item ->
-                    VacancyCard(viewModel.listResponses.collectAsState().value[item])
+                viewModel.listResponses.collectAsState().value.forEach { item ->
+                    VacancyCard(item)
                 }
             }
         }
