@@ -1,24 +1,17 @@
-package com.example.ozonchick_new_version.Presentation.ViewModels
+package com.example.ozonchick_new_version.Presentation.Screens.LogIn
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Data.model.SigLogInModels.User
 import com.example.ozonchick_new_version.Data.model.SignUp_LogIn_Model.UserInformationAuth
-import com.example.ozonchick_new_version.Data.network.supabase
 import com.example.ozonchick_new_version.Domain.AuthUseCase
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
-import io.github.jan.supabase.exceptions.HttpRequestException
-import io.github.jan.supabase.postgrest.from
-import io.github.jan.supabase.postgrest.query.Columns
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.lang.IndexOutOfBoundsException
-import kotlin.invoke
 
 class LogInViewModel(private val Auth : AuthUseCase) : ViewModel() {
     private val _userInformation: MutableStateFlow<List<UserInformationAuth>> =

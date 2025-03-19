@@ -1,11 +1,9 @@
-package com.example.ozonchick_new_version.Presentation.Screens
+package com.example.ozonchick_new_version.Presentation.Screens.LogIn
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,46 +19,30 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.example.ozonchick_new_version.Presentation.Screens.ProfileScreen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.States.TextFieldStates
-import com.example.ozonchick_new_version.Presentation.ViewModels.LogInViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomOutlinedTextField
 import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
-import com.example.ozonchick_new_version.Presentation.ui.components.SignUp_LogIn_Components.SignUp_LogIn_OutlinedTextField
 import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpacer
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.Button_Color_Blue
-import com.example.ozonchick_new_version.Presentation.ui.theme.MainFontFamily
 import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
-import com.example.ozonchick_new_version.Presentation.ui.theme.SecondColor
-import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Screens.SignUpLogIn.SignUp.SignUp_Screen
 import org.koin.androidx.compose.koinViewModel
-import java.nio.file.WatchEvent
 
 class LogInScreen : Screen {
     @Composable
@@ -200,12 +182,14 @@ private fun BottomBody(viewModel: LogInViewModel) {
             Text(
                 text = "Запомнить пароль",
                 color = MainColor,
-                style = Tema.Text_20_20_Medium
+                style = Tema.Text_20_20_Medium,
+                textAlign = TextAlign.Left
             )
             Text(
                 text = "Забыли пароль?",
                 style = Tema.Text_20_20_Medium,
-                color = MainColor
+                color = MainColor,
+                textAlign = TextAlign.Right
             )
         }
     }
@@ -222,7 +206,7 @@ private fun BottomText(
     Column(
         horizontalAlignment = Alignment.Companion.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.Companion.padding(top = 64.dp)
+        modifier = Modifier.padding(top = 64.dp).fillMaxWidth()
     ) {
         Button(
             onClick = {
@@ -276,18 +260,13 @@ private fun BottomText(
                 append("Зарегистрироваться")
             }
         }
-        ClickableText(
+        Text(
             text = SignUpText,
-            onClick = {
-                SignUpText.getStringAnnotations(tag = "click", start = it, end = it).firstOrNull()
-                    ?.let {
-                        onNavigateForSignUp()
-                    }
+             modifier = Modifier.padding(top = 40.dp).fillMaxWidth().clickable {
+                 onNavigateForSignUp()
             },
             style = Tema.Text_20_20_Medium,
-            modifier = Modifier.Companion
-                .padding(top = 40.dp)
-                .testTag("Registrait")
+            textAlign = TextAlign.Center
         )
     }
 }

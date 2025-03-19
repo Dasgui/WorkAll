@@ -38,7 +38,7 @@ import com.example.ozonchick_new_version.Data.data.variables.secondType_OfRegist
 import com.example.ozonchick_new_version.R
 import org.koin.androidx.compose.koinViewModel
 import com.example.ozonchick_new_version.Data.data.dto.userType
-import com.example.ozonchick_new_version.Presentation.Screens.LogInScreen
+import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
 import com.example.ozonchick_new_version.Presentation.ViewModels.SignUpViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.ButtonPendingCondition
 import com.example.ozonchick_new_version.Presentation.ui.components.SignUp_LogIn_Components.SignUp_LogIn_OutlinedTextField

@@ -12,7 +12,7 @@ import com.example.ozonchick_new_version.Data.data.db.userAuthInformation
 import com.example.ozonchick_new_version.Data.data.db.userSharedId
 import com.example.ozonchick_new_version.Data.model.SignUp_LogIn_Model.UserName
 import com.example.ozonchick_new_version.Data.network.supabase
-import com.example.ozonchick_new_version.Presentation.Screens.LogInScreen
+import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.query.Columns
 import io.paperdb.Paper
