@@ -13,13 +13,14 @@ import com.example.ozonchick_new_version.Presentation.Screens.ListVacanciesScree
 import cafe.adriel.voyager.navigator.Navigator
 import androidx.compose.ui.text.TextStyle
 import com.example.ozonchick_new_version.Presentation.Screens.ResponsesScreen
-import com.example.ozonchick_new_version.Presentation.ui.components.Test_Components.mini_components.Clickable_Icon
+import com.example.ozonchick_new_version.Presentation.ui.components.HorizontalSpacer
+import com.example.ozonchick_new_version.Presentation.ui.components.Test_Components.mini_components.CustomClickableIcon
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 
 @Composable
-fun Scafold_BottomBar(
+fun ScaffoldBottomBar(
     navigator : Navigator?,
     sizeIcon : Dp = 35.dp,
     bottomTextStyle : TextStyle = Tema.Text_16_16_Medium
@@ -31,7 +32,7 @@ fun Scafold_BottomBar(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround
         ) {
-            Clickable_Icon(
+            CustomClickableIcon(
                 navigator = navigator,
                 screen = ListVacanciesScreen(),
                 iconId = R.drawable.vakansi_icon_3,
@@ -41,7 +42,8 @@ fun Scafold_BottomBar(
                 bottomTextStyle = bottomTextStyle,
                 colorBottomText = MainColor
             )
-            Clickable_Icon(
+            HorizontalSpacer(5.dp)
+            CustomClickableIcon(
                 navigator = navigator,
                 screen = ResponsesScreen(),
                 iconId = R.drawable.folder,
@@ -51,7 +53,8 @@ fun Scafold_BottomBar(
                 bottomTextStyle = bottomTextStyle,
                 colorBottomText = MainColor
             )
-            Clickable_Icon(
+            HorizontalSpacer(5.dp)
+            CustomClickableIcon(
                 navigator = navigator,
                 screen = ResponsesScreen(),
                 iconId = R.drawable.profile_circle,

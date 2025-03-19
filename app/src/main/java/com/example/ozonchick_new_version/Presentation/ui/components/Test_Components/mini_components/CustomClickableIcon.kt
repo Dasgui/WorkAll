@@ -19,7 +19,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.Navigator
 
 @Composable
-fun Clickable_Icon(
+fun CustomClickableIcon(
     navigator: Navigator?,
     screen: Screen,
 

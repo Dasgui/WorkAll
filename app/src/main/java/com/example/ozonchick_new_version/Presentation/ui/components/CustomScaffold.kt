@@ -2,7 +2,6 @@ package com.example.ozonchick_new_version.Presentation.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,7 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
-import com.example.ozonchick_new_version.Presentation.ui.components.Test_Components.Scafold_BottomBar
+import com.example.ozonchick_new_version.Presentation.ui.components.Test_Components.ScaffoldBottomBar
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
@@ -121,7 +120,7 @@ fun CustomScaffold(
     },
     bottomBar: @Composable () -> Unit = {
         if (bottomButton) {
-            Scafold_BottomBar(navigator = navigator, sizeIcon = 35.dp, bottomTextStyle = Tema.Text_20_20_Medium)
+            ScaffoldBottomBar(navigator = navigator, sizeIcon = 35.dp, bottomTextStyle = Tema.Text_16_16_Medium)
         }
     },
     snackbarHost: @Composable () -> Unit = {},
