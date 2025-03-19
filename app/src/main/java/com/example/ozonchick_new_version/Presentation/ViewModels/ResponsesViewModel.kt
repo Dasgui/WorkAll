@@ -5,17 +5,29 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Data.data.db.idSharedUser
+import com.example.ozonchick_new_version.Data.model.SigLogInModels.User
 import com.example.ozonchick_new_version.Data.model.Vakans_information
 import com.example.ozonchick_new_version.Data.model.Vakans_otklik
 import com.example.ozonchick_new_version.Data.network.supabase
+import com.example.ozonchick_new_version.Domain.GetVacanciesUseCase
+import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.query.Columns
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ResponsesViewModel() : ViewModel() {
+class ResponsesViewModel(
+    private val getVacanciesUseCase: GetVacanciesUseCase
+) : ViewModel() {
+    val responseState : MutableStateFlow<ScreenState<List<Vakans_information>>> = MutableStateFlow(ScreenState.Loading)
+
     var isLoading: MutableState<Boolean> = mutableStateOf(true)
 
     var limit: MutableState<Long> = mutableStateOf(3)
@@ -32,24 +44,20 @@ class ResponsesViewModel() : ViewModel() {
     private val _idVacancy : MutableStateFlow<List<Int>> = MutableStateFlow(emptyList());
     var idVacancy = _idVacancy.asStateFlow()
 
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            val vacancies = getInformation().await()
+            if (vacancies !is CustomResult.Failure) {
+                responseState.value = ScreenState.Success((vacancies as CustomResult.Success).data)
+                _listVacancy.value = vacancies.data
+            } else {
+                responseState.value = ScreenState.Failure(vacancies.code, vacancies.message)
+            }
+        }
+    }
 
-    suspend fun getInformation() {
-        val result = supabase.from("vakans").select(
-            Columns.Companion.list(
-                "vakans_id",
-                "vakans_name",
-                "vakans_price",
-                "vakans_organization",
-                "vakans_location",
-                "vakans_experience",
-                "vakans_mail",
-                "employer_id"
-            )
-        ) {
-            limit.value += offset.value
-            limit(limit.value)
-        }.decodeList<Vakans_information>()
-        _listVacancy.value = result
+    suspend fun getInformation() : Deferred<CustomResult<List<Vakans_information>>> {
+        return coroutineScope { async(Dispatchers.IO) { getVacanciesUseCase() } }
     }
 
     fun pushResponse(id: Int) {

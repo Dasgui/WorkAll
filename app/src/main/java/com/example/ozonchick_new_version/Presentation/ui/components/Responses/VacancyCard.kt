@@ -20,25 +20,40 @@ import com.example.ozonchick_new_version.Presentation.Screens.Contacts_Screen
 import com.example.ozonchick_new_version.Presentation.ViewModels.ResponsesViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.Public_Button
 import com.example.ozonchick_new_version.Presentation.ui.components.Public_Card
+import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpacer
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
+import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun VacancyCard(
     list: Vakans_information
 ) {
+    val navigator = LocalNavigator.current;
     Public_Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(280.dp)
             .padding(top = 20.dp)
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Bottom,
-            modifier = Modifier.fillMaxSize().padding(horizontal = 10.dp, vertical = 20.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 10.dp, vertical = 20.dp)
         ) {
-            MainText(list)
+            Column(
+                modifier = Modifier.fillMaxHeight(),
+                verticalArrangement = Arrangement.SpaceEvenly,
+                horizontalAlignment = Alignment.Start
+            ) {
+                MainText(list)
+                MainButtons(
+                    list = list,
+                    onNavigateForContacts = {
+                        navigator?.push(Contacts_Screen(list.vakans_id))
+                    })
+            }
         }
     }
 }
@@ -47,46 +62,40 @@ fun VacancyCard(
 private fun MainText(
     list: Vakans_information
 ) {
-    val navigator = LocalNavigator.current;
-    Column(
-        modifier = Modifier.fillMaxHeight(),
-        verticalArrangement = Arrangement.SpaceEvenly,
-        horizontalAlignment = Alignment.Start
+    Column (
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
         //Требуется специалист Name
         Text(
             text = list.vakans_name/*"Инженер"*/,
             style = Tema.Text_24_24_Bold,
-            color = MaterialTheme.colorScheme.primary
+            color = MainColor
         )
         //Заработная плата Price
         Text(
             text = list.vakans_price/*"90 000 - 130 000"*/,
             style = Tema.Text_24_24_Bold,
-            color = MaterialTheme.colorScheme.primary
+            color = MainColor
         )
         //Организация Organization
         Text(
             text = list.vakans_organization/*"ООО Некронтиры"*/,
-            style = Tema.Text_18_18_Medium,
-            color = MaterialTheme.colorScheme.primary
+            style = Tema.Text_20_20_Medium,
+            color = MainColor
         )
         //Расположение Location
         Text(
             text = list.vakans_location/*"Челябинск"*/,
-            style = Tema.Text_18_18_Medium,
-            color = MaterialTheme.colorScheme.primary
+            style = Tema.Text_20_20_Medium,
+            color = MainColor
         )
         //Опыт работы Experience
         Text(
-            text = list.vakans_experience/*"Опыт работы 3 до 6 лет"*/,
-            style = Tema.Text_18_18_Medium,
-            color = MaterialTheme.colorScheme.primary
+            text = "Опыт работы: " + list.vakans_experience.lowercase()/*"Опыт работы 3 до 6 лет"*/,
+            style = Tema.Text_20_20_Medium,
+            color = MainColor
         )
-        MainButtons(list = list,
-            onNavigateForContacts = {
-                navigator?.push(Contacts_Screen(list.vakans_id))
-            })
     }
 }
 
@@ -94,10 +103,12 @@ private fun MainText(
 private fun MainButtons(
     viewModel: ResponsesViewModel = koinViewModel(),
     list: Vakans_information,
-    onNavigateForContacts : () -> Unit,
+    onNavigateForContacts: () -> Unit,
 ) {
     Column(
-        modifier = Modifier.fillMaxSize().padding(top = 10.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 10.dp),
     ) {
         Public_Button(
             fillButton = false,
@@ -106,9 +117,10 @@ private fun MainButtons(
         ) {
             Text(
                 text = "Откликнуться",
-                style = Tema.Text_18_18_Medium,
+                style = Tema.Text_20_20_Medium,
             )
         }
+        VerticalSpacer(5.dp)
         Public_Button(
             fillButton = true,
             onClick = {
@@ -118,7 +130,7 @@ private fun MainButtons(
         ) {
             Text(
                 text = "Подробнее",
-                style = Tema.Text_18_18_Medium,
+                style = Tema.Text_20_20_Medium,
             )
         }
     }
