@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlin.text.Regex
 
 class SignUpViewModel : ViewModel() {
 
@@ -27,15 +28,15 @@ class SignUpViewModel : ViewModel() {
         _isWrittenCorrectly.value = newValue
     }
 
-    val name : MutableState<String> = mutableStateOf("")
+    val name : MutableState<String> = mutableStateOf("Еми")
 
-    val phoneNumber : MutableState<String> = mutableStateOf("")
+    val phoneNumber : MutableState<String> = mutableStateOf("+79087027174")
 
-    val email : MutableState<String> = mutableStateOf("")
+    val email : MutableState<String> = mutableStateOf("gaisovich@inbox.ru")
 
-    val password : MutableState<String> = mutableStateOf("")
+    val password : MutableState<String> = mutableStateOf("123")
 
-    val confirmPassword : MutableState<String> = mutableStateOf("")
+    val confirmPassword : MutableState<String> = mutableStateOf("123")
 
     private val _passwordVisibleFirst: MutableStateFlow<Boolean> = MutableStateFlow(false)
     var passwordVisibleFirst: StateFlow<Boolean> = _passwordVisibleFirst.asStateFlow()
@@ -47,7 +48,7 @@ class SignUpViewModel : ViewModel() {
 
     val userRole : MutableState<UserType> = mutableStateOf(UserType.Candidate)
 
-    val INN : MutableState<String> = mutableStateOf("")
+    val INN : MutableState<String> = mutableStateOf("123456789012")
 
 
 
@@ -62,16 +63,23 @@ class SignUpViewModel : ViewModel() {
         }
     }
 
-    @Composable
-    fun getErrorDisplay(value: Boolean): TextDecoration {
-        val answer: TextDecoration
-        if (value) {
-            answer = TextDecoration.Companion.None
-        } else {
-            answer = TextDecoration.Companion.Underline
-        }
-        return answer
+    fun checkName () : Boolean {
+        return name.value.trim().matches(Regex("[А-Яа-яЁёa-zA-Z]{3,21}"))
     }
 
+    fun checkEmail () : Boolean {
+        return email.value.trim().matches(Regex("^[a-z-а-я-0-9]+@[a-z-а-я-0-9]+.[a-z-а-я]{2,}$"))
+    }
 
+    fun checkPhoneNumber () : Boolean {
+        return phoneNumber.value.trim().matches(Regex("^\\+\\d{11}"))
+    }
+
+    fun checkInn () : Boolean {
+        return INN.value.trim().matches(Regex("\\d{12}"))
+    }
+
+    fun checkPasswordMatch() : Boolean {
+        return password.value.trim() == confirmPassword.value.trim()
+    }
 }

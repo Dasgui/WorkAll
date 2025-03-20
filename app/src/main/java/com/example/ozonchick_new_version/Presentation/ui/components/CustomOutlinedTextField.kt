@@ -5,6 +5,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -33,6 +35,7 @@ fun CustomOutlinedTextField (
     placeText : String = "",
     modifier: Modifier = Modifier.fillMaxWidth().height(55.dp),
     enabled : Boolean = true,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     placeholder: @Composable() (() -> Unit)? = null,
     leadingIcon: @Composable() (() -> Unit)? = null,
     trailingIcon: @Composable() (() -> Unit)? = null,
@@ -42,6 +45,7 @@ fun CustomOutlinedTextField (
         value = value,
         onValueChange = onValueChange,
         modifier = modifier,
+        keyboardOptions = keyboardOptions,
         enabled = enabled,
         textStyle = Tema.Text_20_20_Medium,
         placeholder = {
@@ -75,6 +79,7 @@ fun CustomOutlinedTextField (
             }
         },
         maxLines = 1,
+        singleLine = true,
         colors = TextFieldDefaults.colors(
             focusedContainerColor = BackgroundColor,
             unfocusedContainerColor = BackgroundColor,

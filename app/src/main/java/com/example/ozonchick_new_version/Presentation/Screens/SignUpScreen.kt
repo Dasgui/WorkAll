@@ -1,5 +1,6 @@
 package com.example.ozonchick_new_version.Screens.SignUpLogIn.SignUp
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -17,10 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.text.isDigitsOnly
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Common.UserType
@@ -93,7 +97,7 @@ private fun TextHead() {
 
 @Composable
 private fun MainBody(viewModel: SignUpViewModel) {
-    Column (
+    Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(25.dp)
     ) {
@@ -101,13 +105,15 @@ private fun MainBody(viewModel: SignUpViewModel) {
             title = "Имя",
             holderText = "Василий",
             viewModel = viewModel,
-            field = viewModel.name
+            field = viewModel.name,
+            maxChar = 21
         )
         NameTextField(
             title = "Номер телефона",
             holderText = "+7**********",
             viewModel = viewModel,
-            field = viewModel.phoneNumber
+            field = viewModel.phoneNumber,
+            maxChar = 11
         )
         NameTextField(
             title = "Адрес почты",
@@ -120,20 +126,24 @@ private fun MainBody(viewModel: SignUpViewModel) {
             title = "Пароль",
             holderText = "******",
             viewModel = viewModel,
-            field = viewModel.password
+            field = viewModel.password,
+            maxChar = 20,
         )
         NameTextField(
             title = "Подтвердите пароль",
             holderText = "******",
             viewModel = viewModel,
-            field = viewModel.confirmPassword
+            field = viewModel.confirmPassword,
+            maxChar = 20,
         )
         if (viewModel.userRole.value == UserType.Employer) {
             NameTextField(
                 title = "Подтвердите ИНН",
                 holderText = "",
                 viewModel = viewModel,
-                field = viewModel.INN
+                field = viewModel.INN,
+                maxChar = 12,
+                onlyNumbers = true
             )
         }
     }
@@ -144,7 +154,9 @@ private fun NameTextField(
     title: String,
     holderText: String,
     viewModel: SignUpViewModel,
-    field : MutableState<String>,
+    field: MutableState<String>,
+    maxChar: Int = 0,
+    onlyNumbers : Boolean = false,
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -155,12 +167,26 @@ private fun NameTextField(
             style = Tema.Text_24_24_Bold,
             maxLines = 1,
             color = MainColor,
-//            textDecoration = viewModel.getErrorDisplay(viewModel.numberCorrectFields[0])
         )
         CustomOutlinedTextField(
             value = field.value,
-            onValueChange = {field.value = it},
-            placeText = holderText
+            onValueChange = {
+                if (maxChar == 0) {
+                    field.value = it
+                } else {
+                    if (onlyNumbers) {
+                        if (it.length <= maxChar && it.isDigitsOnly()) {
+                            field.value = it
+                        }
+                    } else {
+                        if (it.length <= maxChar) {
+                            field.value = it
+                        }
+                    }
+                }
+            },
+            placeText = holderText,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
     }
 }
@@ -203,7 +229,15 @@ private fun Bottom(viewModel: SignUpViewModel, onNavigateForLogIn: () -> Unit) {
         modifier = Modifier.padding(top = 30.dp, bottom = 30.dp)
     ) {
         CustomButton(
-            onClick = {viewModel.Registrait()},
+            onClick = {
+                if (viewModel.checkName() && viewModel.checkEmail()
+                    && viewModel.checkPhoneNumber() && viewModel.checkInn()
+                    && viewModel.checkPasswordMatch()
+                ) {
+                    Log.d("Проверяем поля", "ТЫК")
+//                    viewModel.Registrait()
+                }
+            },
             placeText = "Зарегистрироваться"
         )
         BottomText(onNavigateForLogIn)

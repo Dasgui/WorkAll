@@ -32,7 +32,7 @@ fun CustomButton(
     border : BorderStroke? = BorderStroke(1.dp, MainColor)
 ) {
     Button(
-        onClick = { onClick },
+        onClick = onClick,
         enabled = enabled,
         modifier = modifier,
         shape = shape,
