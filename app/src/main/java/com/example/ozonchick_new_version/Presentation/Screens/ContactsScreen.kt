@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ViewModels.ContactsViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
@@ -27,15 +28,17 @@ import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.Ozonchick_new_versionTheme
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import org.koin.androidx.compose.koinViewModel
+import org.koin.androidx.compose.get
+import org.koin.core.parameter.parametersOf
 
 var isLoading: MutableState<Boolean> = mutableStateOf(false)
 
 class ContactsScreen (private val sharedId: Int) : Screen {
     @Composable
     override fun Content() {
-        val viewModel: ContactsViewModel = koinViewModel()
+        val viewModel: ContactsViewModel = get {parametersOf(sharedId)}
         Ozonchick_new_versionTheme {
-            Contacts_construct()
+            Contacts_construct(viewModel)
         }
 
     }
@@ -43,7 +46,7 @@ class ContactsScreen (private val sharedId: Int) : Screen {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Contacts_construct(viewModel: ContactsViewModel = koinViewModel()) {
+fun Contacts_construct(viewModel: ContactsViewModel) {
     val navigator = LocalNavigator.current
     val screenState = viewModel.contactsState.collectAsState()
     when (val curState = screenState.value) {
@@ -58,6 +61,7 @@ fun Contacts_construct(viewModel: ContactsViewModel = koinViewModel()) {
             CustomScaffold(
                 mainText = "Контактная информация",
                 bottomButton = true,
+                scaffoldStates = ScaffoldStates.OnSide,
                 mainBody = {
                     Column (
                         modifier = Modifier.padding(bottom = 80.dp).fillMaxWidth()

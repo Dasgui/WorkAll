@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Presentation.ViewModels.VakansCreate_ViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
@@ -68,7 +69,7 @@ fun ChangeInformation_construct(vm: VakansCreate_ViewModel = koinViewModel()) {
     val navigator = LocalNavigator.current
     CustomScaffold(
         bottomButton = false,
-        backButton = true,
+        scaffoldStates = ScaffoldStates.OnSide,
         topBar = {
             TopAppBar(
                 title = {

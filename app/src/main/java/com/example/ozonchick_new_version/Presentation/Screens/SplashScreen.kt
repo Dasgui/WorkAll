@@ -23,7 +23,7 @@ class SplashScreen : Screen {
                 navigator?.replaceAll(LogInScreen())
             },
             onNavigateForHome = {
-                navigator?.replaceAll(ContactsScreen(2))
+                navigator?.replaceAll(ListVacanciesScreen())
             }
         )
     }

@@ -24,6 +24,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Data.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data.model.Vakans_information
+import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.ViewModels.ListOfCandidate_ViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.Public_Button
 import com.example.ozonchick_new_version.Presentation.ui.components.Public_Card
@@ -45,7 +46,7 @@ fun ListOfCandidate_construct(vm: ListOfCandidate_ViewModel = koinViewModel())
 {
     CustomScaffold(
         bottomButton = false,
-        backButton = true
+        scaffoldStates = ScaffoldStates.OnSide
     ) {
         CustomScaffold(
             bottomButton = true,

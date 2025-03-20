@@ -1,8 +1,10 @@
 package com.example.ozonchick_new_version.Presentation.ui.components
 
+import android.widget.Space
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,6 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
+import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.ui.components.Test_Components.ScaffoldBottomBar
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
@@ -42,12 +45,12 @@ import com.example.ozonchick_new_version.R
 @Composable
 fun CustomScaffold(
     bottomButton: Boolean = false,
-    backButton: Boolean = false,
     mainText: String = "",
     modifier: Modifier = Modifier,
+    scaffoldStates: ScaffoldStates = ScaffoldStates.Main,
     navigator : Navigator? = LocalNavigator.current,
     topBar: @Composable () -> Unit = {
-        if (backButton) {
+        if (scaffoldStates is ScaffoldStates.OnSide) {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -65,7 +68,7 @@ fun CustomScaffold(
                     title = {
                         Row(
                             modifier = Modifier.fillMaxSize(),
-                            horizontalArrangement = Arrangement.Start,
+                            horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Icon(
@@ -76,6 +79,12 @@ fun CustomScaffold(
                                     .clickable { navigator?.pop() },
                                 tint = MainColor
                             )
+                            Text(
+                                text = mainText,
+                                style = Tema.Text_20_20_Medium,
+                                color = MainColor,
+                            )
+                            Spacer(Modifier.size(30.dp))
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(containerColor = BackgroundColor),
