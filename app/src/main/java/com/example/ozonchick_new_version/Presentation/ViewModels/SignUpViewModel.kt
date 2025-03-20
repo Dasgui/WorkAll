@@ -1,11 +1,14 @@
 package com.example.ozonchick_new_version.Presentation.ViewModels
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Data.data.dto.userType
 import com.example.ozonchick_new_version.Domain.postRegistrait
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
@@ -16,14 +19,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class SignUpViewModel : ViewModel() {
-    val maxLengthPhoneNumber: Int = 13
-
-    var numberCorrectFields: MutableList<Boolean> = MutableList(4) { false }
-    private val _countWrittenCorrectly: MutableStateFlow<Int> = MutableStateFlow(0)
-
-    fun setCountWrittenCorrectly(newValue: Int) {
-        _countWrittenCorrectly.value = newValue
-    }
 
     private val _isWrittenCorrectly: MutableStateFlow<Boolean> = MutableStateFlow(false)
     var isWrittenCorrectly: StateFlow<Boolean> = _isWrittenCorrectly.asStateFlow()
@@ -32,84 +27,28 @@ class SignUpViewModel : ViewModel() {
         _isWrittenCorrectly.value = newValue
     }
 
-    private val _name: MutableStateFlow<String> = MutableStateFlow("")
-    var name: StateFlow<String> = _name.asStateFlow()
+    val name : MutableState<String> = mutableStateOf("")
 
-    fun setNameUserFieldValue(newValue: String) {
-        _name.value = newValue/*.trim().replace("\\s+".toRegex(), " ")*/
-    }
+    val phoneNumber : MutableState<String> = mutableStateOf("")
 
+    val email : MutableState<String> = mutableStateOf("")
 
-    private val _phoneNumber: MutableStateFlow<String> = MutableStateFlow("")
-    var phoneNumber: StateFlow<String> = _phoneNumber.asStateFlow()
+    val password : MutableState<String> = mutableStateOf("")
 
-    fun setPhoneNumberFieldValue(newValue: String) {
-        _phoneNumber.value = newValue
-    }
-
-
-    private val _email: MutableStateFlow<String> = MutableStateFlow("")
-    var email: StateFlow<String> = _email.asStateFlow()
-
-    fun setEmailUserFieldValue(newValue: String) {
-        _email.value = newValue
-    }
-
-
-    private val _password: MutableStateFlow<String> = MutableStateFlow("")
-    var password: StateFlow<String> = _password.asStateFlow()
-
-    fun setPasswordUserFieldValue(newValue: String) {
-        _password.value = newValue
-    }
-
-
-    private val _confirmPassword: MutableStateFlow<String> = MutableStateFlow("")
-    var confirmPassword: StateFlow<String> = _confirmPassword.asStateFlow()
-
-    fun setConfirmPasswordFieldValue(newValue: String) {
-        _confirmPassword.value = newValue
-    }
-
+    val confirmPassword : MutableState<String> = mutableStateOf("")
 
     private val _passwordVisibleFirst: MutableStateFlow<Boolean> = MutableStateFlow(false)
     var passwordVisibleFirst: StateFlow<Boolean> = _passwordVisibleFirst.asStateFlow()
 
-    fun setPasswordVisibleFirst(newValue: Boolean) {
-        if (newValue && _passwordVisibleFirst.value) {
-            _passwordVisibleFirst.value = false
-        } else if (newValue && !_passwordVisibleFirst.value) {
-            _passwordVisibleFirst.value = true
-        }
-    }
 
 
     private val _passwordVisibleSecond: MutableStateFlow<Boolean> = MutableStateFlow(false)
     var passwordVisibleSecond: StateFlow<Boolean> = _passwordVisibleSecond.asStateFlow()
 
-    fun setPasswordVisibleSecond(newValue: Boolean) {
-        if (newValue && _passwordVisibleSecond.value) {
-            _passwordVisibleSecond.value = false
-        } else if (newValue && !_passwordVisibleSecond.value) {
-            _passwordVisibleSecond.value = true
-        }
-    }
+    val userRole : MutableState<UserType> = mutableStateOf(UserType.Candidate)
 
+    val INN : MutableState<String> = mutableStateOf("")
 
-    private val _userRole: MutableStateFlow<userType> = MutableStateFlow(userType.soiskat)
-    var userRole: StateFlow<userType> = _userRole.asStateFlow()
-
-    fun setUserRoleFieldValue(newValue: userType) {
-        _userRole.value = newValue
-    }
-
-
-    private val _INN: MutableStateFlow<String> = MutableStateFlow("")
-    var INN: StateFlow<String> = _INN.asStateFlow()
-
-    fun setInnFieldValue(newValue: String) {
-        _INN.value = newValue
-    }
 
 
     fun Registrait() {
@@ -120,49 +59,6 @@ class SignUpViewModel : ViewModel() {
                 email.value,
                 password.value
             )
-        }
-    }
-
-    fun dataIsEnteredCorrectly() {
-        if (numberCorrectFields.all { it == true }) {
-            _isWrittenCorrectly.value = true
-        } else {
-            _isWrittenCorrectly.value = false
-        }
-    }
-
-    fun checkNameTextField() {
-        if (_name.value.matches(Regex("[А-Яа-яЁёa-zA-Z]{3,21}"))) {
-            numberCorrectFields[0] = true
-        } else {
-            numberCorrectFields[0] = false
-        }
-    }
-
-    fun checkPhoneNumberTextField() {
-        if (_phoneNumber.value.matches(Regex("^\\+\\d{11}"))) {
-            numberCorrectFields[1] = true
-        } else {
-            numberCorrectFields[1] = false
-        }
-    }
-
-    fun checkEmailTextField() {
-        if (_email.value.isNotEmpty() && isMail()) {
-            numberCorrectFields[2] = true
-        } else {
-            numberCorrectFields[2] = false
-        }
-    }
-
-    fun checkPasswordTextField() {
-        if (_password.value.matches(Regex(".{6,20}"))
-            && _confirmPassword.value.isNotEmpty()
-            && _password.value == _confirmPassword.value
-        ) {
-            numberCorrectFields[3] = true
-        } else {
-            numberCorrectFields[3] = false
         }
     }
 
@@ -177,22 +73,5 @@ class SignUpViewModel : ViewModel() {
         return answer
     }
 
-    @Composable
-    fun isSecondaryElement(): Color {
-        val answer: Color
-        if (userRole.collectAsState().value == userType.soiskat) {
-            answer = MainColor
-        } else if (userRole.collectAsState().value == userType.nesoiskat) {
-            answer = SecondColor
-        } else {
-            answer = SecondColor
-        }
-        return answer
-    }
 
-    private fun isMail(): Boolean {
-        val answer: Boolean = (_email.value == _email.value/*.toLowerCase()*/
-                && _email.value.contains('@'))
-        return answer
-    }
 }

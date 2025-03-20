@@ -30,6 +30,7 @@ fun CustomOutlinedTextField (
     value: String,
     onValueChange: (String) -> Unit,
     states: TextFieldStates = TextFieldStates.Normal,
+    placeText : String = "",
     modifier: Modifier = Modifier.fillMaxWidth().height(55.dp),
     enabled : Boolean = true,
     placeholder: @Composable() (() -> Unit)? = null,
@@ -50,7 +51,10 @@ fun CustomOutlinedTextField (
                     style = Tema.Text_20_20_Medium
                 )
             } else {
-                placeholder
+                Text(
+                    text = placeText,
+                    style = Tema.Text_20_20_Medium
+                )
             }
         },
         leadingIcon = leadingIcon,

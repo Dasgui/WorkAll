@@ -13,6 +13,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Data.data.db.publicUserId
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
 import com.example.ozonchick_new_version.R
+import com.example.ozonchick_new_version.Screens.SignUpLogIn.SignUp.SignUpScreen
 
 class SplashScreen : Screen {
     @Composable
@@ -20,7 +21,7 @@ class SplashScreen : Screen {
         val navigator = LocalNavigator.current
         Splash(
             onNavigateForLogin = {
-                navigator?.replaceAll(LogInScreen())
+                navigator?.replaceAll(SignUpScreen())
             },
             onNavigateForHome = {
                 navigator?.replaceAll(ListVacanciesScreen())

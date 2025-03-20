@@ -39,7 +39,7 @@ import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.Button_Color_Blue
 import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
-import com.example.ozonchick_new_version.Screens.SignUpLogIn.SignUp.SignUp_Screen
+import com.example.ozonchick_new_version.Screens.SignUpLogIn.SignUp.SignUpScreen
 import org.koin.androidx.compose.koinViewModel
 
 class LogInScreen : Screen {
@@ -65,14 +65,14 @@ private fun LogInConstruct(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.Companion
                     .fillMaxWidth()
-                    .padding(start = 24.dp, end = 24.dp)
+                    .padding(start = 24.dp, end = 24.dp, top = 120.dp)
             ) {
                 TextHead()
                 MainBody(viewModel)
                 BottomBody(viewModel)
                 BottomText(
                     viewModel,
-                    onNavigateForSignUp = { navigator?.replaceAll(SignUp_Screen()) })
+                    onNavigateForSignUp = { navigator?.replaceAll(SignUpScreen()) })
             }
         }
 
@@ -85,7 +85,6 @@ private fun TextHead() {
     Column(
         modifier = Modifier.Companion
             .fillMaxWidth()
-            .padding(top = 120.dp)
     ) {
         Text(
             text = "Добро пожаловать",
