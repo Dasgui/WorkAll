@@ -1,18 +1,23 @@
 package com.example.ozonchick_new_version.Data.network
 
+import android.util.Log
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Data.model.SigLogInModels.User
+import com.example.ozonchick_new_version.Data.model.UserInformation
+import com.example.ozonchick_new_version.Data.model.UserInsertInformation
 import com.example.ozonchick_new_version.Data.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data.model.Vakans_information
 import io.github.jan.supabase.exceptions.HttpRequestException
 
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.query.Columns
+import kotlinx.coroutines.selects.select
 
 interface Repository {
     suspend fun Auth(email: String, password: String): CustomResult<User>
     suspend fun getVacancies() : CustomResult<List<Vakans_information>>
     suspend fun getContactInformation(id : Int) : CustomResult<List<Vakans_contacts>>
+    suspend fun registrationCandidate(name : String, password: String, phoneNumber: String, email: String) : CustomResult<List<UserInsertInformation>>
 }
 
 class RepositoryImpl : Repository {
@@ -69,6 +74,29 @@ class RepositoryImpl : Repository {
             CustomResult.Success(result)
         } catch (ex : Exception) {
             CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
+        }
+    }
+
+    override suspend fun registrationCandidate(
+        name: String,
+        password: String,
+        phoneNumber: String,
+        email: String,
+    ) : CustomResult<List<UserInsertInformation>>  {
+         return try {
+            val user = UserInsertInformation(
+                name = name,
+                phoneNumber = phoneNumber,
+                email = email,
+                password = password
+            )
+            val result = supabase.from("user_information").insert(user) {
+                select()
+            }.decodeList<UserInsertInformation>()
+            CustomResult.Success(result)
+        } catch (ex : Exception) {
+             Log.d("Регистрация", ex.toString())
+            CustomResult.Failure(1, ex.toString())
         }
     }
 }

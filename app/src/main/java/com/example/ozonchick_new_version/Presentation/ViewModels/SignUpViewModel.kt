@@ -1,5 +1,6 @@
 package com.example.ozonchick_new_version.Presentation.ViewModels
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
@@ -8,18 +9,27 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.UserType
+import com.example.ozonchick_new_version.Data.data.db.publicUserId
 import com.example.ozonchick_new_version.Data.data.dto.userType
-import com.example.ozonchick_new_version.Domain.postRegistrait
+import com.example.ozonchick_new_version.Data.model.SigLogInModels.User
+import com.example.ozonchick_new_version.Data.model.UserInsertInformation
+import com.example.ozonchick_new_version.Domain.RegistraitionCandidateUseCase
+import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.SecondColor
+import io.paperdb.Paper
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlin.text.Regex
 
-class SignUpViewModel : ViewModel() {
+class SignUpViewModel(
+    private val registraitionCandidateUseCase: RegistraitionCandidateUseCase
+) : ViewModel() {
 
     private val _isWrittenCorrectly: MutableStateFlow<Boolean> = MutableStateFlow(false)
     var isWrittenCorrectly: StateFlow<Boolean> = _isWrittenCorrectly.asStateFlow()
@@ -50,16 +60,18 @@ class SignUpViewModel : ViewModel() {
 
     val INN : MutableState<String> = mutableStateOf("123456789012")
 
-
+    val signUpState : MutableStateFlow<ScreenState<List<UserInsertInformation>>> =
+        MutableStateFlow(ScreenState.Loading)
 
     fun Registrait() {
-        viewModelScope.launch {
-            postRegistrait().postRegistraitEmail(
-                name.value,
-                phoneNumber.value,
-                email.value,
-                password.value
-            )
+        viewModelScope.launch (Dispatchers.IO) {
+//            val user = registraitionCandidateUseCase(name.value, email.value, password.value, phoneNumber.value)
+            when (val curResult = registraitionCandidateUseCase(name.value, email.value, password.value, phoneNumber.value)) {
+                is CustomResult.Failure -> signUpState.value = ScreenState.Failure(curResult.code, curResult.message)
+                is CustomResult.Success -> {
+                    signUpState.value = ScreenState.Success(data = curResult.data)
+                }
+            }
         }
     }
 

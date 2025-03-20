@@ -14,6 +14,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
@@ -32,9 +33,12 @@ import com.example.ozonchick_new_version.Data.data.db.accessSharedRegistrait
 import com.example.ozonchick_new_version.Data.data.db.emailSharedUser
 import org.koin.androidx.compose.koinViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
+import com.example.ozonchick_new_version.Presentation.Screens.Profile.ProfileScreen
+import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ViewModels.SignUpViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomButton
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomOutlinedTextField
+import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
 import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpacer
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.Primary_Color
@@ -59,6 +63,18 @@ fun SignUpConstruct(viewModel: SignUpViewModel = koinViewModel(), onNavigateForL
     if (accessSharedRegistrait.value) {
         emailSharedUser.value = viewModel.email.value
         onNavigateForLogIn()
+    }
+    val screenState = viewModel.signUpState.collectAsState()
+    val navigator = LocalNavigator.current
+    when (val curState = screenState.value) {
+        is ScreenState.Failure -> FailAlertDialog(
+            title = "Ошибка регистрации",
+            curState.message,
+            onOkClick = {
+                viewModel.signUpState.value = ScreenState.Loading
+            })
+        is ScreenState.Loading -> Unit
+        is ScreenState.Success -> navigator?.replaceAll(LogInScreen())
     }
     LazyColumn(
         modifier = Modifier
@@ -235,7 +251,7 @@ private fun Bottom(viewModel: SignUpViewModel, onNavigateForLogIn: () -> Unit) {
                     && viewModel.checkPasswordMatch()
                 ) {
                     Log.d("Проверяем поля", "ТЫК")
-//                    viewModel.Registrait()
+                    viewModel.Registrait()
                 }
             },
             placeText = "Зарегистрироваться"

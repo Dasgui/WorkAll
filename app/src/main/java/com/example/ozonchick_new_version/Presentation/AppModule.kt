@@ -5,6 +5,7 @@ import com.example.ozonchick_new_version.Data.network.RepositoryImpl
 import com.example.ozonchick_new_version.Domain.AuthUseCase
 import com.example.ozonchick_new_version.Domain.GetContactInformationUseCase
 import com.example.ozonchick_new_version.Domain.GetVacanciesUseCase
+import com.example.ozonchick_new_version.Domain.RegistraitionCandidateUseCase
 import com.example.ozonchick_new_version.Presentation.ViewModels.ContactsViewModel
 import com.example.ozonchick_new_version.Presentation.ViewModels.HomeViewModel
 import com.example.ozonchick_new_version.Presentation.ViewModels.ListOfCandidate_ViewModel
@@ -22,9 +23,9 @@ var AppModule = module {
     viewModel {
         LogInViewModel(get())
     }
-
+    factory { RegistraitionCandidateUseCase(get()) }
     viewModel {
-        SignUpViewModel()
+        SignUpViewModel(get())
     }
 
     viewModel {
