@@ -1,25 +1,15 @@
 package com.example.ozonchick_new_version.Presentation.ViewModels
 
-import android.util.Log
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.UserType
-import com.example.ozonchick_new_version.Data.data.db.publicUserId
-import com.example.ozonchick_new_version.Data.data.dto.userType
-import com.example.ozonchick_new_version.Data.model.SigLogInModels.User
-import com.example.ozonchick_new_version.Data.model.UserInsertInformation
-import com.example.ozonchick_new_version.Domain.RegistraitionCandidateUseCase
+import com.example.ozonchick_new_version.Data.model.Candidate.UserInsertInformation
+import com.example.ozonchick_new_version.Domain.RegistrationCandidateUseCase
+import com.example.ozonchick_new_version.Domain.RegistrationEmployerUseCase
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
-import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
-import com.example.ozonchick_new_version.Presentation.ui.theme.SecondColor
-import io.paperdb.Paper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,7 +18,8 @@ import kotlinx.coroutines.launch
 import kotlin.text.Regex
 
 class SignUpViewModel(
-    private val registraitionCandidateUseCase: RegistraitionCandidateUseCase
+    private val registrationCandidateUseCase: RegistrationCandidateUseCase,
+    private val registrationEmployerUseCase: RegistrationEmployerUseCase
 ) : ViewModel() {
 
     private val _isWrittenCorrectly: MutableStateFlow<Boolean> = MutableStateFlow(false)
@@ -63,10 +54,9 @@ class SignUpViewModel(
     val signUpState : MutableStateFlow<ScreenState<List<UserInsertInformation>>> =
         MutableStateFlow(ScreenState.Loading)
 
-    fun Registrait() {
+    fun registrationCandidate () {
         viewModelScope.launch (Dispatchers.IO) {
-//            val user = registraitionCandidateUseCase(name.value, email.value, password.value, phoneNumber.value)
-            when (val curResult = registraitionCandidateUseCase(name.value, email.value, password.value, phoneNumber.value)) {
+            when (val curResult = registrationCandidateUseCase(name.value, email.value, password.value, phoneNumber.value)) {
                 is CustomResult.Failure -> signUpState.value = ScreenState.Failure(curResult.code, curResult.message)
                 is CustomResult.Success -> {
                     signUpState.value = ScreenState.Success(data = curResult.data)
@@ -74,6 +64,17 @@ class SignUpViewModel(
             }
         }
     }
+
+//    fun registrationEmployer () {
+//        viewModelScope.launch (Dispatchers.IO) {
+//            when (val curResult = registrationEmployerUseCase(name.value, email.value, password.value, phoneNumber.value, INN.value)) {
+//                is CustomResult.Failure -> signUpState.value = ScreenState.Failure(curResult.code, curResult.message)
+//                is CustomResult.Success -> {
+//                    signUpState.value = ScreenState.Success(data = curResult.data)
+//                }
+//            }
+//        }
+//    }
 
     fun checkName () : Boolean {
         return name.value.trim().matches(Regex("[А-Яа-яЁёa-zA-Z]{3,21}"))

@@ -33,7 +33,6 @@ import com.example.ozonchick_new_version.Data.data.db.accessSharedRegistrait
 import com.example.ozonchick_new_version.Data.data.db.emailSharedUser
 import org.koin.androidx.compose.koinViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
-import com.example.ozonchick_new_version.Presentation.Screens.Profile.ProfileScreen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ViewModels.SignUpViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomButton
@@ -251,7 +250,7 @@ private fun Bottom(viewModel: SignUpViewModel, onNavigateForLogIn: () -> Unit) {
                     && viewModel.checkPasswordMatch()
                 ) {
                     Log.d("Проверяем поля", "ТЫК")
-                    viewModel.Registrait()
+                    viewModel.registrationCandidate()
                 }
             },
             placeText = "Зарегистрироваться"

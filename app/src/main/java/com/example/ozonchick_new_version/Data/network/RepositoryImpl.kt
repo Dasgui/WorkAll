@@ -3,8 +3,9 @@ package com.example.ozonchick_new_version.Data.network
 import android.util.Log
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Data.model.SigLogInModels.User
-import com.example.ozonchick_new_version.Data.model.UserInformation
-import com.example.ozonchick_new_version.Data.model.UserInsertInformation
+import com.example.ozonchick_new_version.Data.model.Candidate.UserInformation
+import com.example.ozonchick_new_version.Data.model.Candidate.UserInsertInformation
+import com.example.ozonchick_new_version.Data.model.Employer.EmployerInsertInformation
 import com.example.ozonchick_new_version.Data.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data.model.Vakans_information
 import io.github.jan.supabase.exceptions.HttpRequestException
@@ -18,6 +19,7 @@ interface Repository {
     suspend fun getVacancies() : CustomResult<List<Vakans_information>>
     suspend fun getContactInformation(id : Int) : CustomResult<List<Vakans_contacts>>
     suspend fun registrationCandidate(name : String, password: String, phoneNumber: String, email: String) : CustomResult<List<UserInsertInformation>>
+    suspend fun registrationEmployer(name : String, password: String, phoneNumber: String, email: String, inn : String) : CustomResult<List<EmployerInsertInformation>>
 }
 
 class RepositoryImpl : Repository {
@@ -96,6 +98,31 @@ class RepositoryImpl : Repository {
             CustomResult.Success(result)
         } catch (ex : Exception) {
              Log.d("Регистрация", ex.toString())
+            CustomResult.Failure(1, ex.toString())
+        }
+    }
+
+    override suspend fun registrationEmployer(
+        name: String,
+        password: String,
+        phoneNumber: String,
+        email: String,
+        inn: String
+    ): CustomResult<List<EmployerInsertInformation>> {
+        return try {
+            val user = EmployerInsertInformation(
+                name = name,
+                phoneNumber = phoneNumber,
+                email = email,
+                password = password,
+                INN = inn
+            )
+            val result = supabase.from("employers_information").insert(user) {
+                select()
+            }.decodeList<EmployerInsertInformation>()
+            CustomResult.Success(result)
+        } catch (ex : Exception) {
+            Log.d("Регистрация", ex.toString())
             CustomResult.Failure(1, ex.toString())
         }
     }
