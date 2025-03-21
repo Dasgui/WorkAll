@@ -3,9 +3,8 @@ package com.example.ozonchick_new_version.Presentation.Screens.LogIn
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
-import com.example.ozonchick_new_version.Data.data.db.publicUserId
+import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.AllUserInformation
-import com.example.ozonchick_new_version.Data.model.SigLogInModels.User
 import com.example.ozonchick_new_version.Data.model.SignUp_LogIn_Model.UserInformationAuth
 import com.example.ozonchick_new_version.Domain.AuthUseCase
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
@@ -32,7 +31,7 @@ class LogInViewModel(private val auth : AuthUseCase) : ViewModel() {
     }
 
 
-    private val _emailUser: MutableStateFlow<String> = MutableStateFlow("test07@inbox.ru")
+    private val _emailUser: MutableStateFlow<String> = MutableStateFlow("gaisich@inbox.ru") /*gaisich@inbox.ru*/ /*test07@inbox.ru*/
     var emailUser: StateFlow<String> = _emailUser.asStateFlow()
 
     fun setEmailUserFieldValue(newValue: String)
@@ -41,7 +40,7 @@ class LogInViewModel(private val auth : AuthUseCase) : ViewModel() {
     }
 
 
-    private val _passwordUser: MutableStateFlow<String> = MutableStateFlow("test07")
+    private val _passwordUser: MutableStateFlow<String> = MutableStateFlow("1234") /*1234*/ /*test07*/
     var passwordUser: StateFlow<String> = _passwordUser.asStateFlow()
 
     fun setPasswordUserFieldValue(newValue: String)
@@ -72,16 +71,16 @@ class LogInViewModel(private val auth : AuthUseCase) : ViewModel() {
                     logInState.value = ScreenState.Success(data = curResult.data)
                     if (_rememberUser.value) {
                         if (curResult.data is AllUserInformation.Employer) {
-                            publicUserId = curResult.data.employer_id
+                            publicUserId.id = curResult.data.employer_id
                         } else if (curResult.data is AllUserInformation.Candidate) {
-                            publicUserId = curResult.data.user_id
+                            publicUserId.id = curResult.data.user_id
                         }
                         Paper.book().write("UserId", publicUserId)
                     } else {
                         if (curResult.data is AllUserInformation.Employer) {
-                            publicUserId = curResult.data.employer_id
+                            publicUserId.id = curResult.data.employer_id
                         } else if (curResult.data is AllUserInformation.Candidate) {
-                            publicUserId = curResult.data.user_id
+                            publicUserId.id = curResult.data.user_id
                         }
                     }
                 }

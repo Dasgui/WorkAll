@@ -1,4 +1,4 @@
-package com.example.ozonchick_new_version.Presentation.ViewModels
+package com.example.ozonchick_new_version.Presentation.Screens.SignUp
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Data.model.AllUserInsertInformation
-import com.example.ozonchick_new_version.Data.model.Candidate.UserInsertInformation
 import com.example.ozonchick_new_version.Domain.RegistrationCandidateUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationEmployerUseCase
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
@@ -16,7 +15,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlin.text.Regex
 
 class SignUpViewModel(
     private val registrationCandidateUseCase: RegistrationCandidateUseCase,
@@ -56,7 +54,7 @@ class SignUpViewModel(
         MutableStateFlow(ScreenState.Loading)
 
     fun registrationCandidate () {
-        viewModelScope.launch (Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             when (val curResult = registrationCandidateUseCase(name.value, email.value, password.value, phoneNumber.value)) {
                 is CustomResult.Failure -> signUpState.value = ScreenState.Failure(curResult.code, curResult.message)
                 is CustomResult.Success -> {

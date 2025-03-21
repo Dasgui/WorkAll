@@ -14,7 +14,7 @@ import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInViewMod
 import com.example.ozonchick_new_version.Presentation.ViewModels.VakansCreate_ViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.Profile.ProfileViewModel
 import com.example.ozonchick_new_version.Presentation.ViewModels.ResponsesViewModel
-import com.example.ozonchick_new_version.Presentation.ViewModels.SignUpViewModel
+import com.example.ozonchick_new_version.Presentation.Screens.SignUp.SignUpViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

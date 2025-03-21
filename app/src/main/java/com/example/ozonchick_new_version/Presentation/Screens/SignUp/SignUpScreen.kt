@@ -1,6 +1,5 @@
 package com.example.ozonchick_new_version.Screens.SignUpLogIn.SignUp
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,21 +30,18 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Data.data.db.accessSharedRegistrait
 import com.example.ozonchick_new_version.Data.data.db.emailSharedUser
-import com.example.ozonchick_new_version.Data.model.SigLogInModels.User
 import org.koin.androidx.compose.koinViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
-import com.example.ozonchick_new_version.Presentation.ViewModels.SignUpViewModel
+import com.example.ozonchick_new_version.Presentation.Screens.SignUp.SignUpViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomButton
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomOutlinedTextField
 import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
 import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpacer
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
-import com.example.ozonchick_new_version.Presentation.ui.theme.Primary_Color
 import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.Button_Color_Blue
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
-import com.example.ozonchick_new_version.Presentation.ui.theme.SecondColor
 
 class SignUpScreen : Screen {
     @Composable

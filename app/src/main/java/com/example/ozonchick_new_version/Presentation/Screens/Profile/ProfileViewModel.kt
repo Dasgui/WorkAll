@@ -2,7 +2,8 @@ package com.example.ozonchick_new_version.Presentation.Screens.Profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ozonchick_new_version.Data.data.db.publicUserId
+import com.example.ozonchick_new_version.Common.UserType
+import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.ProfileUIModel
 import com.example.ozonchick_new_version.Data.model.SignUp_LogIn_Model.UserName
 import com.example.ozonchick_new_version.Data.network.supabase
@@ -19,14 +20,17 @@ class ProfileViewModel(/*userId : Int*/) : ViewModel() {
     }
     val informationProfileState : MutableStateFlow<ScreenState<ProfileUIModel>> =
         MutableStateFlow(ScreenState.Loading)
-    fun getName(userId: Int = publicUserId) {
+    fun getName(userId: Int = publicUserId.id) {
         viewModelScope.launch(Dispatchers.IO) {
-            val result =
+            val result = if (publicUserId.type is UserType.Candidate) {
                 supabase.from("user_information").select(columns = Columns.Companion.list("name")) {
                     filter {
                         eq("user_id", userId)
                     }
                 }.decodeList<UserName>()
+            } else {
+                listOf(UserName("Стрега"))
+            }
             informationProfileState.value = ScreenState.Success(ProfileUIModel(result[0].name))
         }
     }

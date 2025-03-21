@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import com.example.ozonchick_new_version.Data.data.db.publicUserId
+import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
 import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Screens.SignUpLogIn.SignUp.SignUpScreen
@@ -34,7 +34,7 @@ class SplashScreen : Screen {
 fun Splash(onNavigateForLogin: () -> Unit, onNavigateForHome: () -> Unit) {
 
     LaunchedEffect(key1 = true) {
-        if (publicUserId != 0) {
+        if (publicUserId.id != 0) {
             onNavigateForHome()
         } else {
             onNavigateForLogin()
