@@ -4,18 +4,14 @@ import android.util.Log
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Common.model.UserId
-import com.example.ozonchick_new_version.Data.model.AllUserInformation
-import com.example.ozonchick_new_version.Data.model.AllUserInsertInformation
-import com.example.ozonchick_new_version.Data.model.Candidate.CandidateFilterInformation
-import com.example.ozonchick_new_version.Data.model.Candidate.UserInformation
-import com.example.ozonchick_new_version.Data.model.SigLogInModels.User
-import com.example.ozonchick_new_version.Data.model.Candidate.UserInsertInformation
-import com.example.ozonchick_new_version.Data.model.Employer.Employer
-import com.example.ozonchick_new_version.Data.model.Employer.EmployerFilterInformation
-import com.example.ozonchick_new_version.Data.model.Employer.EmployerInsertInformation
-import com.example.ozonchick_new_version.Data.model.SignUp_LogIn_Model.EmployerInformationRegistration
+import com.example.ozonchick_new_version.Data.model.Authentication.AllUserInformation
+import com.example.ozonchick_new_version.Data.model.Authentication.AllUserInsertInformation
+import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.Candidate
+import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.UserInsertInformation
+import com.example.ozonchick_new_version.Data.model.Authentication.Employer.Employer
+import com.example.ozonchick_new_version.Data.model.Authentication.Employer.EmployerInsertInformation
 import com.example.ozonchick_new_version.Data.model.Vakans_contacts
-import com.example.ozonchick_new_version.Data.model.Vakans_information
+import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Data.model.Vakans_otklik
 import io.github.jan.supabase.exceptions.HttpRequestException
 
@@ -25,9 +21,9 @@ import io.github.jan.supabase.postgrest.query.Columns
 interface Repository {
     suspend fun auth(email: String, password: String): CustomResult<AllUserInformation>
 
-    suspend fun getVacancies(): CustomResult<List<Vakans_information>>
+    suspend fun getVacancies(): CustomResult<List<VakansInformation>>
     suspend fun getResponsesIdVacancies(userId: UserId): CustomResult<List<Vakans_otklik>>
-    suspend fun getResponsesVacancies(idList : List<Int>): CustomResult<List<Vakans_information>>
+    suspend fun getResponsesVacancies(idList : List<Int>): CustomResult<List<VakansInformation>>
 
     suspend fun getContactInformation(id: Int): CustomResult<List<Vakans_contacts>>
     suspend fun registrationCandidate(
@@ -55,15 +51,15 @@ class RepositoryImpl : Repository {
         return try {
             val candidate = supabase.from("user_information").select() {
                 filter {
-                    User::email eq email
-                    User::password eq password
+                    AllUserInformation.Candidate::email eq email
+                    AllUserInformation.Candidate::password eq password
                 }
             }.decodeList<AllUserInformation.Candidate>()
             if (candidate.isEmpty()) {
                 val employer = supabase.from("employers_information").select() {
                     filter {
-                        User::email eq email
-                        User::password eq password
+                        AllUserInformation.Employer::email eq email
+                        AllUserInformation.Employer::password eq password
                     }
                 }.decodeList<AllUserInformation.Employer>()
                 CustomResult.Success(employer[0])
@@ -83,7 +79,7 @@ class RepositoryImpl : Repository {
         }
     }
 
-    override suspend fun getVacancies(): CustomResult<List<Vakans_information>> {
+    override suspend fun getVacancies(): CustomResult<List<VakansInformation>> {
         return try {
             val result = supabase.from("vakans").select(
                 Columns.Companion.list(
@@ -96,7 +92,7 @@ class RepositoryImpl : Repository {
                     "vakans_mail",
                     "employer_id"
                 )
-            ).decodeList<Vakans_information>()
+            ).decodeList<VakansInformation>()
             CustomResult.Success(result)
         } catch (ex: Exception) {
             CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
@@ -115,13 +111,13 @@ class RepositoryImpl : Repository {
         }
     }
 
-    override suspend fun getResponsesVacancies(idList : List<Int>): CustomResult<List<Vakans_information>> {
+    override suspend fun getResponsesVacancies(idList : List<Int>): CustomResult<List<VakansInformation>> {
         return try {
             val result = supabase.from("vakans").select() {
                 filter {
-                    Vakans_information::vakans_id isIn idList
+                    VakansInformation::vakans_id isIn idList
                 }
-            }.decodeList<Vakans_information>()
+            }.decodeList<VakansInformation>()
             CustomResult.Success(result)
         } catch (ex: Exception) {
             CustomResult.Failure(1, ex.toString())
@@ -234,9 +230,9 @@ class RepositoryImpl : Repository {
                     .select()
                     {
                         filter {
-                            UserInformation::user_id eq userId.id
+                            Candidate::user_id eq userId.id
                         }
-                    }.decodeList<UserInformation>()
+                    }.decodeList<Candidate>()
                 Log.d("Имя соискателя", result[0].name)
                 CustomResult.Success(result[0].name)
             }

@@ -12,7 +12,6 @@ import com.example.ozonchick_new_version.Domain.RegistrationCandidateUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationEmployerUseCase
 import com.example.ozonchick_new_version.Presentation.Screens.ListVacancies.ListVacanciesViewModel
 import com.example.ozonchick_new_version.Presentation.ViewModels.ContactsViewModel
-import com.example.ozonchick_new_version.Presentation.ViewModels.HomeViewModel
 import com.example.ozonchick_new_version.Presentation.ViewModels.ListOfCandidate_ViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInViewModel
 import com.example.ozonchick_new_version.Presentation.ViewModels.VakansCreate_ViewModel
@@ -40,10 +39,6 @@ var AppModule = module {
         ProfileViewModel(get())
 //        (userId : Int) ->
 //        ProfileViewModel(userId)
-    }
-
-    viewModel {
-        HomeViewModel()
     }
 
     factory { GetResponsesIdVacanciesUseCase(get()) }

@@ -3,11 +3,8 @@ package com.example.ozonchick_new_version.Domain
 
 import android.util.Log
 import com.example.ozonchick_new_version.Common.CustomResult
-import com.example.ozonchick_new_version.Data.model.AllUserInformation
-import com.example.ozonchick_new_version.Data.model.AllUserInsertInformation
-import com.example.ozonchick_new_version.Data.model.SigLogInModels.User
-import com.example.ozonchick_new_version.Data.model.Candidate.UserInsertInformation
-import com.example.ozonchick_new_version.Data.model.Employer.EmployerInsertInformation
+import com.example.ozonchick_new_version.Data.model.Authentication.AllUserInformation
+import com.example.ozonchick_new_version.Data.model.Authentication.AllUserInsertInformation
 import com.example.ozonchick_new_version.Data.network.Repository
 
 class AuthUseCase(private val repository: Repository) {

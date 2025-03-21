@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Common.publicUserId
-import com.example.ozonchick_new_version.Data.model.Vakans_information
+import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Presentation.Screens.ContactsScreen
 import com.example.ozonchick_new_version.Presentation.ViewModels.ResponsesViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.Public_Button
@@ -27,7 +27,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun VacancyCard(
-    list: Vakans_information
+    list: VakansInformation
 ) {
     val navigator = LocalNavigator.current;
     Public_Card(
@@ -60,7 +60,7 @@ fun VacancyCard(
 
 @Composable
 private fun MainText(
-    list: Vakans_information
+    list: VakansInformation
 ) {
     Column (
         modifier = Modifier.fillMaxWidth(),
@@ -102,7 +102,7 @@ private fun MainText(
 @Composable
 private fun MainButtons(
     viewModel: ResponsesViewModel = koinViewModel(),
-    list: Vakans_information,
+    list: VakansInformation,
     onNavigateForContacts: () -> Unit,
 ) {
     Column(

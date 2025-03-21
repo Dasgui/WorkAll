@@ -6,8 +6,7 @@ import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Common.model.UserId
 import com.example.ozonchick_new_version.Common.publicUserId
-import com.example.ozonchick_new_version.Data.model.ProfileUIModel
-import com.example.ozonchick_new_version.Data.model.SignUp_LogIn_Model.UserName
+import com.example.ozonchick_new_version.Presentation.Models.ProfileUIModel
 import com.example.ozonchick_new_version.Data.network.supabase
 import com.example.ozonchick_new_version.Domain.GetNameUseCase
 import com.example.ozonchick_new_version.Presentation.States.ScreenState

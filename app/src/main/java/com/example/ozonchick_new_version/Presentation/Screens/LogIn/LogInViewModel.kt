@@ -5,8 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Common.publicUserId
-import com.example.ozonchick_new_version.Data.model.AllUserInformation
-import com.example.ozonchick_new_version.Data.model.SignUp_LogIn_Model.UserInformationAuth
+import com.example.ozonchick_new_version.Data.model.Authentication.AllUserInformation
 import com.example.ozonchick_new_version.Domain.AuthUseCase
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import io.paperdb.Paper
@@ -17,9 +16,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class LogInViewModel(private val auth : AuthUseCase) : ViewModel() {
-    private val _userInformation: MutableStateFlow<List<UserInformationAuth>> =
-        MutableStateFlow(emptyList())
-    var userInformation: StateFlow<List<UserInformationAuth>> = _userInformation.asStateFlow()
 
     private val _accessSharedAuth: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val accessSharedAuth: StateFlow<Boolean> = _accessSharedAuth.asStateFlow()

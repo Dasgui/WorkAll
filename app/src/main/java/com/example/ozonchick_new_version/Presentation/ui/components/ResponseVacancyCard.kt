@@ -15,17 +15,14 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Common.publicUserId
-import com.example.ozonchick_new_version.Data.model.Vakans_information
+import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Presentation.Screens.ContactsScreen
-import com.example.ozonchick_new_version.Presentation.States.TextFieldStates
-import com.example.ozonchick_new_version.Presentation.ViewModels.ResponsesViewModel
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ResponseVacancyCard(
-    list: Vakans_information,
+    list: VakansInformation,
     status: String
 ) {
     val navigator = LocalNavigator.current;
@@ -59,7 +56,7 @@ fun ResponseVacancyCard(
 
 @Composable
 private fun MainText(
-    list: Vakans_information
+    list: VakansInformation
 ) {
     Column (
         modifier = Modifier.fillMaxWidth(),

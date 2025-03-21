@@ -3,7 +3,7 @@ package com.example.ozonchick_new_version.Presentation.ViewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
-import com.example.ozonchick_new_version.Data.model.ProfileUIModel
+import com.example.ozonchick_new_version.Presentation.Models.ProfileUIModel
 import com.example.ozonchick_new_version.Data.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data.network.supabase
 import com.example.ozonchick_new_version.Domain.GetContactInformationUseCase

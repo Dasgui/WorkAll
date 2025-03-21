@@ -28,8 +28,6 @@ import androidx.core.text.isDigitsOnly
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Common.UserType
-import com.example.ozonchick_new_version.Data.data.db.accessSharedRegistrait
-import com.example.ozonchick_new_version.Data.data.db.emailSharedUser
 import org.koin.androidx.compose.koinViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
@@ -57,10 +55,6 @@ class SignUpScreen : Screen {
 
 @Composable
 fun SignUpConstruct(viewModel: SignUpViewModel = koinViewModel(), onNavigateForLogIn: () -> Unit) {
-    if (accessSharedRegistrait.value) {
-        emailSharedUser.value = viewModel.email.value
-        onNavigateForLogIn()
-    }
     val screenState = viewModel.signUpState.collectAsState()
     val navigator = LocalNavigator.current
     when (val curState = screenState.value) {

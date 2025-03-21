@@ -1,4 +1,4 @@
-package com.example.ozonchick_new_version.Data.model
+package com.example.ozonchick_new_version.Data.model.Authentication
 
 import kotlinx.serialization.Serializable
 
@@ -16,6 +16,7 @@ sealed interface AllUserInformation {
     @Serializable
     data class Candidate(
         val user_id : Int = 0,
+        val password: String,
         val name : String,
         val phoneNumber : String,
         var email : String,

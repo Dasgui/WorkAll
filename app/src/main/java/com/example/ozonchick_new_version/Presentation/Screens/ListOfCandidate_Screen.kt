@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -23,15 +22,13 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Data.model.Vakans_contacts
-import com.example.ozonchick_new_version.Data.model.Vakans_information
+import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
-import com.example.ozonchick_new_version.Presentation.ViewModels.ListOfCandidate_ViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.Public_Button
 import com.example.ozonchick_new_version.Presentation.ui.components.Public_Card
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.middleTextStyle
-import org.koin.androidx.compose.koinViewModel
 
 class ListOfCandidate_Screen: Screen {
     @Composable
@@ -287,7 +284,7 @@ fun ListOfCandidate_construct(/*vm: ListOfCandidate_ViewModel = koinViewModel()*
 }
 
 @Composable
-fun Card_Candidate(number: Int, list: MutableList<Vakans_information>)
+fun Card_Candidate(number: Int, list: MutableList<VakansInformation>)
 {
     var localNumber: MutableState<Int> = remember {
         mutableIntStateOf(number)

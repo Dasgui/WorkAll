@@ -3,12 +3,12 @@ package com.example.ozonchick_new_version.Domain
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.model.UserId
 import com.example.ozonchick_new_version.Data.model.Vakans_contacts
-import com.example.ozonchick_new_version.Data.model.Vakans_information
+import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Data.model.Vakans_otklik
 import com.example.ozonchick_new_version.Data.network.Repository
 
 class GetVacanciesUseCase (private val repository: Repository) {
-    suspend operator fun invoke () : CustomResult<List<Vakans_information>> {
+    suspend operator fun invoke () : CustomResult<List<VakansInformation>> {
         var result = repository.getVacancies()
         result = when (val curResult = result) {
             is CustomResult.Failure -> {
@@ -44,7 +44,7 @@ class GetResponsesIdVacanciesUseCase(private val repository: Repository) {
 }
 
 class GetResponsesVacanciesUseCase(private val repository: Repository) {
-    suspend operator fun invoke(idList : List<Int>) : CustomResult<List<Vakans_information>> {
+    suspend operator fun invoke(idList : List<Int>) : CustomResult<List<VakansInformation>> {
         return repository.getResponsesVacancies(idList)
     }
 }

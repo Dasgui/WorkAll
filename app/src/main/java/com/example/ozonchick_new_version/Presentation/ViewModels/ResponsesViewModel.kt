@@ -8,24 +8,17 @@ import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.model.UserId
 import com.example.ozonchick_new_version.Common.publicUserId
-import com.example.ozonchick_new_version.Data.data.db.idSharedUser
-import com.example.ozonchick_new_version.Data.model.SigLogInModels.User
-import com.example.ozonchick_new_version.Data.model.Vakans_information
+import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Data.model.Vakans_otklik
-import com.example.ozonchick_new_version.Data.network.supabase
 import com.example.ozonchick_new_version.Domain.GetResponsesIdVacanciesUseCase
 import com.example.ozonchick_new_version.Domain.GetResponsesVacanciesUseCase
-import com.example.ozonchick_new_version.Domain.GetVacanciesUseCase
 import com.example.ozonchick_new_version.Presentation.Models.ResponsesUIModel
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
-import io.github.jan.supabase.postgrest.from
-import io.github.jan.supabase.postgrest.query.Columns
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ResponsesViewModel(
@@ -33,7 +26,7 @@ class ResponsesViewModel(
     private val getResponsesVacanciesUseCase: GetResponsesVacanciesUseCase
 ) : ViewModel() {
     val responseState : MutableStateFlow<ScreenState<ResponsesUIModel>> = MutableStateFlow(ScreenState.Loading)
-    var listResponses : MutableState<List<Vakans_information>> = mutableStateOf(listOf())
+    var listResponses : MutableState<List<VakansInformation>> = mutableStateOf(listOf())
 //    var isLoading: MutableState<Boolean> = mutableStateOf(true)
 //
 //    var limit: MutableState<Long> = mutableStateOf(3)
@@ -73,7 +66,7 @@ class ResponsesViewModel(
         return coroutineScope { async(Dispatchers.IO) { getResponsesIdVacanciesUseCase(userId) }}
     }
 
-    suspend fun getInformation(idList : List<Int>) : Deferred<CustomResult<List<Vakans_information>>> {
+    suspend fun getInformation(idList : List<Int>) : Deferred<CustomResult<List<VakansInformation>>> {
         return coroutineScope { async(Dispatchers.IO) { getResponsesVacanciesUseCase(idList) }}
     }
 

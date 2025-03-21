@@ -1,7 +1,7 @@
 package com.example.ozonchick_new_version.Data.network
 
-import com.example.ozonchick_new_version.Data.model.Candidate.CandidateFilterInformation
-import com.example.ozonchick_new_version.Data.model.Employer.EmployerFilterInformation
+import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.CandidateFilterInformation
+import com.example.ozonchick_new_version.Data.model.Authentication.Employer.EmployerFilterInformation
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.query.Columns
 import kotlinx.coroutines.Deferred

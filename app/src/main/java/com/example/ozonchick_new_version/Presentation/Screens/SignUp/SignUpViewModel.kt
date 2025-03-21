@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.UserType
-import com.example.ozonchick_new_version.Data.model.AllUserInsertInformation
+import com.example.ozonchick_new_version.Data.model.Authentication.AllUserInsertInformation
 import com.example.ozonchick_new_version.Domain.RegistrationCandidateUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationEmployerUseCase
 import com.example.ozonchick_new_version.Presentation.States.ScreenState

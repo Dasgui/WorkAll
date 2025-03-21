@@ -1,4 +1,4 @@
-package com.example.ozonchick_new_version.Data.model.Employer
+package com.example.ozonchick_new_version.Data.model.Authentication.Employer
 
 import kotlinx.serialization.Serializable
 

@@ -6,15 +6,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import com.example.ozonchick_new_version.Data.data.db.idSharedUser
-import com.example.ozonchick_new_version.Data.model.Candidate.UserInformation
 import com.example.ozonchick_new_version.Presentation.Models.ResponsesUIModel
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ViewModels.ResponsesViewModel
@@ -22,8 +18,6 @@ import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoadin
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
 import com.example.ozonchick_new_version.Presentation.ui.components.ResponseVacancyCard
-import com.example.ozonchick_new_version.Presentation.ui.components.Responses.VacancyCard
-import com.example.ozonchick_new_version.Presentation.ui.theme.Ozonchick_new_versionTheme
 import org.koin.androidx.compose.koinViewModel
 
 class ResponsesScreen : Screen {
