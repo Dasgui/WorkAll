@@ -12,7 +12,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.ozonchick_new_version.R
-import com.example.ozonchick_new_version.Presentation.Screens.ListVacanciesScreen
+import com.example.ozonchick_new_version.Presentation.Screens.ListVacancies.ListVacanciesScreen
 import cafe.adriel.voyager.navigator.Navigator
 import androidx.compose.ui.text.TextStyle
 import com.example.ozonchick_new_version.Common.UserType

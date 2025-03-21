@@ -4,8 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Vakans_otklik(
-    /*val user_id:Int,*/
-    val user_long_id:Int,
+    var otklik_id : Int,
     val vakans_id:Int,
-    val otvet:String
+    val otvet:String,
+    val user_long_id:Int,
 )

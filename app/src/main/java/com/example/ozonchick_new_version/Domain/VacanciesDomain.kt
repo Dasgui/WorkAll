@@ -1,8 +1,10 @@
 package com.example.ozonchick_new_version.Domain
 
 import com.example.ozonchick_new_version.Common.CustomResult
+import com.example.ozonchick_new_version.Common.model.UserId
 import com.example.ozonchick_new_version.Data.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data.model.Vakans_information
+import com.example.ozonchick_new_version.Data.model.Vakans_otklik
 import com.example.ozonchick_new_version.Data.network.Repository
 
 class GetVacanciesUseCase (private val repository: Repository) {
@@ -32,5 +34,17 @@ class GetContactInformationUseCase (private val repository: Repository) {
             }
         }
         return result
+    }
+}
+
+class GetResponsesIdVacanciesUseCase(private val repository: Repository) {
+    suspend operator fun invoke(userId : UserId) : CustomResult<List<Vakans_otklik>> {
+        return repository.getResponsesIdVacancies(userId)
+    }
+}
+
+class GetResponsesVacanciesUseCase(private val repository: Repository) {
+    suspend operator fun invoke(idList : List<Int>) : CustomResult<List<Vakans_information>> {
+        return repository.getResponsesVacancies(idList)
     }
 }

@@ -5,9 +5,12 @@ import com.example.ozonchick_new_version.Data.network.RepositoryImpl
 import com.example.ozonchick_new_version.Domain.AuthUseCase
 import com.example.ozonchick_new_version.Domain.GetContactInformationUseCase
 import com.example.ozonchick_new_version.Domain.GetNameUseCase
+import com.example.ozonchick_new_version.Domain.GetResponsesIdVacanciesUseCase
+import com.example.ozonchick_new_version.Domain.GetResponsesVacanciesUseCase
 import com.example.ozonchick_new_version.Domain.GetVacanciesUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationCandidateUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationEmployerUseCase
+import com.example.ozonchick_new_version.Presentation.Screens.ListVacancies.ListVacanciesViewModel
 import com.example.ozonchick_new_version.Presentation.ViewModels.ContactsViewModel
 import com.example.ozonchick_new_version.Presentation.ViewModels.HomeViewModel
 import com.example.ozonchick_new_version.Presentation.ViewModels.ListOfCandidate_ViewModel
@@ -42,9 +45,11 @@ var AppModule = module {
     viewModel {
         HomeViewModel()
     }
-    factory { GetVacanciesUseCase(get()) }
+
+    factory { GetResponsesIdVacanciesUseCase(get()) }
+    factory { GetResponsesVacanciesUseCase(get()) }
     viewModel {
-        ResponsesViewModel(get())
+        ResponsesViewModel(get(), get())
     }
     factory { GetContactInformationUseCase(get()) }
     viewModel {
@@ -59,5 +64,9 @@ var AppModule = module {
     }
     viewModel {
         VakansCreate_ViewModel()
+    }
+    factory { GetVacanciesUseCase(get()) }
+    viewModel {
+        ListVacanciesViewModel(get())
     }
 }

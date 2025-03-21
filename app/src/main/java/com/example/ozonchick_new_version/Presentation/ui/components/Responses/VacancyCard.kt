@@ -113,7 +113,7 @@ private fun MainButtons(
         if (publicUserId.type is UserType.Candidate) {
             Public_Button(
                 fillButton = false,
-                onClick = { viewModel.pushResponse(list.vakans_id) },
+                onClick = { /*viewModel.pushResponse(list.vakans_id)*/ },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
