@@ -15,6 +15,8 @@ import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Presentation.Screens.ListVacanciesScreen
 import cafe.adriel.voyager.navigator.Navigator
 import androidx.compose.ui.text.TextStyle
+import com.example.ozonchick_new_version.Common.UserType
+import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Presentation.Screens.Profile.ProfileScreen
 import com.example.ozonchick_new_version.Presentation.Screens.ResponsesScreen
 import com.example.ozonchick_new_version.Presentation.ui.components.HorizontalSpacer
@@ -62,7 +64,7 @@ fun ScaffoldBottomBar(
                 iconId = R.drawable.folder,
                 sizeIcon = sizeIcon,
                 colorIcon = MainColor,
-                bottomText = "Отклики",
+                bottomText = if (publicUserId.type is UserType.Employer) "Ваши вакансии" else "Отклики",
                 bottomTextStyle = bottomTextStyle,
                 colorBottomText = MainColor
             )

@@ -13,6 +13,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.example.ozonchick_new_version.Common.UserType
+import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.Vakans_information
 import com.example.ozonchick_new_version.Presentation.Screens.ContactsScreen
 import com.example.ozonchick_new_version.Presentation.ViewModels.ResponsesViewModel
@@ -108,17 +110,19 @@ private fun MainButtons(
             .fillMaxSize()
             .padding(top = 10.dp),
     ) {
-        Public_Button(
-            fillButton = false,
-            onClick = { viewModel.pushResponse(list.vakans_id) },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = "Откликнуться",
-                style = Tema.Text_20_20_Medium,
-            )
+        if (publicUserId.type is UserType.Candidate) {
+            Public_Button(
+                fillButton = false,
+                onClick = { viewModel.pushResponse(list.vakans_id) },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Откликнуться",
+                    style = Tema.Text_20_20_Medium,
+                )
+            }
+            VerticalSpacer(5.dp)
         }
-        VerticalSpacer(5.dp)
         Public_Button(
             fillButton = true,
             onClick = {
