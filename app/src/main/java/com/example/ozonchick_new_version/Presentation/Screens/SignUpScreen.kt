@@ -31,9 +31,9 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Data.data.db.accessSharedRegistrait
 import com.example.ozonchick_new_version.Data.data.db.emailSharedUser
+import com.example.ozonchick_new_version.Data.model.SigLogInModels.User
 import org.koin.androidx.compose.koinViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
-import com.example.ozonchick_new_version.Presentation.Screens.Profile.ProfileScreen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ViewModels.SignUpViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomButton
@@ -43,6 +43,7 @@ import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpac
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.Primary_Color
 import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
+import com.example.ozonchick_new_version.Presentation.ui.theme.Button_Color_Blue
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.SecondColor
 
@@ -129,7 +130,7 @@ private fun MainBody(viewModel: SignUpViewModel) {
             holderText = "+7**********",
             viewModel = viewModel,
             field = viewModel.phoneNumber,
-            maxChar = 11
+            maxChar = 12
         )
         NameTextField(
             title = "Адрес почты",
@@ -221,7 +222,7 @@ private fun BottomTypeRegistration(viewModel: SignUpViewModel) {
             color = if (viewModel.userRole.value == UserType.Candidate) {
                 MainColor
             } else {
-                SecondColor
+                Button_Color_Blue
             },
             modifier = Modifier.clickable { viewModel.userRole.value = UserType.Candidate })
         Text(
@@ -230,7 +231,7 @@ private fun BottomTypeRegistration(viewModel: SignUpViewModel) {
             color = if (viewModel.userRole.value == UserType.Employer) {
                 MainColor
             } else {
-                SecondColor
+                Button_Color_Blue
             },
             modifier = Modifier.clickable { viewModel.userRole.value = UserType.Employer })
     }
@@ -246,13 +247,23 @@ private fun Bottom(viewModel: SignUpViewModel, onNavigateForLogIn: () -> Unit) {
     ) {
         CustomButton(
             onClick = {
-                if (viewModel.checkName() && viewModel.checkEmail()
-                    && viewModel.checkPhoneNumber() && viewModel.checkInn()
-                    && viewModel.checkPasswordMatch()
-                ) {
-                    Log.d("Проверяем поля", "ТЫК")
-                    viewModel.Registrait()
+                if (viewModel.userRole.value == UserType.Candidate) {
+                    viewModel.registrationCandidate()
                 }
+                if (viewModel.userRole.value == UserType.Employer) {
+                    viewModel.registrationEmployer()
+                }
+//                if (viewModel.checkName() && viewModel.checkEmail()
+//                    && viewModel.checkPhoneNumber() && viewModel.checkPasswordMatch() && viewModel.userRole.value is UserType.Candidate
+//                ) {
+//                    Log.d("Проверяем поля", "ТЫК")
+//                    viewModel.registrationCandidate()
+//                } else if (viewModel.checkName() && viewModel.checkEmail()
+//                    && viewModel.checkPhoneNumber() && viewModel.checkInn()
+//                    && viewModel.checkPasswordMatch() && viewModel.userRole.value is UserType.Employer) {
+//                    Log.d("Проверяем поля", "ТЫК")
+//                    viewModel.registrationEmployer()
+//                }
             },
             placeText = "Зарегистрироваться"
         )
@@ -281,7 +292,7 @@ private fun BottomText(onNavigateForLogIn: () -> Unit) {
 
         withStyle(
             SpanStyle(
-                color = Primary_Color,
+                color = MainColor,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Medium,
             )

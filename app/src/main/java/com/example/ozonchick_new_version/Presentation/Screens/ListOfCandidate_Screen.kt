@@ -42,157 +42,163 @@ class ListOfCandidate_Screen: Screen {
 }
 
 @Composable
-fun ListOfCandidate_construct(vm: ListOfCandidate_ViewModel = koinViewModel())
+fun ListOfCandidate_construct(/*vm: ListOfCandidate_ViewModel = koinViewModel()*/)
 {
     CustomScaffold(
-        bottomButton = false,
-        scaffoldStates = ScaffoldStates.OnSide
+        bottomButton = true,
+        scaffoldStates = ScaffoldStates.OnSide,
+        mainText = "Откликнувшиеся соискатели"
     ) {
-        CustomScaffold(
-            bottomButton = true,
-            mainText = "Ваши вакансии"
+        Public_Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 10.dp)
         ) {
-            LazyColumn(
+            Column(
                 modifier = Modifier
-                    .padding(top = 70.dp, bottom = 80.dp)
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .fillMaxSize()
+                    .padding(horizontal = 15.dp, vertical = 5.dp),
+                verticalArrangement = Arrangement.SpaceEvenly,
             ) {
-                item {
-                    Public_Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(120.dp)
-                            .padding(bottom = 10.dp)
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Column(
+                        modifier = Modifier.fillMaxHeight(),
+                        verticalArrangement = Arrangement.SpaceEvenly,
+                        horizontalAlignment = Alignment.Start
                     ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(horizontal = 15.dp, vertical = 5.dp),
-                            verticalArrangement = Arrangement.SpaceEvenly,
-                        ) {
-                            Row(
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.Bottom,
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Column(
-                                    modifier = Modifier.fillMaxHeight(),
-                                    verticalArrangement = Arrangement.SpaceEvenly,
-                                    horizontalAlignment = Alignment.Start
-                                ) {
-                                    //Требуется специалист Name
-                                    Text(
-                                        text = "Алексей",
-                                        style = middleTextStyle.value,
-                                        color = MainColor
-                                    )
-                                }
-                                Column(
-                                    verticalArrangement = Arrangement.Center,
-                                    horizontalAlignment = Alignment.End,
-                                    modifier = Modifier.fillMaxHeight()
-                                ) {
-                                    Public_Button(
-                                        fillButton = true,
-                                        onClick = {
-
-                                        },
-                                        modifier = Modifier.width(180.dp)
-                                    ) {
-                                        Text(
-                                            text = "Принять",
-                                            style = middleTextStyle.value,
-                                        )
-                                    }
-                                    Public_Button(
-                                        fillButton = false,
-                                        onClick = {
-
-                                        },
-                                        modifier = Modifier.width(180.dp)
-                                    ) {
-                                        Text(
-                                            text = "Отклонить",
-                                            style = middleTextStyle.value,
-                                        )
-                                    }
-                                }
-                            }
-                        }
-
-
+                        //Требуется специалист Name
+                        Text(
+                            text = "Николай",
+                            style = middleTextStyle.value,
+                            color = MainColor
+                        )
                     }
-                    Public_Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(120.dp)
-                            .padding(bottom = 10.dp)
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.End,
+                        modifier = Modifier.fillMaxHeight()
                     ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(horizontal = 15.dp, vertical = 5.dp),
-                            verticalArrangement = Arrangement.SpaceEvenly,
+                        Public_Button(
+                            fillButton = true,
+                            onClick = {
+
+                            },
+                            modifier = Modifier.width(180.dp)
                         ) {
-                            Row(
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.Bottom,
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Column(
-                                    modifier = Modifier.fillMaxHeight(),
-                                    verticalArrangement = Arrangement.SpaceEvenly,
-                                    horizontalAlignment = Alignment.Start
-                                ) {
-                                    //Требуется специалист Name
-                                    Text(
-                                        text = "Николай",
-                                        style = middleTextStyle.value,
-                                        color = MainColor
-                                    )
-                                }
-                                Column(
-                                    verticalArrangement = Arrangement.Center,
-                                    horizontalAlignment = Alignment.End,
-                                    modifier = Modifier.fillMaxHeight()
-                                ) {
-                                    Public_Button(
-                                        fillButton = true,
-                                        onClick = {
-
-                                        },
-                                        modifier = Modifier.width(180.dp)
-                                    ) {
-                                        Text(
-                                            text = "Принять",
-                                            style = middleTextStyle.value,
-                                        )
-                                    }
-                                    Public_Button(
-                                        fillButton = false,
-                                        onClick = {
-
-                                        },
-                                        modifier = Modifier.width(180.dp)
-                                    ) {
-                                        Text(
-                                            text = "Отклонить",
-                                            style = middleTextStyle.value,
-                                        )
-                                    }
-                                }
-                            }
+                            Text(
+                                text = "Принять",
+                                style = middleTextStyle.value,
+                            )
                         }
+                        Public_Button(
+                            fillButton = false,
+                            onClick = {
 
+                            },
+                            modifier = Modifier.width(180.dp)
+                        ) {
+                            Text(
+                                text = "Отклонить",
+                                style = middleTextStyle.value,
+                            )
+                        }
+                        Public_Button(
+                            fillButton = false,
+                            onClick = {
 
+                            },
+                            modifier = Modifier.width(180.dp)
+                        ) {
+                            Text(
+                                text = "Резюме",
+                                style = middleTextStyle.value,
+                            )
+                        }
                     }
+                }
+            }
+        }
+        Public_Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 10.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 15.dp, vertical = 5.dp),
+                verticalArrangement = Arrangement.SpaceEvenly,
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Column(
+                        modifier = Modifier.fillMaxHeight(),
+                        verticalArrangement = Arrangement.SpaceEvenly,
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        //Требуется специалист Name
+                        Text(
+                            text = "Александр",
+                            style = middleTextStyle.value,
+                            color = MainColor
+                        )
+                    }
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.End,
+                        modifier = Modifier.fillMaxHeight()
+                    ) {
+                        Public_Button(
+                            fillButton = true,
+                            onClick = {
+
+                            },
+                            modifier = Modifier.width(180.dp)
+                        ) {
+                            Text(
+                                text = "Принять",
+                                style = middleTextStyle.value,
+                            )
+                        }
+                        Public_Button(
+                            fillButton = false,
+                            onClick = {
+
+                            },
+                            modifier = Modifier.width(180.dp)
+                        ) {
+                            Text(
+                                text = "Отклонить",
+                                style = middleTextStyle.value,
+                            )
+                        }
+                        Public_Button(
+                            fillButton = false,
+                            onClick = {
+
+                            },
+                            modifier = Modifier.width(180.dp)
+                        ) {
+                            Text(
+                                text = "Резюме",
+                                style = middleTextStyle.value,
+                            )
+                        }
+                    }
+                }
+            }
+        }
 
                     Public_Card(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(120.dp)
                             .padding(bottom = 10.dp)
                     ) {
                         Column(
@@ -203,7 +209,7 @@ fun ListOfCandidate_construct(vm: ListOfCandidate_ViewModel = koinViewModel())
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.Bottom,
+                                verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier.fillMaxSize()
                             ) {
                                 Column(
@@ -247,14 +253,24 @@ fun ListOfCandidate_construct(vm: ListOfCandidate_ViewModel = koinViewModel())
                                             style = middleTextStyle.value,
                                         )
                                     }
+                                    Public_Button(
+                                        fillButton = false,
+                                        onClick = {
+
+                                        },
+                                        modifier = Modifier.width(180.dp)
+                                    ) {
+                                        Text(
+                                            text = "Резюме",
+                                            style = middleTextStyle.value,
+                                        )
+                                    }
                                 }
                             }
                         }
-
-
                     }
-                }
-            }
+
+
 //            var isLoading: MutableState<Boolean> = remember {
 //                mutableStateOf(false)
 //            }
@@ -266,7 +282,7 @@ fun ListOfCandidate_construct(vm: ListOfCandidate_ViewModel = koinViewModel())
 //                }
 //
 //            }
-        }
+
     }
 }
 
