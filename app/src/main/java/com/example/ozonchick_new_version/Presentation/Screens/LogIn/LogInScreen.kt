@@ -206,7 +206,7 @@ private fun BottomText(
     ) {
         Button(
             onClick = {
-                viewModel.Auth()
+                viewModel.auth()
             },
             modifier = Modifier.Companion.fillMaxWidth().height(45.dp),
             shape = RectangleShape,

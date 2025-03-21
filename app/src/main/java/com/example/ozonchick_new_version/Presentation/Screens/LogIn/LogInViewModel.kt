@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class LogInViewModel(private val Auth : AuthUseCase) : ViewModel() {
+class LogInViewModel(private val auth : AuthUseCase) : ViewModel() {
     private val _userInformation: MutableStateFlow<List<UserInformationAuth>> =
         MutableStateFlow(emptyList())
     var userInformation: StateFlow<List<UserInformationAuth>> = _userInformation.asStateFlow()
@@ -63,10 +63,10 @@ class LogInViewModel(private val Auth : AuthUseCase) : ViewModel() {
 
     val logInState : MutableStateFlow<ScreenState<AllUserInformation>> =
         MutableStateFlow(ScreenState.Loading)
-    fun Auth()
+    fun auth()
     {
         viewModelScope.launch (Dispatchers.IO) {
-            when (val curResult = Auth.invoke(_emailUser.value, _passwordUser.value)) {
+            when (val curResult = auth.invoke(_emailUser.value, _passwordUser.value)) {
                 is CustomResult.Failure -> logInState.value = ScreenState.Failure(curResult.code, curResult.message)
                 is CustomResult.Success -> {
                     logInState.value = ScreenState.Success(data = curResult.data)
