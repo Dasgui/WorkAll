@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.UserType
+import com.example.ozonchick_new_version.Data.model.AllUserInsertInformation
 import com.example.ozonchick_new_version.Data.model.Candidate.UserInsertInformation
 import com.example.ozonchick_new_version.Domain.RegistrationCandidateUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationEmployerUseCase
@@ -51,7 +52,7 @@ class SignUpViewModel(
 
     val INN : MutableState<String> = mutableStateOf("123456789012")
 
-    val signUpState : MutableStateFlow<ScreenState<List<UserInsertInformation>>> =
+    val signUpState : MutableStateFlow<ScreenState<List<AllUserInsertInformation>>> =
         MutableStateFlow(ScreenState.Loading)
 
     fun registrationCandidate () {
@@ -65,16 +66,16 @@ class SignUpViewModel(
         }
     }
 
-//    fun registrationEmployer () {
-//        viewModelScope.launch (Dispatchers.IO) {
-//            when (val curResult = registrationEmployerUseCase(name.value, email.value, password.value, phoneNumber.value, INN.value)) {
-//                is CustomResult.Failure -> signUpState.value = ScreenState.Failure(curResult.code, curResult.message)
-//                is CustomResult.Success -> {
-//                    signUpState.value = ScreenState.Success(data = curResult.data)
-//                }
-//            }
-//        }
-//    }
+    fun registrationEmployer () {
+        viewModelScope.launch (Dispatchers.IO) {
+            when (val curResult = registrationEmployerUseCase(name.value, email.value, password.value, phoneNumber.value, INN.value)) {
+                is CustomResult.Failure -> signUpState.value = ScreenState.Failure(curResult.code, curResult.message)
+                is CustomResult.Success -> {
+                    signUpState.value = ScreenState.Success(data = curResult.data)
+                }
+            }
+        }
+    }
 
     fun checkName () : Boolean {
         return name.value.trim().matches(Regex("[А-Яа-яЁёa-zA-Z]{3,21}"))

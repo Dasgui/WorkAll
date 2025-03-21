@@ -21,7 +21,7 @@ class SplashScreen : Screen {
         val navigator = LocalNavigator.current
         Splash(
             onNavigateForLogin = {
-                navigator?.replaceAll(SignUpScreen())
+                navigator?.replaceAll(LogInScreen())
             },
             onNavigateForHome = {
                 navigator?.replaceAll(ListVacanciesScreen())

@@ -21,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.TextFieldStates
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
@@ -52,12 +53,14 @@ fun CustomOutlinedTextField (
             if (states == TextFieldStates.Password || states == TextFieldStates.Email) {
                 Text(
                     text = if (states == TextFieldStates.Password) "***********" else "*******@mail.com",
-                    style = Tema.Text_20_20_Medium
+                    style = Tema.Text_20_20_Medium,
+                    color = MainColor
                 )
             } else {
                 Text(
                     text = placeText,
-                    style = Tema.Text_20_20_Medium
+                    style = Tema.Text_20_20_Medium,
+                    color = MainColor
                 )
             }
         },
