@@ -25,7 +25,9 @@ class MainAplication: Application() {
             Send_a_PackageHost()*/
         }
         Paper.init(this)
+//        Paper.delete("UserId")
         publicUserId = Paper.book().read<UserId>("UserId") ?: UserId(0, UserType.None)
+        Log.d("Информация о пользователе", publicUserId.toString())
         Log.d("Id пользователя", publicUserId.toString())
     }
 }

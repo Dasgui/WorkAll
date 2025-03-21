@@ -3,6 +3,7 @@ package com.example.ozonchick_new_version.Presentation.Screens.LogIn
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
+import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.AllUserInformation
 import com.example.ozonchick_new_version.Data.model.SignUp_LogIn_Model.UserInformationAuth
@@ -72,15 +73,19 @@ class LogInViewModel(private val auth : AuthUseCase) : ViewModel() {
                     if (_rememberUser.value) {
                         if (curResult.data is AllUserInformation.Employer) {
                             publicUserId.id = curResult.data.employer_id
+                            publicUserId.type = UserType.Employer
                         } else if (curResult.data is AllUserInformation.Candidate) {
                             publicUserId.id = curResult.data.user_id
+                            publicUserId.type = UserType.Candidate
                         }
                         Paper.book().write("UserId", publicUserId)
                     } else {
                         if (curResult.data is AllUserInformation.Employer) {
                             publicUserId.id = curResult.data.employer_id
+                            publicUserId.type = UserType.Employer
                         } else if (curResult.data is AllUserInformation.Candidate) {
                             publicUserId.id = curResult.data.user_id
+                            publicUserId.type = UserType.Candidate
                         }
                     }
                 }

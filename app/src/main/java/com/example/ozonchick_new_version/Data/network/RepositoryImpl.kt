@@ -2,14 +2,18 @@ package com.example.ozonchick_new_version.Data.network
 
 import android.util.Log
 import com.example.ozonchick_new_version.Common.CustomResult
+import com.example.ozonchick_new_version.Common.UserType
+import com.example.ozonchick_new_version.Common.model.UserId
 import com.example.ozonchick_new_version.Data.model.AllUserInformation
 import com.example.ozonchick_new_version.Data.model.AllUserInsertInformation
 import com.example.ozonchick_new_version.Data.model.Candidate.CandidateFilterInformation
+import com.example.ozonchick_new_version.Data.model.Candidate.UserInformation
 import com.example.ozonchick_new_version.Data.model.SigLogInModels.User
 import com.example.ozonchick_new_version.Data.model.Candidate.UserInsertInformation
 import com.example.ozonchick_new_version.Data.model.Employer.Employer
 import com.example.ozonchick_new_version.Data.model.Employer.EmployerFilterInformation
 import com.example.ozonchick_new_version.Data.model.Employer.EmployerInsertInformation
+import com.example.ozonchick_new_version.Data.model.SignUp_LogIn_Model.EmployerInformationRegistration
 import com.example.ozonchick_new_version.Data.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data.model.Vakans_information
 import io.github.jan.supabase.exceptions.HttpRequestException
@@ -35,6 +39,7 @@ interface Repository {
         email: String,
         inn: String
     ): CustomResult<List<AllUserInsertInformation>>
+    suspend fun getName (userId: UserId) : CustomResult<String>
 }
 
 class RepositoryImpl : Repository {
@@ -168,24 +173,6 @@ class RepositoryImpl : Repository {
                 password = password,
                 INN = inn
             )
-//            var findCandidate = supabase.from("user_information").select(columns = Columns.list("phoneNumber, email"))
-//            {
-//                filter {
-//                    or {
-//                        eq("phoneNumber", phoneNumber)
-//                        eq("email", email)
-//                    }
-//                }
-//            }.decodeList<CandidateFilterInformation>()
-//            val findEmployer = supabase.from("employers_information").select(columns = Columns.list("phoneNumber, email, INN"))
-//            {
-//                filter {
-//                    or {
-//                        eq("phoneNumber", phoneNumber)
-//                        eq("email", email)
-//                    }
-//                }
-//            }.decodeList<EmployerFilterInformation>()
             if (findUser(email, phoneNumber).await()) {
                 val result = supabase.from("employers_information").insert(user) {
                     select()
@@ -197,6 +184,33 @@ class RepositoryImpl : Repository {
         } catch (ex: Exception) {
             Log.d("Регистрация", ex.toString())
             CustomResult.Failure(1, ex.toString())
+        }
+    }
+
+    override suspend fun getName(userId: UserId): CustomResult<String> {
+        return try {
+            if (userId.type == UserType.Employer) {
+                val result = supabase.from("employers_information")
+                    .select()
+                    {
+                        filter {
+                            Employer::employer_id eq userId.id
+                        }
+                    }.decodeList<Employer>()
+                CustomResult.Success(result[0].name)
+            } else {
+                val result = supabase.from("user_information")
+                    .select()
+                    {
+                        filter {
+                            UserInformation::user_id eq userId.id
+                        }
+                    }.decodeList<UserInformation>()
+                CustomResult.Success(result[0].name)
+            }
+        } catch (ex: Exception) {
+            Log.d("Ошибка получения имени", ex.toString())
+            CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
         }
     }
 }
