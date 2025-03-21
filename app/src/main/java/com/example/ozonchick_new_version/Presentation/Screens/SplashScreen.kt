@@ -14,6 +14,7 @@ import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
 import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Screens.SignUpLogIn.SignUp.SignUpScreen
+import io.paperdb.Paper
 
 class SplashScreen : Screen {
     @Composable

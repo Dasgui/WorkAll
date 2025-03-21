@@ -189,7 +189,7 @@ class RepositoryImpl : Repository {
 
     override suspend fun getName(userId: UserId): CustomResult<String> {
         return try {
-            if (userId.type == UserType.Employer) {
+            if (userId.type is UserType.Employer) {
                 val result = supabase.from("employers_information")
                     .select()
                     {
@@ -197,6 +197,7 @@ class RepositoryImpl : Repository {
                             Employer::employer_id eq userId.id
                         }
                     }.decodeList<Employer>()
+                Log.d("Имя работодателя", result[0].name)
                 CustomResult.Success(result[0].name)
             } else {
                 val result = supabase.from("user_information")
@@ -206,6 +207,7 @@ class RepositoryImpl : Repository {
                             UserInformation::user_id eq userId.id
                         }
                     }.decodeList<UserInformation>()
+                Log.d("Имя соискателя", result[0].name)
                 CustomResult.Success(result[0].name)
             }
         } catch (ex: Exception) {
