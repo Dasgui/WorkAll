@@ -50,7 +50,7 @@ fun ScaffoldBottomBar(
                 iconId = R.drawable.folder,
                 sizeIcon = sizeIcon,
                 colorIcon = MainColor,
-                bottomText = "Собственные вакансии",
+                bottomText = "Отклики",
                 bottomTextStyle = bottomTextStyle,
                 colorBottomText = MainColor
             )
