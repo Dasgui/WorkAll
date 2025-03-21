@@ -6,6 +6,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.ozonchick_new_version.R
@@ -28,6 +31,15 @@ fun ScaffoldBottomBar(
 ) {
     BottomAppBar(
         containerColor = BackgroundColor,
+        modifier = Modifier.drawWithContent {
+            drawLine(
+                MainColor,
+                Offset(0f, 0f),
+                Offset(size.width, 0f),
+                10f
+            )
+            drawContent()
+        }
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),

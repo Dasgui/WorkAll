@@ -2,10 +2,12 @@ package com.example.ozonchick_new_version.Data.network
 
 import android.util.Log
 import com.example.ozonchick_new_version.Common.CustomResult
+import com.example.ozonchick_new_version.Data.model.AllUserInformation
 import com.example.ozonchick_new_version.Data.model.AllUserInsertInformation
 import com.example.ozonchick_new_version.Data.model.Candidate.CandidateFilterInformation
 import com.example.ozonchick_new_version.Data.model.SigLogInModels.User
 import com.example.ozonchick_new_version.Data.model.Candidate.UserInsertInformation
+import com.example.ozonchick_new_version.Data.model.Employer.Employer
 import com.example.ozonchick_new_version.Data.model.Employer.EmployerFilterInformation
 import com.example.ozonchick_new_version.Data.model.Employer.EmployerInsertInformation
 import com.example.ozonchick_new_version.Data.model.Vakans_contacts
@@ -16,7 +18,7 @@ import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.query.Columns
 
 interface Repository {
-    suspend fun Auth(email: String, password: String): CustomResult<User>
+    suspend fun auth(email: String, password: String): CustomResult<AllUserInformation>
     suspend fun getVacancies(): CustomResult<List<Vakans_information>>
     suspend fun getContactInformation(id: Int): CustomResult<List<Vakans_contacts>>
     suspend fun registrationCandidate(
@@ -36,18 +38,28 @@ interface Repository {
 }
 
 class RepositoryImpl : Repository {
-    override suspend fun Auth(
+    override suspend fun auth(
         email: String,
         password: String
-    ): CustomResult<User> {
+    ): CustomResult<AllUserInformation> {
         return try {
-            val result = supabase.from("user_information").select() {
+            val candidate = supabase.from("user_information").select() {
                 filter {
                     User::email eq email
                     User::password eq password
                 }
-            }.decodeList<User>()
-            CustomResult.Success(result[0])
+            }.decodeList<AllUserInformation.Candidate>()
+            if (candidate.isEmpty()) {
+                val employer = supabase.from("employers_information").select() {
+                    filter {
+                        User::email eq email
+                        User::password eq password
+                    }
+                }.decodeList<AllUserInformation.Employer>()
+                CustomResult.Success(employer[0])
+            } else {
+                CustomResult.Success(candidate[0])
+            }
         } catch (ex: HttpRequestException) {
             CustomResult.Failure(1, "Проверьте своё соединение с интернетом.")
         } catch (ex: IndexOutOfBoundsException) {
@@ -56,6 +68,7 @@ class RepositoryImpl : Repository {
                 "Возможно, пользователя не существует. Проверьте введенные данные."
             )
         } catch (ex: Exception) {
+            Log.d("Ошибка при входе", ex.toString())
             CustomResult.Failure(3, "Неизвестная ошибка")
         }
     }

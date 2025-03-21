@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Data.data.db.publicUserId
+import com.example.ozonchick_new_version.Data.model.AllUserInformation
 import com.example.ozonchick_new_version.Data.model.SigLogInModels.User
 import com.example.ozonchick_new_version.Data.model.SignUp_LogIn_Model.UserInformationAuth
 import com.example.ozonchick_new_version.Domain.AuthUseCase
@@ -60,7 +61,7 @@ class LogInViewModel(private val Auth : AuthUseCase) : ViewModel() {
     private val _isDataCorrect : MutableStateFlow<Boolean> = MutableStateFlow(false)
     var isDataCorrect : StateFlow<Boolean> = _isDataCorrect.asStateFlow()
 
-    val logInState : MutableStateFlow<ScreenState<User>> =
+    val logInState : MutableStateFlow<ScreenState<AllUserInformation>> =
         MutableStateFlow(ScreenState.Loading)
     fun Auth()
     {
@@ -70,10 +71,18 @@ class LogInViewModel(private val Auth : AuthUseCase) : ViewModel() {
                 is CustomResult.Success -> {
                     logInState.value = ScreenState.Success(data = curResult.data)
                     if (_rememberUser.value) {
-                        publicUserId = curResult.data.user_id
+                        if (curResult.data is AllUserInformation.Employer) {
+                            publicUserId = curResult.data.employer_id
+                        } else if (curResult.data is AllUserInformation.Candidate) {
+                            publicUserId = curResult.data.user_id
+                        }
                         Paper.book().write("UserId", publicUserId)
                     } else {
-                        publicUserId = curResult.data.user_id
+                        if (curResult.data is AllUserInformation.Employer) {
+                            publicUserId = curResult.data.employer_id
+                        } else if (curResult.data is AllUserInformation.Candidate) {
+                            publicUserId = curResult.data.user_id
+                        }
                     }
                 }
             }

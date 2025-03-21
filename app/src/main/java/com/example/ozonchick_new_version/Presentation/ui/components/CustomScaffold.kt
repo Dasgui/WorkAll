@@ -59,7 +59,7 @@ fun CustomScaffold(
                             MainColor,
                             Offset(0f, size.height),
                             Offset(size.width, size.height),
-                            5f
+                            10f
                         )
                     },
                 shape = RectangleShape

@@ -3,6 +3,7 @@ package com.example.ozonchick_new_version.Domain
 
 import android.util.Log
 import com.example.ozonchick_new_version.Common.CustomResult
+import com.example.ozonchick_new_version.Data.model.AllUserInformation
 import com.example.ozonchick_new_version.Data.model.AllUserInsertInformation
 import com.example.ozonchick_new_version.Data.model.SigLogInModels.User
 import com.example.ozonchick_new_version.Data.model.Candidate.UserInsertInformation
@@ -10,18 +11,14 @@ import com.example.ozonchick_new_version.Data.model.Employer.EmployerInsertInfor
 import com.example.ozonchick_new_version.Data.network.Repository
 
 class AuthUseCase(private val repository: Repository) {
-    suspend operator fun invoke (email: String, password : String) : CustomResult<User> {
-        var result = repository.Auth(email, password)
+    suspend operator fun invoke (email: String, password : String) : CustomResult<AllUserInformation> {
+        var result = repository.auth(email, password)
         result = when (val curResult = result) {
             is CustomResult.Failure -> {
                 CustomResult.Failure(curResult.code, curResult.message)
             }
             is CustomResult.Success -> {
-                if (curResult.data.email.isNotEmpty()) {
-                    CustomResult.Success(curResult.data)
-                } else {
-                    CustomResult.Failure(0, "Пользователя не существует")
-                }
+                CustomResult.Success(curResult.data)
             }
         }
         return result
