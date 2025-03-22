@@ -14,6 +14,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Presentation.Models.ChangeVacancyUIModel
 import com.example.ozonchick_new_version.Presentation.Screens.ChangeInformation_Screen
+import com.example.ozonchick_new_version.Presentation.Screens.EmployerAddVacancy.EmployerAddVacancyScreen
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerDetailsVacancy.EmployerDetailsVacancyScreen
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerResponses.EmployerResponsesScreen
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
@@ -64,7 +65,10 @@ private fun EmployerVacanciesConstruct(viewModel: EmployerVacanciesViewModel = k
             CustomScaffold(
                 bottomButton = true,
                 mainText = "Мои вакансии",
-                scaffoldStates = ScaffoldStates.EmployerVacancies
+                scaffoldStates = ScaffoldStates.EmployerVacancies,
+                addVacancy = {
+                    navigator?.push(EmployerAddVacancyScreen())
+                }
             ) {
                 Column(
                     modifier = Modifier

@@ -48,6 +48,7 @@ fun CustomScaffold(
     mainText: String = "",
     modifier: Modifier = Modifier,
     scaffoldStates: ScaffoldStates = ScaffoldStates.Main,
+    addVacancy : (() -> Unit) = {},
     navigator : Navigator? = LocalNavigator.current,
     topBar: @Composable () -> Unit = {
         Card(
@@ -93,7 +94,7 @@ fun CustomScaffold(
                                 contentDescription = null,
                                 modifier = Modifier
                                     .size(40.dp)
-                                    .clickable { navigator?.pop() },
+                                    .clickable { addVacancy() },
                                 tint = MainColor
                             )
                         } else {

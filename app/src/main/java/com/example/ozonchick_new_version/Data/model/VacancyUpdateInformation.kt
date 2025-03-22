@@ -1,5 +1,8 @@
 package com.example.ozonchick_new_version.Data.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class VacancyUpdateInformation(
     val vakans_name:String,
     val vakans_price:String,

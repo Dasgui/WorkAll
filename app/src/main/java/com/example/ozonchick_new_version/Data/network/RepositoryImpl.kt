@@ -10,6 +10,8 @@ import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.Can
 import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.UserInsertInformation
 import com.example.ozonchick_new_version.Data.model.Authentication.Employer.Employer
 import com.example.ozonchick_new_version.Data.model.Authentication.Employer.EmployerInsertInformation
+import com.example.ozonchick_new_version.Data.model.VacancyUpdateContact
+import com.example.ozonchick_new_version.Data.model.VacancyUpdateInformation
 import com.example.ozonchick_new_version.Data.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Data.model.VakansOtklik
@@ -50,6 +52,7 @@ interface Repository {
     suspend fun getUsersForEmployer(vacancyId : Int) : CustomResult<List<Candidate>>
     suspend fun acceptCandidate(candidateId: Int): CustomResult<Boolean>
     suspend fun rejectCandidate(candidateId: Int): CustomResult<Boolean>
+    suspend fun addVacancy(vacancy : VacancyUpdateInformation, description : VacancyUpdateContact) : CustomResult<Boolean>
 }
 
 class RepositoryImpl : Repository {
@@ -380,6 +383,17 @@ class RepositoryImpl : Repository {
             CustomResult.Success(true)
         } catch (ex: Exception) {
             Log.d("Ошибка принятия пользователя", ex.toString())
+            CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
+        }
+    }
+
+    override suspend fun addVacancy(vacancy : VacancyUpdateInformation, description : VacancyUpdateContact): CustomResult<Boolean> {
+        return try {
+            supabase.from("vakans").insert(vacancy)
+            supabase.from("vakans_contacts").insert(description)
+            CustomResult.Success(true)
+        } catch (ex: Exception) {
+            Log.d("Ошибка создания вакансии", ex.toString())
             CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
         }
     }

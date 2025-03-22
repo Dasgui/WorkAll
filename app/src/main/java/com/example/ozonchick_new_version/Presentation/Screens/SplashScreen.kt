@@ -11,6 +11,8 @@ import androidx.compose.ui.res.painterResource
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Common.publicUserId
+import com.example.ozonchick_new_version.Presentation.Screens.EmployerAddVacancy.EmployerAddVacancyScreen
+import com.example.ozonchick_new_version.Presentation.Screens.EmployerAddVacancy.EmployerAddVacancyViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerDetailsVacancy.EmployerDetailsVacancyScreen
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerResponses.EmployerResponsesScreen
 import com.example.ozonchick_new_version.Presentation.Screens.ListVacancies.ListVacanciesScreen

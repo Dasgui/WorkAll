@@ -3,6 +3,8 @@ package com.example.ozonchick_new_version.Domain
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.model.UserId
 import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.Candidate
+import com.example.ozonchick_new_version.Data.model.VacancyUpdateContact
+import com.example.ozonchick_new_version.Data.model.VacancyUpdateInformation
 import com.example.ozonchick_new_version.Data.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Data.model.Vakans_otklik
@@ -84,5 +86,11 @@ class AcceptCandidateUseCase (private val repository: Repository) {
 class RejectCandidateUseCase (private val repository: Repository) {
     suspend operator fun invoke(candidateId : Int) : CustomResult<Boolean> {
         return repository.rejectCandidate(candidateId)
+    }
+}
+
+class AddVacancyUseCase (private val repository: Repository) {
+    suspend operator fun invoke(vacancy : VacancyUpdateInformation, description : VacancyUpdateContact) : CustomResult<Boolean> {
+        return repository.addVacancy(vacancy, description)
     }
 }

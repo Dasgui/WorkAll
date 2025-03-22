@@ -4,6 +4,7 @@ import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Data.network.Repository
 import com.example.ozonchick_new_version.Data.network.RepositoryImpl
 import com.example.ozonchick_new_version.Domain.AcceptCandidateUseCase
+import com.example.ozonchick_new_version.Domain.AddVacancyUseCase
 import com.example.ozonchick_new_version.Domain.AuthUseCase
 import com.example.ozonchick_new_version.Domain.DeleteEmployerVacancyUseCase
 import com.example.ozonchick_new_version.Domain.GetContactInformationUseCase
@@ -18,6 +19,8 @@ import com.example.ozonchick_new_version.Domain.RegistrationEmployerUseCase
 import com.example.ozonchick_new_version.Domain.RejectCandidateUseCase
 import com.example.ozonchick_new_version.Domain.UpdateEmployerVacancyUseCase
 import com.example.ozonchick_new_version.Presentation.Models.EmployerDetailsVacancy
+import com.example.ozonchick_new_version.Presentation.Screens.EmployerAddVacancy.EmployerAddVacancyScreen
+import com.example.ozonchick_new_version.Presentation.Screens.EmployerAddVacancy.EmployerAddVacancyViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerDetailsVacancy.EmployerDetailsVacancyScreen
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerDetailsVacancy.EmployerDetailsVacancyViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerResponses.EmployerResponsesViewModel
@@ -91,5 +94,10 @@ var AppModule = module {
     factory { RejectCandidateUseCase(get()) }
     viewModel {
         (vacancyId : Int) -> EmployerResponsesViewModel(vacancyId, get(), get(), get())
+    }
+
+    factory { AddVacancyUseCase(get()) }
+    viewModel {
+        EmployerAddVacancyViewModel(get())
     }
 }
