@@ -25,9 +25,6 @@ class ListVacanciesViewModel(
     var listVacancies : MutableState<List<VakansInformation>> = mutableStateOf(listOf())
 
 
-    init {
-
-    }
     fun loadData() {
         viewModelScope.launch(Dispatchers.IO) {
             val vacancies = getInformation().await()

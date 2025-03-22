@@ -6,20 +6,26 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.navigator.Navigator
 import com.example.ozonchick_new_version.Common.CustomResult
+import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateContact
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateInformation
 import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Data.model.Vakans_contacts
 import com.example.ozonchick_new_version.Domain.AddVacancyUseCase
+import com.example.ozonchick_new_version.Domain.GetOrganizationNameUseCase
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerVacancies.EmployerVacanciesScreen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class EmployerAddVacancyViewModel(
-    private val addVacancyUseCase: AddVacancyUseCase
+    private val addVacancyUseCase: AddVacancyUseCase,
+    private val getOrganizationNameUseCase: GetOrganizationNameUseCase,
 ) : ViewModel() {
     val specialization: MutableState<String> = mutableStateOf("Программист станков")
     val price: MutableState<String> = mutableStateOf("60000")
@@ -39,13 +45,16 @@ class EmployerAddVacancyViewModel(
 
     fun addVacancy(navigator: Navigator?) {
         viewModelScope.launch(Dispatchers.IO) {
+            val organizationName = getOrganizationName().await()
             val response = addVacancyUseCase(
                 VacancyUpdateInformation(
-                    vakans_name = specialization.value,
-                    vakans_price = price.value,
-                    vakans_location = locationWork.value,
-                    vakans_experience = experience.value,
-                    vakans_mail = email.value
+                    vakans_name = specialization.value.trim(),
+                    vakans_price = price.value.trim(),
+                    vakans_location = locationWork.value.trim(),
+                    vakans_experience = experience.value.trim(),
+                    vakans_mail = email.value.trim(),
+                    employer_id = publicUserId.id,
+                    vakans_organization = (organizationName as CustomResult.Success).data.trim()
                 ),
                 VacancyUpdateContact(
                     vakans_number = phoneNumber.value,
@@ -60,5 +69,9 @@ class EmployerAddVacancyViewModel(
                 screenState.value = ScreenState.Failure(0, "Ошибка добавления вакансии")
             }
         }
+    }
+
+    suspend fun getOrganizationName() : Deferred<CustomResult<String>> {
+        return coroutineScope { async(Dispatchers.IO) {getOrganizationNameUseCase(publicUserId)} }
     }
 }

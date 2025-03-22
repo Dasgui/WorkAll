@@ -45,6 +45,7 @@ interface Repository {
         inn: String
     ): CustomResult<List<AllUserInsertInformation>>
     suspend fun getName (userId: UserId) : CustomResult<String>
+    suspend fun getOrganizationName (userId: UserId) : CustomResult<String>
 
     suspend fun getEmployerVacancies(userId: UserId) : CustomResult<List<VakansInformation>>
     suspend fun deleteVacancies(vacancyId : Int) : CustomResult<Boolean>
@@ -93,20 +94,10 @@ class RepositoryImpl : Repository {
 
     override suspend fun getVacancies(): CustomResult<List<VakansInformation>> {
         return try {
-            val result = supabase.from("vakans").select(
-                Columns.Companion.list(
-                    "vakans_id",
-                    "vakans_name",
-                    "vakans_price",
-                    "vakans_organization",
-                    "vakans_location",
-                    "vakans_experience",
-                    "vakans_mail",
-                    "employer_id"
-                )
-            ).decodeList<VakansInformation>()
+            val result = supabase.from("vakans").select().decodeList<VakansInformation>()
             CustomResult.Success(result)
         } catch (ex: Exception) {
+            Log.d("Получение всех вакансий", ex.toString())
             CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
         }
     }
@@ -248,6 +239,23 @@ class RepositoryImpl : Repository {
                 Log.d("Имя соискателя", result[0].name)
                 CustomResult.Success(result[0].name)
             }
+        } catch (ex: Exception) {
+            Log.d("Ошибка получения имени", ex.toString())
+            CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
+        }
+    }
+
+    override suspend fun getOrganizationName(userId: UserId): CustomResult<String> {
+        return try {
+            val result = supabase.from("employers_information")
+                .select()
+                {
+                    filter {
+                        Employer::employer_id eq userId.id
+                    }
+                }.decodeList<Employer>()
+            Log.d("Имя компании", result[0].companyName)
+            CustomResult.Success(result[0].companyName)
         } catch (ex: Exception) {
             Log.d("Ошибка получения имени", ex.toString())
             CustomResult.Failure(1, "Проверьте своё соединение с интернетом")

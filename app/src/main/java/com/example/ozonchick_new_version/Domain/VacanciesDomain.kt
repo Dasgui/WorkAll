@@ -94,3 +94,9 @@ class AddVacancyUseCase (private val repository: Repository) {
         return repository.addVacancy(vacancy, description)
     }
 }
+
+class GetOrganizationNameUseCase(private val repository: Repository) {
+    suspend operator fun invoke(userId: UserId) : CustomResult<String> {
+        return repository.getOrganizationName(userId)
+    }
+}

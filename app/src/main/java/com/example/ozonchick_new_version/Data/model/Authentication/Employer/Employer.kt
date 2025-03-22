@@ -11,4 +11,5 @@ data class Employer(
     val INN : String,
     val status_id : Int,
     val password : String,
+    val companyName : String
 )

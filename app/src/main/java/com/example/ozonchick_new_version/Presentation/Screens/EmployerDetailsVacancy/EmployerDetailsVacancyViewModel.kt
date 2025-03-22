@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.navigator.Navigator
 import com.example.ozonchick_new_version.Common.CustomResult
+import com.example.ozonchick_new_version.Data.model.VacancyInsertModel
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateContact
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateInformation
 import com.example.ozonchick_new_version.Data.model.VakansInformation
@@ -66,7 +67,7 @@ class EmployerDetailsVacancyViewModel(
     fun updateDescriptionInformation(vacancyId: Int, navigator: Navigator?) {
         Log.d("Значение спец", specialization.value)
         val information: ChangeVacancyUIModel = ChangeVacancyUIModel(
-            mainInformation = VacancyUpdateInformation(
+            mainInformation = VacancyInsertModel(
                 vakans_name = specialization.value,
                 vakans_price = price.value,
                 vakans_location = locationWork.value,

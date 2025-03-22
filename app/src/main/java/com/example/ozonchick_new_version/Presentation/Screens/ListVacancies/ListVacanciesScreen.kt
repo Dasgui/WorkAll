@@ -36,17 +36,32 @@ private fun ListVacanciesScreenConstruct(viewModel: ListVacanciesViewModel = koi
         viewModel.loadData()
     }
     val screenState = viewModel.responseState.collectAsState()
-    when (val curState = screenState.value) {
-        is ScreenState.Failure -> FailAlertDialog(
-            title = "Ошибка",
-            curState.message,
-            onOkClick = {
-                viewModel.responseState.value = ScreenState.Loading
-            })
+    CustomScaffold(mainText = "Вакансии", bottomButton = true) {
+        Column(
+            modifier = Modifier.Companion
+                .padding(bottom = 80.dp)
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.Companion.CenterHorizontally
+        ) {
+            when (val curState = screenState.value) {
+                is ScreenState.Failure -> FailAlertDialog(
+                    title = "Ошибка",
+                    curState.message,
+                    onOkClick = {
+                        viewModel.responseState.value = ScreenState.Loading
+                    })
 
-        is ScreenState.Loading -> CustomLoading()
-        is ScreenState.Success -> MainScreen(viewModel)
+                is ScreenState.Loading -> CustomLoading()
+                is ScreenState.Success -> {
+                    viewModel.listVacancies.value.forEach { item ->
+                        VacancyCard(item)
+                    }
+                }
+            }
+        }
     }
+
 }
 
 @Composable
