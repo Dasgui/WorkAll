@@ -23,9 +23,11 @@ import com.example.ozonchick_new_version.Data.model.VacancyUpdateContact
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateInformation
 import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Presentation.Models.ChangeVacancyUIModel
+import com.example.ozonchick_new_version.Presentation.Screens.EmployerVacancies.EmployerVacanciesScreen
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomButton
+import com.example.ozonchick_new_version.Presentation.ui.components.CustomDialog
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomOutlinedTextField
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
@@ -61,6 +63,39 @@ private fun EmployerDetailsVacancyConstruct(
     viewModel.experience.value = information.vakans_experience
     val localState = viewModel.screenState.collectAsState()
     val navigator = LocalNavigator.current
+
+    if (viewModel.confirmCharge.value) {
+        CustomDialog(
+            onConfirmation = {
+                viewModel.updateDescriptionInformation(
+                    vacancyId = information.vakans_id,
+                    information = ChangeVacancyUIModel(
+                        mainInformation = VacancyUpdateInformation(
+                            vakans_name = viewModel.specialization.value,
+                            vakans_price = viewModel.price.value,
+                            vakans_location = viewModel.locationWork.value,
+                            vakans_experience = viewModel.experience.value,
+                            vakans_mail = viewModel.email.value
+                        ),
+                        description = VacancyUpdateContact(
+                            vakans_number = viewModel.phoneNumber.value,
+                            vakans_mail = viewModel.email.value,
+                            vakans_raspolog = viewModel.locationWork.value,
+                            vakans_aboutWork = viewModel.aboutWork.value
+                        )
+                    ),
+                    navigator = navigator
+                )
+                viewModel.confirmCharge.value = false
+                navigator?.replaceAll(EmployerVacanciesScreen())
+            },
+            onDismissRequest = {
+                viewModel.confirmCharge.value = false
+            },
+            dialogText = "Вы точно хотите изменить данные?",
+        )
+    }
+
     when (val curState = localState.value) {
         is ScreenState.Failure -> {
             FailAlertDialog(
@@ -150,25 +185,7 @@ private fun EmployerDetailsVacancyConstruct(
                     VerticalSpacer(20.dp)
                     CustomButton(
                         onClick = {
-                            viewModel.updateDescriptionInformation(
-                                vacancyId = information.vakans_id,
-                                information = ChangeVacancyUIModel(
-                                    mainInformation = VacancyUpdateInformation(
-                                        vakans_name = viewModel.specialization.value,
-                                        vakans_price = viewModel.price.value,
-                                        vakans_location = viewModel.locationWork.value,
-                                        vakans_experience = viewModel.experience.value,
-                                        vakans_mail = viewModel.email.value
-                                    ),
-                                    description = VacancyUpdateContact(
-                                        vakans_number = viewModel.phoneNumber.value,
-                                        vakans_mail = viewModel.email.value,
-                                        vakans_raspolog = viewModel.locationWork.value,
-                                        vakans_aboutWork = viewModel.aboutWork.value
-                                    )
-                                ),
-                                navigator = navigator
-                            )
+                            viewModel.confirmCharge.value = true
                         },
                         placeText = "Изменить",
                         reverseColors = true

@@ -38,6 +38,8 @@ class EmployerDetailsVacancyViewModel(
     val screenState : MutableStateFlow<ScreenState<List<Vakans_contacts>>> =
         MutableStateFlow(ScreenState.Loading)
 
+    val confirmCharge : MutableState<Boolean> = mutableStateOf(false)
+
     init {
         viewModelScope.launch(Dispatchers.IO) {
             val description = getDescriptionInformation(descriptionId).await()
@@ -59,7 +61,7 @@ class EmployerDetailsVacancyViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val result = updateEmployerVacancyUseCase(vacancyId, information)
             if (result !is CustomResult.Failure) {
-                navigator?.replaceAll(EmployerVacanciesScreen())
+//                navigator?.replaceAll(EmployerVacanciesScreen())
             } else {
                 screenState.value = ScreenState.Failure(result.code, result.message)
             }
