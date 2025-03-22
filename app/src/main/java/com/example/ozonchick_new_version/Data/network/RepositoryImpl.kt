@@ -47,6 +47,9 @@ interface Repository {
     suspend fun getEmployerVacancies(userId: UserId) : CustomResult<List<VakansInformation>>
     suspend fun deleteVacancies(vacancyId : Int) : CustomResult<Boolean>
     suspend fun updateVacancy(vacancyId: Int, information: ChangeVacancyUIModel) : CustomResult<Boolean>
+    suspend fun getUsersForEmployer(vacancyId : Int) : CustomResult<List<Candidate>>
+    suspend fun acceptCandidate(candidateId: Int): CustomResult<Boolean>
+    suspend fun rejectCandidate(candidateId: Int): CustomResult<Boolean>
 }
 
 class RepositoryImpl : Repository {
@@ -312,7 +315,71 @@ class RepositoryImpl : Repository {
             }
             CustomResult.Success(true)
         } catch (ex : Exception) {
-            Log.d("Ошибка получения при изменении", ex.toString())
+            Log.d("Ошибка при изменении", ex.toString())
+            CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
+        }
+    }
+
+    override suspend fun getUsersForEmployer(vacancyId : Int): CustomResult<List<Candidate>> {
+        return try {
+            val users = supabase.from("vakans_user_otklik")
+                .select()
+                {
+                    filter {
+                        eq("vakans_id", vacancyId)
+                        eq("otvet", "На рассмотрении")
+                    }
+                }.decodeList<VakansOtklik>()
+            val usersInformation = supabase.from("user_information")
+                .select()
+                {
+                    filter {
+                        Candidate::user_id isIn users.map { it.user_long_id }
+                    }
+                }.decodeList<Candidate>()
+            CustomResult.Success(usersInformation)
+        } catch (ex: Exception) {
+            Log.d("Ошибка получения пользователей", ex.toString())
+            CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
+        }
+    }
+
+    override suspend fun acceptCandidate(candidateId: Int): CustomResult<Boolean> {
+        return try {
+            supabase.from("vakans_user_otklik")
+                .update(
+                    {
+                        set("otvet", "Вы приняты")
+                    }
+                )
+                {
+                    filter {
+                        eq("user_long_id", candidateId)
+                    }
+                }
+            CustomResult.Success(true)
+        } catch (ex: Exception) {
+            Log.d("Ошибка принятия пользователя", ex.toString())
+            CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
+        }
+    }
+
+    override suspend fun rejectCandidate(candidateId: Int): CustomResult<Boolean> {
+        return try {
+            supabase.from("vakans_user_otklik")
+                .update(
+                    {
+                        set("otvet", "Вам отказано")
+                    }
+                )
+                {
+                    filter {
+                        eq("user_long_id", candidateId)
+                    }
+                }
+            CustomResult.Success(true)
+        } catch (ex: Exception) {
+            Log.d("Ошибка принятия пользователя", ex.toString())
             CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
         }
     }

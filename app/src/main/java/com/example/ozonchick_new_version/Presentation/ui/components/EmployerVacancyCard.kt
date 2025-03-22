@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Presentation.Screens.ContactsScreen
+import com.example.ozonchick_new_version.Presentation.Screens.EmployerResponses.EmployerResponsesScreen
 import com.example.ozonchick_new_version.Presentation.ViewModels.ResponsesViewModel
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
@@ -22,7 +23,8 @@ import org.koin.androidx.compose.koinViewModel
 fun EmployerVacancyCard(
     vacancyInformation: VakansInformation,
     deleteVacancy: () -> Unit,
-    changeVacancy : () -> Unit
+    changeVacancy : () -> Unit,
+    onNavigateForResponses : () -> Unit
 ) {
     val navigator = LocalNavigator.current
     CustomCard {
@@ -46,8 +48,8 @@ fun EmployerVacancyCard(
 //                )
             )
             MainButtons(
-                onNavigateForContacts = {
-                    navigator?.push(ContactsScreen(1))
+                onNavigateForResponses = {
+                    onNavigateForResponses()
                 },
                 deleteVacancy = {
                     deleteVacancy()
@@ -103,7 +105,7 @@ private fun MainText(
 
 @Composable
 private fun MainButtons(
-    onNavigateForContacts: () -> Unit,
+    onNavigateForResponses: () -> Unit,
     deleteVacancy: () -> Unit,
     changeVacancy : () -> Unit
 ) {
@@ -123,7 +125,7 @@ private fun MainButtons(
         )
         CustomButton(
             onClick = {
-
+                onNavigateForResponses()
             },
             placeText = "Соискатели",
             modifier = Modifier.fillMaxWidth(),

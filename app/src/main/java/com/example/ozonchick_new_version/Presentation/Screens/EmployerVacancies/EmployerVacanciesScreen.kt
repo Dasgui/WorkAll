@@ -15,6 +15,7 @@ import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Presentation.Models.ChangeVacancyUIModel
 import com.example.ozonchick_new_version.Presentation.Screens.ChangeInformation_Screen
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerDetailsVacancy.EmployerDetailsVacancyScreen
+import com.example.ozonchick_new_version.Presentation.Screens.EmployerResponses.EmployerResponsesScreen
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomDialog
@@ -57,7 +58,7 @@ private fun EmployerVacanciesConstruct(viewModel: EmployerVacanciesViewModel = k
                         viewModel.confirmDelete.value = false
                     },
                     onDismissRequest = {viewModel.confirmDelete.value = false},
-                    dialogText = "Вы точно хотите удалить вакансию"
+                    dialogText = "Вы точно хотите удалить вакансию?"
                 )
             }
             CustomScaffold(
@@ -82,6 +83,9 @@ private fun EmployerVacanciesConstruct(viewModel: EmployerVacanciesViewModel = k
                                 navigator?.push(
                                     EmployerDetailsVacancyScreen(item)
                                 )
+                            },
+                            onNavigateForResponses = {
+                                navigator?.push(EmployerResponsesScreen(item.vakans_id))
                             }
                         )
                     }

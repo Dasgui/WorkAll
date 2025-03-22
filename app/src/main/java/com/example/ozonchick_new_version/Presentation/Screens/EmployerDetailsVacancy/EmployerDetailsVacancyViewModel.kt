@@ -30,13 +30,6 @@ class EmployerDetailsVacancyViewModel(
     private val getContactInformationUseCase: GetContactInformationUseCase,
     private val updateEmployerVacancyUseCase: UpdateEmployerVacancyUseCase,
     description : VakansInformation
-//    specializationTextField : String,
-//    priceTextField : String,
-//    aboutWorkTextField : String,
-//    phoneNumberTextField : String,
-//    emailTextField : String,
-//    locationWorkTextField : String,
-//    experienceTextField : String,
 ) : ViewModel() {
     val specialization : MutableState<String> = mutableStateOf(description.vakans_name)
     val price : MutableState<String> = mutableStateOf(description.vakans_price)

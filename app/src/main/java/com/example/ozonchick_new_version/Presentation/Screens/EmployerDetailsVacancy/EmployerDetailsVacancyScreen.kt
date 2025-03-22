@@ -57,12 +57,6 @@ private fun EmployerDetailsVacancyConstruct(
     information: VakansInformation,
     viewModel: EmployerDetailsVacancyViewModel,
 ) {
-//    viewModel.email.value = information.vakans_mail
-//    viewModel.price.value = information.vakans_price
-
-//    viewModel.locationWork.value = information.vakans_location
-//    viewModel.specialization.value = information.vakans_name
-//    viewModel.experience.value = information.vakans_experience
     val localState = viewModel.screenState.collectAsState()
     val navigator = LocalNavigator.current
 
