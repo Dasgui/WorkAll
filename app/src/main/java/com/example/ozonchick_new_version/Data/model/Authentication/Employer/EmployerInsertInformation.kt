@@ -9,4 +9,5 @@ data class EmployerInsertInformation(
     val email : String,
     val INN : String,
     val password : String,
+    val companyName : String
 )

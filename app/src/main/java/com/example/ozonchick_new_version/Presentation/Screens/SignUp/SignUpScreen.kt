@@ -116,6 +116,12 @@ private fun MainBody(viewModel: SignUpViewModel) {
             maxChar = 21
         )
         NameTextField(
+            title = "Фамилия",
+            holderText = "Иванович",
+            field = viewModel.secondName,
+            maxChar = 21
+        )
+        NameTextField(
             title = "Номер телефона",
             holderText = "+7**********",
             field = viewModel.phoneNumber,
@@ -140,6 +146,12 @@ private fun MainBody(viewModel: SignUpViewModel) {
             maxChar = 20,
         )
         if (viewModel.userRole.value == UserType.Employer) {
+            NameTextField(
+                title = "Название организации",
+                holderText = "******",
+                field = viewModel.organizationName,
+                maxChar = 50,
+            )
             NameTextField(
                 title = "Подтвердите ИНН",
                 holderText = "",
@@ -231,11 +243,16 @@ private fun Bottom(viewModel: SignUpViewModel, onNavigateForLogIn: () -> Unit) {
     ) {
         CustomButton(
             onClick = {
-                if (viewModel.userRole.value == UserType.Candidate) {
-                    viewModel.registrationCandidate()
-                }
-                if (viewModel.userRole.value == UserType.Employer) {
-                    viewModel.registrationEmployer()
+                if (viewModel.checkEmail() && viewModel.checkName()
+                    && viewModel.checkInn() && viewModel.checkPhoneNumber() && viewModel.checkPasswordMatch()) {
+                    if (viewModel.userRole.value == UserType.Candidate) {
+                        viewModel.registrationCandidate()
+                    }
+                    if (viewModel.userRole.value == UserType.Employer) {
+                        viewModel.registrationEmployer()
+                    }
+                } else {
+                    viewModel.signUpState.value = ScreenState.Failure(0, "Вы ошиблись при заполнении данных. Пожалуйста проверьте их.")
                 }
 //                if (viewModel.checkName() && viewModel.checkEmail()
 //                    && viewModel.checkPhoneNumber() && viewModel.checkPasswordMatch() && viewModel.userRole.value is UserType.Candidate

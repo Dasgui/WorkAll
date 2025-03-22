@@ -29,6 +29,7 @@ class SignUpViewModel(
     }
 
     val name : MutableState<String> = mutableStateOf("Еми")
+    val secondName : MutableState<String> = mutableStateOf("Эльмирович")
 
     val phoneNumber : MutableState<String> = mutableStateOf("+79087027174")
 
@@ -36,7 +37,10 @@ class SignUpViewModel(
 
     val password : MutableState<String> = mutableStateOf("123")
 
+    val organizationName : MutableState<String> = mutableStateOf("ООО Воскресный")
+
     val confirmPassword : MutableState<String> = mutableStateOf("123")
+
 
     private val _passwordVisibleFirst: MutableStateFlow<Boolean> = MutableStateFlow(false)
     var passwordVisibleFirst: StateFlow<Boolean> = _passwordVisibleFirst.asStateFlow()
@@ -55,7 +59,8 @@ class SignUpViewModel(
 
     fun registrationCandidate () {
         viewModelScope.launch(Dispatchers.IO) {
-            when (val curResult = registrationCandidateUseCase(name.value, email.value, password.value, phoneNumber.value)) {
+            val singleName = "${secondName.value.trim()} ${name.value.trim()}"
+            when (val curResult = registrationCandidateUseCase(singleName, email.value.trim(), password.value.trim(), phoneNumber.value.trim())) {
                 is CustomResult.Failure -> signUpState.value = ScreenState.Failure(curResult.code, curResult.message)
                 is CustomResult.Success -> {
                     signUpState.value = ScreenState.Success(data = curResult.data)
@@ -66,7 +71,8 @@ class SignUpViewModel(
 
     fun registrationEmployer () {
         viewModelScope.launch (Dispatchers.IO) {
-            when (val curResult = registrationEmployerUseCase(name.value, email.value, password.value, phoneNumber.value, INN.value)) {
+            val singleName = "${secondName.value.trim()} ${name.value.trim()}"
+            when (val curResult = registrationEmployerUseCase(singleName, email.value, password.value, phoneNumber.value, INN.value, organizationName.value)) {
                 is CustomResult.Failure -> signUpState.value = ScreenState.Failure(curResult.code, curResult.message)
                 is CustomResult.Success -> {
                     signUpState.value = ScreenState.Success(data = curResult.data)

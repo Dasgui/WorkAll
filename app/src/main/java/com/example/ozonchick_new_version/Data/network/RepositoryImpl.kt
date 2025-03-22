@@ -42,7 +42,8 @@ interface Repository {
         password: String,
         phoneNumber: String,
         email: String,
-        inn: String
+        inn: String,
+        organizationName : String
     ): CustomResult<List<AllUserInsertInformation>>
     suspend fun getName (userId: UserId) : CustomResult<String>
     suspend fun getOrganizationName (userId: UserId) : CustomResult<String>
@@ -192,7 +193,8 @@ class RepositoryImpl : Repository {
         password: String,
         phoneNumber: String,
         email: String,
-        inn: String
+        inn: String,
+        organizationName : String
     ): CustomResult<List<AllUserInsertInformation>> {
         return try {
             val user = EmployerInsertInformation(
@@ -200,7 +202,8 @@ class RepositoryImpl : Repository {
                 phoneNumber = phoneNumber,
                 email = email,
                 password = password,
-                INN = inn
+                INN = inn,
+                companyName = organizationName
             )
             if (findUser(email, phoneNumber).await()) {
                 val result = supabase.from("employers_information").insert(user) {

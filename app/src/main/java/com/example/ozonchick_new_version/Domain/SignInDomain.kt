@@ -40,8 +40,8 @@ class RegistrationCandidateUseCase(private val repository: Repository) {
 
 class RegistrationEmployerUseCase(private val repository: Repository) {
     suspend operator fun invoke (name: String, email: String,
-                                 password : String, phoneNumber: String, inn : String) : CustomResult<List<AllUserInsertInformation>> {
-        var result = repository.registrationEmployer(name, password, phoneNumber, email, inn)
+                                 password : String, phoneNumber: String, inn : String, organizationName : String) : CustomResult<List<AllUserInsertInformation>> {
+        var result = repository.registrationEmployer(name, password, phoneNumber, email, inn, organizationName)
         result = when (val curResult = result) {
             is CustomResult.Failure -> {
                 CustomResult.Failure(curResult.code, curResult.message)
