@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,6 +32,9 @@ class ListVacanciesScreen() : Screen {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 private fun ListVacanciesScreenConstruct(viewModel: ListVacanciesViewModel = koinViewModel()) {
+    LaunchedEffect(true) {
+        viewModel.loadData()
+    }
     val screenState = viewModel.responseState.collectAsState()
     when (val curState = screenState.value) {
         is ScreenState.Failure -> FailAlertDialog(

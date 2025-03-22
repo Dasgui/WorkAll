@@ -1,11 +1,14 @@
 package com.example.ozonchick_new_version.Presentation.Screens.EmployerDetailsVacancy
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.navigator.Navigator
 import com.example.ozonchick_new_version.Common.CustomResult
+import com.example.ozonchick_new_version.Data.model.VacancyUpdateContact
+import com.example.ozonchick_new_version.Data.model.VacancyUpdateInformation
 import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Data.model.Vakans_contacts
 import com.example.ozonchick_new_version.Domain.GetContactInformationUseCase
@@ -19,13 +22,15 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class EmployerDetailsVacancyViewModel(
     private val descriptionId : Int,
     private val getContactInformationUseCase: GetContactInformationUseCase,
-    private val updateEmployerVacancyUseCase: UpdateEmployerVacancyUseCase
+    private val updateEmployerVacancyUseCase: UpdateEmployerVacancyUseCase,
+    description : String
 ) : ViewModel() {
-    val specialization : MutableState<String> = mutableStateOf("")
+    val specialization : MutableState<String> = mutableStateOf(description)
     val price : MutableState<String> = mutableStateOf("")
     val aboutWork : MutableState<String> = mutableStateOf("")
 
@@ -57,11 +62,28 @@ class EmployerDetailsVacancyViewModel(
         return coroutineScope { async (Dispatchers.IO) { getContactInformationUseCase(descriptionId) } }
     }
 
-    fun updateDescriptionInformation(vacancyId: Int, information: ChangeVacancyUIModel, navigator: Navigator?) {
+    fun updateDescriptionInformation(vacancyId: Int, navigator: Navigator?) {
+        Log.d("Значение спец", specialization.value)
+        val information: ChangeVacancyUIModel = ChangeVacancyUIModel(
+            mainInformation = VacancyUpdateInformation(
+                vakans_name = specialization.value,
+                vakans_price = price.value,
+                vakans_location = locationWork.value,
+                vakans_experience = experience.value,
+                vakans_mail = email.value
+            ),
+            description = VacancyUpdateContact(
+                vakans_number = phoneNumber.value,
+                vakans_mail = email.value,
+                vakans_raspolog = locationWork.value,
+                vakans_aboutWork = aboutWork.value
+            )
+        )
         viewModelScope.launch(Dispatchers.IO) {
             val result = updateEmployerVacancyUseCase(vacancyId, information)
+            Log.d("Результат update", information.toString())
             if (result !is CustomResult.Failure) {
-//                navigator?.replaceAll(EmployerVacanciesScreen())
+                withContext(Dispatchers.Main) { navigator?.popUntil{it is EmployerVacanciesScreen} }
             } else {
                 screenState.value = ScreenState.Failure(result.code, result.message)
             }

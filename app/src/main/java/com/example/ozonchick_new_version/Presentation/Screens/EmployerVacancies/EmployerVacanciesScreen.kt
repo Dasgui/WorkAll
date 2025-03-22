@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -16,6 +17,7 @@ import com.example.ozonchick_new_version.Presentation.Screens.ChangeInformation_
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerDetailsVacancy.EmployerDetailsVacancyScreen
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
+import com.example.ozonchick_new_version.Presentation.ui.components.CustomDialog
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.components.EmployerVacancyCard
@@ -31,6 +33,9 @@ class EmployerVacanciesScreen : Screen {
 
 @Composable
 private fun EmployerVacanciesConstruct(viewModel: EmployerVacanciesViewModel = koinViewModel()) {
+    LaunchedEffect(true) {
+        viewModel.loadData()
+    }
     val localState = viewModel.screenState.collectAsState()
     val navigator = LocalNavigator.current
     when (val curState = localState.value) {
@@ -45,6 +50,16 @@ private fun EmployerVacanciesConstruct(viewModel: EmployerVacanciesViewModel = k
 
         is ScreenState.Loading -> CustomLoading()
         is ScreenState.Success -> {
+            if (viewModel.confirmDelete.value) {
+                CustomDialog(
+                    onConfirmation = {
+                        viewModel.deleteVacancy(viewModel.vacancyId.value)
+                        viewModel.confirmDelete.value = false
+                    },
+                    onDismissRequest = {viewModel.confirmDelete.value = false},
+                    dialogText = "Вы точно хотите удалить вакансию"
+                )
+            }
             CustomScaffold(
                 bottomButton = true,
                 mainText = "Мои вакансии",
@@ -60,7 +75,8 @@ private fun EmployerVacanciesConstruct(viewModel: EmployerVacanciesViewModel = k
                         EmployerVacancyCard(
                             item,
                             deleteVacancy = {
-                                viewModel.deleteVacancy(item.vakans_id)
+                                viewModel.confirmDelete.value = true
+                                viewModel.vacancyId.value = item.vakans_id
                             },
                             changeVacancy = {
                                 navigator?.push(

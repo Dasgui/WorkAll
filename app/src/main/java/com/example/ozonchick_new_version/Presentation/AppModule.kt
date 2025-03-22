@@ -78,6 +78,6 @@ var AppModule = module {
     }
     factory { UpdateEmployerVacancyUseCase(get()) }
     viewModel {
-        (id : Int) -> EmployerDetailsVacancyViewModel(id, get(), get())
+        (id : Int, description : String) -> EmployerDetailsVacancyViewModel(id, get(), get(), description)
     }
 }

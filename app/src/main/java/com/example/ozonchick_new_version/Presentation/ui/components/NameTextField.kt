@@ -24,7 +24,8 @@ fun NameTextField(
     field: MutableState<String>,
     maxChar: Int = 0,
     onlyNumbers : Boolean = false,
-    height : Dp = 55.dp
+    height : Dp = 55.dp,
+    singleLine : Boolean = true
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -54,7 +55,7 @@ fun NameTextField(
                     }
                 }
             },
-            singleLine = false,
+            singleLine = singleLine,
             placeText = holderText,
             keyboardOptions = if (onlyNumbers) KeyboardOptions(keyboardType = KeyboardType.Number) else KeyboardOptions.Default
         )

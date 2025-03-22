@@ -1,5 +1,6 @@
 package com.example.ozonchick_new_version.Presentation.Screens.EmployerDetailsVacancy
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,7 +46,7 @@ import org.koin.core.parameter.parametersOf
 class EmployerDetailsVacancyScreen(private val information: VakansInformation) : Screen {
     @Composable
     override fun Content() {
-        val viewModel: EmployerDetailsVacancyViewModel = get { parametersOf(information.vakans_id) }
+        val viewModel: EmployerDetailsVacancyViewModel = get { parametersOf(information.vakans_id,information.vakans_name ) }
         EmployerDetailsVacancyConstruct(information, viewModel)
     }
 
@@ -59,7 +61,7 @@ private fun EmployerDetailsVacancyConstruct(
     viewModel.price.value = information.vakans_mail
 
     viewModel.locationWork.value = information.vakans_location
-    viewModel.specialization.value = information.vakans_name
+//    viewModel.specialization.value = information.vakans_name
     viewModel.experience.value = information.vakans_experience
     val localState = viewModel.screenState.collectAsState()
     val navigator = LocalNavigator.current
@@ -67,27 +69,13 @@ private fun EmployerDetailsVacancyConstruct(
     if (viewModel.confirmCharge.value) {
         CustomDialog(
             onConfirmation = {
+                Log.d("Повався", "Rjfds")
                 viewModel.updateDescriptionInformation(
                     vacancyId = information.vakans_id,
-                    information = ChangeVacancyUIModel(
-                        mainInformation = VacancyUpdateInformation(
-                            vakans_name = viewModel.specialization.value,
-                            vakans_price = viewModel.price.value,
-                            vakans_location = viewModel.locationWork.value,
-                            vakans_experience = viewModel.experience.value,
-                            vakans_mail = viewModel.email.value
-                        ),
-                        description = VacancyUpdateContact(
-                            vakans_number = viewModel.phoneNumber.value,
-                            vakans_mail = viewModel.email.value,
-                            vakans_raspolog = viewModel.locationWork.value,
-                            vakans_aboutWork = viewModel.aboutWork.value
-                        )
-                    ),
                     navigator = navigator
                 )
                 viewModel.confirmCharge.value = false
-                navigator?.replaceAll(EmployerVacanciesScreen())
+//                navigator?.replaceAll(EmployerVacanciesScreen())
             },
             onDismissRequest = {
                 viewModel.confirmCharge.value = false
@@ -119,14 +107,17 @@ private fun EmployerDetailsVacancyConstruct(
                     verticalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
                     NameTextField(
-                        title = "Требуемая специальность*",
+                        title = "Требуемая специальность*  ${viewModel.specialization.value.length}/50",
                         field = viewModel.specialization,
-                        holderText = ""
+                        holderText = "",
+                        maxChar = 50
                     )
+
                     NameTextField(
-                        title = "Заработная плата*",
+                        title = "Заработная плата*  ${viewModel.price.value.length}/20",
                         field = viewModel.price,
-                        holderText = ""
+                        holderText = "",
+                        maxChar = 20
                     )
                     Column(
                         modifier = Modifier.fillMaxWidth(),
@@ -163,9 +154,10 @@ private fun EmployerDetailsVacancyConstruct(
                         )
                     }
                     NameTextField(
-                        title = "Номер телефона*",
+                        title = "Номер телефона* ${viewModel.phoneNumber.value.length}/12",
                         field = viewModel.phoneNumber,
-                        holderText = ""
+                        holderText = "",
+                        maxChar = 12
                     )
                     NameTextField(
                         title = "Почта*",
@@ -173,9 +165,10 @@ private fun EmployerDetailsVacancyConstruct(
                         holderText = ""
                     )
                     NameTextField(
-                        title = "Расположение места работы*",
+                        title = "Расположение места работы*  ${viewModel.locationWork.value.length}/50",
                         field = viewModel.locationWork,
-                        holderText = ""
+                        holderText = "",
+                        maxChar = 50
                     )
                     NameTextField(
                         title = "Требуемый опыт работы*",
@@ -185,6 +178,7 @@ private fun EmployerDetailsVacancyConstruct(
                     VerticalSpacer(20.dp)
                     CustomButton(
                         onClick = {
+
                             viewModel.confirmCharge.value = true
                         },
                         placeText = "Изменить",
@@ -193,5 +187,31 @@ private fun EmployerDetailsVacancyConstruct(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun ColumItem(
+    title : String = "",
+    field : MutableState<String>,
+    holderText : String = "",
+    maxChar : Int,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        NameTextField(
+            title = title,
+            field = field,
+            holderText = holderText,
+            maxChar = maxChar
+        )
+        Text(
+            text = "${field.value.length}/$maxChar",
+            color = MainColor,
+            style = Tema.Text_24_24_Bold
+        )
     }
 }

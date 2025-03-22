@@ -1,6 +1,9 @@
 package com.example.ozonchick_new_version.Presentation.Screens.EmployerVacancies
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
@@ -24,7 +27,11 @@ class EmployerVacanciesViewModel(
 ) : ViewModel() {
     val screenState : MutableStateFlow<ScreenState<List<VakansInformation>>> =
         MutableStateFlow(ScreenState.Loading)
-    init {
+    val confirmDelete : MutableState<Boolean> = mutableStateOf(false)
+    val vacancyId : MutableState<Int> = mutableIntStateOf(0)
+
+
+    fun loadData() {
         viewModelScope.launch (Dispatchers.IO) {
             val vacancies = getVacancies(publicUserId).await()
             if (vacancies !is CustomResult.Failure) {
@@ -36,6 +43,7 @@ class EmployerVacanciesViewModel(
             Log.d("Вакансии работодателя", vacancies.toString())
         }
     }
+
     suspend fun getVacancies(userId: UserId) : Deferred<CustomResult<List<VakansInformation>>> {
         return coroutineScope { async(Dispatchers.IO) {getEmployerVacanciesUseCase(userId)} }
     }

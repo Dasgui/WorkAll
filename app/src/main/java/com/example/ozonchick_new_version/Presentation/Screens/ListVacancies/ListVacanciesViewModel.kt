@@ -26,6 +26,9 @@ class ListVacanciesViewModel(
 
 
     init {
+
+    }
+    fun loadData() {
         viewModelScope.launch(Dispatchers.IO) {
             val vacancies = getInformation().await()
             if (vacancies !is CustomResult.Failure) {
