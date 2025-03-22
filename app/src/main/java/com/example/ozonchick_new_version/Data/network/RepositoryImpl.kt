@@ -14,6 +14,7 @@ import com.example.ozonchick_new_version.Data.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Data.model.VakansOtklik
 import com.example.ozonchick_new_version.Data.model.Vakans_otklik
+import com.example.ozonchick_new_version.Presentation.Models.ChangeVacancyUIModel
 import io.github.jan.supabase.exceptions.HttpRequestException
 
 import io.github.jan.supabase.postgrest.from
@@ -45,6 +46,7 @@ interface Repository {
 
     suspend fun getEmployerVacancies(userId: UserId) : CustomResult<List<VakansInformation>>
     suspend fun deleteVacancies(vacancyId : Int) : CustomResult<Boolean>
+    suspend fun updateVacancy(vacancyId: Int, information: ChangeVacancyUIModel) : CustomResult<Boolean>
 }
 
 class RepositoryImpl : Repository {
@@ -280,6 +282,37 @@ class RepositoryImpl : Repository {
             CustomResult.Success(true)
         } catch (ex : Exception) {
             Log.d("Ошибка получения при удалении", ex.toString())
+            CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
+        }
+    }
+
+    override suspend fun updateVacancy(vacancyId: Int, information: ChangeVacancyUIModel): CustomResult<Boolean> {
+        return try {
+            supabase.from("vakans_contacts").update({
+                Vakans_contacts::vakans_number setTo information.description.vakans_number
+                set("vakans_aboutWork", information.description.vakans_aboutWork)
+                Vakans_contacts::vakans_mail setTo information.description.vakans_mail
+            }) {
+                filter {
+                    Vakans_contacts::vakans_id eq vacancyId
+                }
+            }
+            supabase.from("vakans").update(
+                {
+                    VakansInformation::vakans_mail setTo information.mainInformation.vakans_mail
+                    VakansInformation::vakans_price setTo information.mainInformation.vakans_price
+                    VakansInformation::vakans_location setTo information.mainInformation.vakans_location
+                    VakansInformation::vakans_experience setTo information.mainInformation.vakans_experience
+                    VakansInformation::vakans_name setTo information.mainInformation.vakans_name
+                }
+            ) {
+                filter {
+                    VakansInformation::vakans_id eq vacancyId
+                }
+            }
+            CustomResult.Success(true)
+        } catch (ex : Exception) {
+            Log.d("Ошибка получения при изменении", ex.toString())
             CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
         }
     }

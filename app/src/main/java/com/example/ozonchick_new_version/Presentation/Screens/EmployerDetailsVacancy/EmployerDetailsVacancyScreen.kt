@@ -18,7 +18,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import com.example.ozonchick_new_version.Data.model.VacancyUpdateContact
+import com.example.ozonchick_new_version.Data.model.VacancyUpdateInformation
 import com.example.ozonchick_new_version.Data.model.VakansInformation
+import com.example.ozonchick_new_version.Presentation.Models.ChangeVacancyUIModel
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomButton
@@ -35,17 +39,20 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.definition.indexKey
 import org.koin.core.parameter.parametersOf
 
-class EmployerDetailsVacancyScreen(private val information : VakansInformation) : Screen {
+class EmployerDetailsVacancyScreen(private val information: VakansInformation) : Screen {
     @Composable
     override fun Content() {
-        val viewModel : EmployerDetailsVacancyViewModel = get {parametersOf(information.vakans_id)}
+        val viewModel: EmployerDetailsVacancyViewModel = get { parametersOf(information.vakans_id) }
         EmployerDetailsVacancyConstruct(information, viewModel)
     }
 
 }
 
 @Composable
-private fun EmployerDetailsVacancyConstruct(information: VakansInformation, viewModel: EmployerDetailsVacancyViewModel) {
+private fun EmployerDetailsVacancyConstruct(
+    information: VakansInformation,
+    viewModel: EmployerDetailsVacancyViewModel,
+) {
     viewModel.email.value = information.vakans_mail
     viewModel.price.value = information.vakans_mail
 
@@ -53,6 +60,7 @@ private fun EmployerDetailsVacancyConstruct(information: VakansInformation, view
     viewModel.specialization.value = information.vakans_name
     viewModel.experience.value = information.vakans_experience
     val localState = viewModel.screenState.collectAsState()
+    val navigator = LocalNavigator.current
     when (val curState = localState.value) {
         is ScreenState.Failure -> {
             FailAlertDialog(
@@ -62,13 +70,14 @@ private fun EmployerDetailsVacancyConstruct(information: VakansInformation, view
                     viewModel.screenState.value = ScreenState.Loading
                 })
         }
+
         is ScreenState.Loading -> CustomLoading()
         is ScreenState.Success -> {
             CustomScaffold(
                 mainText = "Изменить данные",
                 scaffoldStates = ScaffoldStates.OnSide
             ) {
-                Column (
+                Column(
                     modifier = Modifier
                         .padding(bottom = 80.dp)
                         .fillMaxSize(),
@@ -88,7 +97,7 @@ private fun EmployerDetailsVacancyConstruct(information: VakansInformation, view
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        Row (
+                        Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
@@ -140,7 +149,27 @@ private fun EmployerDetailsVacancyConstruct(information: VakansInformation, view
                     )
                     VerticalSpacer(20.dp)
                     CustomButton(
-                        onClick = {},
+                        onClick = {
+                            viewModel.updateDescriptionInformation(
+                                vacancyId = information.vakans_id,
+                                information = ChangeVacancyUIModel(
+                                    mainInformation = VacancyUpdateInformation(
+                                        vakans_name = viewModel.specialization.value,
+                                        vakans_price = viewModel.price.value,
+                                        vakans_location = viewModel.locationWork.value,
+                                        vakans_experience = viewModel.experience.value,
+                                        vakans_mail = viewModel.email.value
+                                    ),
+                                    description = VacancyUpdateContact(
+                                        vakans_number = viewModel.phoneNumber.value,
+                                        vakans_mail = viewModel.email.value,
+                                        vakans_raspolog = viewModel.locationWork.value,
+                                        vakans_aboutWork = viewModel.aboutWork.value
+                                    )
+                                ),
+                                navigator = navigator
+                            )
+                        },
                         placeText = "Изменить",
                         reverseColors = true
                     )

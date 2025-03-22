@@ -4,10 +4,14 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.navigator.Navigator
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Data.model.Vakans_contacts
 import com.example.ozonchick_new_version.Domain.GetContactInformationUseCase
+import com.example.ozonchick_new_version.Domain.UpdateEmployerVacancyUseCase
+import com.example.ozonchick_new_version.Presentation.Models.ChangeVacancyUIModel
+import com.example.ozonchick_new_version.Presentation.Screens.EmployerVacancies.EmployerVacanciesScreen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +22,8 @@ import kotlinx.coroutines.launch
 
 class EmployerDetailsVacancyViewModel(
     private val descriptionId : Int,
-    private val getContactInformationUseCase: GetContactInformationUseCase
+    private val getContactInformationUseCase: GetContactInformationUseCase,
+    private val updateEmployerVacancyUseCase: UpdateEmployerVacancyUseCase
 ) : ViewModel() {
     val specialization : MutableState<String> = mutableStateOf("")
     val price : MutableState<String> = mutableStateOf("")
@@ -48,6 +53,17 @@ class EmployerDetailsVacancyViewModel(
 
     suspend fun getDescriptionInformation(descriptionId : Int) : Deferred<CustomResult<List<Vakans_contacts>>> {
         return coroutineScope { async (Dispatchers.IO) { getContactInformationUseCase(descriptionId) } }
+    }
+
+    fun updateDescriptionInformation(vacancyId: Int, information: ChangeVacancyUIModel, navigator: Navigator?) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = updateEmployerVacancyUseCase(vacancyId, information)
+            if (result !is CustomResult.Failure) {
+                navigator?.replaceAll(EmployerVacanciesScreen())
+            } else {
+                screenState.value = ScreenState.Failure(result.code, result.message)
+            }
+        }
     }
 
     fun checkEmail () : Boolean {

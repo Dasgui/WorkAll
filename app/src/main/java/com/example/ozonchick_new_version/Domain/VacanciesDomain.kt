@@ -6,6 +6,7 @@ import com.example.ozonchick_new_version.Data.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Data.model.Vakans_otklik
 import com.example.ozonchick_new_version.Data.network.Repository
+import com.example.ozonchick_new_version.Presentation.Models.ChangeVacancyUIModel
 
 class GetVacanciesUseCase (private val repository: Repository) {
     suspend operator fun invoke () : CustomResult<List<VakansInformation>> {
@@ -58,5 +59,11 @@ class GetEmployerVacanciesUseCase(private val repository: Repository) {
 class DeleteEmployerVacancyUseCase (private val repository: Repository) {
     suspend operator fun invoke(vacancyId: Int) : CustomResult<Boolean> {
         return repository.deleteVacancies(vacancyId)
+    }
+}
+
+class UpdateEmployerVacancyUseCase (private val repository: Repository) {
+    suspend operator fun invoke(vacancyId: Int, information: ChangeVacancyUIModel) : CustomResult<Boolean> {
+        return repository.updateVacancy(vacancyId, information)
     }
 }
