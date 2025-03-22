@@ -46,7 +46,7 @@ import org.koin.core.parameter.parametersOf
 class EmployerDetailsVacancyScreen(private val information: VakansInformation) : Screen {
     @Composable
     override fun Content() {
-        val viewModel: EmployerDetailsVacancyViewModel = get { parametersOf(information.vakans_id,information.vakans_name ) }
+        val viewModel: EmployerDetailsVacancyViewModel = get { parametersOf(information.vakans_id, information ) }
         EmployerDetailsVacancyConstruct(information, viewModel)
     }
 
@@ -57,12 +57,12 @@ private fun EmployerDetailsVacancyConstruct(
     information: VakansInformation,
     viewModel: EmployerDetailsVacancyViewModel,
 ) {
-    viewModel.email.value = information.vakans_mail
-    viewModel.price.value = information.vakans_mail
+//    viewModel.email.value = information.vakans_mail
+//    viewModel.price.value = information.vakans_price
 
-    viewModel.locationWork.value = information.vakans_location
+//    viewModel.locationWork.value = information.vakans_location
 //    viewModel.specialization.value = information.vakans_name
-    viewModel.experience.value = information.vakans_experience
+//    viewModel.experience.value = information.vakans_experience
     val localState = viewModel.screenState.collectAsState()
     val navigator = LocalNavigator.current
 

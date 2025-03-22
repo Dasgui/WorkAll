@@ -14,6 +14,7 @@ import com.example.ozonchick_new_version.Data.model.Vakans_contacts
 import com.example.ozonchick_new_version.Domain.GetContactInformationUseCase
 import com.example.ozonchick_new_version.Domain.UpdateEmployerVacancyUseCase
 import com.example.ozonchick_new_version.Presentation.Models.ChangeVacancyUIModel
+import com.example.ozonchick_new_version.Presentation.Models.EmployerDetailsVacancy
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerVacancies.EmployerVacanciesScreen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import kotlinx.coroutines.Deferred
@@ -28,17 +29,24 @@ class EmployerDetailsVacancyViewModel(
     private val descriptionId : Int,
     private val getContactInformationUseCase: GetContactInformationUseCase,
     private val updateEmployerVacancyUseCase: UpdateEmployerVacancyUseCase,
-    description : String
+    description : VakansInformation
+//    specializationTextField : String,
+//    priceTextField : String,
+//    aboutWorkTextField : String,
+//    phoneNumberTextField : String,
+//    emailTextField : String,
+//    locationWorkTextField : String,
+//    experienceTextField : String,
 ) : ViewModel() {
-    val specialization : MutableState<String> = mutableStateOf(description)
-    val price : MutableState<String> = mutableStateOf("")
+    val specialization : MutableState<String> = mutableStateOf(description.vakans_name)
+    val price : MutableState<String> = mutableStateOf(description.vakans_price)
     val aboutWork : MutableState<String> = mutableStateOf("")
 
     val phoneNumber : MutableState<String> = mutableStateOf("")
-    val email : MutableState<String> = mutableStateOf("")
-    val locationWork : MutableState<String> = mutableStateOf("")
+    val email : MutableState<String> = mutableStateOf(description.vakans_mail)
+    val locationWork : MutableState<String> = mutableStateOf(description.vakans_location)
 
-    val experience : MutableState<String> = mutableStateOf("")
+    val experience : MutableState<String> = mutableStateOf(description.vakans_experience)
 
     val screenState : MutableStateFlow<ScreenState<List<Vakans_contacts>>> =
         MutableStateFlow(ScreenState.Loading)
