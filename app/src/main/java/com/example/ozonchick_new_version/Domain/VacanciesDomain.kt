@@ -54,3 +54,9 @@ class GetEmployerVacanciesUseCase(private val repository: Repository) {
         return repository.getEmployerVacancies(userId)
     }
 }
+
+class DeleteEmployerVacancyUseCase (private val repository: Repository) {
+    suspend operator fun invoke(vacancyId: Int) : CustomResult<Boolean> {
+        return repository.deleteVacancies(vacancyId)
+    }
+}

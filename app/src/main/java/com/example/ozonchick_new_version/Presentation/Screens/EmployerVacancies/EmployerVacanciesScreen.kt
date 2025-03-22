@@ -9,11 +9,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import com.example.ozonchick_new_version.Common.publicUserId
+import com.example.ozonchick_new_version.Presentation.Models.ChangeVacancyUIModel
+import com.example.ozonchick_new_version.Presentation.Screens.ChangeInformation_Screen
+import com.example.ozonchick_new_version.Presentation.Screens.EmployerDetailsVacancy.EmployerDetailsVacancyScreen
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
-import com.example.ozonchick_new_version.Presentation.ui.components.EmployerVacansCard
+import com.example.ozonchick_new_version.Presentation.ui.components.EmployerVacancyCard
 import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
 import org.koin.androidx.compose.koinViewModel
 
@@ -27,6 +32,7 @@ class EmployerVacanciesScreen : Screen {
 @Composable
 private fun EmployerVacanciesConstruct(viewModel: EmployerVacanciesViewModel = koinViewModel()) {
     val localState = viewModel.screenState.collectAsState()
+    val navigator = LocalNavigator.current
     when (val curState = localState.value) {
         is ScreenState.Failure -> {
             FailAlertDialog(
@@ -36,6 +42,7 @@ private fun EmployerVacanciesConstruct(viewModel: EmployerVacanciesViewModel = k
                     viewModel.screenState.value = ScreenState.Loading
                 })
         }
+
         is ScreenState.Loading -> CustomLoading()
         is ScreenState.Success -> {
             CustomScaffold(
@@ -43,12 +50,24 @@ private fun EmployerVacanciesConstruct(viewModel: EmployerVacanciesViewModel = k
                 mainText = "Мои вакансии",
                 scaffoldStates = ScaffoldStates.EmployerVacancies
             ) {
-                Column (
-                    modifier = Modifier.padding(bottom = 80.dp).fillMaxSize(),
+                Column(
+                    modifier = Modifier
+                        .padding(bottom = 80.dp)
+                        .fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
                     curState.data.forEach { item ->
-                        EmployerVacansCard(item)
+                        EmployerVacancyCard(
+                            item,
+                            deleteVacancy = {
+                                viewModel.deleteVacancy(item.vakans_id)
+                            },
+                            changeVacancy = {
+                                navigator?.push(
+                                    EmployerDetailsVacancyScreen(item)
+                                )
+                            }
+                        )
                     }
                 }
             }

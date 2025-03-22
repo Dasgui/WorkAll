@@ -29,13 +29,17 @@ import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.R
 
 @Composable
-fun CustomOutlinedTextField (
+fun CustomOutlinedTextField(
     value: String,
     onValueChange: (String) -> Unit,
     states: TextFieldStates = TextFieldStates.Normal,
-    placeText : String = "",
-    modifier: Modifier = Modifier.fillMaxWidth().height(55.dp),
-    enabled : Boolean = true,
+    placeText: String = "",
+    modifier: Modifier = Modifier
+        .fillMaxWidth()
+        .height(55.dp),
+    enabled: Boolean = true,
+    singleLine: Boolean = true,
+    maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     placeholder: @Composable() (() -> Unit)? = null,
     leadingIcon: @Composable() (() -> Unit)? = null,
@@ -64,9 +68,13 @@ fun CustomOutlinedTextField (
                 )
             }
         },
-        leadingIcon = leadingIcon,
-        trailingIcon = {
-            if (states is TextFieldStates.Password) {
+        leadingIcon = if (states is TextFieldStates.Normal) {
+            null
+        } else {
+            leadingIcon
+        },
+        trailingIcon = if (states is TextFieldStates.Password) {
+            {
                 Image(
                     painter = painterResource(id = if (trailingIconVisible.value) R.drawable.eye_close else R.drawable.eye_open),
                     contentDescription = "Показать пароль",
@@ -77,12 +85,14 @@ fun CustomOutlinedTextField (
                         },
                     colorFilter = ColorFilter.Companion.tint(MainColor)
                 )
-            } else {
-                trailingIcon
             }
+        } else if (states is TextFieldStates.Normal) {
+            null
+        } else {
+            trailingIcon
         },
-        maxLines = 1,
-        singleLine = true,
+        maxLines = maxLines,
+        singleLine = singleLine,
         colors = TextFieldDefaults.colors(
             focusedContainerColor = BackgroundColor,
             unfocusedContainerColor = BackgroundColor,

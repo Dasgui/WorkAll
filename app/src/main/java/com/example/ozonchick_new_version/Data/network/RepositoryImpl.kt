@@ -12,6 +12,7 @@ import com.example.ozonchick_new_version.Data.model.Authentication.Employer.Empl
 import com.example.ozonchick_new_version.Data.model.Authentication.Employer.EmployerInsertInformation
 import com.example.ozonchick_new_version.Data.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data.model.VakansInformation
+import com.example.ozonchick_new_version.Data.model.VakansOtklik
 import com.example.ozonchick_new_version.Data.model.Vakans_otklik
 import io.github.jan.supabase.exceptions.HttpRequestException
 
@@ -43,6 +44,7 @@ interface Repository {
     suspend fun getName (userId: UserId) : CustomResult<String>
 
     suspend fun getEmployerVacancies(userId: UserId) : CustomResult<List<VakansInformation>>
+    suspend fun deleteVacancies(vacancyId : Int) : CustomResult<Boolean>
 }
 
 class RepositoryImpl : Repository {
@@ -257,6 +259,27 @@ class RepositoryImpl : Repository {
             CustomResult.Success(result)
         } catch (ex : Exception) {
             Log.d("Ошибка получения вакансий работодателя", ex.toString())
+            CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
+        }
+    }
+
+    override suspend fun deleteVacancies(vacancyId: Int): CustomResult<Boolean> {
+        return try {
+            supabase.from("vakans_user_otklik")
+                .delete()
+                {
+                    filter {
+                        VakansOtklik::vakans_id eq vacancyId
+                    }
+                }
+            supabase.from("vakans").delete() {
+                filter {
+                    VakansInformation::vakans_id eq vacancyId
+                }
+            }
+            CustomResult.Success(true)
+        } catch (ex : Exception) {
+            Log.d("Ошибка получения при удалении", ex.toString())
             CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
         }
     }

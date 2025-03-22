@@ -35,6 +35,7 @@ import com.example.ozonchick_new_version.Presentation.Screens.SignUp.SignUpViewM
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomButton
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomOutlinedTextField
 import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
+import com.example.ozonchick_new_version.Presentation.ui.components.NameTextField
 import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpacer
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
@@ -111,35 +112,30 @@ private fun MainBody(viewModel: SignUpViewModel) {
         NameTextField(
             title = "Имя",
             holderText = "Василий",
-            viewModel = viewModel,
             field = viewModel.name,
             maxChar = 21
         )
         NameTextField(
             title = "Номер телефона",
             holderText = "+7**********",
-            viewModel = viewModel,
             field = viewModel.phoneNumber,
             maxChar = 12
         )
         NameTextField(
             title = "Адрес почты",
             holderText = "vasili@mail.ru",
-            viewModel = viewModel,
             field = viewModel.email
         )
         VerticalSpacer(5.dp)
         NameTextField(
             title = "Пароль",
             holderText = "******",
-            viewModel = viewModel,
             field = viewModel.password,
             maxChar = 20,
         )
         NameTextField(
             title = "Подтвердите пароль",
             holderText = "******",
-            viewModel = viewModel,
             field = viewModel.confirmPassword,
             maxChar = 20,
         )
@@ -147,7 +143,6 @@ private fun MainBody(viewModel: SignUpViewModel) {
             NameTextField(
                 title = "Подтвердите ИНН",
                 holderText = "",
-                viewModel = viewModel,
                 field = viewModel.INN,
                 maxChar = 12,
                 onlyNumbers = true
@@ -156,47 +151,46 @@ private fun MainBody(viewModel: SignUpViewModel) {
     }
 }
 
-@Composable
-private fun NameTextField(
-    title: String,
-    holderText: String,
-    viewModel: SignUpViewModel,
-    field: MutableState<String>,
-    maxChar: Int = 0,
-    onlyNumbers : Boolean = false,
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        Text(
-            text = title,
-            style = Tema.Text_24_24_Bold,
-            maxLines = 1,
-            color = MainColor,
-        )
-        CustomOutlinedTextField(
-            value = field.value,
-            onValueChange = {
-                if (maxChar == 0) {
-                    field.value = it
-                } else {
-                    if (onlyNumbers) {
-                        if (it.length <= maxChar && it.isDigitsOnly()) {
-                            field.value = it
-                        }
-                    } else {
-                        if (it.length <= maxChar) {
-                            field.value = it
-                        }
-                    }
-                }
-            },
-            placeText = holderText,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-        )
-    }
-}
+//@Composable
+//private fun NameTextField(
+//    title: String,
+//    holderText: String,
+//    field: MutableState<String>,
+//    maxChar: Int = 0,
+//    onlyNumbers : Boolean = false,
+//) {
+//    Column(
+//        modifier = Modifier.fillMaxWidth(),
+//        verticalArrangement = Arrangement.spacedBy(10.dp)
+//    ) {
+//        Text(
+//            text = title,
+//            style = Tema.Text_24_24_Bold,
+//            maxLines = 1,
+//            color = MainColor,
+//        )
+//        CustomOutlinedTextField(
+//            value = field.value,
+//            onValueChange = {
+//                if (maxChar == 0) {
+//                    field.value = it
+//                } else {
+//                    if (onlyNumbers) {
+//                        if (it.length <= maxChar && it.isDigitsOnly()) {
+//                            field.value = it
+//                        }
+//                    } else {
+//                        if (it.length <= maxChar) {
+//                            field.value = it
+//                        }
+//                    }
+//                }
+//            },
+//            placeText = holderText,
+//            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+//        )
+//    }
+//}
 
 @Composable
 private fun BottomTypeRegistration(viewModel: SignUpViewModel) {

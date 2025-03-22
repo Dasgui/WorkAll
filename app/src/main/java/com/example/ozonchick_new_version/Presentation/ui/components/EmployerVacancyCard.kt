@@ -1,24 +1,15 @@
 package com.example.ozonchick_new_version.Presentation.ui.components
 
-import android.R
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
-import com.example.ozonchick_new_version.Common.UserType
-import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Presentation.Screens.ContactsScreen
 import com.example.ozonchick_new_version.Presentation.ViewModels.ResponsesViewModel
@@ -28,17 +19,21 @@ import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun EmployerVacansCard(
-    vakansInformation: VakansInformation
+fun EmployerVacancyCard(
+    vacancyInformation: VakansInformation,
+    deleteVacancy: () -> Unit,
+    changeVacancy : () -> Unit
 ) {
     val navigator = LocalNavigator.current
     CustomCard {
         Column(
-            modifier = Modifier.padding(vertical = 10.dp, horizontal = 10.dp).fillMaxSize(),
+            modifier = Modifier
+                .padding(vertical = 10.dp, horizontal = 10.dp)
+                .fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly,
         ) {
             MainText(
-                vakansInformation
+                vacancyInformation
 //                VakansInformation(
 //                    vakans_id = 1,
 //                    vakans_price = "200",
@@ -53,7 +48,14 @@ fun EmployerVacansCard(
             MainButtons(
                 onNavigateForContacts = {
                     navigator?.push(ContactsScreen(1))
-                })
+                },
+                deleteVacancy = {
+                    deleteVacancy()
+                },
+                changeVacancy = {
+                    changeVacancy()
+                }
+            )
         }
     }
 }
@@ -101,8 +103,9 @@ private fun MainText(
 
 @Composable
 private fun MainButtons(
-    viewModel: ResponsesViewModel = koinViewModel(),
     onNavigateForContacts: () -> Unit,
+    deleteVacancy: () -> Unit,
+    changeVacancy : () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -112,7 +115,7 @@ private fun MainButtons(
     ) {
         CustomButton(
             onClick = {
-                onNavigateForContacts()
+                changeVacancy()
             },
             placeText = "Изменить",
             modifier = Modifier.fillMaxWidth(),
@@ -120,7 +123,7 @@ private fun MainButtons(
         )
         CustomButton(
             onClick = {
-                onNavigateForContacts()
+
             },
             placeText = "Соискатели",
             modifier = Modifier.fillMaxWidth(),
@@ -128,7 +131,7 @@ private fun MainButtons(
         )
         CustomButton(
             onClick = {
-                onNavigateForContacts()
+                deleteVacancy()
             },
             placeText = "Удалить",
             modifier = Modifier.fillMaxWidth()
