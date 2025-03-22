@@ -2,6 +2,7 @@ package com.example.ozonchick_new_version.Presentation.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
@@ -15,8 +16,8 @@ import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 
 @Composable
-fun Public_Card(
-    modifier: Modifier,
+fun CustomCard(
+    modifier: Modifier = Modifier.fillMaxWidth(),
     shape: Shape = RectangleShape,
     colors: CardColors = CardDefaults.cardColors(containerColor = BackgroundColor),
     elevation: CardElevation = CardDefaults.cardElevation(),

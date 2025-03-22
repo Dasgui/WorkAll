@@ -19,7 +19,7 @@ import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Presentation.Screens.ContactsScreen
 import com.example.ozonchick_new_version.Presentation.ViewModels.ResponsesViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.Public_Button
-import com.example.ozonchick_new_version.Presentation.ui.components.Public_Card
+import com.example.ozonchick_new_version.Presentation.ui.components.CustomCard
 import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpacer
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
@@ -30,7 +30,7 @@ fun VacancyCard(
     list: VakansInformation
 ) {
     val navigator = LocalNavigator.current;
-    Public_Card(
+    CustomCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 20.dp)

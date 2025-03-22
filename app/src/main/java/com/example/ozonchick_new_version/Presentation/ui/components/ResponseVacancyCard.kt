@@ -26,7 +26,7 @@ fun ResponseVacancyCard(
     status: String
 ) {
     val navigator = LocalNavigator.current;
-    Public_Card(
+    CustomCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 20.dp)

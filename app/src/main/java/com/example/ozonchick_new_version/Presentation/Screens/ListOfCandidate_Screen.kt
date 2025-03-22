@@ -25,7 +25,7 @@ import com.example.ozonchick_new_version.Data.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.ui.components.Public_Button
-import com.example.ozonchick_new_version.Presentation.ui.components.Public_Card
+import com.example.ozonchick_new_version.Presentation.ui.components.CustomCard
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.middleTextStyle
@@ -46,7 +46,7 @@ fun ListOfCandidate_construct(/*vm: ListOfCandidate_ViewModel = koinViewModel()*
         scaffoldStates = ScaffoldStates.OnSide,
         mainText = "Откликнувшиеся соискатели"
     ) {
-        Public_Card(
+        CustomCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 10.dp)
@@ -119,7 +119,7 @@ fun ListOfCandidate_construct(/*vm: ListOfCandidate_ViewModel = koinViewModel()*
                 }
             }
         }
-        Public_Card(
+        CustomCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 10.dp)
@@ -193,7 +193,7 @@ fun ListOfCandidate_construct(/*vm: ListOfCandidate_ViewModel = koinViewModel()*
             }
         }
 
-                    Public_Card(
+                    CustomCard(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(bottom = 10.dp)
@@ -292,7 +292,7 @@ fun Card_Candidate(number: Int, list: MutableList<VakansInformation>)
     val context = LocalContext.current
     var contactList: MutableList<Vakans_contacts> = mutableListOf()
     val navigator = LocalNavigator.current
-    Public_Card(
+    CustomCard(
         modifier = Modifier
             .fillMaxWidth()
             .height(160.dp)

@@ -50,81 +50,61 @@ fun CustomScaffold(
     scaffoldStates: ScaffoldStates = ScaffoldStates.Main,
     navigator : Navigator? = LocalNavigator.current,
     topBar: @Composable () -> Unit = {
-        if (scaffoldStates is ScaffoldStates.OnSide) {
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .drawBehind {
-                        drawLine(
-                            MainColor,
-                            Offset(0f, size.height),
-                            Offset(size.width, size.height),
-                            10f
-                        )
-                    },
-                shape = RectangleShape
-            ) {
-                TopAppBar(
-                    title = {
-                        Row(
-                            modifier = Modifier.fillMaxSize(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .drawBehind {
+                    drawLine(
+                        MainColor,
+                        Offset(0f, size.height),
+                        Offset(size.width, size.height),
+                        10f
+                    )
+                },
+            shape = RectangleShape
+        ) {
+            TopAppBar(
+                title = {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 10.dp).fillMaxSize(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        if (scaffoldStates == ScaffoldStates.OnSide) {
                             Icon(
                                 painter = painterResource(id = R.drawable.arrow_square_right),
                                 contentDescription = "",
                                 modifier = Modifier
-                                    .size(30.dp)
+                                    .size(40.dp)
                                     .clickable { navigator?.pop() },
                                 tint = MainColor
                             )
-                            Text(
-                                text = mainText,
-                                style = Tema.Text_20_20_Medium,
-                                color = MainColor,
-                            )
-                            Spacer(Modifier.size(30.dp))
+                        } else {
+                            Spacer(Modifier.size(40.dp))
                         }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(containerColor = BackgroundColor),
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                )
-            }
-        } else {
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .drawBehind {
-                        drawLine(
-                            MainColor,
-                            Offset(0f, size.height),
-                            Offset(size.width, size.height),
-                            5f
+                        Text(
+                            text = mainText,
+                            style = Tema.Text_24_24_Medium,
+                            color = MainColor,
                         )
-                    },
-                shape = RectangleShape
-            ) {
-                TopAppBar(
-                    title = {
-                        Row(
-                            modifier = Modifier.fillMaxSize(),
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = mainText,
-                                style = Tema.Text_20_20_Medium,
-                                color = MainColor,
+                        if (scaffoldStates == ScaffoldStates.EmployerVacancies) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.add_button_transparent),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .clickable { navigator?.pop() },
+                                tint = MainColor
                             )
+                        } else {
+                            Spacer(Modifier.size(40.dp))
                         }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(containerColor = BackgroundColor),
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                )
-            }
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = BackgroundColor),
+                modifier = Modifier
+                    .fillMaxWidth(),
+            )
         }
     },
     bottomBar: @Composable () -> Unit = {

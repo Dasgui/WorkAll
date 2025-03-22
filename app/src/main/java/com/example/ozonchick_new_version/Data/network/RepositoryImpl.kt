@@ -41,6 +41,8 @@ interface Repository {
         inn: String
     ): CustomResult<List<AllUserInsertInformation>>
     suspend fun getName (userId: UserId) : CustomResult<String>
+
+    suspend fun getEmployerVacancies(userId: UserId) : CustomResult<List<VakansInformation>>
 }
 
 class RepositoryImpl : Repository {
@@ -238,6 +240,23 @@ class RepositoryImpl : Repository {
             }
         } catch (ex: Exception) {
             Log.d("Ошибка получения имени", ex.toString())
+            CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
+        }
+    }
+
+    override suspend fun getEmployerVacancies(userId: UserId): CustomResult<List<VakansInformation>> {
+        return try {
+            val result = supabase.from("vakans")
+                .select()
+                {
+                    filter {
+                        VakansInformation::employer_id eq userId.id
+                    }
+                }.decodeList<VakansInformation>()
+            Log.d("Вакансии работодателя", result.toString())
+            CustomResult.Success(result)
+        } catch (ex : Exception) {
+            Log.d("Ошибка получения вакансий работодателя", ex.toString())
             CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
         }
     }

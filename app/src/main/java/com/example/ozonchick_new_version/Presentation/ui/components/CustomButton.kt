@@ -21,13 +21,14 @@ fun CustomButton(
     onClick : () -> Unit,
     placeText : String = "",
     enabled: Boolean = true,
+    reverseColors : Boolean = false,
     modifier: Modifier = Modifier.fillMaxWidth().height(45.dp),
     shape: Shape = RectangleShape,
     colors: ButtonColors = ButtonDefaults.buttonColors(
-        containerColor = BackgroundColor,
-        contentColor = MainColor,
-        disabledContainerColor = BackgroundColor,
-        disabledContentColor = MainColor
+        containerColor = if (reverseColors) MainColor else BackgroundColor,
+        contentColor = if (reverseColors) BackgroundColor else MainColor,
+        disabledContainerColor = if (reverseColors) MainColor else BackgroundColor,
+        disabledContentColor = if (reverseColors) BackgroundColor else MainColor
     ),
     border : BorderStroke? = BorderStroke(1.dp, MainColor)
 ) {

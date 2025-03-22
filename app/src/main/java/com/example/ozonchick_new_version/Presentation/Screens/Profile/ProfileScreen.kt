@@ -30,7 +30,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
 import com.example.ozonchick_new_version.Presentation.Screens.Settings_Screen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
-import com.example.ozonchick_new_version.Presentation.ui.components.Public_Card
+import com.example.ozonchick_new_version.Presentation.ui.components.CustomCard
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
 import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
@@ -160,7 +160,7 @@ private fun Card_construct(
     icon: Int,
     localNavigator: Navigator?
 ) {
-    Public_Card(
+    CustomCard(
         modifier = Modifier.Companion
             .fillMaxWidth()
             .padding(top = 20.dp)

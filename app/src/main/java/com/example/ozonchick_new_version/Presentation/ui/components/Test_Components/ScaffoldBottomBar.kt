@@ -17,6 +17,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import androidx.compose.ui.text.TextStyle
 import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Common.publicUserId
+import com.example.ozonchick_new_version.Presentation.Screens.EmployerVacancies.EmployerVacanciesScreen
 import com.example.ozonchick_new_version.Presentation.Screens.Profile.ProfileScreen
 import com.example.ozonchick_new_version.Presentation.Screens.ResponsesScreen
 import com.example.ozonchick_new_version.Presentation.ui.components.HorizontalSpacer
@@ -60,11 +61,11 @@ fun ScaffoldBottomBar(
             HorizontalSpacer(5.dp)
             CustomClickableIcon(
                 navigator = navigator,
-                screen = ResponsesScreen(),
+                screen = if (publicUserId.type is UserType.Employer) EmployerVacanciesScreen() else ResponsesScreen() ,
                 iconId = R.drawable.folder,
                 sizeIcon = sizeIcon,
                 colorIcon = MainColor,
-                bottomText = if (publicUserId.type is UserType.Employer) "Ваши вакансии" else "Отклики",
+                bottomText = if (publicUserId.type is UserType.Employer) "Мои вакансии" else "Отклики",
                 bottomTextStyle = bottomTextStyle,
                 colorBottomText = MainColor
             )

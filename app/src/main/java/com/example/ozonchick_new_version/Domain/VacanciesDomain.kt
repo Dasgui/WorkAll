@@ -48,3 +48,9 @@ class GetResponsesVacanciesUseCase(private val repository: Repository) {
         return repository.getResponsesVacancies(idList)
     }
 }
+
+class GetEmployerVacanciesUseCase(private val repository: Repository) {
+    suspend operator fun invoke(userId: UserId) : CustomResult<List<VakansInformation>> {
+        return repository.getEmployerVacancies(userId)
+    }
+}
