@@ -7,6 +7,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
+import com.example.ozonchick_new_version.Common.employerListVacancies
+import com.example.ozonchick_new_version.Common.isLocalVersion
+import com.example.ozonchick_new_version.Common.localListVacancies
 import com.example.ozonchick_new_version.Common.model.UserId
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.VakansInformation
@@ -30,7 +33,6 @@ class EmployerVacanciesViewModel(
     val confirmDelete : MutableState<Boolean> = mutableStateOf(false)
     val vacancyId : MutableState<Int> = mutableIntStateOf(0)
 
-
     fun loadData() {
         viewModelScope.launch (Dispatchers.IO) {
             val vacancies = getVacancies(publicUserId).await()
@@ -44,19 +46,32 @@ class EmployerVacanciesViewModel(
         }
     }
 
+    fun loadLocalData() {
+        val listVacancies = employerListVacancies
+        screenState.value = ScreenState.Success(listVacancies)
+    }
+
     suspend fun getVacancies(userId: UserId) : Deferred<CustomResult<List<VakansInformation>>> {
         return coroutineScope { async(Dispatchers.IO) {getEmployerVacanciesUseCase(userId)} }
     }
 
     fun deleteVacancy(vacancyId : Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            screenState.value = ScreenState.Loading
-            val deleteResult = deleteEmployerVacancyUseCase(vacancyId)
-            val vacancies = getVacancies(publicUserId).await()
-            if (deleteResult !is CustomResult.Failure && vacancies !is CustomResult.Failure) {
-                screenState.value = ScreenState.Success((vacancies as CustomResult.Success).data)
-            } else {
-                screenState.value = ScreenState.Failure(1, "Ошибка подключения")
+        if (isLocalVersion == true) {
+            val idEmployer = employerListVacancies.indexOfFirst { it.vakans_id == vacancyId }
+            employerListVacancies.removeAt(idEmployer)
+            val idVacancies = localListVacancies.indexOfFirst { it.vakans_id == vacancyId }
+            localListVacancies.removeAt(idVacancies)
+            screenState.value = ScreenState.Success(employerListVacancies)
+        } else {
+            viewModelScope.launch(Dispatchers.IO) {
+                screenState.value = ScreenState.Loading
+                val deleteResult = deleteEmployerVacancyUseCase(vacancyId)
+                val vacancies = getVacancies(publicUserId).await()
+                if (deleteResult !is CustomResult.Failure && vacancies !is CustomResult.Failure) {
+                    screenState.value = ScreenState.Success((vacancies as CustomResult.Success).data)
+                } else {
+                    screenState.value = ScreenState.Failure(1, "Ошибка подключения")
+                }
             }
         }
     }

@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Common.UserType
+import com.example.ozonchick_new_version.Common.isLocalVersion
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Presentation.Screens.ContactsScreen
@@ -105,7 +106,7 @@ private fun MainButtons(
             .fillMaxSize()
             .padding(top = 10.dp),
     ) {
-        if (publicUserId.type is UserType.Candidate) {
+        if (publicUserId.type is UserType.Candidate || isLocalVersion == true) {
             Public_Button(
                 fillButton = false,
                 onClick = { /*viewModel.pushResponse(list.vakans_id)*/ },

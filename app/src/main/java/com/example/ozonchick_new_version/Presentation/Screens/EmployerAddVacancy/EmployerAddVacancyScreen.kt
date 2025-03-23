@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.example.ozonchick_new_version.Common.isLocalVersion
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerVacancies.EmployerVacanciesScreen
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
@@ -61,6 +62,9 @@ fun EmployerAddVacancyConstruct(viewModel: EmployerAddVacancyViewModel = koinVie
             onConfirmation = {
                 viewModel.addVacancy(navigator)
                 viewModel.confirmCharge.value = false
+                if (isLocalVersion == true) {
+                    navigator?.popUntil { it is EmployerVacanciesScreen }
+                }
             },
             onDismissRequest = {
                 viewModel.confirmCharge.value = false

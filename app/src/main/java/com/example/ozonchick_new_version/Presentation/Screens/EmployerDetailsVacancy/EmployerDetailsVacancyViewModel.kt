@@ -7,6 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.navigator.Navigator
 import com.example.ozonchick_new_version.Common.CustomResult
+import com.example.ozonchick_new_version.Common.isLocalVersion
+import com.example.ozonchick_new_version.Common.localListContacts
+import com.example.ozonchick_new_version.Common.localListVacancies
 import com.example.ozonchick_new_version.Data.model.VacancyInsertModel
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateContact
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateInformation
@@ -47,7 +50,16 @@ class EmployerDetailsVacancyViewModel(
 
     val confirmCharge : MutableState<Boolean> = mutableStateOf(false)
 
+
     init {
+        if (isLocalVersion == true) {
+            loadLocalData()
+
+        } else {
+            loadData ()
+        }
+    }
+    fun loadData () {
         viewModelScope.launch(Dispatchers.IO) {
             val description = getDescriptionInformation(descriptionId).await()
             if (description !is CustomResult.Failure) {
@@ -60,34 +72,59 @@ class EmployerDetailsVacancyViewModel(
         }
     }
 
+    fun loadLocalData () {
+        val item = localListContacts.find { it.vakans_id == descriptionId }
+        aboutWork.value = item?.vakans_aboutWork ?: ""
+        phoneNumber.value = item?.vakans_number ?: ""
+    }
+
     suspend fun getDescriptionInformation(descriptionId : Int) : Deferred<CustomResult<List<Vakans_contacts>>> {
         return coroutineScope { async (Dispatchers.IO) { getContactInformationUseCase(descriptionId) } }
     }
 
     fun updateDescriptionInformation(vacancyId: Int, navigator: Navigator?) {
-        Log.d("Значение спец", specialization.value)
-        val information: ChangeVacancyUIModel = ChangeVacancyUIModel(
-            mainInformation = VacancyInsertModel(
-                vakans_name = specialization.value,
-                vakans_price = price.value,
-                vakans_location = locationWork.value,
-                vakans_experience = experience.value,
+        if (isLocalVersion == true) {
+            var item = localListContacts.find { it.vakans_id == descriptionId }
+            localListVacancies[(item?.vakans_id ?: 0) - 1].apply {
                 vakans_mail = email.value
-            ),
-            description = VacancyUpdateContact(
-                vakans_number = phoneNumber.value,
-                vakans_mail = email.value,
-                vakans_raspolog = locationWork.value,
+                vakans_price = price.value
+                vakans_location = locationWork.value
+                vakans_name = specialization.value
+                vakans_experience = experience.value
+            }
+            localListContacts[(item?.vakans_id ?: 0) - 1].apply {
+                vakans_number = phoneNumber.value
                 vakans_aboutWork = aboutWork.value
+                vakans_mail = email.value
+                vakans_raspolog = locationWork.value
+            }
+
+            navigator?.popUntil{it is EmployerVacanciesScreen}
+        } else {
+            Log.d("Значение спец", specialization.value)
+            val information: ChangeVacancyUIModel = ChangeVacancyUIModel(
+                mainInformation = VacancyInsertModel(
+                    vakans_name = specialization.value,
+                    vakans_price = price.value,
+                    vakans_location = locationWork.value,
+                    vakans_experience = experience.value,
+                    vakans_mail = email.value
+                ),
+                description = VacancyUpdateContact(
+                    vakans_number = phoneNumber.value,
+                    vakans_mail = email.value,
+                    vakans_raspolog = locationWork.value,
+                    vakans_aboutWork = aboutWork.value
+                )
             )
-        )
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = updateEmployerVacancyUseCase(vacancyId, information)
-            Log.d("Результат update", information.toString())
-            if (result !is CustomResult.Failure) {
-                withContext(Dispatchers.Main) { navigator?.popUntil{it is EmployerVacanciesScreen} }
-            } else {
-                screenState.value = ScreenState.Failure(result.code, result.message)
+            viewModelScope.launch(Dispatchers.IO) {
+                val result = updateEmployerVacancyUseCase(vacancyId, information)
+                Log.d("Результат update", information.toString())
+                if (result !is CustomResult.Failure) {
+                    withContext(Dispatchers.Main) { navigator?.popUntil{it is EmployerVacanciesScreen} }
+                } else {
+                    screenState.value = ScreenState.Failure(result.code, result.message)
+                }
             }
         }
     }

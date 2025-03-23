@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.example.ozonchick_new_version.Common.isLocalVersion
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerAddVacancy.EmployerAddVacancyScreen
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerAddVacancy.EmployerAddVacancyViewModel
@@ -17,6 +18,7 @@ import com.example.ozonchick_new_version.Presentation.Screens.EmployerDetailsVac
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerResponses.EmployerResponsesScreen
 import com.example.ozonchick_new_version.Presentation.Screens.ListVacancies.ListVacanciesScreen
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
+import com.example.ozonchick_new_version.Presentation.Screens.Profile.ProfileScreen
 import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Screens.SignUpLogIn.SignUp.SignUpScreen
 
@@ -26,10 +28,10 @@ class SplashScreen : Screen {
         val navigator = LocalNavigator.current
         Splash(
             onNavigateForLogin = {
-                navigator?.replaceAll(LogInScreen())
+                navigator?.replaceAll(VersionScreen())
             },
             onNavigateForHome = {
-                navigator?.replaceAll(ListVacanciesScreen())
+                navigator?.replaceAll(ProfileScreen())
             }
         )
     }
@@ -39,10 +41,15 @@ class SplashScreen : Screen {
 fun Splash(onNavigateForLogin: () -> Unit, onNavigateForHome: () -> Unit) {
 
     LaunchedEffect(key1 = true) {
-        if (publicUserId.id != 0) {
+        if (isLocalVersion == true) {
             onNavigateForHome()
         } else {
-            onNavigateForLogin()
+            if (publicUserId.id != 0) {
+                onNavigateForHome()
+            }
+            else {
+                onNavigateForLogin()
+            }
         }
 
     }

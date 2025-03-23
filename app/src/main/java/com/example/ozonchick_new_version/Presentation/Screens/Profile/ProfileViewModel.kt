@@ -36,6 +36,9 @@ class ProfileViewModel(
             }
         }
     }
+    fun loadLocalData() {
+        informationProfileState.value = ScreenState.Success(ProfileUIModel("Беляев Захар"))
+    }
     val informationProfileState : MutableStateFlow<ScreenState<ProfileUIModel>> =
         MutableStateFlow(ScreenState.Loading)
     suspend fun getName(userId: UserId = publicUserId) : Deferred<CustomResult<String>> {

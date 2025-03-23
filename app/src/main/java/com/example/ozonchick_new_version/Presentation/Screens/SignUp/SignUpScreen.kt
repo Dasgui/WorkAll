@@ -28,8 +28,10 @@ import androidx.core.text.isDigitsOnly
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Common.UserType
+import com.example.ozonchick_new_version.Common.isLocalVersion
 import org.koin.androidx.compose.koinViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
+import com.example.ozonchick_new_version.Presentation.Screens.Profile.ProfileScreen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.Screens.SignUp.SignUpViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomButton
@@ -237,6 +239,7 @@ private fun BottomTypeRegistration(viewModel: SignUpViewModel) {
 
 @Composable
 private fun Bottom(viewModel: SignUpViewModel, onNavigateForLogIn: () -> Unit) {
+    val navigator = LocalNavigator.current
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -246,11 +249,15 @@ private fun Bottom(viewModel: SignUpViewModel, onNavigateForLogIn: () -> Unit) {
             onClick = {
                 if (viewModel.checkEmail() && viewModel.checkName()
                     && viewModel.checkInn() && viewModel.checkPhoneNumber() && viewModel.checkPasswordMatch()) {
-                    if (viewModel.userRole.value == UserType.Candidate) {
-                        viewModel.registrationCandidate()
-                    }
-                    if (viewModel.userRole.value == UserType.Employer) {
-                        viewModel.registrationEmployer()
+                    if (isLocalVersion == true) {
+                        navigator?.replaceAll(ProfileScreen())
+                    } else {
+                        if (viewModel.userRole.value == UserType.Candidate) {
+                            viewModel.registrationCandidate()
+                        }
+                        if (viewModel.userRole.value == UserType.Employer) {
+                            viewModel.registrationEmployer()
+                        }
                     }
                 } else {
                     viewModel.signUpState.value = ScreenState.Failure(0, "Вы ошиблись при заполнении данных. Пожалуйста проверьте их.")

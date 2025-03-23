@@ -6,9 +6,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
+import com.example.ozonchick_new_version.Common.isLocalVacanciesCandidateList
+import com.example.ozonchick_new_version.Common.isLocalVersion
 import com.example.ozonchick_new_version.Common.model.UserId
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.VakansInformation
+import com.example.ozonchick_new_version.Data.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data.model.Vakans_otklik
 import com.example.ozonchick_new_version.Domain.GetResponsesIdVacanciesUseCase
 import com.example.ozonchick_new_version.Domain.GetResponsesVacanciesUseCase
@@ -25,6 +28,29 @@ class ResponsesViewModel(
     private val getResponsesIdVacanciesUseCase: GetResponsesIdVacanciesUseCase,
     private val getResponsesVacanciesUseCase: GetResponsesVacanciesUseCase
 ) : ViewModel() {
+
+    val localListVacancies = listOf<VakansInformation>(
+        VakansInformation(
+            vakans_id = 1,
+            vakans_name = "Дизайнер",
+            vakans_price = "100000",
+            vakans_organization = "\"ООО\" Создатели",
+            vakans_location = "Челябинск",
+            vakans_experience = "Без опыта",
+            vakans_mail = "gdem@inbox.ru",
+            employer_id = 0
+        ),
+        VakansInformation(
+            vakans_id = 4,
+            vakans_name = "Тестировщик",
+            vakans_price = "40000",
+            vakans_organization = "\"ООО\" Wakfu",
+            vakans_location = "Екатеренбург",
+            vakans_experience = "3-5 лет",
+            vakans_mail = "gdem@inbox.ru",
+            employer_id = 0
+        ),
+    )
     val responseState : MutableStateFlow<ScreenState<ResponsesUIModel>> = MutableStateFlow(ScreenState.Loading)
     var listResponses : MutableState<List<VakansInformation>> = mutableStateOf(listOf())
 //    var isLoading: MutableState<Boolean> = mutableStateOf(true)
@@ -44,7 +70,11 @@ class ResponsesViewModel(
 //    var idVacancy = _idVacancy.asStateFlow()
 //
     init {
-        loadData()
+        if (isLocalVersion == true) {
+            localLoadData()
+        } else {
+            loadData()
+        }
     }
     fun loadData() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -67,6 +97,11 @@ class ResponsesViewModel(
                 responseState.value = ScreenState.Failure(idVacancies.code, idVacancies.message)
             }
         }
+    }
+
+    fun localLoadData() {
+        val vacancies = isLocalVacanciesCandidateList
+
     }
 
     suspend fun getIdVacancies(userId : UserId) : Deferred<CustomResult<List<Vakans_otklik>>> {

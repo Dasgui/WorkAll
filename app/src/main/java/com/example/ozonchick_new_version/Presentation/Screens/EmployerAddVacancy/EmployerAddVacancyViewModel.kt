@@ -6,6 +6,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.navigator.Navigator
 import com.example.ozonchick_new_version.Common.CustomResult
+import com.example.ozonchick_new_version.Common.addCount
+import com.example.ozonchick_new_version.Common.employerListVacancies
+import com.example.ozonchick_new_version.Common.isLocalVacanciesCandidateList
+import com.example.ozonchick_new_version.Common.isLocalVersion
+import com.example.ozonchick_new_version.Common.localListContacts
+import com.example.ozonchick_new_version.Common.localListVacancies
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.VacancyDescriptionInsertModel
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateContact
@@ -45,34 +51,63 @@ class EmployerAddVacancyViewModel(
     val confirmCharge: MutableState<Boolean> = mutableStateOf(false)
 
     fun addVacancy(navigator: Navigator?) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val organizationName = getOrganizationName().await()
-            if (organizationName !is CustomResult.Failure) {
-                val response = addVacancyUseCase(
-                    VacancyUpdateInformation(
-                        vakans_name = specialization.value.trim(),
-                        vakans_price = price.value.trim(),
-                        vakans_location = locationWork.value.trim(),
-                        vakans_experience = experience.value.trim(),
-                        vakans_mail = email.value.trim(),
-                        employer_id = publicUserId.id,
-                        vakans_organization = (organizationName as CustomResult.Success).data.trim()
-                    ),
-                    VacancyDescriptionInsertModel(
-                        vakans_id = 0,
-                        vakans_number = phoneNumber.value,
-                        vakans_mail = email.value,
-                        vakans_raspolog = locationWork.value,
-                        vakans_aboutWork = aboutWork.value
-                    )
+        if (isLocalVersion == true) {
+            addCount.value += 1
+            localListVacancies.add(
+                VakansInformation(
+                    vakans_id = addCount.value,
+                    vakans_name = specialization.value,
+                    vakans_price = price.value,
+                    vakans_mail = email.value,
+                    vakans_location = locationWork.value,
+                    vakans_experience = experience.value,
+                    vakans_organization = "\"ООО\" Мы локально",
+                    employer_id = 0,
                 )
-                if (response !is CustomResult.Failure) {
-                    screenState.value = ScreenState.Success(true)
+            )
+            localListContacts.add(
+                Vakans_contacts(
+                    vakans_id = addCount.value,
+                    vakans_number = phoneNumber.value,
+                    vakans_mail = email.value,
+                    vakans_raspolog = locationWork.value,
+                    vakans_aboutWork = aboutWork.value
+                )
+            )
+            val id = localListVacancies.indexOfFirst { it.vakans_id == addCount.value }
+            employerListVacancies.add(
+                localListVacancies[id]
+            )
+        } else {
+            viewModelScope.launch(Dispatchers.IO) {
+                val organizationName = getOrganizationName().await()
+                if (organizationName !is CustomResult.Failure) {
+                    val response = addVacancyUseCase(
+                        VacancyUpdateInformation(
+                            vakans_name = specialization.value.trim(),
+                            vakans_price = price.value.trim(),
+                            vakans_location = locationWork.value.trim(),
+                            vakans_experience = experience.value.trim(),
+                            vakans_mail = email.value.trim(),
+                            employer_id = publicUserId.id,
+                            vakans_organization = (organizationName as CustomResult.Success).data.trim()
+                        ),
+                        VacancyDescriptionInsertModel(
+                            vakans_id = 0,
+                            vakans_number = phoneNumber.value,
+                            vakans_mail = email.value,
+                            vakans_raspolog = locationWork.value,
+                            vakans_aboutWork = aboutWork.value
+                        )
+                    )
+                    if (response !is CustomResult.Failure) {
+                        screenState.value = ScreenState.Success(true)
+                    } else {
+                        screenState.value = ScreenState.Failure(0, "Ошибка добавления вакансии")
+                    }
                 } else {
                     screenState.value = ScreenState.Failure(0, "Ошибка добавления вакансии")
                 }
-            } else {
-                screenState.value = ScreenState.Failure(0, "Ошибка добавления вакансии")
             }
         }
     }

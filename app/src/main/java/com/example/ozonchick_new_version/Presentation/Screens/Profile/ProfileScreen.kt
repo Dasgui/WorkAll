@@ -28,8 +28,11 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
+import com.example.ozonchick_new_version.Common.isLocalVersion
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
 import com.example.ozonchick_new_version.Presentation.Screens.Settings_Screen
+import com.example.ozonchick_new_version.Presentation.Screens.VersionConstruct
+import com.example.ozonchick_new_version.Presentation.Screens.VersionScreen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomCard
@@ -56,7 +59,12 @@ class ProfileScreen() : Screen {
 @Composable
 private fun ProfileConstruct(navigator: Navigator?, viewModel: ProfileViewModel = koinViewModel()) {
     LaunchedEffect(true) {
-        viewModel.loadData()
+        if (!isLocalVersion) {
+            viewModel.loadData()
+        } else {
+            viewModel.loadLocalData()
+        }
+
     }
     val screenState = viewModel.informationProfileState.collectAsState()
     CustomScaffold(
@@ -125,8 +133,13 @@ private fun ScreenHead(
                     modifier = Modifier.Companion
                         .size(50.dp)
                         .clickable {
+                            Paper.book().delete("Version")
                             Paper.book().delete("UserId")
-                            navigator?.replaceAll(LogInScreen())
+                            if (isLocalVersion == true) {
+                                navigator?.replaceAll(VersionScreen())
+                            } else {
+                                navigator?.replaceAll(LogInScreen())
+                            }
                         },
                     colorFilter = ColorFilter.Companion.tint(MainColor)
                 )

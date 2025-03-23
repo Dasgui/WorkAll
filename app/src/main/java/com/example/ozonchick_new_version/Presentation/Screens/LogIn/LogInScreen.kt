@@ -29,6 +29,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.example.ozonchick_new_version.Common.isLocalVersion
 import com.example.ozonchick_new_version.Presentation.Screens.Profile.ProfileScreen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.States.TextFieldStates
@@ -41,6 +42,7 @@ import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.Screens.SignUpLogIn.SignUp.SignUpScreen
 import org.koin.androidx.compose.koinViewModel
+import kotlin.io.path.Path
 
 class LogInScreen : Screen {
     @Composable
@@ -206,7 +208,16 @@ private fun BottomText(
     ) {
         Button(
             onClick = {
-                viewModel.auth()
+                if (isLocalVersion == false) {
+                    if (viewModel.isDataValid()) {
+                        viewModel.auth()
+                    } else {
+                        viewModel.logInState.value = ScreenState.Failure(0, "Проверьте введенные данные")
+                    }
+                } else {
+                    viewModel.authLocalUser()
+                    navigator?.replaceAll(ProfileScreen())
+                }
             },
             modifier = Modifier.Companion.fillMaxWidth().height(45.dp),
             shape = RectangleShape,
@@ -233,7 +244,7 @@ private fun BottomText(
                 })
 
             ScreenState.Loading -> Unit
-            is ScreenState.Success -> navigator?.replaceAll(ProfileScreen(/*curState.data.user_id*/))
+            is ScreenState.Success -> navigator?.replaceAll(ProfileScreen())
             is ScreenState.Error -> Unit
         }
 

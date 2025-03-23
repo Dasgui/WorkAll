@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import com.example.ozonchick_new_version.Common.isLocalVersion
 import com.example.ozonchick_new_version.Presentation.Models.ResponsesUIModel
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ViewModels.ResponsesViewModel
@@ -33,8 +34,12 @@ class ResponsesScreen : Screen {
 private fun ResponseConstruct(viewModel: ResponsesViewModel = koinViewModel())
 {
     LaunchedEffect(true) {
-        viewModel.responseState.value = ScreenState.Loading
-        viewModel.loadData()
+        if (isLocalVersion == true) {
+            viewModel.localLoadData()
+        } else {
+            viewModel.responseState.value = ScreenState.Loading
+            viewModel.loadData()
+        }
     }
     val localState = viewModel.responseState.collectAsState()
     CustomScaffold(
@@ -48,25 +53,36 @@ private fun ResponseConstruct(viewModel: ResponsesViewModel = koinViewModel())
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Companion.CenterHorizontally
         ) {
-            when (val curState = localState.value) {
-                is ScreenState.Failure -> FailAlertDialog(
-                    title = "Ошибка",
-                    curState.message,
-                    onOkClick = {
-                        viewModel.responseState.value = ScreenState.Error
-                    })
-                ScreenState.Loading -> CustomLoading()
-                is ScreenState.Success -> {
-                    Log.d("Размерность списка состояния откликов", curState.data.status.size.toString())
-                    Log.d("Размерность списка полученных вакансий", curState.data.information.size.toString())
-                    for (i in 0 until curState.data.status.size) {
-                        ResponseVacancyCard(
-                            list = curState.data.information[i],
-                            status = curState.data.status[i].otvet
-                        )
+            if (isLocalVersion == true) {
+                ResponseVacancyCard(
+                    list = viewModel.localListVacancies[0],
+                    status = "На рассмотрении"
+                )
+                ResponseVacancyCard(
+                    list = viewModel.localListVacancies[1],
+                    status = "Вы приняты"
+                )
+            } else {
+                when (val curState = localState.value) {
+                    is ScreenState.Failure -> FailAlertDialog(
+                        title = "Ошибка",
+                        curState.message,
+                        onOkClick = {
+                            viewModel.responseState.value = ScreenState.Error
+                        })
+                    ScreenState.Loading -> CustomLoading()
+                    is ScreenState.Success -> {
+                        Log.d("Размерность списка состояния откликов", curState.data.status.size.toString())
+                        Log.d("Размерность списка полученных вакансий", curState.data.information.size.toString())
+                        for (i in 0 until curState.data.status.size) {
+                            ResponseVacancyCard(
+                                list = curState.data.information[i],
+                                status = curState.data.status[i].otvet
+                            )
+                        }
                     }
+                    ScreenState.Error -> AlertText()
                 }
-                ScreenState.Error -> AlertText()
             }
         }
     }

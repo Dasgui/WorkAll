@@ -16,6 +16,7 @@ import com.example.ozonchick_new_version.Presentation.Screens.ListVacancies.List
 import cafe.adriel.voyager.navigator.Navigator
 import androidx.compose.ui.text.TextStyle
 import com.example.ozonchick_new_version.Common.UserType
+import com.example.ozonchick_new_version.Common.isLocalVersion
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerVacancies.EmployerVacanciesScreen
 import com.example.ozonchick_new_version.Presentation.Screens.Profile.ProfileScreen
@@ -44,42 +45,93 @@ fun ScaffoldBottomBar(
             drawContent()
         }
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround
-        ) {
-            CustomClickableIcon(
-                navigator = navigator,
-                screen = ListVacanciesScreen(),
-                iconId = R.drawable.vakansi_icon_3,
-                sizeIcon = sizeIcon,
-                colorIcon = MainColor,
-                bottomText = "Вакансии",
-                bottomTextStyle = bottomTextStyle,
-                colorBottomText = MainColor
-            )
-            HorizontalSpacer(5.dp)
-            CustomClickableIcon(
-                navigator = navigator,
-                screen = if (publicUserId.type is UserType.Employer) EmployerVacanciesScreen() else ResponsesScreen() ,
-                iconId = R.drawable.folder,
-                sizeIcon = sizeIcon,
-                colorIcon = MainColor,
-                bottomText = if (publicUserId.type is UserType.Employer) "Мои вакансии" else "Отклики",
-                bottomTextStyle = bottomTextStyle,
-                colorBottomText = MainColor
-            )
-            HorizontalSpacer(5.dp)
-            CustomClickableIcon(
-                navigator = navigator,
-                screen = ProfileScreen(),
-                iconId = R.drawable.profile_circle,
-                sizeIcon = sizeIcon,
-                colorIcon = MainColor,
-                bottomText = "Профиль",
-                bottomTextStyle = bottomTextStyle,
-                colorBottomText = MainColor
-            )
+        if (isLocalVersion == true) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                CustomClickableIcon(
+                    navigator = navigator,
+                    screen = ListVacanciesScreen(),
+                    iconId = R.drawable.vakansi_icon_3,
+                    sizeIcon = sizeIcon,
+                    colorIcon = MainColor,
+                    bottomText = "Вакансии",
+                    bottomTextStyle = bottomTextStyle,
+                    colorBottomText = MainColor
+                )
+                HorizontalSpacer(5.dp)
+                CustomClickableIcon(
+                    navigator = navigator,
+                    screen =  EmployerVacanciesScreen(),
+                    iconId = R.drawable.folder,
+                    sizeIcon = sizeIcon,
+                    colorIcon = MainColor,
+                    bottomText = "Мои вакансии",
+                    bottomTextStyle = bottomTextStyle,
+                    colorBottomText = MainColor
+                )
+                HorizontalSpacer(5.dp)
+                CustomClickableIcon(
+                    navigator = navigator,
+                    screen =  ResponsesScreen() ,
+                    iconId = R.drawable.folder,
+                    sizeIcon = sizeIcon,
+                    colorIcon = MainColor,
+                    bottomText = "Отклики",
+                    bottomTextStyle = bottomTextStyle,
+                    colorBottomText = MainColor
+                )
+                HorizontalSpacer(5.dp)
+                CustomClickableIcon(
+                    navigator = navigator,
+                    screen = ProfileScreen(),
+                    iconId = R.drawable.profile_circle,
+                    sizeIcon = sizeIcon,
+                    colorIcon = MainColor,
+                    bottomText = "Профиль",
+                    bottomTextStyle = bottomTextStyle,
+                    colorBottomText = MainColor
+                )
+            }
+        } else {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                CustomClickableIcon(
+                    navigator = navigator,
+                    screen = ListVacanciesScreen(),
+                    iconId = R.drawable.vakansi_icon_3,
+                    sizeIcon = sizeIcon,
+                    colorIcon = MainColor,
+                    bottomText = "Вакансии",
+                    bottomTextStyle = bottomTextStyle,
+                    colorBottomText = MainColor
+                )
+                HorizontalSpacer(5.dp)
+                CustomClickableIcon(
+                    navigator = navigator,
+                    screen = if (publicUserId.type is UserType.Employer) EmployerVacanciesScreen() else ResponsesScreen() ,
+                    iconId = R.drawable.folder,
+                    sizeIcon = sizeIcon,
+                    colorIcon = MainColor,
+                    bottomText = if (publicUserId.type is UserType.Employer) "Мои вакансии" else "Отклики",
+                    bottomTextStyle = bottomTextStyle,
+                    colorBottomText = MainColor
+                )
+                HorizontalSpacer(5.dp)
+                CustomClickableIcon(
+                    navigator = navigator,
+                    screen = ProfileScreen(),
+                    iconId = R.drawable.profile_circle,
+                    sizeIcon = sizeIcon,
+                    colorIcon = MainColor,
+                    bottomText = "Профиль",
+                    bottomTextStyle = bottomTextStyle,
+                    colorBottomText = MainColor
+                )
+            }
         }
     }
 }

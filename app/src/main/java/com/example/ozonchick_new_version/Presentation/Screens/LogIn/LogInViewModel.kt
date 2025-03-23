@@ -122,6 +122,12 @@ class LogInViewModel(private val auth : AuthUseCase) : ViewModel() {
 //        }
     }
 
+    fun authLocalUser() {
+        if (_rememberUser.value) {
+            Paper.book().write("Version", true)
+        }
+    }
+
     fun isDataValid() : Boolean
     {
         return _emailUser.value.trim().isNotEmpty() && _passwordUser.value.trim().isNotEmpty() && _emailUser.value.trim().matches(Regex("[a-zа-я0-9]+@[a-zа-я0-9]+.[a-zа-я]{2,}"))

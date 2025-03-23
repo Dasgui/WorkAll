@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import cafe.adriel.voyager.core.registry.ScreenRegistry
 import com.example.ozonchick_new_version.Common.UserType
+import com.example.ozonchick_new_version.Common.isLocalVersion
 import com.example.ozonchick_new_version.Common.model.UserId
 import com.example.ozonchick_new_version.Common.publicUserId
 
@@ -26,7 +27,9 @@ class MainAplication: Application() {
         }
         Paper.init(this)
 //        Paper.book().delete("UserId")
+        isLocalVersion = Paper.book().read<Boolean>("Version") ?: false
         publicUserId = Paper.book().read<UserId>("UserId") ?: UserId(0, UserType.None)
+        Log.d("Версия приложения", isLocalVersion.toString())
         Log.d("Информация о пользователе", publicUserId.toString())
         Log.d("Id пользователя", publicUserId.toString())
     }

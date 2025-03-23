@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.example.ozonchick_new_version.Common.isLocalVersion
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateContact
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateInformation
 import com.example.ozonchick_new_version.Data.model.VakansInformation
@@ -47,6 +48,7 @@ import org.koin.core.parameter.parametersOf
 class EmployerDetailsVacancyScreen(private val information: VakansInformation) : Screen {
     @Composable
     override fun Content() {
+        Log.d("ID контактов", information.vakans_id.toString())
         val viewModel: EmployerDetailsVacancyViewModel = get { parametersOf(information.vakans_id, information ) }
         EmployerDetailsVacancyConstruct(information, viewModel)
     }
@@ -82,112 +84,211 @@ private fun EmployerDetailsVacancyConstruct(
         mainText = "Изменить данные",
         scaffoldStates = ScaffoldStates.OnSide
     ) {
-        when (val curState = localState.value) {
-            is ScreenState.Failure -> {
-                FailAlertDialog(
-                    title = "Ошибка",
-                    curState.message,
-                    onOkClick = {
-                        viewModel.screenState.value = ScreenState.Error
-                    })
-            }
+        if (isLocalVersion == true) {
+            Column(
+                modifier = Modifier
+                    .padding(bottom = 80.dp)
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(20.dp)
+            ) {
+                NameTextField(
+                    title = "Требуемая специальность*  ${viewModel.specialization.value.length}/50",
+                    field = viewModel.specialization,
+                    holderText = "",
+                    maxChar = 50
+                )
 
-            is ScreenState.Loading -> CustomLoading()
-            is ScreenState.Success -> {
+                NameTextField(
+                    title = "Заработная плата*  ${viewModel.price.value.length}/20",
+                    field = viewModel.price,
+                    holderText = "",
+                    maxChar = 20
+                )
                 Column(
-                    modifier = Modifier
-                        .padding(bottom = 80.dp)
-                        .fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(20.dp)
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    NameTextField(
-                        title = "Требуемая специальность*  ${viewModel.specialization.value.length}/50",
-                        field = viewModel.specialization,
-                        holderText = "",
-                        maxChar = 50
-                    )
-
-                    NameTextField(
-                        title = "Заработная плата*  ${viewModel.price.value.length}/20",
-                        field = viewModel.price,
-                        holderText = "",
-                        maxChar = 20
-                    )
-                    Column(
+                    Row(
                         modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "О работе*",
-                                style = Tema.Text_24_24_Bold,
-                                maxLines = 1,
-                                color = MainColor,
-                            )
-                            Text(
-                                text = "${viewModel.aboutWork.value.length}/500",
-                                color = MainColor,
-                                style = Tema.Text_24_24_Bold
-                            )
-                        }
-                        CustomOutlinedTextField(
-                            value = viewModel.aboutWork.value,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(150.dp),
-                            onValueChange = {
-                                if (viewModel.aboutWork.value.length < 500) {
-                                    viewModel.aboutWork.value = it
-                                }
-                            },
-                            singleLine = false,
+                        Text(
+                            text = "О работе*",
+                            style = Tema.Text_24_24_Bold,
+                            maxLines = 1,
+                            color = MainColor,
+                        )
+                        Text(
+                            text = "${viewModel.aboutWork.value.length}/500",
+                            color = MainColor,
+                            style = Tema.Text_24_24_Bold
                         )
                     }
-                    NameTextField(
-                        title = "Номер телефона* ${viewModel.phoneNumber.value.length}/12",
-                        field = viewModel.phoneNumber,
-                        holderText = "",
-                        maxChar = 12
-                    )
-                    NameTextField(
-                        title = "Почта*",
-                        field = viewModel.email,
-                        holderText = ""
-                    )
-                    NameTextField(
-                        title = "Расположение места работы*  ${viewModel.locationWork.value.length}/50",
-                        field = viewModel.locationWork,
-                        holderText = "",
-                        maxChar = 50
-                    )
-                    NameTextField(
-                        title = "Требуемый опыт работы*",
-                        field = viewModel.experience,
-                        holderText = ""
-                    )
-                    VerticalSpacer(20.dp)
-                    CustomButton(
-                        onClick = {
-                            if (viewModel.checkEmail() && viewModel.checkPhoneNumber() && viewModel.aboutWork.value.isNotEmpty()
-                                && viewModel.locationWork.value.isNotEmpty() && viewModel.experience.value.isNotEmpty() && viewModel.price.value.isNotEmpty()
-                                && viewModel.specialization.value.isNotEmpty()) {
-                                viewModel.confirmCharge.value = true
-                            } else {
-                                viewModel.screenState.value = ScreenState.Failure(0, "Не все поля заполнены или заполнены некоректно. Проверить вписанные значения.")
+                    CustomOutlinedTextField(
+                        value = viewModel.aboutWork.value,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(150.dp),
+                        onValueChange = {
+                            if (viewModel.aboutWork.value.length < 500) {
+                                viewModel.aboutWork.value = it
                             }
                         },
-                        placeText = "Изменить",
-                        reverseColors = true
+                        singleLine = false,
                     )
                 }
-
+                NameTextField(
+                    title = "Номер телефона* ${viewModel.phoneNumber.value.length}/12",
+                    field = viewModel.phoneNumber,
+                    holderText = "",
+                    maxChar = 12
+                )
+                NameTextField(
+                    title = "Почта*",
+                    field = viewModel.email,
+                    holderText = ""
+                )
+                NameTextField(
+                    title = "Расположение места работы*  ${viewModel.locationWork.value.length}/50",
+                    field = viewModel.locationWork,
+                    holderText = "",
+                    maxChar = 50
+                )
+                NameTextField(
+                    title = "Требуемый опыт работы*",
+                    field = viewModel.experience,
+                    holderText = ""
+                )
+                VerticalSpacer(20.dp)
+                CustomButton(
+                    onClick = {
+                        viewModel.confirmCharge.value = true
+                        if (viewModel.checkEmail() && viewModel.checkPhoneNumber() && viewModel.aboutWork.value.isNotEmpty()
+                            && viewModel.locationWork.value.isNotEmpty() && viewModel.experience.value.isNotEmpty() && viewModel.price.value.isNotEmpty()
+                            && viewModel.specialization.value.isNotEmpty()) {
+                            viewModel.confirmCharge.value = true
+                        } else {
+                            viewModel.screenState.value = ScreenState.Failure(0, "Не все поля заполнены или заполнены некоректно. Проверить вписанные значения.")
+                        }
+                    },
+                    placeText = "Изменить",
+                    reverseColors = true
+                )
             }
+        }
+        else {
+            when (val curState = localState.value) {
+                is ScreenState.Failure -> {
+                    FailAlertDialog(
+                        title = "Ошибка",
+                        curState.message,
+                        onOkClick = {
+                            viewModel.screenState.value = ScreenState.Error
+                        })
+                }
 
-            ScreenState.Error -> AlertText()
+                is ScreenState.Loading -> CustomLoading()
+                is ScreenState.Success -> {
+                    Column(
+                        modifier = Modifier
+                            .padding(bottom = 80.dp)
+                            .fillMaxSize(),
+                        verticalArrangement = Arrangement.spacedBy(20.dp)
+                    ) {
+                        NameTextField(
+                            title = "Требуемая специальность*  ${viewModel.specialization.value.length}/50",
+                            field = viewModel.specialization,
+                            holderText = "",
+                            maxChar = 50
+                        )
+
+                        NameTextField(
+                            title = "Заработная плата*  ${viewModel.price.value.length}/20",
+                            field = viewModel.price,
+                            holderText = "",
+                            maxChar = 20
+                        )
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "О работе*",
+                                    style = Tema.Text_24_24_Bold,
+                                    maxLines = 1,
+                                    color = MainColor,
+                                )
+                                Text(
+                                    text = "${viewModel.aboutWork.value.length}/500",
+                                    color = MainColor,
+                                    style = Tema.Text_24_24_Bold
+                                )
+                            }
+                            CustomOutlinedTextField(
+                                value = viewModel.aboutWork.value,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(150.dp),
+                                onValueChange = {
+                                    if (viewModel.aboutWork.value.length < 500) {
+                                        viewModel.aboutWork.value = it
+                                    }
+                                },
+                                singleLine = false,
+                            )
+                        }
+                        NameTextField(
+                            title = "Номер телефона* ${viewModel.phoneNumber.value.length}/12",
+                            field = viewModel.phoneNumber,
+                            holderText = "",
+                            maxChar = 12
+                        )
+                        NameTextField(
+                            title = "Почта*",
+                            field = viewModel.email,
+                            holderText = ""
+                        )
+                        NameTextField(
+                            title = "Расположение места работы*  ${viewModel.locationWork.value.length}/50",
+                            field = viewModel.locationWork,
+                            holderText = "",
+                            maxChar = 50
+                        )
+                        NameTextField(
+                            title = "Требуемый опыт работы*",
+                            field = viewModel.experience,
+                            holderText = ""
+                        )
+                        VerticalSpacer(20.dp)
+                        CustomButton(
+                            onClick = {
+                                if (viewModel.checkEmail() && viewModel.checkPhoneNumber() && viewModel.aboutWork.value.isNotEmpty()
+                                    && viewModel.locationWork.value.isNotEmpty() && viewModel.experience.value.isNotEmpty() && viewModel.price.value.isNotEmpty()
+                                    && viewModel.specialization.value.isNotEmpty()
+                                ) {
+                                    viewModel.confirmCharge.value = true
+                                } else {
+                                    viewModel.screenState.value = ScreenState.Failure(
+                                        0,
+                                        "Не все поля заполнены или заполнены некоректно. Проверить вписанные значения."
+                                    )
+                                }
+                            },
+                            placeText = "Изменить",
+                            reverseColors = true
+                        )
+                    }
+
+                }
+
+                ScreenState.Error -> AlertText()
+            }
         }
     }
 }

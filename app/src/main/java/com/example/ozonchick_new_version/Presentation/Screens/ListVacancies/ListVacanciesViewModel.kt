@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
+import com.example.ozonchick_new_version.Common.localListVacancies
 import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Domain.GetVacanciesUseCase
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
@@ -36,6 +37,11 @@ class ListVacanciesViewModel(
             }
             Log.d("Получение на откликнувшиеся вакансии", responseState.value.toString())
         }
+    }
+
+    fun loadLocalData () {
+        responseState.value = ScreenState.Success(localListVacancies)
+        listVacancies.value = localListVacancies
     }
 
     suspend fun getInformation() : Deferred<CustomResult<List<VakansInformation>>> {

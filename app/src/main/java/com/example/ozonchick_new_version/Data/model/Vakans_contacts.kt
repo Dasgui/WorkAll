@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Vakans_contacts(
     val vakans_id:Int,
-    val vakans_number:String,
-    val vakans_mail:String,
-    val vakans_raspolog:String,
-    val vakans_aboutWork:String
+    var vakans_number:String,
+    var vakans_mail:String,
+    var vakans_raspolog:String,
+    var vakans_aboutWork:String
 )

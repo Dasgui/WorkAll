@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import com.example.ozonchick_new_version.Common.isLocalVersion
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
@@ -34,7 +35,11 @@ class ListVacanciesScreen() : Screen {
 @Composable
 private fun ListVacanciesScreenConstruct(viewModel: ListVacanciesViewModel = koinViewModel()) {
     LaunchedEffect(true) {
-        viewModel.loadData()
+        if (isLocalVersion == true) {
+            viewModel.loadLocalData()
+        } else {
+            viewModel.loadData()
+        }
     }
     val screenState = viewModel.responseState.collectAsState()
     CustomScaffold(mainText = "Вакансии", bottomButton = true) {

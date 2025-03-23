@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.example.ozonchick_new_version.Common.isLocalVersion
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Presentation.Models.ChangeVacancyUIModel
 import com.example.ozonchick_new_version.Presentation.Screens.ChangeInformation_Screen
@@ -37,7 +38,11 @@ class EmployerVacanciesScreen : Screen {
 @Composable
 private fun EmployerVacanciesConstruct(viewModel: EmployerVacanciesViewModel = koinViewModel()) {
     LaunchedEffect(true) {
-        viewModel.loadData()
+        if (isLocalVersion == true) {
+            viewModel.loadLocalData()
+        } else {
+            viewModel.loadData()
+        }
     }
     val localState = viewModel.screenState.collectAsState()
     val navigator = LocalNavigator.current

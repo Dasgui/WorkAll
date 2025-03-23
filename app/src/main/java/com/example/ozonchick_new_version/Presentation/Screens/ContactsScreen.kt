@@ -67,21 +67,21 @@ fun Contacts_construct(viewModel: ContactsViewModel) {
                         modifier = Modifier.padding(bottom = 80.dp).fillMaxWidth()
                     ) {
                         Text(
-                            text = "Номер телефона: ${viewModel.informationList.collectAsState().value[0].vakans_number}",
+                            text = "Номер телефона: ${viewModel.informationList.collectAsState().value.vakans_number}",
                             style = Tema.Text_24_24_Medium,
                             color = MainColor,
                             textAlign = TextAlign.Start,
                             modifier = Modifier.padding(horizontal = 5.dp)
                         )
                         Text(
-                            text ="Почта: ${viewModel.informationList.collectAsState().value[0].vakans_mail}",
+                            text ="Почта: ${viewModel.informationList.collectAsState().value.vakans_mail}",
                             style = Tema.Text_24_24_Medium,
                             color = MainColor,
                             textAlign = TextAlign.Start,
                             modifier = Modifier.padding(horizontal = 5.dp)
                         )
                         Text(
-                            text = "Расположение: ${viewModel.informationList.collectAsState().value[0].vakans_raspolog}",
+                            text = "Расположение: ${viewModel.informationList.collectAsState().value.vakans_raspolog}",
                             style = Tema.Text_24_24_Medium,
                             color = MainColor,
                             textAlign = TextAlign.Start,
@@ -104,7 +104,7 @@ fun Contacts_construct(viewModel: ContactsViewModel) {
                             modifier = Modifier.padding( top = 30.dp),
                         )
                         Text(
-                            text = viewModel.informationList.collectAsState().value[0].vakans_aboutWork,
+                            text = viewModel.informationList.collectAsState().value.vakans_aboutWork,
                             style = Tema.Text_24_24_Medium,
                             color = MainColor,
                             textAlign = TextAlign.Start,
