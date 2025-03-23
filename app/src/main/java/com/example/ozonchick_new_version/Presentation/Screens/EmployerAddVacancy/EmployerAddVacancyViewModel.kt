@@ -28,16 +28,16 @@ class EmployerAddVacancyViewModel(
     private val addVacancyUseCase: AddVacancyUseCase,
     private val getOrganizationNameUseCase: GetOrganizationNameUseCase,
 ) : ViewModel() {
-    val specialization: MutableState<String> = mutableStateOf("Программист станков")
-    val price: MutableState<String> = mutableStateOf("60000")
+    val specialization: MutableState<String> = mutableStateOf("") /*"Программист станков"*/
+    val price: MutableState<String> = mutableStateOf("") /*"60000"*/
     val aboutWork: MutableState<String> =
-        mutableStateOf("Вам придстоит программировать станки и тд...")
+        mutableStateOf("") /*"Вам придстоит программировать станки и тд..."*/
 
-    val phoneNumber: MutableState<String> = mutableStateOf("+74017321154")
-    val email: MutableState<String> = mutableStateOf("chunki@mail.ru")
-    val locationWork: MutableState<String> = mutableStateOf("Челябинская область")
+    val phoneNumber: MutableState<String> = mutableStateOf("") /*"+74017321154"*/
+    val email: MutableState<String> = mutableStateOf("") /*"chunki@mail.ru"*/
+    val locationWork: MutableState<String> = mutableStateOf("") /*"Челябинская область"*/
 
-    val experience: MutableState<String> = mutableStateOf("Более 5 лет")
+    val experience: MutableState<String> = mutableStateOf("") /*"Более 5 лет"*/
 
     val screenState: MutableStateFlow<ScreenState<Boolean>> =
         MutableStateFlow(ScreenState.Loading)

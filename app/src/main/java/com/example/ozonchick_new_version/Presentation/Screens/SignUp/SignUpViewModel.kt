@@ -28,18 +28,18 @@ class SignUpViewModel(
         _isWrittenCorrectly.value = newValue
     }
 
-    val name : MutableState<String> = mutableStateOf("Еми")
-    val secondName : MutableState<String> = mutableStateOf("Эльмирович")
+    val name : MutableState<String> = mutableStateOf("") /*"Еми"*/
+    val secondName : MutableState<String> = mutableStateOf("") /*"Эльмирович"*/
 
-    val phoneNumber : MutableState<String> = mutableStateOf("+79087027174")
+    val phoneNumber : MutableState<String> = mutableStateOf("") /*"+79087027174"*/
 
-    val email : MutableState<String> = mutableStateOf("gaisovich@inbox.ru")
+    val email : MutableState<String> = mutableStateOf("") /*"gaisovich@inbox.ru"*/
 
-    val password : MutableState<String> = mutableStateOf("123")
+    val password : MutableState<String> = mutableStateOf("") /*"123"*/
 
-    val organizationName : MutableState<String> = mutableStateOf("ООО Воскресный")
+    val organizationName : MutableState<String> = mutableStateOf("") /*"ООО Воскресный"*/
 
-    val confirmPassword : MutableState<String> = mutableStateOf("123")
+    val confirmPassword : MutableState<String> = mutableStateOf("") /*"123"*/
 
 
     private val _passwordVisibleFirst: MutableStateFlow<Boolean> = MutableStateFlow(false)

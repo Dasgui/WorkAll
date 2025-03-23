@@ -28,7 +28,7 @@ class LogInViewModel(private val auth : AuthUseCase) : ViewModel() {
     }
 
 
-    private val _emailUser: MutableStateFlow<String> = MutableStateFlow("kol@inbox.ru") /*gaisich@inbox.ru*/ /*test07@inbox.ru*/ /*kol@inbox.ru*/
+    private val _emailUser: MutableStateFlow<String> = MutableStateFlow("") /*gaisich@inbox.ru*/ /*test07@inbox.ru*/ /*kol@inbox.ru*/
     var emailUser: StateFlow<String> = _emailUser.asStateFlow()
 
     fun setEmailUserFieldValue(newValue: String)
@@ -37,7 +37,7 @@ class LogInViewModel(private val auth : AuthUseCase) : ViewModel() {
     }
 
 
-    private val _passwordUser: MutableStateFlow<String> = MutableStateFlow("123") /*1234*/ /*test07*/ /*123*/
+    private val _passwordUser: MutableStateFlow<String> = MutableStateFlow("") /*1234*/ /*test07*/ /*123*/
     var passwordUser: StateFlow<String> = _passwordUser.asStateFlow()
 
     fun setPasswordUserFieldValue(newValue: String)
