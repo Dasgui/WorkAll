@@ -9,6 +9,7 @@ import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Data.model.Authentication.AllUserInsertInformation
 import com.example.ozonchick_new_version.Domain.RegistrationCandidateUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationEmployerUseCase
+import com.example.ozonchick_new_version.Presentation.States.DialogStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,6 +28,8 @@ class SignUpViewModel(
     fun setIsWrittenCorrectly(newValue: Boolean) {
         _isWrittenCorrectly.value = newValue
     }
+
+    val dialogState : MutableState<DialogStates> = mutableStateOf(DialogStates.None)
 
     val name : MutableState<String> = mutableStateOf("") /*"Еми"*/
     val secondName : MutableState<String> = mutableStateOf("") /*"Эльмирович"*/
@@ -52,7 +55,7 @@ class SignUpViewModel(
 
     val userRole : MutableState<UserType> = mutableStateOf(UserType.Candidate)
 
-    val INN : MutableState<String> = mutableStateOf("123456789012")
+    val INN : MutableState<String> = mutableStateOf("") /*"123456789012"*/
 
     val signUpState : MutableStateFlow<ScreenState<List<AllUserInsertInformation>>> =
         MutableStateFlow(ScreenState.Loading)
@@ -72,7 +75,7 @@ class SignUpViewModel(
     fun registrationEmployer () {
         viewModelScope.launch (Dispatchers.IO) {
             val singleName = "${secondName.value.trim()} ${name.value.trim()}"
-            when (val curResult = registrationEmployerUseCase(singleName, email.value, password.value, phoneNumber.value, INN.value, organizationName.value)) {
+            when (val curResult = registrationEmployerUseCase(singleName, email.value.trim(), password.value.trim(), phoneNumber.value.trim(), INN.value.trim(), organizationName.value.trim())) {
                 is CustomResult.Failure -> signUpState.value = ScreenState.Failure(curResult.code, curResult.message)
                 is CustomResult.Success -> {
                     signUpState.value = ScreenState.Success(data = curResult.data)
@@ -82,7 +85,7 @@ class SignUpViewModel(
     }
 
     fun checkName () : Boolean {
-        return name.value.trim().matches(Regex("[А-Яа-яЁёa-zA-Z]{3,21}"))
+        return name.value.trim().matches(Regex("[А-Яа-яЁёa-zA-Z]{3,}"))
     }
 
     fun checkEmail () : Boolean {

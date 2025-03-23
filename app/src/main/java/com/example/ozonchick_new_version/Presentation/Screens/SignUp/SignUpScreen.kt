@@ -34,6 +34,7 @@ import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
 import com.example.ozonchick_new_version.Presentation.Screens.Profile.ProfileScreen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.Screens.SignUp.SignUpViewModel
+import com.example.ozonchick_new_version.Presentation.States.DialogStates
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomButton
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomOutlinedTextField
 import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
@@ -61,6 +62,15 @@ class SignUpScreen : Screen {
 fun SignUpConstruct(viewModel: SignUpViewModel = koinViewModel(), onNavigateForLogIn: () -> Unit) {
     val screenState = viewModel.signUpState.collectAsState()
     val navigator = LocalNavigator.current
+    if (viewModel.dialogState.value is DialogStates.Okay) {
+        FailAlertDialog(
+            title = "Регистрация",
+            "Вы успешно зарегистрировались",
+            onOkClick = {
+                viewModel.dialogState.value = DialogStates.None
+                navigator?.replaceAll(LogInScreen())
+            })
+    }
     when (val curState = screenState.value) {
         is ScreenState.Failure -> FailAlertDialog(
             title = "Ошибка регистрации",
@@ -69,7 +79,7 @@ fun SignUpConstruct(viewModel: SignUpViewModel = koinViewModel(), onNavigateForL
                 viewModel.signUpState.value = ScreenState.Loading
             })
         is ScreenState.Loading -> Unit
-        is ScreenState.Success -> navigator?.replaceAll(LogInScreen())
+        is ScreenState.Success -> viewModel.dialogState.value = DialogStates.Okay
         ScreenState.Error -> Unit
     }
     LazyColumn(
@@ -248,32 +258,24 @@ private fun Bottom(viewModel: SignUpViewModel, onNavigateForLogIn: () -> Unit) {
     ) {
         CustomButton(
             onClick = {
-                if (viewModel.checkEmail() && viewModel.checkName()
-                    && viewModel.checkInn() && viewModel.checkPhoneNumber() && viewModel.checkPasswordMatch()) {
-                    if (isLocalVersion == true) {
-                        navigator?.replaceAll(ProfileScreen())
-                    } else {
-                        if (viewModel.userRole.value == UserType.Candidate) {
-                            viewModel.registrationCandidate()
-                        }
-                        if (viewModel.userRole.value == UserType.Employer) {
-                            viewModel.registrationEmployer()
-                        }
-                    }
-                } else {
-                    viewModel.signUpState.value = ScreenState.Failure(0, "Вы ошиблись при заполнении данных. Пожалуйста проверьте их.")
+                if (isLocalVersion == true) {
+                    navigator?.replaceAll(ProfileScreen())
                 }
-//                if (viewModel.checkName() && viewModel.checkEmail()
-//                    && viewModel.checkPhoneNumber() && viewModel.checkPasswordMatch() && viewModel.userRole.value is UserType.Candidate
-//                ) {
-//                    Log.d("Проверяем поля", "ТЫК")
-//                    viewModel.registrationCandidate()
-//                } else if (viewModel.checkName() && viewModel.checkEmail()
-//                    && viewModel.checkPhoneNumber() && viewModel.checkInn()
-//                    && viewModel.checkPasswordMatch() && viewModel.userRole.value is UserType.Employer) {
-//                    Log.d("Проверяем поля", "ТЫК")
-//                    viewModel.registrationEmployer()
-//                }
+                if (viewModel.userRole.value is UserType.Employer) {
+                    if (viewModel.checkEmail() && viewModel.checkName()
+                        && viewModel.checkPhoneNumber() && viewModel.checkPasswordMatch() && viewModel.checkInn()) {
+                        viewModel.registrationEmployer()
+                    }else {
+                        viewModel.signUpState.value = ScreenState.Failure(0, "Вы ошиблись при заполнении данных. Пожалуйста проверьте их.")
+                    }
+                } else if (viewModel.userRole.value is UserType.Candidate) {
+                    if (viewModel.checkEmail() && viewModel.checkName()
+                        && viewModel.checkPhoneNumber() && viewModel.checkPasswordMatch()) {
+                        viewModel.registrationCandidate()
+                    }else {
+                        viewModel.signUpState.value = ScreenState.Failure(0, "Вы ошиблись при заполнении данных. Пожалуйста проверьте их.")
+                    }
+                }
             },
             placeText = "Зарегистрироваться"
         )
