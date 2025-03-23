@@ -4,6 +4,7 @@ import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Data.network.Repository
 import com.example.ozonchick_new_version.Data.network.RepositoryImpl
 import com.example.ozonchick_new_version.Domain.AcceptCandidateUseCase
+import com.example.ozonchick_new_version.Domain.AcceptVacancyUseCase
 import com.example.ozonchick_new_version.Domain.AddVacancyUseCase
 import com.example.ozonchick_new_version.Domain.AuthUseCase
 import com.example.ozonchick_new_version.Domain.DeleteEmployerVacancyUseCase
@@ -77,8 +78,9 @@ var AppModule = module {
         VakansCreate_ViewModel()
     }
     factory { GetVacanciesUseCase(get()) }
+    factory { AcceptVacancyUseCase(get()) }
     viewModel {
-        ListVacanciesViewModel(get())
+        ListVacanciesViewModel(get(), get())
     }
 
     factory { GetEmployerVacanciesUseCase(get()) }

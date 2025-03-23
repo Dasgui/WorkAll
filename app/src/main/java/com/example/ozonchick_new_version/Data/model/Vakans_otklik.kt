@@ -9,3 +9,9 @@ data class Vakans_otklik(
     val otvet:String,
     val user_long_id:Int,
 )
+
+@Serializable
+data class VacancyInsertAccept(
+    val vakans_id:Int,
+    val user_long_id:Int,
+)

@@ -54,14 +54,12 @@ private fun ResponseConstruct(viewModel: ResponsesViewModel = koinViewModel())
             horizontalAlignment = Alignment.Companion.CenterHorizontally
         ) {
             if (isLocalVersion == true) {
-                ResponseVacancyCard(
-                    list = viewModel.localListVacancies[0],
-                    status = "На рассмотрении"
-                )
-                ResponseVacancyCard(
-                    list = viewModel.localListVacancies[1],
-                    status = "Вы приняты"
-                )
+                for (i in 0 until viewModel.listResponses.value.size) {
+                    ResponseVacancyCard(
+                        list = viewModel.listResponses.value[i],
+                        status = "На рассмотрении"
+                    )
+                }
             } else {
                 when (val curState = localState.value) {
                     is ScreenState.Failure -> FailAlertDialog(

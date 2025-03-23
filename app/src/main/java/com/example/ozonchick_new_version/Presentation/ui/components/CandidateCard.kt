@@ -59,12 +59,6 @@ private fun MainText(
             style = Tema.Text_24_24_Bold,
             color = MainColor
         )
-        //Имя пользователя
-        Text(
-            text = candidate.name,
-            style = Tema.Text_24_24_Bold,
-            color = MainColor
-        )
     }
 }
 

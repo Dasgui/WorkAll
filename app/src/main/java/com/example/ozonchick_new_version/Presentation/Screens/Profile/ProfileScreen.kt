@@ -136,6 +136,7 @@ private fun ScreenHead(
                             Paper.book().delete("Version")
                             Paper.book().delete("UserId")
                             if (isLocalVersion == true) {
+                                isLocalVersion = false
                                 navigator?.replaceAll(VersionScreen())
                             } else {
                                 navigator?.replaceAll(LogInScreen())

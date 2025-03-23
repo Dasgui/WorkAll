@@ -9,18 +9,24 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Common.UserType
+import com.example.ozonchick_new_version.Common.candidateListVacancies
 import com.example.ozonchick_new_version.Common.isLocalVersion
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Presentation.Screens.ContactsScreen
+import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ViewModels.ResponsesViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.Public_Button
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomCard
+import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
 import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpacer
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
@@ -28,7 +34,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun VacancyCard(
-    list: VakansInformation
+    list: VakansInformation,
+    addVacancy : () -> Unit
 ) {
     val navigator = LocalNavigator.current;
     CustomCard(
@@ -53,7 +60,11 @@ fun VacancyCard(
                     list = list,
                     onNavigateForContacts = {
                         navigator?.push(ContactsScreen(list.vakans_id))
-                    })
+                    },
+                    addVacancy = {
+                        addVacancy()
+                    }
+                    )
             }
         }
     }
@@ -105,7 +116,18 @@ private fun MainButtons(
     viewModel: ResponsesViewModel = koinViewModel(),
     list: VakansInformation,
     onNavigateForContacts: () -> Unit,
+    addVacancy : () -> Unit
 ) {
+    val errorMessage : MutableState<Boolean> = remember { mutableStateOf(false) }
+    val text : MutableState<String> = remember { mutableStateOf("Откликнуться") }
+    if (errorMessage.value) {
+        FailAlertDialog(
+            title = "Ошибка",
+            "Вакансия уже добавлена",
+            onOkClick = {
+                errorMessage.value = false
+            })
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -114,11 +136,26 @@ private fun MainButtons(
         if (publicUserId.type is UserType.Candidate || isLocalVersion == true) {
             Public_Button(
                 fillButton = false,
-                onClick = { /*viewModel.pushResponse(list.vakans_id)*/ },
+                onClick = {
+                    if (isLocalVersion == true) {
+                        val response = candidateListVacancies.contains(list)
+                        if (!response) {
+                            candidateListVacancies.add(
+                                list
+                            )
+                            text.value = "Вы откликнулись"
+                        } else {
+                            errorMessage.value = true
+                        }
+                    } else {
+                        addVacancy()
+                    }
+                /*viewModel.pushResponse(list.vakans_id)*/
+                },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "Откликнуться",
+                    text = text.value,
                     style = Tema.Text_20_20_Medium,
                 )
             }

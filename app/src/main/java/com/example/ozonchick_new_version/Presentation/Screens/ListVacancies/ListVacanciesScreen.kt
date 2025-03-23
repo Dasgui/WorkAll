@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.example.ozonchick_new_version.Common.isLocalVersion
+import com.example.ozonchick_new_version.Presentation.States.DialogStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
@@ -41,6 +42,23 @@ private fun ListVacanciesScreenConstruct(viewModel: ListVacanciesViewModel = koi
             viewModel.loadData()
         }
     }
+    if (viewModel.showOkDialog.value is DialogStates.Error || viewModel.showOkDialog.value is DialogStates.Okay) {
+        if (viewModel.showOkDialog.value is DialogStates.Error) {
+            FailAlertDialog(
+                title = "Ошибка",
+                "Вакансия уже добавлена в ваши отклики",
+                onOkClick = {
+                    viewModel.showOkDialog.value = DialogStates.None
+                })
+        } else if (viewModel.showOkDialog.value is DialogStates.Okay) {
+            FailAlertDialog(
+                title = "Отклик",
+                "Вакансия добавлена в ваши отклики",
+                onOkClick = {
+                    viewModel.showOkDialog.value = DialogStates.None
+                })
+        }
+    }
     val screenState = viewModel.responseState.collectAsState()
     CustomScaffold(mainText = "Вакансии", bottomButton = true) {
         Column(
@@ -61,7 +79,7 @@ private fun ListVacanciesScreenConstruct(viewModel: ListVacanciesViewModel = koi
                 is ScreenState.Loading -> CustomLoading()
                 is ScreenState.Success -> {
                     viewModel.listVacancies.value.forEach { item ->
-                        VacancyCard(item)
+                        VacancyCard(item, addVacancy = {viewModel.addVacancy(item.vakans_id)})
                     }
                 }
 
@@ -72,19 +90,19 @@ private fun ListVacanciesScreenConstruct(viewModel: ListVacanciesViewModel = koi
 
 }
 
-@Composable
-private fun MainScreen(viewModel: ListVacanciesViewModel) {
-    CustomScaffold(mainText = "Вакансии", bottomButton = true) {
-        Column(
-            modifier = Modifier.Companion
-                .padding(bottom = 80.dp)
-                .fillMaxWidth(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.Companion.CenterHorizontally
-        ) {
-            viewModel.listVacancies.value.forEach { item ->
-                VacancyCard(item)
-            }
-        }
-    }
-}
+//@Composable
+//private fun MainScreen(viewModel: ListVacanciesViewModel) {
+//    CustomScaffold(mainText = "Вакансии", bottomButton = true) {
+//        Column(
+//            modifier = Modifier.Companion
+//                .padding(bottom = 80.dp)
+//                .fillMaxWidth(),
+//            verticalArrangement = Arrangement.Center,
+//            horizontalAlignment = Alignment.Companion.CenterHorizontally
+//        ) {
+//            viewModel.listVacancies.value.forEach { item ->
+//                VacancyCard(item)
+//            }
+//        }
+//    }
+//}

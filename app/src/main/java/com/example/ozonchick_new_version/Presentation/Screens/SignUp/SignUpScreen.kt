@@ -43,6 +43,7 @@ import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.Button_Color_Blue
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
+import com.example.ozonchick_new_version.Presentation.ui.theme.SecondColor
 
 class SignUpScreen : Screen {
     @Composable
@@ -221,7 +222,7 @@ private fun BottomTypeRegistration(viewModel: SignUpViewModel) {
             color = if (viewModel.userRole.value == UserType.Candidate) {
                 MainColor
             } else {
-                Button_Color_Blue
+                SecondColor
             },
             modifier = Modifier.clickable { viewModel.userRole.value = UserType.Candidate })
         Text(
@@ -230,7 +231,7 @@ private fun BottomTypeRegistration(viewModel: SignUpViewModel) {
             color = if (viewModel.userRole.value == UserType.Employer) {
                 MainColor
             } else {
-                Button_Color_Blue
+                SecondColor
             },
             modifier = Modifier.clickable { viewModel.userRole.value = UserType.Employer })
     }
@@ -301,7 +302,7 @@ private fun BottomText(onNavigateForLogIn: () -> Unit) {
 
         withStyle(
             SpanStyle(
-                color = MainColor,
+                color = SecondColor,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Medium,
             )

@@ -225,4 +225,8 @@ var employerListVacancies = mutableListOf<VakansInformation>(
     localListVacancies[5],
 )
 
+val candidateListVacancies = mutableListOf<VakansInformation>(
+    localListVacancies[1]
+)
+
 var addCount : MutableState<Int> = mutableIntStateOf(6)

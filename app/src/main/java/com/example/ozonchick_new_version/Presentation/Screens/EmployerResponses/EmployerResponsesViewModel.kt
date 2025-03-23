@@ -3,6 +3,7 @@ package com.example.ozonchick_new_version.Presentation.Screens.EmployerResponses
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
+import com.example.ozonchick_new_version.Common.isLocalVersion
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.Candidate
 import com.example.ozonchick_new_version.Data.model.VakansInformation
@@ -35,17 +36,43 @@ class EmployerResponsesViewModel(
             }
         }
     }
+    fun loadLocalData () {
+        screenState.value = ScreenState.Success(
+            listOf(
+                Candidate(
+                    user_id = 0,
+                    name = "Филипов Андрей",
+                    password = "123",
+                    phoneNumber = "+72983017114",
+                    email = "as@asd.ru",
+                    resume_id = 0,
+                    status_id = 1,
+                ),
+                Candidate(
+                    user_id = 0,
+                    name = "Николай Андропов",
+                    password = "123",
+                    phoneNumber = "+72983017114",
+                    email = "as@asd.ru",
+                    resume_id = 0,
+                    status_id = 1,
+                )
+            )
+        )
+    }
     suspend fun getUsers(vacancyId : Int) : Deferred<CustomResult<List<Candidate>>> {
         return coroutineScope { async(Dispatchers.IO) { getUsersForEmployerUseCase(vacancyId) } }
     }
     fun acceptCandidate(candidateId : Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            screenState.value = ScreenState.Loading
-            val response = acceptCandidateUseCase(candidateId)
-            if (response !is CustomResult.Failure) {
-                loadData()
-            } else {
-                screenState.value = ScreenState.Failure(1, "Ошибка подключения")
+        if (isLocalVersion == false) {
+            viewModelScope.launch(Dispatchers.IO) {
+                screenState.value = ScreenState.Loading
+                val response = acceptCandidateUseCase(candidateId)
+                if (response !is CustomResult.Failure) {
+                    loadData()
+                } else {
+                    screenState.value = ScreenState.Failure(1, "Ошибка подключения")
+                }
             }
         }
     }

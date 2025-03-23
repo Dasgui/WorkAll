@@ -10,6 +10,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import com.example.ozonchick_new_version.Common.isLocalVersion
 import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.Candidate
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerDetailsVacancy.EmployerDetailsVacancyViewModel
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
@@ -35,7 +36,11 @@ class EmployerResponsesScreen(private val vacancyId: Int) : Screen {
 @Composable
 private fun EmployerResponsesConstruct(viewModel: EmployerResponsesViewModel) {
     LaunchedEffect(true) {
-        viewModel.loadData()
+        if (isLocalVersion == true) {
+            viewModel.loadLocalData()
+        } else {
+            viewModel.loadData()
+        }
     }
     val localState = viewModel.screenState.collectAsState()
     CustomScaffold(

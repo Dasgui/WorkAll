@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
+import com.example.ozonchick_new_version.Common.candidateListVacancies
 import com.example.ozonchick_new_version.Common.isLocalVacanciesCandidateList
 import com.example.ozonchick_new_version.Common.isLocalVersion
 import com.example.ozonchick_new_version.Common.model.UserId
@@ -28,29 +29,6 @@ class ResponsesViewModel(
     private val getResponsesIdVacanciesUseCase: GetResponsesIdVacanciesUseCase,
     private val getResponsesVacanciesUseCase: GetResponsesVacanciesUseCase
 ) : ViewModel() {
-
-    val localListVacancies = listOf<VakansInformation>(
-        VakansInformation(
-            vakans_id = 1,
-            vakans_name = "Дизайнер",
-            vakans_price = "100000",
-            vakans_organization = "\"ООО\" Создатели",
-            vakans_location = "Челябинск",
-            vakans_experience = "Без опыта",
-            vakans_mail = "gdem@inbox.ru",
-            employer_id = 0
-        ),
-        VakansInformation(
-            vakans_id = 4,
-            vakans_name = "Тестировщик",
-            vakans_price = "40000",
-            vakans_organization = "\"ООО\" Wakfu",
-            vakans_location = "Екатеренбург",
-            vakans_experience = "3-5 лет",
-            vakans_mail = "gdem@inbox.ru",
-            employer_id = 0
-        ),
-    )
     val responseState : MutableStateFlow<ScreenState<ResponsesUIModel>> = MutableStateFlow(ScreenState.Loading)
     var listResponses : MutableState<List<VakansInformation>> = mutableStateOf(listOf())
 //    var isLoading: MutableState<Boolean> = mutableStateOf(true)
@@ -101,7 +79,7 @@ class ResponsesViewModel(
 
     fun localLoadData() {
         val vacancies = isLocalVacanciesCandidateList
-
+        listResponses.value = candidateListVacancies
     }
 
     suspend fun getIdVacancies(userId : UserId) : Deferred<CustomResult<List<Vakans_otklik>>> {
