@@ -114,6 +114,8 @@ fun Contacts_construct(viewModel: ContactsViewModel) {
                 }
             )
         }
+
+        is ScreenState.Error -> Unit
     }
 //    Scaffold (
 //        topBar = {

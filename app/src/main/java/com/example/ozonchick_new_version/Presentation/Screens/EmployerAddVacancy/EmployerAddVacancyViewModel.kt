@@ -47,26 +47,30 @@ class EmployerAddVacancyViewModel(
     fun addVacancy(navigator: Navigator?) {
         viewModelScope.launch(Dispatchers.IO) {
             val organizationName = getOrganizationName().await()
-            val response = addVacancyUseCase(
-                VacancyUpdateInformation(
-                    vakans_name = specialization.value.trim(),
-                    vakans_price = price.value.trim(),
-                    vakans_location = locationWork.value.trim(),
-                    vakans_experience = experience.value.trim(),
-                    vakans_mail = email.value.trim(),
-                    employer_id = publicUserId.id,
-                    vakans_organization = (organizationName as CustomResult.Success).data.trim()
-                ),
-                VacancyDescriptionInsertModel(
-                    vakans_id = 0,
-                    vakans_number = phoneNumber.value,
-                    vakans_mail = email.value,
-                    vakans_raspolog = locationWork.value,
-                    vakans_aboutWork = aboutWork.value
+            if (organizationName !is CustomResult.Failure) {
+                val response = addVacancyUseCase(
+                    VacancyUpdateInformation(
+                        vakans_name = specialization.value.trim(),
+                        vakans_price = price.value.trim(),
+                        vakans_location = locationWork.value.trim(),
+                        vakans_experience = experience.value.trim(),
+                        vakans_mail = email.value.trim(),
+                        employer_id = publicUserId.id,
+                        vakans_organization = (organizationName as CustomResult.Success).data.trim()
+                    ),
+                    VacancyDescriptionInsertModel(
+                        vakans_id = 0,
+                        vakans_number = phoneNumber.value,
+                        vakans_mail = email.value,
+                        vakans_raspolog = locationWork.value,
+                        vakans_aboutWork = aboutWork.value
+                    )
                 )
-            )
-            if (response !is CustomResult.Failure) {
-                screenState.value = ScreenState.Success(true)
+                if (response !is CustomResult.Failure) {
+                    screenState.value = ScreenState.Success(true)
+                } else {
+                    screenState.value = ScreenState.Failure(0, "Ошибка добавления вакансии")
+                }
             } else {
                 screenState.value = ScreenState.Failure(0, "Ошибка добавления вакансии")
             }
@@ -76,4 +80,13 @@ class EmployerAddVacancyViewModel(
     suspend fun getOrganizationName() : Deferred<CustomResult<String>> {
         return coroutineScope { async(Dispatchers.IO) {getOrganizationNameUseCase(publicUserId)} }
     }
+
+    fun checkEmail () : Boolean {
+        return email.value.trim().matches(Regex("^[a-z-а-я-0-9]+@[a-z-а-я-0-9]+.[a-z-а-я]{2,}$"))
+    }
+
+    fun checkPhoneNumber () : Boolean {
+        return phoneNumber.value.trim().matches(Regex("^\\+\\d{11}"))
+    }
+
 }

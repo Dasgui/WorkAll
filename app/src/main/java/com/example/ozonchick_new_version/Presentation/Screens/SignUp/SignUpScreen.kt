@@ -67,6 +67,7 @@ fun SignUpConstruct(viewModel: SignUpViewModel = koinViewModel(), onNavigateForL
             })
         is ScreenState.Loading -> Unit
         is ScreenState.Success -> navigator?.replaceAll(LogInScreen())
+        ScreenState.Error -> Unit
     }
     LazyColumn(
         modifier = Modifier

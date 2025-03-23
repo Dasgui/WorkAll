@@ -234,6 +234,7 @@ private fun BottomText(
 
             ScreenState.Loading -> Unit
             is ScreenState.Success -> navigator?.replaceAll(ProfileScreen(/*curState.data.user_id*/))
+            is ScreenState.Error -> Unit
         }
 
 

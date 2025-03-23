@@ -44,21 +44,28 @@ class ResponsesViewModel(
 //    var idVacancy = _idVacancy.asStateFlow()
 //
     init {
+        loadData()
+    }
+    fun loadData() {
         viewModelScope.launch(Dispatchers.IO) {
             val idVacancies = getIdVacancies(publicUserId).await()
             Log.d("Вакансии с откликом", idVacancies.toString())
-            val vacancies = getInformation((idVacancies as CustomResult.Success).data.map { it.vakans_id }).await()
-            Log.d("Вакансии с откликом", vacancies.toString())
-            if (vacancies !is CustomResult.Failure) {
-                responseState.value = ScreenState.Success(ResponsesUIModel(
-                    information = (vacancies as CustomResult.Success).data,
-                    status = idVacancies.data
-                ))
-                listResponses.value = vacancies.data
+            if (idVacancies !is CustomResult.Failure) {
+                val vacancies = getInformation((idVacancies as CustomResult.Success).data.map { it.vakans_id }).await()
+                Log.d("Вакансии с откликом", vacancies.toString())
+                if (vacancies !is CustomResult.Failure) {
+                    responseState.value = ScreenState.Success(ResponsesUIModel(
+                        information = (vacancies as CustomResult.Success).data,
+                        status = idVacancies.data
+                    ))
+                    listResponses.value = vacancies.data
+                } else {
+                    responseState.value = ScreenState.Failure(vacancies.code, vacancies.message)
+                }
+                Log.d("Получение на откликнувшиеся вакансии", responseState.value.toString())
             } else {
-                responseState.value = ScreenState.Failure(vacancies.code, vacancies.message)
+                responseState.value = ScreenState.Failure(idVacancies.code, idVacancies.message)
             }
-            Log.d("Получение на откликнувшиеся вакансии", responseState.value.toString())
         }
     }
 

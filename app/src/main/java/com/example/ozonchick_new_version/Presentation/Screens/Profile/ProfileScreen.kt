@@ -16,6 +16,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +31,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
 import com.example.ozonchick_new_version.Presentation.Screens.Settings_Screen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
+import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomCard
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
@@ -53,33 +55,35 @@ class ProfileScreen() : Screen {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 private fun ProfileConstruct(navigator: Navigator?, viewModel: ProfileViewModel = koinViewModel()) {
+    LaunchedEffect(true) {
+        viewModel.loadData()
+    }
     val screenState = viewModel.informationProfileState.collectAsState()
-    when (val curState = screenState.value) {
-        is ScreenState.Failure -> FailAlertDialog(
-            title = "Ошибка",
-            curState.message,
-            onOkClick = {
-                viewModel.informationProfileState.value = ScreenState.Loading
-            })
-        is ScreenState.Loading -> CustomLoading()
-        is ScreenState.Success -> {
-            CustomScaffold(
-                mainText = "Профиль",
-                bottomButton = true,
-                mainBody = {
-                    Column(
-                        modifier = Modifier.Companion
-                            .fillMaxSize()
-                    ) {
+    CustomScaffold(
+        mainText = "Профиль",
+        bottomButton = true,
+        mainBody = {
+            Column(
+                modifier = Modifier.Companion
+                    .fillMaxSize()
+            ) {
+                when (val curState = screenState.value) {
+                    is ScreenState.Failure -> FailAlertDialog(
+                        title = "Ошибка",
+                        curState.message,
+                        onOkClick = {
+                            viewModel.informationProfileState.value = ScreenState.Error
+                        })
+                    is ScreenState.Loading -> CustomLoading()
+                    is ScreenState.Success -> {
                         ScreenHead(navigator = navigator, curState.data.name)
                         ScreenBody(navigator = navigator)
                     }
+                    ScreenState.Error -> AlertText()
                 }
-            )
+            }
         }
-    }
-
-
+    )
 }
 
 @Composable
@@ -165,7 +169,7 @@ private fun Card_construct(
             .fillMaxWidth()
             .padding(top = 20.dp)
             .height(80.dp)
-            .clickable { localNavigator?.push(Settings_Screen()) },
+            .clickable { /*localNavigator?.push(Settings_Screen())*/ },
     ) {
         Row(
             modifier = Modifier

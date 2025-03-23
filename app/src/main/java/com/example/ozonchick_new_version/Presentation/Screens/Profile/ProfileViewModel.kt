@@ -24,6 +24,9 @@ class ProfileViewModel(
 ) : ViewModel() {
 //    ScreenState.Success(ProfileUIModel(result[0].name))
     init {
+
+    }
+    fun loadData () {
         viewModelScope.launch(Dispatchers.IO) {
             val name = getName().await()
             if (name !is CustomResult.Failure) {

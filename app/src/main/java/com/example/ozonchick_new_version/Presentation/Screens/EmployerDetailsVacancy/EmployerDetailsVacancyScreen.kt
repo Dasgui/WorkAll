@@ -28,6 +28,7 @@ import com.example.ozonchick_new_version.Presentation.Models.ChangeVacancyUIMode
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerVacancies.EmployerVacanciesScreen
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
+import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomButton
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomDialog
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
@@ -77,23 +78,22 @@ private fun EmployerDetailsVacancyConstruct(
             dialogText = "Вы точно хотите изменить данные?",
         )
     }
+    CustomScaffold(
+        mainText = "Изменить данные",
+        scaffoldStates = ScaffoldStates.OnSide
+    ) {
+        when (val curState = localState.value) {
+            is ScreenState.Failure -> {
+                FailAlertDialog(
+                    title = "Ошибка",
+                    curState.message,
+                    onOkClick = {
+                        viewModel.screenState.value = ScreenState.Error
+                    })
+            }
 
-    when (val curState = localState.value) {
-        is ScreenState.Failure -> {
-            FailAlertDialog(
-                title = "Ошибка",
-                curState.message,
-                onOkClick = {
-                    viewModel.screenState.value = ScreenState.Loading
-                })
-        }
-
-        is ScreenState.Loading -> CustomLoading()
-        is ScreenState.Success -> {
-            CustomScaffold(
-                mainText = "Изменить данные",
-                scaffoldStates = ScaffoldStates.OnSide
-            ) {
+            is ScreenState.Loading -> CustomLoading()
+            is ScreenState.Success -> {
                 Column(
                     modifier = Modifier
                         .padding(bottom = 80.dp)
@@ -172,14 +172,22 @@ private fun EmployerDetailsVacancyConstruct(
                     VerticalSpacer(20.dp)
                     CustomButton(
                         onClick = {
-
-                            viewModel.confirmCharge.value = true
+                            if (viewModel.checkEmail() && viewModel.checkPhoneNumber() && viewModel.aboutWork.value.isNotEmpty()
+                                && viewModel.locationWork.value.isNotEmpty() && viewModel.experience.value.isNotEmpty() && viewModel.price.value.isNotEmpty()
+                                && viewModel.specialization.value.isNotEmpty()) {
+                                viewModel.confirmCharge.value = true
+                            } else {
+                                viewModel.screenState.value = ScreenState.Failure(0, "Не все поля заполнены или заполнены некоректно. Проверить вписанные значения.")
+                            }
                         },
                         placeText = "Изменить",
                         reverseColors = true
                     )
                 }
+
             }
+
+            ScreenState.Error -> AlertText()
         }
     }
 }

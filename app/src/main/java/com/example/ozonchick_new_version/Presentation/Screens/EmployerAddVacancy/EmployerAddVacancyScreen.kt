@@ -48,11 +48,13 @@ fun EmployerAddVacancyConstruct(viewModel: EmployerAddVacancyViewModel = koinVie
                 title = "Ошибка",
                 curState.message,
                 onOkClick = {
-                    viewModel.screenState.value = ScreenState.Loading
+                    viewModel.screenState.value = ScreenState.Error
                 })
         }
+
         is ScreenState.Loading -> CustomLoading()
-        is ScreenState.Success ->  navigator?.popUntil{it is EmployerVacanciesScreen}
+        is ScreenState.Success -> navigator?.popUntil { it is EmployerVacanciesScreen }
+        is ScreenState.Error -> Unit
     }
     if (viewModel.confirmCharge.value) {
         CustomDialog(
@@ -148,7 +150,13 @@ fun EmployerAddVacancyConstruct(viewModel: EmployerAddVacancyViewModel = koinVie
             VerticalSpacer(20.dp)
             CustomButton(
                 onClick = {
-                    viewModel.confirmCharge.value = true
+                    if (viewModel.checkEmail() && viewModel.checkPhoneNumber() && viewModel.aboutWork.value.isNotEmpty()
+                        && viewModel.locationWork.value.isNotEmpty() && viewModel.experience.value.isNotEmpty() && viewModel.price.value.isNotEmpty()
+                        && viewModel.specialization.value.isNotEmpty()) {
+                        viewModel.confirmCharge.value = true
+                    } else {
+                        viewModel.screenState.value = ScreenState.Failure(0, "Не все поля заполнены или заполнены некоректно. Проверить вписанные значения.")
+                    }
                 },
                 placeText = "Создать вакансию",
                 reverseColors = true

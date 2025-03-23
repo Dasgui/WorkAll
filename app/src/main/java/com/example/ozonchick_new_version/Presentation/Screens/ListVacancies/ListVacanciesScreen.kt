@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
+import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
@@ -49,7 +50,7 @@ private fun ListVacanciesScreenConstruct(viewModel: ListVacanciesViewModel = koi
                     title = "Ошибка",
                     curState.message,
                     onOkClick = {
-                        viewModel.responseState.value = ScreenState.Loading
+                        viewModel.responseState.value = ScreenState.Error
                     })
 
                 is ScreenState.Loading -> CustomLoading()
@@ -58,6 +59,8 @@ private fun ListVacanciesScreenConstruct(viewModel: ListVacanciesViewModel = koi
                         VacancyCard(item)
                     }
                 }
+
+                is ScreenState.Error -> AlertText()
             }
         }
     }

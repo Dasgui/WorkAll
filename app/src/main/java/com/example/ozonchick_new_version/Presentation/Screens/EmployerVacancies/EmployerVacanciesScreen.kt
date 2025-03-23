@@ -19,6 +19,7 @@ import com.example.ozonchick_new_version.Presentation.Screens.EmployerDetailsVac
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerResponses.EmployerResponsesScreen
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
+import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomDialog
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
@@ -40,36 +41,36 @@ private fun EmployerVacanciesConstruct(viewModel: EmployerVacanciesViewModel = k
     }
     val localState = viewModel.screenState.collectAsState()
     val navigator = LocalNavigator.current
-    when (val curState = localState.value) {
-        is ScreenState.Failure -> {
-            FailAlertDialog(
-                title = "Ошибка",
-                curState.message,
-                onOkClick = {
-                    viewModel.screenState.value = ScreenState.Loading
-                })
+    CustomScaffold(
+        bottomButton = true,
+        mainText = "Мои вакансии",
+        scaffoldStates = ScaffoldStates.EmployerVacancies,
+        addVacancy = {
+            navigator?.push(EmployerAddVacancyScreen())
         }
-
-        is ScreenState.Loading -> CustomLoading()
-        is ScreenState.Success -> {
-            if (viewModel.confirmDelete.value) {
-                CustomDialog(
-                    onConfirmation = {
-                        viewModel.deleteVacancy(viewModel.vacancyId.value)
-                        viewModel.confirmDelete.value = false
-                    },
-                    onDismissRequest = {viewModel.confirmDelete.value = false},
-                    dialogText = "Вы точно хотите удалить вакансию?"
-                )
+    ) {
+        when (val curState = localState.value) {
+            is ScreenState.Failure -> {
+                FailAlertDialog(
+                    title = "Ошибка",
+                    curState.message,
+                    onOkClick = {
+                        viewModel.screenState.value = ScreenState.Error
+                    })
             }
-            CustomScaffold(
-                bottomButton = true,
-                mainText = "Мои вакансии",
-                scaffoldStates = ScaffoldStates.EmployerVacancies,
-                addVacancy = {
-                    navigator?.push(EmployerAddVacancyScreen())
+
+            is ScreenState.Loading -> CustomLoading()
+            is ScreenState.Success -> {
+                if (viewModel.confirmDelete.value) {
+                    CustomDialog(
+                        onConfirmation = {
+                            viewModel.deleteVacancy(viewModel.vacancyId.value)
+                            viewModel.confirmDelete.value = false
+                        },
+                        onDismissRequest = {viewModel.confirmDelete.value = false},
+                        dialogText = "Вы точно хотите удалить вакансию?"
+                    )
                 }
-            ) {
                 Column(
                     modifier = Modifier
                         .padding(bottom = 80.dp)
@@ -94,7 +95,11 @@ private fun EmployerVacanciesConstruct(viewModel: EmployerVacanciesViewModel = k
                         )
                     }
                 }
+
             }
+
+            ScreenState.Error -> AlertText()
         }
     }
+
 }

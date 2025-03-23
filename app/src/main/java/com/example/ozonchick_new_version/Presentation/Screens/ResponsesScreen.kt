@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,6 +15,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import com.example.ozonchick_new_version.Presentation.Models.ResponsesUIModel
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ViewModels.ResponsesViewModel
+import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
@@ -30,23 +32,11 @@ class ResponsesScreen : Screen {
 @Composable
 private fun ResponseConstruct(viewModel: ResponsesViewModel = koinViewModel())
 {
-    val localState = viewModel.responseState.collectAsState()
-    when (val curState = localState.value) {
-        is ScreenState.Failure -> FailAlertDialog(
-            title = "Ошибка",
-            curState.message,
-            onOkClick = {
-                viewModel.responseState.value = ScreenState.Loading
-            })
-        ScreenState.Loading -> CustomLoading()
-        is ScreenState.Success -> MainBody(curState.data)
+    LaunchedEffect(true) {
+        viewModel.responseState.value = ScreenState.Loading
+        viewModel.loadData()
     }
-}
-
-
-@Composable
-private fun MainBody(vacancies: ResponsesUIModel)
-{
+    val localState = viewModel.responseState.collectAsState()
     CustomScaffold(
         bottomButton = true,
         mainText = "Отклики"
@@ -58,15 +48,34 @@ private fun MainBody(vacancies: ResponsesUIModel)
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Companion.CenterHorizontally
         ) {
-            Log.d("Размерность списка состояния откликов", vacancies.status.size.toString())
-            Log.d("Размерность списка полученных вакансий", vacancies.information.size.toString())
-            for (i in 0 until vacancies.status.size) {
-                ResponseVacancyCard(
-                    list = vacancies.information[i],
-                    status = vacancies.status[i].otvet
-                )
+            when (val curState = localState.value) {
+                is ScreenState.Failure -> FailAlertDialog(
+                    title = "Ошибка",
+                    curState.message,
+                    onOkClick = {
+                        viewModel.responseState.value = ScreenState.Error
+                    })
+                ScreenState.Loading -> CustomLoading()
+                is ScreenState.Success -> {
+                    Log.d("Размерность списка состояния откликов", curState.data.status.size.toString())
+                    Log.d("Размерность списка полученных вакансий", curState.data.information.size.toString())
+                    for (i in 0 until curState.data.status.size) {
+                        ResponseVacancyCard(
+                            list = curState.data.information[i],
+                            status = curState.data.status[i].otvet
+                        )
+                    }
+                }
+                ScreenState.Error -> AlertText()
             }
         }
     }
+
+}
+
+@Composable
+private fun MainBody(vacancies: ResponsesUIModel)
+{
+
 
 }

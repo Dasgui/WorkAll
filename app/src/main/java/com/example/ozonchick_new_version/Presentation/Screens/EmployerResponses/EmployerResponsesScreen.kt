@@ -14,6 +14,8 @@ import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.Can
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerDetailsVacancy.EmployerDetailsVacancyViewModel
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
+import com.example.ozonchick_new_version.Presentation.States.ScreenState.*
+import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
 import com.example.ozonchick_new_version.Presentation.ui.components.CandidateCard
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
@@ -36,23 +38,23 @@ private fun EmployerResponsesConstruct(viewModel: EmployerResponsesViewModel) {
         viewModel.loadData()
     }
     val localState = viewModel.screenState.collectAsState()
-    when (val curState = localState.value) {
-        is ScreenState.Failure -> {
-            FailAlertDialog(
-                title = "Ошибка",
-                curState.message,
-                onOkClick = {
-                    viewModel.screenState.value = ScreenState.Loading
-                })
-        }
+    CustomScaffold(
+        bottomButton = true,
+        mainText = "Отклики",
+        scaffoldStates = ScaffoldStates.OnSide
+    ) {
+        when (val curState = localState.value) {
+            is ScreenState.Failure -> {
+                FailAlertDialog(
+                    title = "Ошибка",
+                    curState.message,
+                    onOkClick = {
+                        viewModel.screenState.value = ScreenState.Error
+                    })
+            }
 
-        is ScreenState.Loading -> CustomLoading()
-        is ScreenState.Success -> {
-            CustomScaffold(
-                bottomButton = true,
-                mainText = "Отклики",
-                scaffoldStates = ScaffoldStates.OnSide
-            ) {
+            is ScreenState.Loading -> CustomLoading()
+            is ScreenState.Success -> {
                 Column (
                     modifier = Modifier
                         .padding(bottom = 80.dp)
@@ -69,13 +71,15 @@ private fun EmployerResponsesConstruct(viewModel: EmployerResponsesViewModel) {
                                 viewModel.rejectCandidate(item.user_id)
                             },
                             navigateOnDescription = {
-                                viewModel.screenState.value = ScreenState.Failure(0, "Простите, но дополнительная информация пока не доступна.")
+                                viewModel.screenState.value = Failure(0, "Простите, но дополнительная информация пока не доступна.")
                             }
                         )
                     }
                 }
-//                CandidateCard(candidate = Candidate(user_id = 0, name = "Андрей", password = "123", phoneNumber = "+790", email = "ga@sd", status_id = 2, resume_id = 0))
             }
+
+            is ScreenState.Error -> AlertText()
         }
     }
+
 }
