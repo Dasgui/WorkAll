@@ -10,6 +10,7 @@ import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.Can
 import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.UserInsertInformation
 import com.example.ozonchick_new_version.Data.model.Authentication.Employer.Employer
 import com.example.ozonchick_new_version.Data.model.Authentication.Employer.EmployerInsertInformation
+import com.example.ozonchick_new_version.Data.model.VacancyDescriptionInsertModel
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateContact
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateInformation
 import com.example.ozonchick_new_version.Data.model.Vakans_contacts
@@ -54,7 +55,7 @@ interface Repository {
     suspend fun getUsersForEmployer(vacancyId : Int) : CustomResult<List<Candidate>>
     suspend fun acceptCandidate(candidateId: Int): CustomResult<Boolean>
     suspend fun rejectCandidate(candidateId: Int): CustomResult<Boolean>
-    suspend fun addVacancy(vacancy : VacancyUpdateInformation, description : VacancyUpdateContact) : CustomResult<Boolean>
+    suspend fun addVacancy(vacancy : VacancyUpdateInformation, description : VacancyDescriptionInsertModel) : CustomResult<Boolean>
 }
 
 class RepositoryImpl : Repository {
@@ -398,9 +399,10 @@ class RepositoryImpl : Repository {
         }
     }
 
-    override suspend fun addVacancy(vacancy : VacancyUpdateInformation, description : VacancyUpdateContact): CustomResult<Boolean> {
+    override suspend fun addVacancy(vacancy : VacancyUpdateInformation, description : VacancyDescriptionInsertModel): CustomResult<Boolean> {
         return try {
-            supabase.from("vakans").insert(vacancy)
+            val vacancy = supabase.from("vakans").insert(vacancy) {select()}.decodeSingle<VakansInformation>()
+            description.vakans_id = vacancy.vakans_id
             supabase.from("vakans_contacts").insert(description)
             CustomResult.Success(true)
         } catch (ex: Exception) {

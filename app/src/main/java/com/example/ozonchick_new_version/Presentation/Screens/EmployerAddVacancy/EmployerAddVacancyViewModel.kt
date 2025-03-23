@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.navigator.Navigator
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.publicUserId
+import com.example.ozonchick_new_version.Data.model.VacancyDescriptionInsertModel
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateContact
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateInformation
 import com.example.ozonchick_new_version.Data.model.VakansInformation
@@ -56,7 +57,8 @@ class EmployerAddVacancyViewModel(
                     employer_id = publicUserId.id,
                     vakans_organization = (organizationName as CustomResult.Success).data.trim()
                 ),
-                VacancyUpdateContact(
+                VacancyDescriptionInsertModel(
+                    vakans_id = 0,
                     vakans_number = phoneNumber.value,
                     vakans_mail = email.value,
                     vakans_raspolog = locationWork.value,
