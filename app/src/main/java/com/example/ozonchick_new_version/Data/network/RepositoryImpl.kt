@@ -99,7 +99,7 @@ class RepositoryImpl : Repository {
             CustomResult.Success(result)
         } catch (ex: Exception) {
             Log.d("Получение всех вакансий", ex.toString())
-            CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
+            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
         }
     }
     override suspend fun getResponsesIdVacancies(userId: UserId): CustomResult<List<VacancyResponse>> {
@@ -111,7 +111,7 @@ class RepositoryImpl : Repository {
             }.decodeList<VacancyResponse>()
             CustomResult.Success(result)
         } catch (ex: Exception) {
-            CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
+            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
         }
     }
 
@@ -124,7 +124,8 @@ class RepositoryImpl : Repository {
             }.decodeList<VakansInformation>()
             CustomResult.Success(result)
         } catch (ex: Exception) {
-            CustomResult.Failure(1, ex.toString())
+            Log.d("Получение откликов вакансий", ex.toString())
+            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
         }
     }
 
@@ -139,7 +140,8 @@ class RepositoryImpl : Repository {
                 }.decodeList<Vakans_contacts>()
             CustomResult.Success(result)
         } catch (ex: Exception) {
-            CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
+            Log.d("Получение дитальной информации", ex.toString())
+            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
         }
     }
 
@@ -234,7 +236,7 @@ class RepositoryImpl : Repository {
             }
         } catch (ex: Exception) {
             Log.d("Ошибка получения имени", ex.toString())
-            CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
+            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
         }
     }
 
@@ -251,7 +253,7 @@ class RepositoryImpl : Repository {
             CustomResult.Success(result[0].companyName)
         } catch (ex: Exception) {
             Log.d("Ошибка получения имени", ex.toString())
-            CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
+            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
         }
     }
 
@@ -268,7 +270,7 @@ class RepositoryImpl : Repository {
             CustomResult.Success(result)
         } catch (ex : Exception) {
             Log.d("Ошибка получения вакансий работодателя", ex.toString())
-            CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
+            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
         }
     }
 
@@ -289,7 +291,7 @@ class RepositoryImpl : Repository {
             CustomResult.Success(true)
         } catch (ex : Exception) {
             Log.d("Ошибка получения при удалении", ex.toString())
-            CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
+            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
         }
     }
 
@@ -320,7 +322,7 @@ class RepositoryImpl : Repository {
             CustomResult.Success(true)
         } catch (ex : Exception) {
             Log.d("Ошибка при изменении", ex.toString())
-            CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
+            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
         }
     }
 
@@ -344,7 +346,7 @@ class RepositoryImpl : Repository {
             CustomResult.Success(usersInformation)
         } catch (ex: Exception) {
             Log.d("Ошибка получения пользователей", ex.toString())
-            CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
+            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
         }
     }
 
@@ -364,7 +366,7 @@ class RepositoryImpl : Repository {
             CustomResult.Success(true)
         } catch (ex: Exception) {
             Log.d("Ошибка принятия пользователя", ex.toString())
-            CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
+            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
         }
     }
 
@@ -383,8 +385,8 @@ class RepositoryImpl : Repository {
                 }
             CustomResult.Success(true)
         } catch (ex: Exception) {
-            Log.d("Ошибка принятия пользователя", ex.toString())
-            CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
+            Log.d("Ошибка отказа пользователя", ex.toString())
+            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
         }
     }
 
@@ -396,7 +398,7 @@ class RepositoryImpl : Repository {
             CustomResult.Success(true)
         } catch (ex: Exception) {
             Log.d("Ошибка создания вакансии", ex.toString())
-            CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
+            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
         }
     }
 
@@ -415,12 +417,12 @@ class RepositoryImpl : Repository {
                 val vacancy = supabase.from("vakans_user_otklik").insert(VacancyInsertAccept(vacancyId, candidateId))
                 CustomResult.Success(true)
             } else {
-                CustomResult.Failure(1, "Вы уже добавили эту вакансию")
+                CustomResult.Failure(ExclusionOptions.VacancyIsAlreadyExists.id, ExclusionOptions.VacancyIsAlreadyExists.message)
             }
 
         } catch (ex: Exception) {
             Log.d("Ошибка принятия пользователя", ex.toString())
-            CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
+            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
         }
     }
 }
