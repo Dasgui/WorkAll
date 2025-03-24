@@ -11,6 +11,7 @@ import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.Use
 import com.example.ozonchick_new_version.Data.model.Authentication.Employer.Employer
 import com.example.ozonchick_new_version.Data.model.Authentication.Employer.EmployerInsertInformation
 import com.example.ozonchick_new_version.Data.model.VacancyDescriptionInsertModel
+import com.example.ozonchick_new_version.Data.model.VacancyInsertAccept
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateContact
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateInformation
 import com.example.ozonchick_new_version.Data.model.Vakans_contacts
@@ -56,6 +57,8 @@ interface Repository {
     suspend fun acceptCandidate(candidateId: Int): CustomResult<Boolean>
     suspend fun rejectCandidate(candidateId: Int): CustomResult<Boolean>
     suspend fun addVacancy(vacancy : VacancyUpdateInformation, description : VacancyDescriptionInsertModel) : CustomResult<Boolean>
+
+    suspend fun acceptVacancy(candidateId: Int, vacancyId: Int): CustomResult<Boolean>
 }
 
 class RepositoryImpl : Repository {
@@ -407,6 +410,30 @@ class RepositoryImpl : Repository {
             CustomResult.Success(true)
         } catch (ex: Exception) {
             Log.d("Ошибка создания вакансии", ex.toString())
+            CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
+        }
+    }
+
+    override suspend fun acceptVacancy(
+        candidateId: Int,
+        vacancyId: Int
+    ): CustomResult<Boolean> {
+        return try {
+            val response = supabase.from("vakans_user_otklik").select() {
+                filter {
+                    eq("vakans_id", vacancyId)
+                    eq("user_long_id", candidateId)
+                }
+            }.decodeList<VacancyInsertAccept>()
+            if (response.isEmpty()) {
+                val vacancy = supabase.from("vakans_user_otklik").insert(VacancyInsertAccept(vacancyId, candidateId))
+                CustomResult.Success(true)
+            } else {
+                CustomResult.Failure(1, "Вы уже добавили эту вакансию")
+            }
+
+        } catch (ex: Exception) {
+            Log.d("Ошибка принятия пользователя", ex.toString())
             CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
         }
     }
