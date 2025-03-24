@@ -9,6 +9,7 @@ import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Data.model.Authentication.AllUserInsertInformation
 import com.example.ozonchick_new_version.Domain.RegistrationCandidateUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationEmployerUseCase
+import com.example.ozonchick_new_version.Domain.RegistrationUseCase
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +19,8 @@ import kotlinx.coroutines.launch
 
 class SignUpViewModel(
     private val registrationCandidateUseCase: RegistrationCandidateUseCase,
-    private val registrationEmployerUseCase: RegistrationEmployerUseCase
+    private val registrationEmployerUseCase: RegistrationEmployerUseCase,
+    private val registrationUseCase: RegistrationUseCase
 ) : ViewModel() {
 
     private val _isWrittenCorrectly: MutableStateFlow<Boolean> = MutableStateFlow(false)
@@ -52,10 +54,27 @@ class SignUpViewModel(
 
     val userRole : MutableState<UserType> = mutableStateOf(UserType.Candidate)
 
-    val INN : MutableState<String> = mutableStateOf("123456789012")
+    val INN : MutableState<String> = mutableStateOf("") /*123456789012*/
 
     val signUpState : MutableStateFlow<ScreenState<List<AllUserInsertInformation>>> =
         MutableStateFlow(ScreenState.Loading)
+
+
+    fun registration() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val singleName = "${secondName.value.trim()} ${name.value.trim()}"
+            when (
+                val curResult = if (userRole.value == UserType.Employer) {
+                    registrationUseCase(singleName, email.value, password.value, phoneNumber.value, INN.value, organizationName.value)
+                } else {
+                    registrationUseCase(singleName, email.value.trim(), password.value.trim(), phoneNumber.value.trim())
+                }
+            ) {
+                is CustomResult.Failure -> signUpState.value = ScreenState.Failure(curResult.code, curResult.message)
+                is CustomResult.Success -> signUpState.value = ScreenState.Success(data = curResult.data)
+            }
+        }
+    }
 
     fun registrationCandidate () {
         viewModelScope.launch(Dispatchers.IO) {

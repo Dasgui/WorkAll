@@ -39,6 +39,7 @@ import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.Button_Color_Blue
 import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
+import com.example.ozonchick_new_version.Presentation.ui.theme.SecondColor
 import com.example.ozonchick_new_version.Screens.SignUpLogIn.SignUp.SignUpScreen
 import org.koin.androidx.compose.koinViewModel
 
@@ -251,7 +252,7 @@ private fun BottomText(
             pushStringAnnotation(tag = "click", annotation = "click")
             withStyle(
                 SpanStyle(
-                    color = Button_Color_Blue
+                    color = SecondColor
                 )
             ) {
                 append("Зарегистрироваться")

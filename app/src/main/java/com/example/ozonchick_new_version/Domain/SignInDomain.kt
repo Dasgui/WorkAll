@@ -22,6 +22,16 @@ class AuthUseCase(private val repository: Repository) {
     }
 }
 
+class RegistrationUseCase (private val repository: Repository) {
+    suspend operator fun invoke (name: String, email: String, password : String, phoneNumber: String) : CustomResult<List<AllUserInsertInformation>>  {
+        return repository.registrationCandidate(name, password, phoneNumber, email)
+    }
+    suspend operator fun invoke (name: String, email: String,
+                                 password : String, phoneNumber: String, inn : String, organizationName : String) : CustomResult<List<AllUserInsertInformation>> {
+        return repository.registrationEmployer(name, password, phoneNumber, email, inn, organizationName)
+    }
+}
+
 class RegistrationCandidateUseCase(private val repository: Repository) {
     suspend operator fun invoke (name: String, email: String, password : String, phoneNumber: String) : CustomResult<List<AllUserInsertInformation>> {
         var result = repository.registrationCandidate(name, password, phoneNumber, email)

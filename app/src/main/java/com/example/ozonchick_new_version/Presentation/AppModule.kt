@@ -17,6 +17,7 @@ import com.example.ozonchick_new_version.Domain.GetUsersForEmployerUseCase
 import com.example.ozonchick_new_version.Domain.GetVacanciesUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationCandidateUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationEmployerUseCase
+import com.example.ozonchick_new_version.Domain.RegistrationUseCase
 import com.example.ozonchick_new_version.Domain.RejectCandidateUseCase
 import com.example.ozonchick_new_version.Domain.UpdateEmployerVacancyUseCase
 import com.example.ozonchick_new_version.Presentation.Models.EmployerDetailsVacancy
@@ -47,8 +48,9 @@ var AppModule = module {
         RegistrationCandidateUseCase(get())
     }
     factory { RegistrationEmployerUseCase(get()) }
+    factory { RegistrationUseCase(get()) }
     viewModel {
-        SignUpViewModel(get(), get())
+        SignUpViewModel(get(), get(), get())
     }
     factory { GetNameUseCase(get()) }
     viewModel {

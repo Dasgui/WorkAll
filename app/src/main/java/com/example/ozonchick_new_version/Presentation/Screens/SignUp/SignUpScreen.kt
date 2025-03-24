@@ -1,5 +1,6 @@
 package com.example.ozonchick_new_version.Screens.SignUpLogIn.SignUp
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -41,6 +42,7 @@ import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.Button_Color_Blue
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
+import com.example.ozonchick_new_version.Presentation.ui.theme.SecondColor
 
 class SignUpScreen : Screen {
     @Composable
@@ -65,6 +67,7 @@ fun SignUpConstruct(viewModel: SignUpViewModel = koinViewModel(), onNavigateForL
             onOkClick = {
                 viewModel.signUpState.value = ScreenState.Loading
             })
+
         is ScreenState.Loading -> Unit
         is ScreenState.Success -> navigator?.replaceAll(LogInScreen())
         ScreenState.Error -> Unit
@@ -219,7 +222,7 @@ private fun BottomTypeRegistration(viewModel: SignUpViewModel) {
             color = if (viewModel.userRole.value == UserType.Candidate) {
                 MainColor
             } else {
-                Button_Color_Blue
+                SecondColor
             },
             modifier = Modifier.clickable { viewModel.userRole.value = UserType.Candidate })
         Text(
@@ -228,7 +231,7 @@ private fun BottomTypeRegistration(viewModel: SignUpViewModel) {
             color = if (viewModel.userRole.value == UserType.Employer) {
                 MainColor
             } else {
-                Button_Color_Blue
+                SecondColor
             },
             modifier = Modifier.clickable { viewModel.userRole.value = UserType.Employer })
     }
@@ -244,28 +247,29 @@ private fun Bottom(viewModel: SignUpViewModel, onNavigateForLogIn: () -> Unit) {
     ) {
         CustomButton(
             onClick = {
-                if (viewModel.checkEmail() && viewModel.checkName()
-                    && viewModel.checkInn() && viewModel.checkPhoneNumber() && viewModel.checkPasswordMatch()) {
-                    if (viewModel.userRole.value == UserType.Candidate) {
-                        viewModel.registrationCandidate()
+                if (viewModel.userRole.value == UserType.Employer) {
+                    if (
+                        viewModel.checkEmail() && viewModel.checkName()
+                        && viewModel.checkInn() && viewModel.checkPhoneNumber()
+                        && viewModel.checkPasswordMatch()
+                    ) {
+//                        viewModel.registration()
+                        Log.d("Регистрация", "Вы зарегистрировались")
+                    } else {
+                        viewModel.signUpState.value = ScreenState.Failure(0, "Вы ошиблись при заполнении данных. Пожалуйста проверьте их.")
                     }
-                    if (viewModel.userRole.value == UserType.Employer) {
-                        viewModel.registrationEmployer()
+                } else if (viewModel.userRole.value == UserType.Candidate) {
+                    if (
+                        viewModel.checkEmail() && viewModel.checkName()
+                        && viewModel.checkPhoneNumber()
+                        && viewModel.checkPasswordMatch()
+                    ) {
+//                        viewModel.registration()
+                        Log.d("Регистрация", "Вы зарегистрировались")
+                    } else {
+                        viewModel.signUpState.value = ScreenState.Failure(0, "Вы ошиблись при заполнении данных. Пожалуйста проверьте их.")
                     }
-                } else {
-                    viewModel.signUpState.value = ScreenState.Failure(0, "Вы ошиблись при заполнении данных. Пожалуйста проверьте их.")
                 }
-//                if (viewModel.checkName() && viewModel.checkEmail()
-//                    && viewModel.checkPhoneNumber() && viewModel.checkPasswordMatch() && viewModel.userRole.value is UserType.Candidate
-//                ) {
-//                    Log.d("Проверяем поля", "ТЫК")
-//                    viewModel.registrationCandidate()
-//                } else if (viewModel.checkName() && viewModel.checkEmail()
-//                    && viewModel.checkPhoneNumber() && viewModel.checkInn()
-//                    && viewModel.checkPasswordMatch() && viewModel.userRole.value is UserType.Employer) {
-//                    Log.d("Проверяем поля", "ТЫК")
-//                    viewModel.registrationEmployer()
-//                }
             },
             placeText = "Зарегистрироваться"
         )
@@ -294,7 +298,7 @@ private fun BottomText(onNavigateForLogIn: () -> Unit) {
 
         withStyle(
             SpanStyle(
-                color = MainColor,
+                color = SecondColor,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Medium,
             )
