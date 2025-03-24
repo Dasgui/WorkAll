@@ -20,6 +20,7 @@ import com.example.ozonchick_new_version.Domain.RegistrationCandidateUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationEmployerUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationUseCase
 import com.example.ozonchick_new_version.Domain.RejectCandidateUseCase
+import com.example.ozonchick_new_version.Domain.RejectVacancyUseCase
 import com.example.ozonchick_new_version.Domain.UpdateEmployerVacancyUseCase
 import com.example.ozonchick_new_version.Presentation.Models.EmployerDetailsVacancy
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerAddVacancy.EmployerAddVacancyScreen
@@ -34,7 +35,7 @@ import com.example.ozonchick_new_version.Presentation.ViewModels.ListOfCandidate
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInViewModel
 import com.example.ozonchick_new_version.Presentation.ViewModels.VakansCreate_ViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.Profile.ProfileViewModel
-import com.example.ozonchick_new_version.Presentation.ViewModels.ResponsesViewModel
+import com.example.ozonchick_new_version.Presentation.Screens.Responses.ResponsesViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.SignUp.SignUpViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -62,8 +63,9 @@ var AppModule = module {
 
     factory { GetResponsesIdVacanciesUseCase(get()) }
     factory { GetResponsesVacanciesUseCase(get()) }
+    factory { RejectVacancyUseCase(get()) }
     viewModel {
-        ResponsesViewModel(get(), get())
+        ResponsesViewModel(get(), get(), get())
     }
     factory { GetContactInformationUseCase(get()) }
     viewModel {

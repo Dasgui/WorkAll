@@ -58,6 +58,7 @@ interface Repository {
     suspend fun addVacancy(vacancy : VacancyUpdateInformation, description : VacancyDescriptionInsertModel) : CustomResult<Boolean>
 
     suspend fun acceptVacancy(candidateId: Int, vacancyId: Int): CustomResult<Boolean>
+    suspend fun rejectVacancy(candidateId: Int, vacancyId: Int): CustomResult<Boolean>
 }
 
 class RepositoryImpl : Repository {
@@ -422,6 +423,25 @@ class RepositoryImpl : Repository {
 
         } catch (ex: Exception) {
             Log.d("Ошибка принятия пользователя", ex.toString())
+            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
+        }
+    }
+
+    override suspend fun rejectVacancy(
+        candidateId: Int,
+        vacancyId: Int
+    ): CustomResult<Boolean> {
+        return try {
+            supabase.from("vakans_user_otklik").delete() {
+                filter {
+                    eq("vakans_id", vacancyId)
+                    eq("user_long_id", candidateId)
+                }
+            }
+            CustomResult.Success(true)
+
+        } catch (ex: Exception) {
+            Log.d("Ошибка удаления отклика на вакансию", ex.toString())
             CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
         }
     }

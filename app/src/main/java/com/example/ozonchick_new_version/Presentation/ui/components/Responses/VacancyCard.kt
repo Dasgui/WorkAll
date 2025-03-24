@@ -17,7 +17,7 @@ import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Presentation.Screens.ContactsScreen
-import com.example.ozonchick_new_version.Presentation.ViewModels.ResponsesViewModel
+import com.example.ozonchick_new_version.Presentation.Screens.Responses.ResponsesViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.Public_Button
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomCard
 import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpacer

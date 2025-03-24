@@ -7,8 +7,11 @@ sealed class ExclusionOptions(val message : String, val id : Int) {
     data object VacancyIsAlreadyExists : ExclusionOptions("Вы уже добавили эту вакансию", 3)
 }
 
-open class TextFieldError {
-    fun getError (textFieldName : String, description : String) : String {
-        return "Вы ошиблись в поле $textFieldName $description"
+sealed class TextFieldError {
+    object get {
+        fun getError (textFieldName : String, description : String) : String {
+            return "Вы ошиблись в поле $textFieldName $description"
+        }
     }
+
 }

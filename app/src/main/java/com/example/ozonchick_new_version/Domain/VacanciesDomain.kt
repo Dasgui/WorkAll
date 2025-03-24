@@ -106,3 +106,9 @@ class AcceptVacancyUseCase (private val repository: Repository) {
         return repository.acceptVacancy(candidateId, vacancyId)
     }
 }
+
+class RejectVacancyUseCase (private val repository: Repository) {
+    suspend operator fun invoke(candidateId: Int, vacancyId: Int) : CustomResult<Boolean> {
+        return repository.rejectVacancy(candidateId, vacancyId)
+    }
+}

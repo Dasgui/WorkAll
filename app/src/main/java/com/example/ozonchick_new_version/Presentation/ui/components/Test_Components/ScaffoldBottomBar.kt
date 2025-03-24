@@ -19,7 +19,7 @@ import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerVacancies.EmployerVacanciesScreen
 import com.example.ozonchick_new_version.Presentation.Screens.Profile.ProfileScreen
-import com.example.ozonchick_new_version.Presentation.Screens.ResponsesScreen
+import com.example.ozonchick_new_version.Presentation.Screens.Responses.ResponsesScreen
 import com.example.ozonchick_new_version.Presentation.ui.components.HorizontalSpacer
 import com.example.ozonchick_new_version.Presentation.ui.components.Test_Components.mini_components.CustomClickableIcon
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema

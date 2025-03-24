@@ -1,4 +1,4 @@
-package com.example.ozonchick_new_version.Presentation.Screens
+package com.example.ozonchick_new_version.Presentation.Screens.Responses
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.example.ozonchick_new_version.Presentation.Models.ResponsesUIModel
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
-import com.example.ozonchick_new_version.Presentation.ViewModels.ResponsesViewModel
+import com.example.ozonchick_new_version.Presentation.Screens.Responses.ResponsesViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
@@ -41,7 +41,7 @@ private fun ResponseConstruct(viewModel: ResponsesViewModel = koinViewModel())
         bottomButton = true,
         mainText = "Отклики"
     ) {
-        Column (
+        Column(
             modifier = Modifier.Companion
                 .fillMaxWidth()
                 .padding(bottom = 80.dp),
@@ -55,17 +55,26 @@ private fun ResponseConstruct(viewModel: ResponsesViewModel = koinViewModel())
                     onOkClick = {
                         viewModel.responseState.value = ScreenState.Error
                     })
-                ScreenState.Loading -> CustomLoading()
+
+                is ScreenState.Loading -> CustomLoading()
                 is ScreenState.Success -> {
-                    Log.d("Размерность списка состояния откликов", curState.data.status.size.toString())
-                    Log.d("Размерность списка полученных вакансий", curState.data.information.size.toString())
+                    Log.d(
+                        "Размерность списка состояния откликов",
+                        curState.data.status.size.toString()
+                    )
+                    Log.d(
+                        "Размерность списка полученных вакансий",
+                        curState.data.information.size.toString()
+                    )
                     for (i in 0 until curState.data.status.size) {
                         ResponseVacancyCard(
                             list = curState.data.information[i],
-                            status = curState.data.status[i].otvet
+                            status = curState.data.status[i].otvet,
+                            rejectVacancy = {viewModel.reject(curState.data.information[i].vakans_id)}
                         )
                     }
                 }
+
                 ScreenState.Error -> AlertText()
             }
         }

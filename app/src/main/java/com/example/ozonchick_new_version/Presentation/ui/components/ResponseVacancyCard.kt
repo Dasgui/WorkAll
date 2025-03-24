@@ -23,7 +23,8 @@ import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 @Composable
 fun ResponseVacancyCard(
     list: VakansInformation,
-    status: String
+    status: String,
+    rejectVacancy: () -> Unit
 ) {
     val navigator = LocalNavigator.current;
     CustomCard(
@@ -48,7 +49,11 @@ fun ResponseVacancyCard(
                     status = status,
                     onNavigateForContacts = {
                         navigator?.push(ContactsScreen(list.vakans_id))
-                    })
+                    },
+                    rejectVacancy = {
+                        rejectVacancy()
+                    }
+                )
             }
         }
     }
@@ -58,7 +63,7 @@ fun ResponseVacancyCard(
 private fun MainText(
     list: VakansInformation
 ) {
-    Column (
+    Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
@@ -97,38 +102,37 @@ private fun MainText(
 
 @Composable
 private fun MainButtons(
-    status : String,
+    status: String,
     onNavigateForContacts: () -> Unit,
+    rejectVacancy: () -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 10.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        if (publicUserId.type is UserType.Candidate) {
-            Public_Button(
-                fillButton = false,
-                onClick = { /*viewModel.pushResponse(list.vakans_id)*/ },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = status,
-                    style = Tema.Text_20_20_Medium,
-                )
-            }
-            VerticalSpacer(5.dp)
-        }
-        Public_Button(
-            fillButton = true,
+        CustomButton(
+            onClick = { },
+            modifier = Modifier.fillMaxWidth(),
+            enabled = false,
+            placeText = status
+        )
+        CustomButton(
             onClick = {
                 onNavigateForContacts()
             },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = "Подробнее",
-                style = Tema.Text_20_20_Medium,
-            )
-        }
+            modifier = Modifier.fillMaxWidth(),
+            placeText = "Подробнее",
+            reverseColors = true
+        )
+        CustomButton(
+            onClick = {
+                rejectVacancy()
+            },
+            modifier = Modifier.fillMaxWidth(),
+            placeText = "Убрать отклик",
+            reverseColors = true
+        )
     }
 }
