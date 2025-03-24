@@ -1,5 +1,7 @@
 package com.example.ozonchick_new_version.Presentation.Screens.LogIn
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
@@ -27,6 +29,7 @@ class LogInViewModel(private val auth : AuthUseCase) : ViewModel() {
         _passwordVisible.value = newValue
     }
 
+    val buttonEnabled : MutableState<Boolean> = mutableStateOf(true)
 
     private val _emailUser: MutableStateFlow<String> = MutableStateFlow("") /*gaisich@inbox.ru*/ /*test07@inbox.ru*/ /*kol@inbox.ru*/
     var emailUser: StateFlow<String> = _emailUser.asStateFlow()
@@ -62,30 +65,21 @@ class LogInViewModel(private val auth : AuthUseCase) : ViewModel() {
     fun auth()
     {
         viewModelScope.launch (Dispatchers.IO) {
-            when (val curResult = auth.invoke(_emailUser.value, _passwordUser.value)) {
+            buttonEnabled.value = false
+            when (val curResult = auth.invoke(_emailUser.value, _passwordUser.value, _rememberUser.value)) {
                 is CustomResult.Failure -> logInState.value = ScreenState.Failure(curResult.code, curResult.message)
                 is CustomResult.Success -> {
                     logInState.value = ScreenState.Success(data = curResult.data)
-                    if (_rememberUser.value) {
-                        if (curResult.data is AllUserInformation.Employer) {
-                            publicUserId.id = curResult.data.employer_id
-                            publicUserId.type = UserType.Employer
-                        } else if (curResult.data is AllUserInformation.Candidate) {
-                            publicUserId.id = curResult.data.user_id
-                            publicUserId.type = UserType.Candidate
-                        }
-                        Paper.book().write("UserId", publicUserId)
-                    } else {
-                        if (curResult.data is AllUserInformation.Employer) {
-                            publicUserId.id = curResult.data.employer_id
-                            publicUserId.type = UserType.Employer
-                        } else if (curResult.data is AllUserInformation.Candidate) {
-                            publicUserId.id = curResult.data.user_id
-                            publicUserId.type = UserType.Candidate
-                        }
+                    if (curResult.data is AllUserInformation.Employer) {
+                        publicUserId.id = curResult.data.employer_id
+                        publicUserId.type = UserType.Employer
+                    } else if (curResult.data is AllUserInformation.Candidate) {
+                        publicUserId.id = curResult.data.user_id
+                        publicUserId.type = UserType.Candidate
                     }
                 }
             }
+            buttonEnabled.value = true
         }
 //        if (isDataValid()) {
 //            logInState.value = ScreenState.Failure(4, "Проверьте адрес почты или пароль")

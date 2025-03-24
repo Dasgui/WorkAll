@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Common.model.UserId
+import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.Authentication.AllUserInformation
 import com.example.ozonchick_new_version.Data.model.Authentication.AllUserInsertInformation
 import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.Candidate
@@ -22,9 +23,10 @@ import com.example.ozonchick_new_version.Presentation.Models.ExclusionOptions
 import io.github.jan.supabase.exceptions.HttpRequestException
 
 import io.github.jan.supabase.postgrest.from
+import io.paperdb.Paper
 
 interface Repository {
-    suspend fun auth(email: String, password: String): CustomResult<AllUserInformation>
+    suspend fun auth(email: String, password: String, rememberUser : Boolean): CustomResult<AllUserInformation>
 
     suspend fun getVacancies(): CustomResult<List<VakansInformation>>
     suspend fun getResponsesIdVacancies(userId: UserId): CustomResult<List<VacancyResponse>>
@@ -64,7 +66,8 @@ interface Repository {
 class RepositoryImpl : Repository {
     override suspend fun auth(
         email: String,
-        password: String
+        password: String,
+        rememberUser : Boolean
     ): CustomResult<AllUserInformation> {
         return try {
             val candidate = supabase.from("user_information").select() {
@@ -73,6 +76,10 @@ class RepositoryImpl : Repository {
                     AllUserInformation.Candidate::password eq password
                 }
             }.decodeList<AllUserInformation.Candidate>()
+            Log.d("Запоминание юзера", rememberUser.toString())
+            if (rememberUser == true) {
+                Paper.book().write("UserId", publicUserId)
+            }
             if (candidate.isEmpty()) {
                 val employer = supabase.from("employers_information").select() {
                     filter {

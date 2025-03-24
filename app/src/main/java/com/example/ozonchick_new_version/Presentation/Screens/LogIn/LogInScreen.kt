@@ -32,6 +32,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Presentation.Screens.Profile.ProfileScreen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.States.TextFieldStates
+import com.example.ozonchick_new_version.Presentation.ui.components.CustomButton
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomOutlinedTextField
 import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
 import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpacer
@@ -205,25 +206,14 @@ private fun BottomText(
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.padding(top = 64.dp).fillMaxWidth()
     ) {
-        Button(
+        CustomButton(
+            placeText = "Войти",
             onClick = {
                 viewModel.auth()
             },
             modifier = Modifier.Companion.fillMaxWidth().height(45.dp),
-            shape = RectangleShape,
-            border = BorderStroke(1.dp, MainColor),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = BackgroundColor,
-                contentColor = MainColor,
-                disabledContainerColor = BackgroundColor,
-                disabledContentColor = MainColor
-            )
-        ) {
-            Text(
-                text = "Войти",
-                style = Tema.Text_24_24_Bold,
-            )
-        }
+            enabled = viewModel.buttonEnabled.value
+        )
 
         when (val curState = screenState.value) {
             is ScreenState.Failure -> FailAlertDialog(

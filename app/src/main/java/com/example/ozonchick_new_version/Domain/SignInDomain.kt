@@ -8,8 +8,8 @@ import com.example.ozonchick_new_version.Data.model.Authentication.AllUserInsert
 import com.example.ozonchick_new_version.Data.network.Repository
 
 class AuthUseCase(private val repository: Repository) {
-    suspend operator fun invoke (email: String, password : String) : CustomResult<AllUserInformation> {
-        var result = repository.auth(email, password)
+    suspend operator fun invoke (email: String, password : String, rememberUser : Boolean) : CustomResult<AllUserInformation> {
+        var result = repository.auth(email, password, rememberUser)
         result = when (val curResult = result) {
             is CustomResult.Failure -> {
                 CustomResult.Failure(curResult.code, curResult.message)
