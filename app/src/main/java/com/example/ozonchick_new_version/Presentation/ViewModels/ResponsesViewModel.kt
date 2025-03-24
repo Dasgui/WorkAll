@@ -9,7 +9,7 @@ import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.model.UserId
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.VakansInformation
-import com.example.ozonchick_new_version.Data.model.Vakans_otklik
+import com.example.ozonchick_new_version.Data.model.VacancyResponse
 import com.example.ozonchick_new_version.Domain.GetResponsesIdVacanciesUseCase
 import com.example.ozonchick_new_version.Domain.GetResponsesVacanciesUseCase
 import com.example.ozonchick_new_version.Presentation.Models.ResponsesUIModel
@@ -69,7 +69,7 @@ class ResponsesViewModel(
         }
     }
 
-    suspend fun getIdVacancies(userId : UserId) : Deferred<CustomResult<List<Vakans_otklik>>> {
+    suspend fun getIdVacancies(userId : UserId) : Deferred<CustomResult<List<VacancyResponse>>> {
         return coroutineScope { async(Dispatchers.IO) { getResponsesIdVacanciesUseCase(userId) }}
     }
 

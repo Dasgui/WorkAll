@@ -12,23 +12,21 @@ import com.example.ozonchick_new_version.Data.model.Authentication.Employer.Empl
 import com.example.ozonchick_new_version.Data.model.Authentication.Employer.EmployerInsertInformation
 import com.example.ozonchick_new_version.Data.model.VacancyDescriptionInsertModel
 import com.example.ozonchick_new_version.Data.model.VacancyInsertAccept
-import com.example.ozonchick_new_version.Data.model.VacancyUpdateContact
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateInformation
 import com.example.ozonchick_new_version.Data.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Data.model.VakansOtklik
-import com.example.ozonchick_new_version.Data.model.Vakans_otklik
+import com.example.ozonchick_new_version.Data.model.VacancyResponse
 import com.example.ozonchick_new_version.Presentation.Models.ChangeVacancyUIModel
 import io.github.jan.supabase.exceptions.HttpRequestException
 
 import io.github.jan.supabase.postgrest.from
-import io.github.jan.supabase.postgrest.query.Columns
 
 interface Repository {
     suspend fun auth(email: String, password: String): CustomResult<AllUserInformation>
 
     suspend fun getVacancies(): CustomResult<List<VakansInformation>>
-    suspend fun getResponsesIdVacancies(userId: UserId): CustomResult<List<Vakans_otklik>>
+    suspend fun getResponsesIdVacancies(userId: UserId): CustomResult<List<VacancyResponse>>
     suspend fun getResponsesVacancies(idList : List<Int>): CustomResult<List<VakansInformation>>
 
     suspend fun getContactInformation(id: Int): CustomResult<List<Vakans_contacts>>
@@ -106,13 +104,13 @@ class RepositoryImpl : Repository {
             CustomResult.Failure(1, "Проверьте своё соединение с интернетом")
         }
     }
-    override suspend fun getResponsesIdVacancies(userId: UserId): CustomResult<List<Vakans_otklik>> {
+    override suspend fun getResponsesIdVacancies(userId: UserId): CustomResult<List<VacancyResponse>> {
         return try {
             val result = supabase.from("vakans_user_otklik").select() {
                 filter {
-                    Vakans_otklik::user_long_id isIn listOf(userId.id)
+                    VacancyResponse::user_long_id isIn listOf(userId.id)
                 }
-            }.decodeList<Vakans_otklik>()
+            }.decodeList<VacancyResponse>()
             CustomResult.Success(result)
         } catch (ex: Exception) {
             CustomResult.Failure(1, "Проверьте своё соединение с интернетом")

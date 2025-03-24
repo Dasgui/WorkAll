@@ -4,11 +4,10 @@ import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.model.UserId
 import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.Candidate
 import com.example.ozonchick_new_version.Data.model.VacancyDescriptionInsertModel
-import com.example.ozonchick_new_version.Data.model.VacancyUpdateContact
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateInformation
 import com.example.ozonchick_new_version.Data.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data.model.VakansInformation
-import com.example.ozonchick_new_version.Data.model.Vakans_otklik
+import com.example.ozonchick_new_version.Data.model.VacancyResponse
 import com.example.ozonchick_new_version.Data.network.Repository
 import com.example.ozonchick_new_version.Presentation.Models.ChangeVacancyUIModel
 
@@ -43,7 +42,7 @@ class GetContactInformationUseCase (private val repository: Repository) {
 }
 
 class GetResponsesIdVacanciesUseCase(private val repository: Repository) {
-    suspend operator fun invoke(userId : UserId) : CustomResult<List<Vakans_otklik>> {
+    suspend operator fun invoke(userId : UserId) : CustomResult<List<VacancyResponse>> {
         return repository.getResponsesIdVacancies(userId)
     }
 }
