@@ -26,6 +26,7 @@ class EmployerResponsesViewModel(
     val screenState : MutableStateFlow<ScreenState<List<Candidate>>> =
         MutableStateFlow(ScreenState.Loading)
     fun loadData () {
+        screenState.value = ScreenState.Loading
         viewModelScope.launch(Dispatchers.IO) {
             val users = getUsers(vacancyId).await()
             if (users !is CustomResult.Failure) {
@@ -51,14 +52,14 @@ class EmployerResponsesViewModel(
     }
 
     fun rejectCandidate(candidateId : Int) {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            screenState.value = ScreenState.Loading
-//            val response = rejectCandidate(candidateId)
-//            if (response !is CustomResult.Failure) {
-//                loadData()
-//            } else {
-//                screenState.value = ScreenState.Failure(1, "Ошибка подключения")
-//            }
-//        }
+        viewModelScope.launch(Dispatchers.IO) {
+            screenState.value = ScreenState.Loading
+            val response = rejectCandidateUseCase(candidateId)
+            if (response !is CustomResult.Failure) {
+                loadData()
+            } else {
+                screenState.value = ScreenState.Failure(1, "Ошибка подключения")
+            }
+        }
     }
 }
