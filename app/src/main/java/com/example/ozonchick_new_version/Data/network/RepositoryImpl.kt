@@ -18,6 +18,7 @@ import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Data.model.VakansOtklik
 import com.example.ozonchick_new_version.Data.model.VacancyResponse
 import com.example.ozonchick_new_version.Presentation.Models.ChangeVacancyUIModel
+import com.example.ozonchick_new_version.Presentation.Models.ExclusionOptions
 import io.github.jan.supabase.exceptions.HttpRequestException
 
 import io.github.jan.supabase.postgrest.from
@@ -83,15 +84,12 @@ class RepositoryImpl : Repository {
                 CustomResult.Success(candidate[0])
             }
         } catch (ex: HttpRequestException) {
-            CustomResult.Failure(1, "Проверьте своё соединение с интернетом.")
+            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
         } catch (ex: IndexOutOfBoundsException) {
-            CustomResult.Failure(
-                2,
-                "Возможно, пользователя не существует. Проверьте введенные данные."
-            )
+            CustomResult.Failure( ExclusionOptions.UserExistsError.id, ExclusionOptions.UserExistsError.message)
         } catch (ex: Exception) {
             Log.d("Ошибка при входе", ex.toString())
-            CustomResult.Failure(3, "Неизвестная ошибка")
+            CustomResult.Failure(ExclusionOptions.UnknownError.id,ExclusionOptions.UnknownError.message)
         }
     }
 
@@ -158,35 +156,21 @@ class RepositoryImpl : Repository {
                 email = email,
                 password = password
             )
-//            var findCandidate = supabase.from("user_information").select(columns = Columns.list("phoneNumber, email"))
-//            {
-//                filter {
-//                    or {
-//                        eq("phoneNumber", phoneNumber)
-//                        eq("email", email)
-//                    }
-//                }
-//            }.decodeList<CandidateFilterInformation>()
-//            val findEmployer = supabase.from("employers_information").select(columns = Columns.list("phoneNumber, email, INN"))
-//            {
-//                filter {
-//                    or {
-//                        eq("phoneNumber", phoneNumber)
-//                        eq("email", email)
-//                    }
-//                }
-//            }.decodeList<EmployerFilterInformation>()
             if (findUser(email, phoneNumber).await()) {
                 val result = supabase.from("user_information").insert(user) {
                     select()
                 }.decodeList<AllUserInsertInformation.UserInsertInformation>()
                 CustomResult.Success(result)
             } else {
-                CustomResult.Failure(0, "Такой пользователь уже существует")
+                CustomResult.Failure(ExclusionOptions.UserExistsError.id, ExclusionOptions.UserExistsError.message)
             }
-        } catch (ex: Exception) {
+        }
+        catch (ex : HttpRequestException) {
+            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
+        }
+        catch (ex: Exception) {
             Log.d("Регистрация", ex.toString())
-            CustomResult.Failure(1, ex.toString())
+            CustomResult.Failure(ExclusionOptions.UnknownError.id, ExclusionOptions.UnknownError.message)
         }
     }
 
@@ -213,11 +197,15 @@ class RepositoryImpl : Repository {
                 }.decodeList<AllUserInsertInformation.EmployerInsertInformation>()
                 CustomResult.Success(result)
             } else {
-                CustomResult.Failure(0, "Такой пользователь уже существует")
+                CustomResult.Failure(ExclusionOptions.UserExistsError.id, ExclusionOptions.UserExistsError.message)
             }
-        } catch (ex: Exception) {
+        }
+        catch (ex : HttpRequestException) {
+            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
+        }
+        catch (ex: Exception) {
             Log.d("Регистрация", ex.toString())
-            CustomResult.Failure(1, ex.toString())
+            CustomResult.Failure(ExclusionOptions.UnknownError.id, ExclusionOptions.UnknownError.message)
         }
     }
 

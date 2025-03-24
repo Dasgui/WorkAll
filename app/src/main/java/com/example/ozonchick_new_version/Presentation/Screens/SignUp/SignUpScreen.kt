@@ -167,46 +167,6 @@ private fun MainBody(viewModel: SignUpViewModel) {
     }
 }
 
-//@Composable
-//private fun NameTextField(
-//    title: String,
-//    holderText: String,
-//    field: MutableState<String>,
-//    maxChar: Int = 0,
-//    onlyNumbers : Boolean = false,
-//) {
-//    Column(
-//        modifier = Modifier.fillMaxWidth(),
-//        verticalArrangement = Arrangement.spacedBy(10.dp)
-//    ) {
-//        Text(
-//            text = title,
-//            style = Tema.Text_24_24_Bold,
-//            maxLines = 1,
-//            color = MainColor,
-//        )
-//        CustomOutlinedTextField(
-//            value = field.value,
-//            onValueChange = {
-//                if (maxChar == 0) {
-//                    field.value = it
-//                } else {
-//                    if (onlyNumbers) {
-//                        if (it.length <= maxChar && it.isDigitsOnly()) {
-//                            field.value = it
-//                        }
-//                    } else {
-//                        if (it.length <= maxChar) {
-//                            field.value = it
-//                        }
-//                    }
-//                }
-//            },
-//            placeText = holderText,
-//            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-//        )
-//    }
-//}
 
 @Composable
 private fun BottomTypeRegistration(viewModel: SignUpViewModel) {
@@ -253,8 +213,7 @@ private fun Bottom(viewModel: SignUpViewModel, onNavigateForLogIn: () -> Unit) {
                         && viewModel.checkInn() && viewModel.checkPhoneNumber()
                         && viewModel.checkPasswordMatch()
                     ) {
-//                        viewModel.registration()
-                        Log.d("Регистрация", "Вы зарегистрировались")
+                        viewModel.registration()
                     } else {
                         viewModel.signUpState.value = ScreenState.Failure(0, "Вы ошиблись при заполнении данных. Пожалуйста проверьте их.")
                     }
@@ -264,8 +223,7 @@ private fun Bottom(viewModel: SignUpViewModel, onNavigateForLogIn: () -> Unit) {
                         && viewModel.checkPhoneNumber()
                         && viewModel.checkPasswordMatch()
                     ) {
-//                        viewModel.registration()
-                        Log.d("Регистрация", "Вы зарегистрировались")
+                        viewModel.registration()
                     } else {
                         viewModel.signUpState.value = ScreenState.Failure(0, "Вы ошиблись при заполнении данных. Пожалуйста проверьте их.")
                     }
