@@ -33,6 +33,7 @@ import org.koin.androidx.compose.koinViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.Screens.SignUp.SignUpViewModel
+import com.example.ozonchick_new_version.Presentation.States.DialogStates
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomButton
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomOutlinedTextField
 import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
@@ -69,7 +70,14 @@ fun SignUpConstruct(viewModel: SignUpViewModel = koinViewModel(), onNavigateForL
             })
 
         is ScreenState.Loading -> Unit
-        is ScreenState.Success -> navigator?.replaceAll(LogInScreen())
+        is ScreenState.Success -> {
+            FailAlertDialog(
+                title = "Регистрация",
+                "Вы успешно зарегистрировались!",
+                onOkClick = {
+                    navigator?.replaceAll(LogInScreen())
+                })
+        }
         ScreenState.Error -> Unit
     }
     LazyColumn(
@@ -229,7 +237,8 @@ private fun Bottom(viewModel: SignUpViewModel, onNavigateForLogIn: () -> Unit) {
                     }
                 }
             },
-            placeText = "Зарегистрироваться"
+            placeText = "Зарегистрироваться",
+            enabled = viewModel.buttonEnabled.value
         )
         BottomText(onNavigateForLogIn)
     }

@@ -10,6 +10,7 @@ import com.example.ozonchick_new_version.Data.model.Authentication.AllUserInsert
 import com.example.ozonchick_new_version.Domain.RegistrationCandidateUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationEmployerUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationUseCase
+import com.example.ozonchick_new_version.Presentation.States.DialogStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,6 +30,8 @@ class SignUpViewModel(
     fun setIsWrittenCorrectly(newValue: Boolean) {
         _isWrittenCorrectly.value = newValue
     }
+
+    val buttonEnabled : MutableState<Boolean> = mutableStateOf(true)
 
     val name : MutableState<String> = mutableStateOf("") /*"Еми"*/
     val secondName : MutableState<String> = mutableStateOf("") /*"Эльмирович"*/
@@ -62,6 +65,7 @@ class SignUpViewModel(
 
     fun registration() {
         viewModelScope.launch(Dispatchers.IO) {
+            buttonEnabled.value = false
             val singleName = "${secondName.value.trim()} ${name.value.trim()}"
             when (
                 val curResult = if (userRole.value == UserType.Employer) {
@@ -73,6 +77,7 @@ class SignUpViewModel(
                 is CustomResult.Failure -> signUpState.value = ScreenState.Failure(curResult.code, curResult.message)
                 is CustomResult.Success -> signUpState.value = ScreenState.Success(data = curResult.data)
             }
+            buttonEnabled.value = true
         }
     }
 
