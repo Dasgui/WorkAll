@@ -28,8 +28,8 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
+import com.example.ozonchick_new_version.Presentation.Screens.ChangeInformation.ChangeInformationScreen
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
-import com.example.ozonchick_new_version.Presentation.Screens.Settings_Screen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomCard
@@ -142,34 +142,36 @@ private fun ScreenBody(navigator: Navigator?) {
             .fillMaxSize()
             .padding(top = 10.dp),
     ) {
-        Card_construct(
+        CardConstruct(
             "Настройки",
             "Здесь вы можете настроить приложение",
             R.drawable.setting_icon,
-            navigator
+            navigateOnScreen = {}
         )
-        Card_construct(
+        CardConstruct(
             "Информация о вас",
             "Здесь вы можете изменить информация",
             R.drawable.setting_icon,
-            navigator
+            navigateOnScreen = {
+                navigator?.push(ChangeInformationScreen())
+            }
         )
     }
 }
 
 @Composable
-private fun Card_construct(
+private fun CardConstruct(
     mainText: String,
     secondText: String,
     icon: Int,
-    localNavigator: Navigator?
+    navigateOnScreen : () -> Unit
 ) {
     CustomCard(
         modifier = Modifier.Companion
             .fillMaxWidth()
             .padding(top = 20.dp)
             .height(80.dp)
-            .clickable { /*localNavigator?.push(Settings_Screen())*/ },
+            .clickable { navigateOnScreen() },
     ) {
         Row(
             modifier = Modifier

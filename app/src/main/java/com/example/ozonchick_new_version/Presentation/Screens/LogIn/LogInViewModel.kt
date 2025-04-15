@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.UserType
+import com.example.ozonchick_new_version.Common.model.UserId
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.Authentication.AllUserInformation
 import com.example.ozonchick_new_version.Domain.AuthUseCase
@@ -77,43 +78,11 @@ class LogInViewModel(private val auth : AuthUseCase) : ViewModel() {
                         publicUserId.id = curResult.data.user_id
                         publicUserId.type = UserType.Candidate
                     }
+                    Paper.book().write<UserId>("UserId",UserId(publicUserId.id, publicUserId.type))
                 }
             }
             buttonEnabled.value = true
         }
-//        if (isDataValid()) {
-//            logInState.value = ScreenState.Failure(4, "Проверьте адрес почты или пароль")
-//            return
-//        }
-//        viewModelScope.launch {
-//            try {
-//                val user = supabase.from("user_information")
-//                    .select(columns = Columns.Companion.list("user_id, email, password")) {
-//                        filter {
-//                            UserInformationAuth::email eq _emailUser.value
-//                            UserInformationAuth::password eq _passwordUser.value
-//                        }
-//                    }.decodeList<UserInformationAuth>()
-//                logInState.value = ScreenState.Success(
-//                    UserInformationAuth(
-//                        user[0].email,
-//                        user[0].password,
-//                        user[0].user_id
-//                    )
-//                )
-//                Log.d("ИНФОРМАЦИЯ О ПОЛЬЗОВАТЕЛЕ", user.toString())
-//            }
-//            catch (ex : HttpRequestException) {
-//                logInState.value = ScreenState.Failure(1, "Проверьте своё соединение с интернетом.")
-//            }
-//            catch (ex : IndexOutOfBoundsException) {
-//                logInState.value = ScreenState.Failure(2, "Возможно, пользователя не существует. Проверьте введенные данные.")
-//            }
-//            catch (ex : Exception) {
-//                Log.d("ОШИБКА ВХОДА", ex.toString())
-//                logInState.value = ScreenState.Failure(3, "Неизвестная ошибка")
-//            }
-//        }
     }
 
     fun isDataValid() : Boolean

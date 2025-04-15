@@ -11,6 +11,7 @@ import androidx.compose.ui.res.painterResource
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Common.publicUserId
+import com.example.ozonchick_new_version.Presentation.Screens.ChangeInformation.ChangeInformationScreen
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerAddVacancy.EmployerAddVacancyScreen
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerAddVacancy.EmployerAddVacancyViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerDetailsVacancy.EmployerDetailsVacancyScreen
@@ -29,7 +30,8 @@ class SplashScreen : Screen {
                 navigator?.replaceAll(LogInScreen())
             },
             onNavigateForHome = {
-                navigator?.replaceAll(ListVacanciesScreen())
+//                navigator?.replaceAll(ListVacanciesScreen())
+                navigator?.replaceAll(ChangeInformationScreen())
             }
         )
     }

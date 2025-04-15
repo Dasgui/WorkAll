@@ -23,6 +23,7 @@ import com.example.ozonchick_new_version.Domain.RejectCandidateUseCase
 import com.example.ozonchick_new_version.Domain.RejectVacancyUseCase
 import com.example.ozonchick_new_version.Domain.UpdateEmployerVacancyUseCase
 import com.example.ozonchick_new_version.Presentation.Models.EmployerDetailsVacancy
+import com.example.ozonchick_new_version.Presentation.Screens.ChangeInformation.ChangeInformationViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerAddVacancy.EmployerAddVacancyScreen
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerAddVacancy.EmployerAddVacancyViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerDetailsVacancy.EmployerDetailsVacancyScreen
@@ -107,5 +108,9 @@ var AppModule = module {
     factory { GetOrganizationNameUseCase(get()) }
     viewModel {
         EmployerAddVacancyViewModel(get(), get())
+    }
+
+    viewModel {
+        ChangeInformationViewModel()
     }
 }

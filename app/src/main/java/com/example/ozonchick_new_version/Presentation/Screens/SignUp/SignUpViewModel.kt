@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Data.model.Authentication.AllUserInsertInformation
+import com.example.ozonchick_new_version.Data.strings.AuthenticationRegexPatterns
 import com.example.ozonchick_new_version.Domain.RegistrationCandidateUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationEmployerUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationUseCase
@@ -106,19 +107,19 @@ class SignUpViewModel(
     }
 
     fun checkName () : Boolean {
-        return name.value.trim().matches(Regex("[А-Яа-яЁёa-zA-Z]{3,21}"))
+        return name.value.trim().matches(Regex(AuthenticationRegexPatterns.name))
     }
 
     fun checkEmail () : Boolean {
-        return email.value.trim().matches(Regex("^[a-z-а-я-0-9]+@[a-z-а-я-0-9]+.[a-z-а-я]{2,}$"))
+        return email.value.trim().matches(Regex(AuthenticationRegexPatterns.email))
     }
 
     fun checkPhoneNumber () : Boolean {
-        return phoneNumber.value.trim().matches(Regex("^\\+\\d{11}"))
+        return phoneNumber.value.trim().matches(Regex(AuthenticationRegexPatterns.phoneNumber))
     }
 
     fun checkInn () : Boolean {
-        return INN.value.trim().matches(Regex("\\d{12}"))
+        return INN.value.trim().matches(Regex(AuthenticationRegexPatterns.inn))
     }
 
     fun checkPasswordMatch() : Boolean {
