@@ -54,7 +54,7 @@ private fun ChangeInformationConstruct (viewModel: ChangeInformationViewModel = 
                         title = "Ошибка",
                         AppErrors.INCORRECT_VALUES.description,
                         onOkClick = {
-                            viewModel.screenState.value = ScreenState.Awaiting
+                            viewModel.screenState.value = ScreenState.AwaitingChangeFromUser
                         })
                 }
                 is ScreenState.Failure -> {
@@ -72,11 +72,11 @@ private fun ChangeInformationConstruct (viewModel: ChangeInformationViewModel = 
                         title = "Отлично",
                         "Информация обновлена",
                         onOkClick = {
-                            viewModel.screenState.value = ScreenState.Awaiting
+                            viewModel.screenState.value = ScreenState.AwaitingChangeFromUser
                         })
                 }
 
-                ScreenState.Awaiting -> {
+                ScreenState.AwaitingChangeFromUser -> {
                     Column (
                         modifier = Modifier.fillMaxSize()
                     ) {
@@ -106,6 +106,8 @@ private fun ChangeInformationConstruct (viewModel: ChangeInformationViewModel = 
                             text = "Номер телефона",
                             image = R.drawable.call,
                             changeValue = viewModel.phoneNumber,
+                            maxChars = 12
+
                         )
 
                         VerticalSpacer(50.dp)
@@ -119,6 +121,8 @@ private fun ChangeInformationConstruct (viewModel: ChangeInformationViewModel = 
                         VerticalSpacer(30.dp)
                     }
                 }
+
+                ScreenState.AwaitingResponse -> CustomLoading()
             }
         }
     )
@@ -129,7 +133,8 @@ private fun TextFieldRowInformation (
     text : String,
     image : Int,
     changeValue : MutableState<String>,
-    isPassword : Boolean = false
+    isPassword : Boolean = false,
+    maxChars : Int = Int.MAX_VALUE,
 ) {
     RowInformation(
         text = text,
@@ -138,7 +143,7 @@ private fun TextFieldRowInformation (
     VerticalSpacer(5.dp)
     CustomOutlinedTextField(
         value = changeValue.value,
-        onValueChange = {changeValue.value = it},
+        onValueChange = {if ( it.length <= maxChars) changeValue.value = it},
         states = if (isPassword) TextFieldStates.Password else TextFieldStates.Normal
     )
 }

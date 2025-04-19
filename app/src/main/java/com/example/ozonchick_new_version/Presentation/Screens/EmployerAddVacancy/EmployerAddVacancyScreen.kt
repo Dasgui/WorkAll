@@ -1,6 +1,5 @@
 package com.example.ozonchick_new_version.Presentation.Screens.EmployerAddVacancy
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -56,7 +55,8 @@ fun EmployerAddVacancyConstruct(viewModel: EmployerAddVacancyViewModel = koinVie
         is ScreenState.Loading -> CustomLoading()
         is ScreenState.Success -> navigator?.popUntil { it is EmployerVacanciesScreen }
         is ScreenState.Error -> Unit
-        ScreenState.Awaiting -> Unit
+        ScreenState.AwaitingChangeFromUser -> Unit
+        ScreenState.AwaitingResponse -> Unit
     }
     if (viewModel.confirmCharge.value) {
         CustomDialog(

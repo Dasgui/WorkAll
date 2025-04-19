@@ -10,10 +10,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.Candidate
-import com.example.ozonchick_new_version.Presentation.Screens.EmployerDetailsVacancy.EmployerDetailsVacancyViewModel
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
-import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.States.ScreenState.*
 import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
 import com.example.ozonchick_new_version.Presentation.ui.components.CandidateCard
@@ -21,7 +18,6 @@ import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoadin
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
 import org.koin.androidx.compose.get
-import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 class EmployerResponsesScreen(private val vacancyId: Int) : Screen {
@@ -79,7 +75,8 @@ private fun EmployerResponsesConstruct(viewModel: EmployerResponsesViewModel) {
             }
 
             is Error -> AlertText()
-            Awaiting -> Unit
+            AwaitingChangeFromUser -> Unit
+            AwaitingResponse -> Unit
         }
     }
 

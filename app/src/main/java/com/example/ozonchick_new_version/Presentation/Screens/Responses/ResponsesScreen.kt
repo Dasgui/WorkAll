@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.example.ozonchick_new_version.Presentation.Models.ResponsesUIModel
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
-import com.example.ozonchick_new_version.Presentation.Screens.Responses.ResponsesViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
@@ -76,7 +75,8 @@ private fun ResponseConstruct(viewModel: ResponsesViewModel = koinViewModel())
                 }
 
                 ScreenState.Error -> AlertText()
-                ScreenState.Awaiting -> Unit
+                ScreenState.AwaitingChangeFromUser -> Unit
+                ScreenState.AwaitingResponse -> Unit
             }
         }
     }

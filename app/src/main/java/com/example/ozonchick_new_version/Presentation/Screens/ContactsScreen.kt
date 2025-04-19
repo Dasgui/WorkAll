@@ -4,10 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -27,7 +25,6 @@ import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDia
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.Ozonchick_new_versionTheme
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
-import org.koin.androidx.compose.koinViewModel
 import org.koin.androidx.compose.get
 import org.koin.core.parameter.parametersOf
 
@@ -116,7 +113,8 @@ fun Contacts_construct(viewModel: ContactsViewModel) {
         }
 
         is ScreenState.Error -> Unit
-        ScreenState.Awaiting -> Unit
+        ScreenState.AwaitingChangeFromUser -> Unit
+        ScreenState.AwaitingResponse -> Unit
     }
 //    Scaffold (
 //        topBar = {

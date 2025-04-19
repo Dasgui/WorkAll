@@ -8,5 +8,6 @@ sealed interface ScreenState <out T : Any> {
         val code : Int,
         val message : String
     ) : ScreenState <Nothing>
-    data object Awaiting : ScreenState <Nothing>
+    data object AwaitingChangeFromUser : ScreenState <Nothing>
+    data object AwaitingResponse : ScreenState <Nothing>
 }

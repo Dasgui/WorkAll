@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.Authentication.UserChangeableInformation
-import com.example.ozonchick_new_version.Data.strings.AuthenticationRegexPatterns
+import com.example.ozonchick_new_version.Domain.FieldValidators
 import com.example.ozonchick_new_version.Domain.GetUserChangeableInformationUseCase
 import com.example.ozonchick_new_version.Domain.UpdateUserInformationUseCase
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
@@ -37,7 +37,7 @@ class ChangeInformationViewModel(
                     password.value = response.data.password
                     name.value = response.data.name
                     phoneNumber.value = response.data.phoneNumber
-                    screenState.value = ScreenState.Awaiting
+                    screenState.value = ScreenState.AwaitingChangeFromUser
                 }
             }
         }
@@ -46,6 +46,7 @@ class ChangeInformationViewModel(
     fun updateInformation () {
         if (checkChanges()) {
             viewModelScope.launch (Dispatchers.IO) {
+                screenState.value = ScreenState.Loading
                 val response = updateUserInformationViewModel.invoke(publicUserId.id, UserChangeableInformation(email.value.trim(), password.value.trim(), name.value.trim(), phoneNumber.value.trim()))
                 when (response) {
                     is CustomResult.Failure -> {
@@ -62,28 +63,13 @@ class ChangeInformationViewModel(
     }
 
     fun checkChanges() : Boolean {
-        return checkName() && checkEmail() && checkPhoneNumber() && checkPassword()
+        return FieldValidators.checkName(name.value) && FieldValidators.checkEmail(email.value)
+                && FieldValidators.checkPhoneNumber(phoneNumber.value) && FieldValidators.checkPassword(password.value)
 //        if (checkName() && checkEmail() && checkPhoneNumber()) {
 //            Log.d("Изменение информации о пользователе", "Всё успешно измененно")
 //        } else {
 //            Log.d("Изменение информации о пользователе", "Всё пошло на перекосяк")
 //        }
-    }
-
-    fun checkEmail () : Boolean {
-        return email.value.trim().matches(Regex(AuthenticationRegexPatterns.email))
-    }
-
-    fun checkPhoneNumber () : Boolean {
-        return phoneNumber.value.trim().matches(Regex(AuthenticationRegexPatterns.phoneNumber))
-    }
-
-    fun checkName () : Boolean {
-        return name.value.trim().matches(Regex(AuthenticationRegexPatterns.name))
-    }
-
-    fun checkPassword () : Boolean {
-        return password.value.trim().matches(Regex(AuthenticationRegexPatterns.password))
     }
 
 }

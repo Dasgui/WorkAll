@@ -8,25 +8,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.core.text.isDigitsOnly
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import com.example.ozonchick_new_version.Data.model.VacancyUpdateContact
-import com.example.ozonchick_new_version.Data.model.VacancyUpdateInformation
 import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Data.strings.AppErrors
-import com.example.ozonchick_new_version.Presentation.Models.ChangeVacancyUIModel
-import com.example.ozonchick_new_version.Presentation.Screens.EmployerVacancies.EmployerVacanciesScreen
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.States.ScreenState.*
@@ -42,8 +34,6 @@ import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpac
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import org.koin.androidx.compose.get
-import org.koin.androidx.compose.koinViewModel
-import org.koin.core.definition.indexKey
 import org.koin.core.parameter.parametersOf
 
 class EmployerDetailsVacancyScreen(private val information: VakansInformation) : Screen {
@@ -85,17 +75,17 @@ private fun EmployerDetailsVacancyConstruct(
         scaffoldStates = ScaffoldStates.OnSide
     ) {
         when (val curState = localState.value) {
-            is ScreenState.Failure -> {
+            is Failure -> {
                 FailAlertDialog(
                     title = "Ошибка",
                     curState.message,
                     onOkClick = {
-                        viewModel.screenState.value = ScreenState.Error
+                        viewModel.screenState.value = Error
                     })
             }
 
-            is ScreenState.Loading -> CustomLoading()
-            is ScreenState.Success -> {
+            is Loading -> CustomLoading()
+            is Success -> {
                 Column(
                     modifier = Modifier
                         .padding(bottom = 80.dp)
@@ -189,8 +179,9 @@ private fun EmployerDetailsVacancyConstruct(
 
             }
 
-            ScreenState.Error -> AlertText()
-            ScreenState.Awaiting -> Unit
+            Error -> AlertText()
+            AwaitingChangeFromUser -> Unit
+            AwaitingResponse -> Unit
         }
     }
 }

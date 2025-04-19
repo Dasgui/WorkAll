@@ -78,7 +78,8 @@ private fun ListVacanciesScreenConstruct(viewModel: ListVacanciesViewModel = koi
                 }
 
                 is ScreenState.Error -> AlertText()
-                ScreenState.Awaiting -> Unit
+                ScreenState.AwaitingChangeFromUser -> Unit
+                ScreenState.AwaitingResponse -> Unit
             }
         }
     }

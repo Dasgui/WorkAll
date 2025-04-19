@@ -1,6 +1,5 @@
 package com.example.ozonchick_new_version.Presentation.Screens.LogIn
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,8 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Text
@@ -21,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
@@ -37,7 +33,6 @@ import com.example.ozonchick_new_version.Presentation.ui.components.CustomOutlin
 import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
 import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpacer
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
-import com.example.ozonchick_new_version.Presentation.ui.theme.Button_Color_Blue
 import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.SecondColor
@@ -226,7 +221,8 @@ private fun BottomText(
             ScreenState.Loading -> Unit
             is ScreenState.Success -> navigator?.replaceAll(ProfileScreen(/*curState.data.user_id*/))
             is ScreenState.Error -> Unit
-            ScreenState.Awaiting -> Unit
+            ScreenState.AwaitingChangeFromUser -> Unit
+            ScreenState.AwaitingResponse -> Unit
         }
 
 
