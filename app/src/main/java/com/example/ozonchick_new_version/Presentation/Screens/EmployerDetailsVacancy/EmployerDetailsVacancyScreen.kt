@@ -24,10 +24,12 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateContact
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateInformation
 import com.example.ozonchick_new_version.Data.model.VakansInformation
+import com.example.ozonchick_new_version.Data.strings.AppErrors
 import com.example.ozonchick_new_version.Presentation.Models.ChangeVacancyUIModel
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerVacancies.EmployerVacanciesScreen
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
+import com.example.ozonchick_new_version.Presentation.States.ScreenState.*
 import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomButton
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomDialog
@@ -177,7 +179,7 @@ private fun EmployerDetailsVacancyConstruct(
                                 && viewModel.specialization.value.isNotEmpty()) {
                                 viewModel.confirmCharge.value = true
                             } else {
-                                viewModel.screenState.value = ScreenState.Failure(0, "Не все поля заполнены или заполнены некоректно. Проверить вписанные значения.")
+                                viewModel.screenState.value = Failure(0, AppErrors.INCORRECT_VALUES.description)
                             }
                         },
                         placeText = "Изменить",
@@ -188,6 +190,7 @@ private fun EmployerDetailsVacancyConstruct(
             }
 
             ScreenState.Error -> AlertText()
+            ScreenState.Awaiting -> Unit
         }
     }
 }

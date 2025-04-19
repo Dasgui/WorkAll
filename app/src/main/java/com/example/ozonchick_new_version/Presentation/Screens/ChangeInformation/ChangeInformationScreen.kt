@@ -1,7 +1,6 @@
 package com.example.ozonchick_new_version.Presentation.Screens.ChangeInformation
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,19 +9,23 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import com.example.ozonchick_new_version.Common.UserType
-import com.example.ozonchick_new_version.Common.publicUserId
+import com.example.ozonchick_new_version.Data.strings.AppErrors
+import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
+import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.States.TextFieldStates
+import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomButton
+import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomOutlinedTextField
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
+import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
 import com.example.ozonchick_new_version.Presentation.ui.components.HorizontalSpacer
 import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpacer
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
@@ -41,48 +44,81 @@ class ChangeInformationScreen : Screen {
 private fun ChangeInformationConstruct (viewModel: ChangeInformationViewModel = koinViewModel()) {
     CustomScaffold (
         bottomButton = true,
+        scaffoldStates = ScaffoldStates.OnSide,
         mainText = "Информация о вас",
         mainBody = {
-            Column (
-                modifier = Modifier.fillMaxSize()
-            ) {
-                TextFieldRowInformation(
-                    text = "Почта",
-                    image = R.drawable.email,
-                    changeValue = viewModel.email,
-                )
-                VerticalSpacer(30.dp)
+            val localState = viewModel.screenState.collectAsState()
+            when (val curState = localState.value) {
+                ScreenState.Error -> {
+                    FailAlertDialog(
+                        title = "Ошибка",
+                        AppErrors.INCORRECT_VALUES.description,
+                        onOkClick = {
+                            viewModel.screenState.value = ScreenState.Awaiting
+                        })
+                }
+                is ScreenState.Failure -> {
+                    AlertText()
+//                    FailAlertDialog(
+//                        title = "Ошибка",
+//                        curState.message,
+//                        onOkClick = {
+//                            viewModel.screenState.value = ScreenState.Awaiting
+//                        })
+                }
+                ScreenState.Loading -> CustomLoading()
+                is ScreenState.Success<*> -> {
+                    FailAlertDialog(
+                        title = "Отлично",
+                        "Информация обновлена",
+                        onOkClick = {
+                            viewModel.screenState.value = ScreenState.Awaiting
+                        })
+                }
 
-                TextFieldRowInformation(
-                    text = "Пароль",
-                    image = R.drawable.password_icon,
-                    changeValue = viewModel.password,
-                    isPassword = true
-                )
-                VerticalSpacer(30.dp)
+                ScreenState.Awaiting -> {
+                    Column (
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        TextFieldRowInformation(
+                            text = "Почта",
+                            image = R.drawable.email,
+                            changeValue = viewModel.email,
+                        )
+                        VerticalSpacer(30.dp)
 
-                TextFieldRowInformation(
-                    text = "Имя",
-                    image = R.drawable.profile,
-                    changeValue = viewModel.name,
-                )
-                VerticalSpacer(30.dp)
+                        TextFieldRowInformation(
+                            text = "Пароль",
+                            image = R.drawable.password_icon,
+                            changeValue = viewModel.password,
+                            isPassword = true
+                        )
+                        VerticalSpacer(30.dp)
 
-                TextFieldRowInformation(
-                    text = "Номер телефона",
-                    image = R.drawable.call,
-                    changeValue = viewModel.phoneNumber,
-                )
+                        TextFieldRowInformation(
+                            text = "Имя",
+                            image = R.drawable.profile,
+                            changeValue = viewModel.name,
+                        )
+                        VerticalSpacer(30.dp)
 
-                VerticalSpacer(50.dp)
+                        TextFieldRowInformation(
+                            text = "Номер телефона",
+                            image = R.drawable.call,
+                            changeValue = viewModel.phoneNumber,
+                        )
 
-                CustomButton(
-                    onClick = {
-                        viewModel.saveChanges()
-                    },
-                    placeText = "Сохранить изменения"
-                )
-                VerticalSpacer(30.dp)
+                        VerticalSpacer(50.dp)
+
+                        CustomButton(
+                            onClick = {
+                                viewModel.updateInformation()
+                            },
+                            placeText = "Сохранить изменения"
+                        )
+                        VerticalSpacer(30.dp)
+                    }
+                }
             }
         }
     )

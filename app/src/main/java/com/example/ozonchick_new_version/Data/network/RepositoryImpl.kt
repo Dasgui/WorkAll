@@ -11,6 +11,7 @@ import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.Can
 import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.UserInsertInformation
 import com.example.ozonchick_new_version.Data.model.Authentication.Employer.Employer
 import com.example.ozonchick_new_version.Data.model.Authentication.Employer.EmployerInsertInformation
+import com.example.ozonchick_new_version.Data.model.Authentication.UserChangeableInformation
 import com.example.ozonchick_new_version.Data.model.VacancyDescriptionInsertModel
 import com.example.ozonchick_new_version.Data.model.VacancyInsertAccept
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateInformation
@@ -23,14 +24,19 @@ import com.example.ozonchick_new_version.Presentation.Models.ExclusionOptions
 import io.github.jan.supabase.exceptions.HttpRequestException
 
 import io.github.jan.supabase.postgrest.from
+import io.github.jan.supabase.postgrest.query.Columns
 import io.paperdb.Paper
 
 interface Repository {
-    suspend fun auth(email: String, password: String, rememberUser : Boolean): CustomResult<AllUserInformation>
+    suspend fun auth(
+        email: String,
+        password: String,
+        rememberUser: Boolean
+    ): CustomResult<AllUserInformation>
 
     suspend fun getVacancies(): CustomResult<List<VakansInformation>>
     suspend fun getResponsesIdVacancies(userId: UserId): CustomResult<List<VacancyResponse>>
-    suspend fun getResponsesVacancies(idList : List<Int>): CustomResult<List<VakansInformation>>
+    suspend fun getResponsesVacancies(idList: List<Int>): CustomResult<List<VakansInformation>>
 
     suspend fun getContactInformation(id: Int): CustomResult<List<Vakans_contacts>>
     suspend fun registrationCandidate(
@@ -46,28 +52,43 @@ interface Repository {
         phoneNumber: String,
         email: String,
         inn: String,
-        organizationName : String
+        organizationName: String
     ): CustomResult<List<AllUserInsertInformation>>
-    suspend fun getName (userId: UserId) : CustomResult<String>
-    suspend fun getOrganizationName (userId: UserId) : CustomResult<String>
 
-    suspend fun getEmployerVacancies(userId: UserId) : CustomResult<List<VakansInformation>>
-    suspend fun deleteVacancies(vacancyId : Int) : CustomResult<Boolean>
-    suspend fun updateVacancy(vacancyId: Int, information: ChangeVacancyUIModel) : CustomResult<Boolean>
-    suspend fun getUsersForEmployer(vacancyId : Int) : CustomResult<List<Candidate>>
+    suspend fun getName(userId: UserId): CustomResult<String>
+    suspend fun getOrganizationName(userId: UserId): CustomResult<String>
+
+    suspend fun getEmployerVacancies(userId: UserId): CustomResult<List<VakansInformation>>
+    suspend fun deleteVacancies(vacancyId: Int): CustomResult<Boolean>
+    suspend fun updateVacancy(
+        vacancyId: Int,
+        information: ChangeVacancyUIModel
+    ): CustomResult<Boolean>
+
+    suspend fun getUsersForEmployer(vacancyId: Int): CustomResult<List<Candidate>>
     suspend fun acceptCandidate(candidateId: Int): CustomResult<Boolean>
     suspend fun rejectCandidate(candidateId: Int): CustomResult<Boolean>
-    suspend fun addVacancy(vacancy : VacancyUpdateInformation, description : VacancyDescriptionInsertModel) : CustomResult<Boolean>
+    suspend fun addVacancy(
+        vacancy: VacancyUpdateInformation,
+        description: VacancyDescriptionInsertModel
+    ): CustomResult<Boolean>
 
     suspend fun acceptVacancy(candidateId: Int, vacancyId: Int): CustomResult<Boolean>
     suspend fun rejectVacancy(candidateId: Int, vacancyId: Int): CustomResult<Boolean>
+
+    suspend fun updateUserInformation(
+        id: Int,
+        information: UserChangeableInformation
+    ): CustomResult<Boolean>
+
+    suspend fun getUserChangeableInformation(id: Int): CustomResult<UserChangeableInformation>
 }
 
 class RepositoryImpl : Repository {
     override suspend fun auth(
         email: String,
         password: String,
-        rememberUser : Boolean
+        rememberUser: Boolean
     ): CustomResult<AllUserInformation> {
         return try {
             val candidate = supabase.from("user_information").select() {
@@ -92,12 +113,21 @@ class RepositoryImpl : Repository {
                 CustomResult.Success(candidate[0])
             }
         } catch (ex: HttpRequestException) {
-            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
+            CustomResult.Failure(
+                ExclusionOptions.NetworkError.id,
+                ExclusionOptions.NetworkError.message
+            )
         } catch (ex: IndexOutOfBoundsException) {
-            CustomResult.Failure( ExclusionOptions.UserExistsError.id, ExclusionOptions.UserExistsError.message)
+            CustomResult.Failure(
+                ExclusionOptions.UserExistsError.id,
+                ExclusionOptions.UserExistsError.message
+            )
         } catch (ex: Exception) {
             Log.d("Ошибка при входе", ex.toString())
-            CustomResult.Failure(ExclusionOptions.UnknownError.id,ExclusionOptions.UnknownError.message)
+            CustomResult.Failure(
+                ExclusionOptions.UnknownError.id,
+                ExclusionOptions.UnknownError.message
+            )
         }
     }
 
@@ -107,9 +137,13 @@ class RepositoryImpl : Repository {
             CustomResult.Success(result)
         } catch (ex: Exception) {
             Log.d("Получение всех вакансий", ex.toString())
-            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
+            CustomResult.Failure(
+                ExclusionOptions.NetworkError.id,
+                ExclusionOptions.NetworkError.message
+            )
         }
     }
+
     override suspend fun getResponsesIdVacancies(userId: UserId): CustomResult<List<VacancyResponse>> {
         return try {
             val result = supabase.from("vakans_user_otklik").select() {
@@ -119,11 +153,14 @@ class RepositoryImpl : Repository {
             }.decodeList<VacancyResponse>()
             CustomResult.Success(result)
         } catch (ex: Exception) {
-            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
+            CustomResult.Failure(
+                ExclusionOptions.NetworkError.id,
+                ExclusionOptions.NetworkError.message
+            )
         }
     }
 
-    override suspend fun getResponsesVacancies(idList : List<Int>): CustomResult<List<VakansInformation>> {
+    override suspend fun getResponsesVacancies(idList: List<Int>): CustomResult<List<VakansInformation>> {
         return try {
             val result = supabase.from("vakans").select() {
                 filter {
@@ -133,7 +170,10 @@ class RepositoryImpl : Repository {
             CustomResult.Success(result)
         } catch (ex: Exception) {
             Log.d("Получение откликов вакансий", ex.toString())
-            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
+            CustomResult.Failure(
+                ExclusionOptions.NetworkError.id,
+                ExclusionOptions.NetworkError.message
+            )
         }
     }
 
@@ -149,7 +189,10 @@ class RepositoryImpl : Repository {
             CustomResult.Success(result)
         } catch (ex: Exception) {
             Log.d("Получение дитальной информации", ex.toString())
-            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
+            CustomResult.Failure(
+                ExclusionOptions.NetworkError.id,
+                ExclusionOptions.NetworkError.message
+            )
         }
     }
 
@@ -166,21 +209,28 @@ class RepositoryImpl : Repository {
                 email = email,
                 password = password
             )
-            if (findUser(email, phoneNumber).await()) {
+            if (isUserExist(email, phoneNumber).await()) {
                 val result = supabase.from("user_information").insert(user) {
                     select()
                 }.decodeList<AllUserInsertInformation.UserInsertInformation>()
                 CustomResult.Success(result)
             } else {
-                CustomResult.Failure(ExclusionOptions.UserExistsError.id, ExclusionOptions.UserExistsError.message)
+                CustomResult.Failure(
+                    ExclusionOptions.UserExistsError.id,
+                    ExclusionOptions.UserExistsError.message
+                )
             }
-        }
-        catch (ex : HttpRequestException) {
-            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
-        }
-        catch (ex: Exception) {
+        } catch (ex: HttpRequestException) {
+            CustomResult.Failure(
+                ExclusionOptions.NetworkError.id,
+                ExclusionOptions.NetworkError.message
+            )
+        } catch (ex: Exception) {
             Log.d("Регистрация", ex.toString())
-            CustomResult.Failure(ExclusionOptions.UnknownError.id, ExclusionOptions.UnknownError.message)
+            CustomResult.Failure(
+                ExclusionOptions.UnknownError.id,
+                ExclusionOptions.UnknownError.message
+            )
         }
     }
 
@@ -190,7 +240,7 @@ class RepositoryImpl : Repository {
         phoneNumber: String,
         email: String,
         inn: String,
-        organizationName : String
+        organizationName: String
     ): CustomResult<List<AllUserInsertInformation>> {
         return try {
             val user = EmployerInsertInformation(
@@ -201,21 +251,28 @@ class RepositoryImpl : Repository {
                 INN = inn,
                 companyName = organizationName
             )
-            if (findUser(email, phoneNumber).await()) {
+            if (isUserExist(email, phoneNumber).await()) {
                 val result = supabase.from("employers_information").insert(user) {
                     select()
                 }.decodeList<AllUserInsertInformation.EmployerInsertInformation>()
                 CustomResult.Success(result)
             } else {
-                CustomResult.Failure(ExclusionOptions.UserExistsError.id, ExclusionOptions.UserExistsError.message)
+                CustomResult.Failure(
+                    ExclusionOptions.UserExistsError.id,
+                    ExclusionOptions.UserExistsError.message
+                )
             }
-        }
-        catch (ex : HttpRequestException) {
-            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
-        }
-        catch (ex: Exception) {
+        } catch (ex: HttpRequestException) {
+            CustomResult.Failure(
+                ExclusionOptions.NetworkError.id,
+                ExclusionOptions.NetworkError.message
+            )
+        } catch (ex: Exception) {
             Log.d("Регистрация", ex.toString())
-            CustomResult.Failure(ExclusionOptions.UnknownError.id, ExclusionOptions.UnknownError.message)
+            CustomResult.Failure(
+                ExclusionOptions.UnknownError.id,
+                ExclusionOptions.UnknownError.message
+            )
         }
     }
 
@@ -244,7 +301,10 @@ class RepositoryImpl : Repository {
             }
         } catch (ex: Exception) {
             Log.d("Ошибка получения имени", ex.toString())
-            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
+            CustomResult.Failure(
+                ExclusionOptions.NetworkError.id,
+                ExclusionOptions.NetworkError.message
+            )
         }
     }
 
@@ -261,7 +321,10 @@ class RepositoryImpl : Repository {
             CustomResult.Success(result[0].companyName)
         } catch (ex: Exception) {
             Log.d("Ошибка получения имени", ex.toString())
-            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
+            CustomResult.Failure(
+                ExclusionOptions.NetworkError.id,
+                ExclusionOptions.NetworkError.message
+            )
         }
     }
 
@@ -276,9 +339,12 @@ class RepositoryImpl : Repository {
                 }.decodeList<VakansInformation>()
             Log.d("Вакансии работодателя", result.toString())
             CustomResult.Success(result)
-        } catch (ex : Exception) {
+        } catch (ex: Exception) {
             Log.d("Ошибка получения вакансий работодателя", ex.toString())
-            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
+            CustomResult.Failure(
+                ExclusionOptions.NetworkError.id,
+                ExclusionOptions.NetworkError.message
+            )
         }
     }
 
@@ -297,13 +363,19 @@ class RepositoryImpl : Repository {
                 }
             }
             CustomResult.Success(true)
-        } catch (ex : Exception) {
+        } catch (ex: Exception) {
             Log.d("Ошибка получения при удалении", ex.toString())
-            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
+            CustomResult.Failure(
+                ExclusionOptions.NetworkError.id,
+                ExclusionOptions.NetworkError.message
+            )
         }
     }
 
-    override suspend fun updateVacancy(vacancyId: Int, information: ChangeVacancyUIModel): CustomResult<Boolean> {
+    override suspend fun updateVacancy(
+        vacancyId: Int,
+        information: ChangeVacancyUIModel
+    ): CustomResult<Boolean> {
         return try {
             supabase.from("vakans_contacts").update({
                 Vakans_contacts::vakans_number setTo information.description.vakans_number
@@ -328,13 +400,16 @@ class RepositoryImpl : Repository {
                 }
             }
             CustomResult.Success(true)
-        } catch (ex : Exception) {
+        } catch (ex: Exception) {
             Log.d("Ошибка при изменении", ex.toString())
-            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
+            CustomResult.Failure(
+                ExclusionOptions.NetworkError.id,
+                ExclusionOptions.NetworkError.message
+            )
         }
     }
 
-    override suspend fun getUsersForEmployer(vacancyId : Int): CustomResult<List<Candidate>> {
+    override suspend fun getUsersForEmployer(vacancyId: Int): CustomResult<List<Candidate>> {
         return try {
             val users = supabase.from("vakans_user_otklik")
                 .select()
@@ -354,7 +429,10 @@ class RepositoryImpl : Repository {
             CustomResult.Success(usersInformation)
         } catch (ex: Exception) {
             Log.d("Ошибка получения пользователей", ex.toString())
-            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
+            CustomResult.Failure(
+                ExclusionOptions.NetworkError.id,
+                ExclusionOptions.NetworkError.message
+            )
         }
     }
 
@@ -374,7 +452,10 @@ class RepositoryImpl : Repository {
             CustomResult.Success(true)
         } catch (ex: Exception) {
             Log.d("Ошибка принятия пользователя", ex.toString())
-            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
+            CustomResult.Failure(
+                ExclusionOptions.NetworkError.id,
+                ExclusionOptions.NetworkError.message
+            )
         }
     }
 
@@ -394,19 +475,29 @@ class RepositoryImpl : Repository {
             CustomResult.Success(true)
         } catch (ex: Exception) {
             Log.d("Ошибка отказа пользователя", ex.toString())
-            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
+            CustomResult.Failure(
+                ExclusionOptions.NetworkError.id,
+                ExclusionOptions.NetworkError.message
+            )
         }
     }
 
-    override suspend fun addVacancy(vacancy : VacancyUpdateInformation, description : VacancyDescriptionInsertModel): CustomResult<Boolean> {
+    override suspend fun addVacancy(
+        vacancy: VacancyUpdateInformation,
+        description: VacancyDescriptionInsertModel
+    ): CustomResult<Boolean> {
         return try {
-            val vacancy = supabase.from("vakans").insert(vacancy) {select()}.decodeSingle<VakansInformation>()
+            val vacancy = supabase.from("vakans").insert(vacancy) { select() }
+                .decodeSingle<VakansInformation>()
             description.vakans_id = vacancy.vakans_id
             supabase.from("vakans_contacts").insert(description)
             CustomResult.Success(true)
         } catch (ex: Exception) {
             Log.d("Ошибка создания вакансии", ex.toString())
-            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
+            CustomResult.Failure(
+                ExclusionOptions.NetworkError.id,
+                ExclusionOptions.NetworkError.message
+            )
         }
     }
 
@@ -422,15 +513,22 @@ class RepositoryImpl : Repository {
                 }
             }.decodeList<VacancyInsertAccept>()
             if (response.isEmpty()) {
-                val vacancy = supabase.from("vakans_user_otklik").insert(VacancyInsertAccept(vacancyId, candidateId))
+                val vacancy = supabase.from("vakans_user_otklik")
+                    .insert(VacancyInsertAccept(vacancyId, candidateId))
                 CustomResult.Success(true)
             } else {
-                CustomResult.Failure(ExclusionOptions.VacancyIsAlreadyExists.id, ExclusionOptions.VacancyIsAlreadyExists.message)
+                CustomResult.Failure(
+                    ExclusionOptions.VacancyIsAlreadyExists.id,
+                    ExclusionOptions.VacancyIsAlreadyExists.message
+                )
             }
 
         } catch (ex: Exception) {
             Log.d("Ошибка принятия пользователя", ex.toString())
-            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
+            CustomResult.Failure(
+                ExclusionOptions.NetworkError.id,
+                ExclusionOptions.NetworkError.message
+            )
         }
     }
 
@@ -449,7 +547,85 @@ class RepositoryImpl : Repository {
 
         } catch (ex: Exception) {
             Log.d("Ошибка удаления отклика на вакансию", ex.toString())
-            CustomResult.Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
+            CustomResult.Failure(
+                ExclusionOptions.NetworkError.id,
+                ExclusionOptions.NetworkError.message
+            )
+        }
+    }
+
+    override suspend fun updateUserInformation(
+        id: Int,
+        information: UserChangeableInformation
+    ): CustomResult<Boolean> {
+        return try {
+            var userType = getUserTypeById(id).await()
+            val isUpdated = when (userType) {
+                is UserType.Candidate -> (supabase.from("user_information").update({
+                    set("name", information.name)
+                    set("password", information.password)
+                    set("phoneNumber", information.phoneNumber)
+                    set("email", information.email)
+                }) {
+                    filter {
+                        eq("user_id", id)
+                    }
+                }.countOrNull() ?: 0) > 0
+
+                is UserType.Employer -> {
+                    (supabase.from("employers_information").update({
+                        set("name", information.name)
+                        set("password", information.password)
+                        set("phoneNumber", information.phoneNumber)
+                        set("email", information.email)
+                    }) {
+                        filter {
+                            eq("employer_id", id)
+                        }
+                    }.countOrNull() ?: 0) > 0
+                }
+
+                UserType.None -> false
+            }
+            CustomResult.Success(isUpdated)
+        } catch (ex: Exception) {
+            CustomResult.Failure(
+                ExclusionOptions.NetworkError.id,
+                "Не удалось обновить информацию \n ${ex.message}"
+            )
+        }
+    }
+
+    override suspend fun getUserChangeableInformation(id: Int): CustomResult<UserChangeableInformation> {
+        return try {
+            var userType = getUserTypeById(id).await()
+            when (userType) {
+                UserType.Candidate -> {
+                    val responseCandidate = supabase.from("user_information")
+                        .select(Columns.list("name", "password", "phoneNumber", "email"))
+                        {
+                            filter {
+                                eq("user_id", id)
+                            }
+                        }.decodeSingle<UserChangeableInformation>()
+                    CustomResult.Success(responseCandidate)
+                }
+
+                UserType.Employer -> {
+                    val responseEmployer = supabase.from("employers_information")
+                        .select(Columns.list("name", "password", "phoneNumber", "email"))
+                        {
+                            filter {
+                                eq("employer_id", id)
+                            }
+                        }.decodeSingle<UserChangeableInformation>()
+                    CustomResult.Success(responseEmployer)
+                }
+
+                UserType.None -> CustomResult.Failure(1, "неизвестная ошибка")
+            }
+        } catch (ex: Exception) {
+            CustomResult.Failure(1, "Проверьте своё соиденение с интернетом \n ${ex.message}")
         }
     }
 }

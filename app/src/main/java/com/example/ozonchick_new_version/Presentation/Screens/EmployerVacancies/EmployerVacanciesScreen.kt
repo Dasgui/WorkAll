@@ -98,6 +98,7 @@ private fun EmployerVacanciesConstruct(viewModel: EmployerVacanciesViewModel = k
             }
 
             ScreenState.Error -> AlertText()
+            ScreenState.Awaiting -> Unit
         }
     }
 

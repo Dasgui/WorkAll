@@ -9,6 +9,7 @@ import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Common.model.UserId
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.Authentication.AllUserInformation
+import com.example.ozonchick_new_version.Data.strings.AuthenticationRegexPatterns
 import com.example.ozonchick_new_version.Domain.AuthUseCase
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import io.paperdb.Paper
@@ -87,6 +88,7 @@ class LogInViewModel(private val auth : AuthUseCase) : ViewModel() {
 
     fun isDataValid() : Boolean
     {
-        return _emailUser.value.trim().isNotEmpty() && _passwordUser.value.trim().isNotEmpty() && _emailUser.value.trim().matches(Regex("[a-zа-я0-9]+@[a-zа-я0-9]+.[a-zа-я]{2,}"))
+        return _emailUser.value.trim().isNotEmpty() && _passwordUser.value.trim().isNotEmpty() && _emailUser.value.trim().matches(Regex(
+            AuthenticationRegexPatterns.email))
     }
 }

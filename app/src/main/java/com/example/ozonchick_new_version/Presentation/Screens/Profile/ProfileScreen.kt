@@ -80,6 +80,7 @@ private fun ProfileConstruct(navigator: Navigator?, viewModel: ProfileViewModel 
                         ScreenBody(navigator = navigator)
                     }
                     ScreenState.Error -> AlertText()
+                    ScreenState.Awaiting -> Unit
                 }
             }
         }

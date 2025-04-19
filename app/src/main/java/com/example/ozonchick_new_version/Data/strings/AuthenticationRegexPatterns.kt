@@ -5,4 +5,5 @@ data object AuthenticationRegexPatterns {
     val phoneNumber = "^\\+\\d{11}"
     val name = "[А-Яа-яЁёa-zA-Z]{3,21}"
     val inn = "\\d{12}"
+    val password = "^\\S+$"
 }

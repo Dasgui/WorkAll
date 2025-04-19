@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import com.example.ozonchick_new_version.Data.strings.AppErrors
 import com.example.ozonchick_new_version.Presentation.States.DialogStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
@@ -37,7 +38,7 @@ private fun ListVacanciesScreenConstruct(viewModel: ListVacanciesViewModel = koi
     if (viewModel.dialogStates.value is DialogStates.Error) {
         FailAlertDialog(
             title = "Ошибка",
-            "Вакансия уже добавлена в ваши отклики",
+            AppErrors.VACANCIES_ALREADY_EXIST.description,
             onOkClick = {
                 viewModel.dialogStates.value = DialogStates.None
             })
@@ -77,6 +78,7 @@ private fun ListVacanciesScreenConstruct(viewModel: ListVacanciesViewModel = koi
                 }
 
                 is ScreenState.Error -> AlertText()
+                ScreenState.Awaiting -> Unit
             }
         }
     }

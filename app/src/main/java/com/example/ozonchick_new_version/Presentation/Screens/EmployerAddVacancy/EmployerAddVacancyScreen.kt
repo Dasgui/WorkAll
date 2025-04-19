@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.example.ozonchick_new_version.Data.strings.AppErrors
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerVacancies.EmployerVacanciesScreen
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
@@ -55,6 +56,7 @@ fun EmployerAddVacancyConstruct(viewModel: EmployerAddVacancyViewModel = koinVie
         is ScreenState.Loading -> CustomLoading()
         is ScreenState.Success -> navigator?.popUntil { it is EmployerVacanciesScreen }
         is ScreenState.Error -> Unit
+        ScreenState.Awaiting -> Unit
     }
     if (viewModel.confirmCharge.value) {
         CustomDialog(
@@ -155,7 +157,7 @@ fun EmployerAddVacancyConstruct(viewModel: EmployerAddVacancyViewModel = koinVie
                         && viewModel.specialization.value.isNotEmpty()) {
                         viewModel.confirmCharge.value = true
                     } else {
-                        viewModel.screenState.value = ScreenState.Failure(0, "Не все поля заполнены или заполнены некоректно. Проверить вписанные значения.")
+                        viewModel.screenState.value = ScreenState.Failure(0, AppErrors.INCORRECT_VALUES.description)
                     }
                 },
                 placeText = "Создать вакансию",

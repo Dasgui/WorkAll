@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import com.example.ozonchick_new_version.Data.strings.AppErrors
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 
@@ -19,7 +20,7 @@ fun AlertText() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Возникла проблема с подключением. Попробуйте позже или проверьте своё соединение с интернетом.",
+            text = AppErrors.INTERNET.description,
             style = Tema.Text_24_24_Bold,
             color = MainColor,
             textAlign = TextAlign.Center

@@ -29,6 +29,7 @@ import androidx.core.text.isDigitsOnly
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Common.UserType
+import com.example.ozonchick_new_version.Data.strings.AppErrors
 import org.koin.androidx.compose.koinViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
@@ -79,6 +80,7 @@ fun SignUpConstruct(viewModel: SignUpViewModel = koinViewModel(), onNavigateForL
                 })
         }
         ScreenState.Error -> Unit
+        ScreenState.Awaiting -> Unit
     }
     LazyColumn(
         modifier = Modifier
@@ -223,7 +225,7 @@ private fun Bottom(viewModel: SignUpViewModel, onNavigateForLogIn: () -> Unit) {
                     ) {
                         viewModel.registration()
                     } else {
-                        viewModel.signUpState.value = ScreenState.Failure(0, "Вы ошиблись при заполнении данных. Пожалуйста проверьте их.")
+                        viewModel.signUpState.value = ScreenState.Failure(0, AppErrors.INCORRECT_VALUES.description)
                     }
                 } else if (viewModel.userRole.value == UserType.Candidate) {
                     if (
@@ -233,7 +235,7 @@ private fun Bottom(viewModel: SignUpViewModel, onNavigateForLogIn: () -> Unit) {
                     ) {
                         viewModel.registration()
                     } else {
-                        viewModel.signUpState.value = ScreenState.Failure(0, "Вы ошиблись при заполнении данных. Пожалуйста проверьте их.")
+                        viewModel.signUpState.value = ScreenState.Failure(0, AppErrors.INCORRECT_VALUES.description)
                     }
                 }
             },

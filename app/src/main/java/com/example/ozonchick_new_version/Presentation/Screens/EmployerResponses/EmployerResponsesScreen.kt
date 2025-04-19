@@ -44,17 +44,17 @@ private fun EmployerResponsesConstruct(viewModel: EmployerResponsesViewModel) {
         scaffoldStates = ScaffoldStates.OnSide
     ) {
         when (val curState = localState.value) {
-            is ScreenState.Failure -> {
+            is Failure -> {
                 FailAlertDialog(
                     title = "Ошибка",
                     curState.message,
                     onOkClick = {
-                        viewModel.screenState.value = ScreenState.Error
+                        viewModel.screenState.value = Error
                     })
             }
 
-            is ScreenState.Loading -> CustomLoading()
-            is ScreenState.Success -> {
+            is Loading -> CustomLoading()
+            is Success -> {
                 Column (
                     modifier = Modifier
                         .padding(bottom = 80.dp)
@@ -78,7 +78,8 @@ private fun EmployerResponsesConstruct(viewModel: EmployerResponsesViewModel) {
                 }
             }
 
-            is ScreenState.Error -> AlertText()
+            is Error -> AlertText()
+            Awaiting -> Unit
         }
     }
 

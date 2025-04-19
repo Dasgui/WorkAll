@@ -76,6 +76,7 @@ private fun ResponseConstruct(viewModel: ResponsesViewModel = koinViewModel())
                 }
 
                 ScreenState.Error -> AlertText()
+                ScreenState.Awaiting -> Unit
             }
         }
     }

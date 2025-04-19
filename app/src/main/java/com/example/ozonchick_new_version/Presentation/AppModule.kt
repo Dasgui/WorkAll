@@ -14,6 +14,7 @@ import com.example.ozonchick_new_version.Domain.GetNameUseCase
 import com.example.ozonchick_new_version.Domain.GetOrganizationNameUseCase
 import com.example.ozonchick_new_version.Domain.GetResponsesIdVacanciesUseCase
 import com.example.ozonchick_new_version.Domain.GetResponsesVacanciesUseCase
+import com.example.ozonchick_new_version.Domain.GetUserChangeableInformationUseCase
 import com.example.ozonchick_new_version.Domain.GetUsersForEmployerUseCase
 import com.example.ozonchick_new_version.Domain.GetVacanciesUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationCandidateUseCase
@@ -22,6 +23,7 @@ import com.example.ozonchick_new_version.Domain.RegistrationUseCase
 import com.example.ozonchick_new_version.Domain.RejectCandidateUseCase
 import com.example.ozonchick_new_version.Domain.RejectVacancyUseCase
 import com.example.ozonchick_new_version.Domain.UpdateEmployerVacancyUseCase
+import com.example.ozonchick_new_version.Domain.UpdateUserInformationUseCase
 import com.example.ozonchick_new_version.Presentation.Models.EmployerDetailsVacancy
 import com.example.ozonchick_new_version.Presentation.Screens.ChangeInformation.ChangeInformationViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerAddVacancy.EmployerAddVacancyScreen
@@ -110,7 +112,9 @@ var AppModule = module {
         EmployerAddVacancyViewModel(get(), get())
     }
 
+    factory { GetUserChangeableInformationUseCase(get()) }
+    factory { UpdateUserInformationUseCase(get()) }
     viewModel {
-        ChangeInformationViewModel()
+        ChangeInformationViewModel(get(), get())
     }
 }

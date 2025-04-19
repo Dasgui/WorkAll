@@ -116,6 +116,7 @@ fun Contacts_construct(viewModel: ContactsViewModel) {
         }
 
         is ScreenState.Error -> Unit
+        ScreenState.Awaiting -> Unit
     }
 //    Scaffold (
 //        topBar = {
