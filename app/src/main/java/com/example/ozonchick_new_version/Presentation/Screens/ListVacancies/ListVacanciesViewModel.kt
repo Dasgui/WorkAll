@@ -2,16 +2,20 @@ package com.example.ozonchick_new_version.Presentation.Screens.ListVacancies
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.VakansInformation
+import com.example.ozonchick_new_version.Data.network.supabase
 import com.example.ozonchick_new_version.Domain.AcceptVacancyUseCase
 import com.example.ozonchick_new_version.Domain.GetVacanciesUseCase
 import com.example.ozonchick_new_version.Presentation.States.DialogStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
+import io.github.jan.supabase.postgrest.from
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -25,10 +29,19 @@ class ListVacanciesViewModel(
 ) : ViewModel() {
     val responseState : MutableStateFlow<ScreenState<List<VakansInformation>>> = MutableStateFlow(ScreenState.Loading)
 
+    val search = mutableStateOf("Тестировщик")
+
+    val minSalaryText = mutableStateOf("40000")
+    val maxSalaryText = mutableStateOf("0")
+
+    val minSalary = mutableIntStateOf(0)
+    val maxSalary = mutableIntStateOf(0)
+    val currentSalary = mutableFloatStateOf(0f)
 
     var listVacancies : MutableState<List<VakansInformation>> = mutableStateOf(listOf())
 
     val dialogStates : MutableState<DialogStates> = mutableStateOf(DialogStates.None)
+
 
 
     fun loadData() {
@@ -41,6 +54,30 @@ class ListVacanciesViewModel(
                 responseState.value = ScreenState.Failure(vacancies.code, vacancies.message)
             }
             Log.d("Получение на откликнувшиеся вакансии", responseState.value.toString())
+        }
+    }
+
+    fun getSalaryVacancy () {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = supabase.from("vakans").select {
+                filter {
+//                    rangeGte("vakans_price", minSalaryText to maxSalaryText)
+                    gte("vakans_price", minSalaryText.value)
+                }
+            }.decodeList<VakansInformation>()
+            Log.d("Вакансии по зарплате", response.toString())
+        }
+    }
+
+    fun searchVacancy () {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = supabase.from("vakans").select {
+                filter {
+                    ilike("vakans_name", "%${search.value}%")
+                    gte("vakans_price", minSalaryText.value)
+                }
+            }.decodeList<VakansInformation>()
+            Log.d("Вакансии при поиске", response.toString())
         }
     }
 

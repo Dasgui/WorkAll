@@ -1,26 +1,46 @@
 package com.example.ozonchick_new_version.Presentation.Screens.ListVacancies
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Slider
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.example.ozonchick_new_version.Data.strings.AppErrors
 import com.example.ozonchick_new_version.Presentation.States.DialogStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
+import com.example.ozonchick_new_version.Presentation.States.TextFieldStates
 import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
+import com.example.ozonchick_new_version.Presentation.ui.components.CustomButton
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
+import com.example.ozonchick_new_version.Presentation.ui.components.CustomOutlinedTextField
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
+import com.example.ozonchick_new_version.Presentation.ui.components.CustomSlider
 import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
 import com.example.ozonchick_new_version.Presentation.ui.components.Responses.VacancyCard
+import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpacer
+import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
+import com.example.ozonchick_new_version.R
 import org.koin.androidx.compose.koinViewModel
 
 class ListVacanciesScreen() : Screen {
@@ -62,6 +82,38 @@ private fun ListVacanciesScreenConstruct(viewModel: ListVacanciesViewModel = koi
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Companion.CenterHorizontally
         ) {
+            CustomOutlinedTextField(
+                value = viewModel.search.value,
+                onValueChange = {
+                    viewModel.search.value = it
+                },
+                modifier = Modifier.fillMaxWidth()
+            )
+            VerticalSpacer(5.dp)
+            CustomOutlinedTextField(
+                value = viewModel.minSalaryText.value,
+                states = TextFieldStates.Salary,
+                trailingIcon = {
+                    Image(
+                        painter = painterResource(R.drawable.wallet_3),
+                        contentDescription = null,
+                        colorFilter = ColorFilter.tint(MainColor),
+                        modifier = Modifier.size(30.dp)
+                    )
+                },
+                onValueChange = {
+                    viewModel.minSalaryText.value = it
+                },
+                modifier = Modifier.fillMaxWidth()
+            )
+            VerticalSpacer(10.dp)
+            CustomButton(
+                onClick = {
+                    viewModel.searchVacancy()
+                },
+                placeText = "Найти вакансии"
+            )
+
             when (val curState = screenState.value) {
                 is ScreenState.Failure -> FailAlertDialog(
                     title = "Ошибка",

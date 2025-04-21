@@ -4,4 +4,5 @@ sealed interface TextFieldStates {
     object Password : TextFieldStates
     object Email : TextFieldStates
     object Normal : TextFieldStates
+    object Salary : TextFieldStates
 }
