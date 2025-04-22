@@ -26,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import com.example.ozonchick_new_version.Data.model.ListOfVacancies.StatesOfGetVacancies
 import com.example.ozonchick_new_version.Data.strings.AppErrors
 import com.example.ozonchick_new_version.Presentation.States.DialogStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
@@ -43,10 +44,10 @@ import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.R
 import org.koin.androidx.compose.koinViewModel
 
-class ListVacanciesScreen() : Screen {
+class ListVacanciesScreen(private val statesOfGetVacancies: StatesOfGetVacancies = StatesOfGetVacancies.Normal) : Screen {
     @Composable
     override fun Content() {
-        ListVacanciesScreenConstruct()
+        ListVacanciesScreenConstruct(statesOfGetVacancies = statesOfGetVacancies)
     }
 }
 
@@ -54,7 +55,7 @@ class ListVacanciesScreen() : Screen {
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-private fun ListVacanciesScreenConstruct(viewModel: ListVacanciesViewModel = koinViewModel()) {
+private fun ListVacanciesScreenConstruct(viewModel: ListVacanciesViewModel = koinViewModel(), statesOfGetVacancies: StatesOfGetVacancies) {
     if (viewModel.dialogStates.value is DialogStates.Error) {
         FailAlertDialog(
             title = "Ошибка",
@@ -71,6 +72,7 @@ private fun ListVacanciesScreenConstruct(viewModel: ListVacanciesViewModel = koi
             })
     }
     LaunchedEffect(true) {
+        viewModel.statesOfGetVacancies.value = statesOfGetVacancies
         viewModel.loadData()
     }
     val screenState = viewModel.responseState.collectAsState()
@@ -82,38 +84,6 @@ private fun ListVacanciesScreenConstruct(viewModel: ListVacanciesViewModel = koi
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Companion.CenterHorizontally
         ) {
-            CustomOutlinedTextField(
-                value = viewModel.search.value,
-                onValueChange = {
-                    viewModel.search.value = it
-                },
-                modifier = Modifier.fillMaxWidth()
-            )
-            VerticalSpacer(5.dp)
-            CustomOutlinedTextField(
-                value = viewModel.minSalaryText.value,
-                states = TextFieldStates.Salary,
-                trailingIcon = {
-                    Image(
-                        painter = painterResource(R.drawable.wallet_3),
-                        contentDescription = null,
-                        colorFilter = ColorFilter.tint(MainColor),
-                        modifier = Modifier.size(30.dp)
-                    )
-                },
-                onValueChange = {
-                    viewModel.minSalaryText.value = it
-                },
-                modifier = Modifier.fillMaxWidth()
-            )
-            VerticalSpacer(10.dp)
-            CustomButton(
-                onClick = {
-                    viewModel.searchVacancy()
-                },
-                placeText = "Найти вакансии"
-            )
-
             when (val curState = screenState.value) {
                 is ScreenState.Failure -> FailAlertDialog(
                     title = "Ошибка",

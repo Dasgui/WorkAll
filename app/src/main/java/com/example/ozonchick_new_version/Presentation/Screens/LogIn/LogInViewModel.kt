@@ -50,14 +50,14 @@ class LogInViewModel(private val auth : AuthUseCase) : ViewModel() {
         _passwordUser.value = newValue
     }
 
+    val rememberUser : MutableState<Boolean> = mutableStateOf(false)
+//    private val _rememberUser: MutableStateFlow<Boolean> = MutableStateFlow(false)
+//    var rememberUser: StateFlow<Boolean> = _rememberUser.asStateFlow()
 
-    private val _rememberUser: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    var rememberUser: StateFlow<Boolean> = _rememberUser.asStateFlow()
-
-    fun setRememberUserCheckBoxValue(newValue: Boolean)
-    {
-        _rememberUser.value = newValue
-    }
+//    fun setRememberUserCheckBoxValue(newValue: Boolean)
+//    {
+//        _rememberUser.value = newValue
+//    }
 
     private val _isDataCorrect : MutableStateFlow<Boolean> = MutableStateFlow(false)
     var isDataCorrect : StateFlow<Boolean> = _isDataCorrect.asStateFlow()
@@ -68,7 +68,7 @@ class LogInViewModel(private val auth : AuthUseCase) : ViewModel() {
     {
         viewModelScope.launch (Dispatchers.IO) {
             buttonEnabled.value = false
-            when (val curResult = auth.invoke(_emailUser.value, _passwordUser.value, _rememberUser.value)) {
+            when (val curResult = auth.invoke(_emailUser.value, _passwordUser.value, rememberUser.value)) {
                 is CustomResult.Failure -> logInState.value = ScreenState.Failure(curResult.code, curResult.message)
                 is CustomResult.Success -> {
                     logInState.value = ScreenState.Success(data = curResult.data)

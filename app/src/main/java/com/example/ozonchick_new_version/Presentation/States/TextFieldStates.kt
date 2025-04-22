@@ -5,4 +5,5 @@ sealed interface TextFieldStates {
     object Email : TextFieldStates
     object Normal : TextFieldStates
     object Salary : TextFieldStates
+    object None : TextFieldStates
 }

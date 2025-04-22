@@ -29,6 +29,7 @@ import com.example.ozonchick_new_version.Presentation.Screens.Profile.ProfileScr
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.States.TextFieldStates
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomButton
+import com.example.ozonchick_new_version.Presentation.ui.components.CustomCheckBox
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomOutlinedTextField
 import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
 import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpacer
@@ -157,17 +158,24 @@ private fun BottomBody(viewModel: LogInViewModel) {
             .fillMaxWidth()
             .padding(top = 20.dp)
     ) {
-        Checkbox(
-            checked = viewModel.rememberUser.collectAsState().value,
-            onCheckedChange = { viewModel.setRememberUserCheckBoxValue(it) },
-            modifier = Modifier.Companion
-                .size(35.dp),
-            colors = CheckboxDefaults.colors(
-                checkedColor = MainColor,
-                uncheckedColor = MainColor,
-                checkmarkColor = BackgroundColor
-            ),
+        CustomCheckBox(
+            checked = viewModel.rememberUser,
+            onChange = {
+                viewModel.rememberUser.value = it
+            },
+            modifier = Modifier.size(35.dp)
         )
+//        Checkbox(
+//            checked = viewModel.rememberUser.collectAsState().value,
+//            onCheckedChange = { viewModel.setRememberUserCheckBoxValue(it) },
+//            modifier = Modifier.Companion
+//                .size(35.dp),
+//            colors = CheckboxDefaults.colors(
+//                checkedColor = MainColor,
+//                uncheckedColor = MainColor,
+//                checkmarkColor = BackgroundColor
+//            ),
+//        )
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,

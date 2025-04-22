@@ -44,10 +44,12 @@ fun CustomOutlinedTextField(
     placeholder: @Composable() (() -> Unit)? = null,
     leadingIcon: @Composable() (() -> Unit)? = null,
     trailingIcon: @Composable() (() -> Unit)? = null,
+    readOnly : Boolean = false
 ) {
     val trailingIconVisible: MutableState<Boolean> = remember { mutableStateOf(true) }
     OutlinedTextField(
         value = value,
+        readOnly = readOnly,
         onValueChange = onValueChange,
         modifier = modifier,
         keyboardOptions = keyboardOptions,
@@ -73,23 +75,20 @@ fun CustomOutlinedTextField(
         } else {
             leadingIcon
         },
-        trailingIcon = if (states is TextFieldStates.Password) {
-            {
-                Image(
-                    painter = painterResource(id = if (trailingIconVisible.value) R.drawable.eye_close else R.drawable.eye_open),
-                    contentDescription = "Показать пароль",
-                    modifier = Modifier.Companion
-                        .size(24.dp)
-                        .clickable {
-                            trailingIconVisible.value = !trailingIconVisible.value
-                        },
-                    colorFilter = ColorFilter.Companion.tint(MainColor)
-                )
+        trailingIcon = when (states) {
+            is TextFieldStates.Password -> {
+                {
+                    Image(
+                        painter = painterResource(id = if (trailingIconVisible.value) R.drawable.eye_close else R.drawable.eye_open),
+                        contentDescription = "Показать пароль",
+                        modifier = Modifier
+                            .size(24.dp)
+                            .clickable { trailingIconVisible.value = !trailingIconVisible.value },
+                        colorFilter = ColorFilter.tint(MainColor)
+                    )
+                }
             }
-        } else if (states is TextFieldStates.Normal) {
-            null
-        } else {
-            trailingIcon
+            else -> trailingIcon
         },
         maxLines = maxLines,
         singleLine = singleLine,

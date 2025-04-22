@@ -32,6 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
+import com.example.ozonchick_new_version.Presentation.Screens.Search.SearchScreen
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.ui.components.Test_Components.ScaffoldBottomBar
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
@@ -71,7 +72,7 @@ fun CustomScaffold(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        if (scaffoldStates == ScaffoldStates.OnSide) {
+                        if (scaffoldStates == ScaffoldStates.OnSide || scaffoldStates == ScaffoldStates.Vacancies) {
                             Icon(
                                 painter = painterResource(id = R.drawable.arrow_square_right),
                                 contentDescription = "",
@@ -80,7 +81,8 @@ fun CustomScaffold(
                                     .clickable { navigator?.pop() },
                                 tint = MainColor
                             )
-                        } else {
+                        }
+                        else {
                             Spacer(Modifier.size(40.dp))
                         }
                         Text(
@@ -95,6 +97,15 @@ fun CustomScaffold(
                                 modifier = Modifier
                                     .size(40.dp)
                                     .clickable { addVacancy() },
+                                tint = MainColor
+                            )
+                        } else if (scaffoldStates == ScaffoldStates.Main) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.search),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(30.dp)
+                                    .clickable { navigator?.push(SearchScreen()) },
                                 tint = MainColor
                             )
                         } else {

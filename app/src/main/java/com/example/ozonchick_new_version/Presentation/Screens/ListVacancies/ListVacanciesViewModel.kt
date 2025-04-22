@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.publicUserId
+import com.example.ozonchick_new_version.Data.model.ListOfVacancies.StatesOfGetVacancies
 import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Data.network.supabase
 import com.example.ozonchick_new_version.Domain.AcceptVacancyUseCase
@@ -28,6 +29,8 @@ class ListVacanciesViewModel(
     private val acceptVacancyUseCase: AcceptVacancyUseCase
 ) : ViewModel() {
     val responseState : MutableStateFlow<ScreenState<List<VakansInformation>>> = MutableStateFlow(ScreenState.Loading)
+    val statesOfGetVacancies : MutableState<StatesOfGetVacancies> = mutableStateOf(
+        StatesOfGetVacancies.Normal)
 
     val search = mutableStateOf("Тестировщик")
 
@@ -46,40 +49,37 @@ class ListVacanciesViewModel(
 
     fun loadData() {
         viewModelScope.launch(Dispatchers.IO) {
-            val vacancies = getInformation().await()
-            if (vacancies !is CustomResult.Failure) {
-                responseState.value = ScreenState.Success((vacancies as CustomResult.Success).data)
-                listVacancies.value = vacancies.data
-            } else {
-                responseState.value = ScreenState.Failure(vacancies.code, vacancies.message)
+            when (val localState = statesOfGetVacancies.value) {
+                is StatesOfGetVacancies.Filter -> {
+                    val response = supabase.from("vakans").select {
+                        filter {
+                            ilike("vakans_name", "%${localState.search}%")
+                            if (localState.filterSalary.isNotEmpty() && localState.filterSalary.isNotEmpty()) {
+                                gte("vakans_price", localState.filterSalary)
+                            }
+                            if (localState.filterExperience.isNotBlank()) {
+                                eq("vakans_experience", localState.filterExperience)
+                            }
+                        }
+                    }.decodeList<VakansInformation>()
+                    responseState.value = ScreenState.Success(response)
+                    listVacancies.value = response
+                    Log.d("Вакансии при поиске", response.toString())
+                }
+                StatesOfGetVacancies.Normal -> {
+                    val vacancies = getInformation().await()
+                    if (vacancies !is CustomResult.Failure) {
+                        responseState.value = ScreenState.Success((vacancies as CustomResult.Success).data)
+                        listVacancies.value = vacancies.data
+                    } else {
+                        responseState.value = ScreenState.Failure(vacancies.code, vacancies.message)
+                    }
+                    Log.d("Получение на откликнувшиеся вакансии", responseState.value.toString())
+                }
             }
-            Log.d("Получение на откликнувшиеся вакансии", responseState.value.toString())
         }
     }
 
-    fun getSalaryVacancy () {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = supabase.from("vakans").select {
-                filter {
-//                    rangeGte("vakans_price", minSalaryText to maxSalaryText)
-                    gte("vakans_price", minSalaryText.value)
-                }
-            }.decodeList<VakansInformation>()
-            Log.d("Вакансии по зарплате", response.toString())
-        }
-    }
-
-    fun searchVacancy () {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = supabase.from("vakans").select {
-                filter {
-                    ilike("vakans_name", "%${search.value}%")
-                    gte("vakans_price", minSalaryText.value)
-                }
-            }.decodeList<VakansInformation>()
-            Log.d("Вакансии при поиске", response.toString())
-        }
-    }
 
     fun addVacancy(vacancyId : Int) {
         viewModelScope.launch(Dispatchers.IO) {
