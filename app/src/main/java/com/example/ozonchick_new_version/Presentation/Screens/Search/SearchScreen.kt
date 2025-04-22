@@ -7,10 +7,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -180,17 +182,18 @@ private fun FilterDropMenu(
                     },
                     containerColor = BackgroundColor,
                 ) {
-                    for (item in dropItemsList.value) {
+                    for (item in 0 until dropItemsList.value.size) {
+                        if (item != 0) HorizontalDivider()
                         DropdownMenuItem(
                             text = {
                                 Text(
-                                    item,
+                                    dropItemsList.value[item],
                                     style = Tema.Text_16_16_Medium,
                                     color = MainColor
                                 )
                             },
                             onClick = {
-                                textField.value = item
+                                textField.value = dropItemsList.value[item]
                                 visibleList.value = false
                             },
                             contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
