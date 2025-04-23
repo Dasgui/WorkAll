@@ -22,6 +22,7 @@ import com.example.ozonchick_new_version.Domain.RegistrationEmployerUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationUseCase
 import com.example.ozonchick_new_version.Domain.RejectCandidateUseCase
 import com.example.ozonchick_new_version.Domain.RejectVacancyUseCase
+import com.example.ozonchick_new_version.Domain.SearchVacanciesUseCase
 import com.example.ozonchick_new_version.Domain.UpdateEmployerVacancyUseCase
 import com.example.ozonchick_new_version.Domain.UpdateUserInformationUseCase
 import com.example.ozonchick_new_version.Presentation.Models.EmployerDetailsVacancy
@@ -87,8 +88,9 @@ var AppModule = module {
     }
     factory { GetVacanciesUseCase(get()) }
     factory { AcceptVacancyUseCase(get()) }
+    factory { SearchVacanciesUseCase(get()) }
     viewModel {
-        ListVacanciesViewModel(get(), get())
+        ListVacanciesViewModel(get(), get(), get())
     }
 
     factory { GetEmployerVacanciesUseCase(get()) }

@@ -14,6 +14,7 @@ import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Data.network.supabase
 import com.example.ozonchick_new_version.Domain.AcceptVacancyUseCase
 import com.example.ozonchick_new_version.Domain.GetVacanciesUseCase
+import com.example.ozonchick_new_version.Domain.SearchVacanciesUseCase
 import com.example.ozonchick_new_version.Presentation.States.DialogStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import io.github.jan.supabase.postgrest.from
@@ -26,7 +27,8 @@ import kotlinx.coroutines.launch
 
 class ListVacanciesViewModel(
     private val getVacanciesUseCase: GetVacanciesUseCase,
-    private val acceptVacancyUseCase: AcceptVacancyUseCase
+    private val acceptVacancyUseCase: AcceptVacancyUseCase,
+    private val searchVacanciesUseCase: SearchVacanciesUseCase
 ) : ViewModel() {
     val responseState : MutableStateFlow<ScreenState<List<VakansInformation>>> = MutableStateFlow(ScreenState.Loading)
     val statesOfGetVacancies : MutableState<StatesOfGetVacancies> = mutableStateOf(
@@ -51,19 +53,14 @@ class ListVacanciesViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             when (val localState = statesOfGetVacancies.value) {
                 is StatesOfGetVacancies.Filter -> {
-                    val response = supabase.from("vakans").select {
-                        filter {
-                            ilike("vakans_name", "%${localState.search}%")
-                            if (localState.filterSalary.isNotEmpty() && localState.filterSalary.isNotEmpty()) {
-                                gte("vakans_price", localState.filterSalary)
-                            }
-                            if (localState.filterExperience.isNotBlank()) {
-                                eq("vakans_experience", localState.filterExperience)
-                            }
+                    val response = searchVacanciesUseCase(localState)
+                    when (response) {
+                        is CustomResult.Failure -> responseState.value = ScreenState.Failure(response.code, response.message)
+                        is CustomResult.Success<List<VakansInformation>> -> {
+                            responseState.value = ScreenState.Success(response.data)
+                            listVacancies.value = response.data
                         }
-                    }.decodeList<VakansInformation>()
-                    responseState.value = ScreenState.Success(response)
-                    listVacancies.value = response
+                    }
                     Log.d("Вакансии при поиске", response.toString())
                 }
                 StatesOfGetVacancies.Normal -> {

@@ -3,6 +3,7 @@ package com.example.ozonchick_new_version.Domain
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.model.UserId
 import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.Candidate
+import com.example.ozonchick_new_version.Data.model.ListOfVacancies.StatesOfGetVacancies
 import com.example.ozonchick_new_version.Data.model.VacancyDescriptionInsertModel
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateInformation
 import com.example.ozonchick_new_version.Data.model.Vakans_contacts
@@ -23,6 +24,12 @@ class GetVacanciesUseCase (private val repository: Repository) {
             }
         }
         return result
+    }
+}
+
+class SearchVacanciesUseCase (private val repository: Repository) {
+    suspend operator fun invoke (getStates: StatesOfGetVacancies.Filter) : CustomResult<List<VakansInformation>> {
+        return repository.searchVacancies(getStates)
     }
 }
 

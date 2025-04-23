@@ -12,6 +12,7 @@ import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.Use
 import com.example.ozonchick_new_version.Data.model.Authentication.Employer.Employer
 import com.example.ozonchick_new_version.Data.model.Authentication.Employer.EmployerInsertInformation
 import com.example.ozonchick_new_version.Data.model.Authentication.UserChangeableInformation
+import com.example.ozonchick_new_version.Data.model.ListOfVacancies.StatesOfGetVacancies
 import com.example.ozonchick_new_version.Data.model.VacancyDescriptionInsertModel
 import com.example.ozonchick_new_version.Data.model.VacancyInsertAccept
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateInformation
@@ -19,6 +20,7 @@ import com.example.ozonchick_new_version.Data.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Data.model.VakansOtklik
 import com.example.ozonchick_new_version.Data.model.VacancyResponse
+import com.example.ozonchick_new_version.Data.strings.AppErrors
 import com.example.ozonchick_new_version.Presentation.Models.ChangeVacancyUIModel
 import com.example.ozonchick_new_version.Presentation.Models.ExclusionOptions
 import io.github.jan.supabase.exceptions.HttpRequestException
@@ -82,6 +84,8 @@ interface Repository {
     ): CustomResult<Boolean>
 
     suspend fun getUserChangeableInformation(id: Int): CustomResult<UserChangeableInformation>
+
+    suspend fun searchVacancies (getStates : StatesOfGetVacancies.Filter) : CustomResult<List<VakansInformation>>
 }
 
 class RepositoryImpl : Repository {
@@ -626,6 +630,25 @@ class RepositoryImpl : Repository {
             }
         } catch (ex: Exception) {
             CustomResult.Failure(1, "Проверьте своё соиденение с интернетом \n ${ex.message}")
+        }
+    }
+
+    override suspend fun searchVacancies(getStates: StatesOfGetVacancies.Filter): CustomResult<List<VakansInformation>> {
+        return try {
+            val response = supabase.from("vakans").select {
+                filter {
+                    ilike("vakans_name", "%${getStates.search}%")
+                    if (getStates.filterSalary.isNotEmpty() && getStates.filterSalary.isNotEmpty()) {
+                        gte("vakans_price", getStates.filterSalary)
+                    }
+                    if (getStates.filterExperience.isNotBlank()) {
+                        eq("vakans_experience", getStates.filterExperience)
+                    }
+                }
+            }.decodeList<VakansInformation>()
+            CustomResult.Success(response)
+        } catch (ex : Exception) {
+            CustomResult.Failure(1, AppErrors.INTERNET.description)
         }
     }
 }
