@@ -32,6 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
+import com.example.ozonchick_new_version.Data.model.ListOfVacancies.StatesOfGetVacancies
 import com.example.ozonchick_new_version.Presentation.Screens.Search.SearchScreen
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.ui.components.Test_Components.ScaffoldBottomBar
@@ -51,6 +52,7 @@ fun CustomScaffold(
     scaffoldStates: ScaffoldStates = ScaffoldStates.Main,
     addVacancy : (() -> Unit) = {},
     navigator : Navigator? = LocalNavigator.current,
+    statesOfGetVacancies : StatesOfGetVacancies = StatesOfGetVacancies.Normal,
     topBar: @Composable () -> Unit = {
         Card(
             modifier = Modifier
@@ -105,7 +107,7 @@ fun CustomScaffold(
                                 contentDescription = null,
                                 modifier = Modifier
                                     .size(30.dp)
-                                    .clickable { navigator?.push(SearchScreen()) },
+                                    .clickable { navigator?.push(SearchScreen(statesOfGetVacancies)) },
                                 tint = MainColor
                             )
                         } else {

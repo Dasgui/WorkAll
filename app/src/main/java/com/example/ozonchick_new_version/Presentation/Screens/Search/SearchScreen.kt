@@ -16,6 +16,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,16 +42,25 @@ import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.R
 import org.koin.androidx.compose.koinViewModel
 
-class SearchScreen : Screen {
+class SearchScreen(private val statesOfGetVacancies: StatesOfGetVacancies = StatesOfGetVacancies.Normal) : Screen {
     @Composable
     override fun Content() {
-        SearchConstruct()
+        SearchConstruct(statesOfGetVacancies = statesOfGetVacancies)
     }
 }
 
 @Composable
-private fun SearchConstruct(viewModel: SearchViewModel = koinViewModel()) {
+private fun SearchConstruct(viewModel: SearchViewModel = koinViewModel(), statesOfGetVacancies: StatesOfGetVacancies) {
     val navigator = LocalNavigator.current
+    LaunchedEffect(true) {
+        when (val localState = statesOfGetVacancies) {
+            is StatesOfGetVacancies.Filter -> {
+                viewModel.loadFilters(localState)
+            }
+            StatesOfGetVacancies.Normal -> Unit
+        }
+
+    }
     CustomScaffold(
         mainText = "Поиск",
         scaffoldStates = ScaffoldStates.Vacancies
@@ -64,6 +74,12 @@ private fun SearchConstruct(viewModel: SearchViewModel = koinViewModel()) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextFields(viewModel: SearchViewModel) {
+    Text(
+        text = "Поиск",
+        style = Tema.Text_20_20_Medium,
+        color = MainColor
+    )
+    VerticalSpacer(10.dp)
     CustomOutlinedTextField(
         value = viewModel.search.value,
         onValueChange = {
@@ -222,11 +238,12 @@ fun BottomButtons(viewModel: SearchViewModel, navigator: Navigator?) {
     VerticalSpacer(10.dp)
     CustomButton(
         onClick = {
-            navigator?.replaceAll(
-                ListVacanciesScreen(
-                    StatesOfGetVacancies.Normal
-                )
-            )
+            viewModel.resetFilters()
+//            navigator?.replaceAll(
+//                ListVacanciesScreen(
+//                    StatesOfGetVacancies.Normal
+//                )
+//            )
         },
         placeText = "Сбросить поиск"
     )

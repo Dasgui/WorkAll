@@ -56,6 +56,12 @@ class ListVacanciesScreen(private val statesOfGetVacancies: StatesOfGetVacancies
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 private fun ListVacanciesScreenConstruct(viewModel: ListVacanciesViewModel = koinViewModel(), statesOfGetVacancies: StatesOfGetVacancies) {
+    LaunchedEffect(true) {
+        viewModel.responseState.value = ScreenState.Loading
+        viewModel.statesOfGetVacancies.value = statesOfGetVacancies
+        viewModel.loadData()
+    }
+
     if (viewModel.dialogStates.value is DialogStates.Error) {
         FailAlertDialog(
             title = "Ошибка",
@@ -71,12 +77,9 @@ private fun ListVacanciesScreenConstruct(viewModel: ListVacanciesViewModel = koi
                 viewModel.dialogStates.value = DialogStates.None
             })
     }
-    LaunchedEffect(true) {
-        viewModel.statesOfGetVacancies.value = statesOfGetVacancies
-        viewModel.loadData()
-    }
+
     val screenState = viewModel.responseState.collectAsState()
-    CustomScaffold(mainText = "Вакансии", bottomButton = true) {
+    CustomScaffold(mainText = "Вакансии", bottomButton = true, statesOfGetVacancies = viewModel.statesOfGetVacancies.value) {
         Column(
             modifier = Modifier.Companion
                 .padding(bottom = 80.dp)

@@ -14,8 +14,8 @@ import kotlinx.coroutines.launch
 
 class SearchViewModel : ViewModel() {
 
-    val search = mutableStateOf("Тестировщик")
-    val minSalaryText = mutableStateOf("40000")
+    val search = mutableStateOf("")
+    val minSalaryText = mutableStateOf("")
 
     val listExperience: MutableState<List<String>> = mutableStateOf(
         listOf(
@@ -32,12 +32,34 @@ class SearchViewModel : ViewModel() {
 
     val experience: MutableState<String> = mutableStateOf(listExperience.value.firstOrNull() ?: "Не требуется")
 
+
+
     fun getStatesOfGetVacancies () : StatesOfGetVacancies {
         return StatesOfGetVacancies.Filter(
             search = search.value,
             filterSalary = if (checkSalary.value) minSalaryText.value else "",
             filterExperience = if (checkExperience.value) experience.value else ""
         )
+    }
+
+    fun loadFilters (localState : StatesOfGetVacancies.Filter) {
+        if (localState.filterExperience.isNotEmpty()) {
+           checkExperience.value = true
+        }
+        if (localState.filterSalary.isNotEmpty()) {
+            checkSalary.value = true
+        }
+        search.value = localState.search
+        experience.value = localState.filterExperience
+        minSalaryText.value = localState.filterSalary
+    }
+
+    fun resetFilters () {
+        checkExperience.value = false
+        checkSalary.value = false
+        minSalaryText.value = ""
+        experience.value = ""
+        search.value = ""
     }
 
     fun getSalaryVacancy() {
