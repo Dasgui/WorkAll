@@ -30,8 +30,10 @@ import com.example.ozonchick_new_version.Data.model.ListOfVacancies.StatesOfGetV
 import com.example.ozonchick_new_version.Presentation.Screens.ListVacancies.ListVacanciesScreen
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.TextFieldStates
+import com.example.ozonchick_new_version.Presentation.ui.components.CheckBoxField
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomButton
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomCheckBox
+import com.example.ozonchick_new_version.Presentation.ui.components.CustomComboBox
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomOutlinedTextField
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.components.HorizontalSpacer
@@ -115,27 +117,13 @@ private fun FilterField(
     filter: MutableState<String>,
     title: String, image: Int,
 ) {
-    Row(
-        verticalAlignment = Alignment.Top,
-        horizontalArrangement = Arrangement.Start,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        CustomCheckBox(
-            checked = checked.value,
-            onChange = {
-                checked.value = it
-            },
-            modifier = Modifier
-                .size(24.dp)
-                .padding(start = 0.dp)
-        )
-        HorizontalSpacer(10.dp)
-        Text(
-            text = title,
-            style = Tema.Text_20_20_Medium,
-            color = MainColor
-        )
-    }
+    CheckBoxField(
+        checked = checked.value,
+        onChange = {
+            checked.value = it
+        },
+        text = title
+    )
     VerticalSpacer(15.dp)
     if (checked.value) {
         CustomOutlinedTextField(
@@ -166,70 +154,65 @@ private fun FilterDropMenu(
     dropItemsList: MutableState<List<String>>
 
 ) {
-    Row(
-        verticalAlignment = Alignment.Top,
-        horizontalArrangement = Arrangement.Start,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        CustomCheckBox(
-            checked = checked.value,
-            onChange = {
-                checked.value = it
-            },
-            modifier = Modifier
-                .size(24.dp)
-                .padding(start = 0.dp)
-        )
-        HorizontalSpacer(10.dp)
-        Text(
-            text = title,
-            style = Tema.Text_20_20_Medium,
-            color = MainColor
-        )
-    }
+    CheckBoxField(
+        checked = checked.value,
+        onChange = {
+            checked.value = it
+        },
+        text = title
+    )
     VerticalSpacer(15.dp)
     if (checked.value) {
-        CustomOutlinedTextField(
-            value = textField.value,
-            states = TextFieldStates.None,
-            onValueChange = {},
-            readOnly = true,
-            trailingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.arrow_square_down),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(30.dp)
-                        .clickable { visibleList.value = true },
-                    tint = MainColor
-                )
-                DropdownMenu(
-                    expanded = visibleList.value,
-                    onDismissRequest = {
-                        visibleList.value = false
-                    },
-                    containerColor = BackgroundColor,
-                ) {
-                    for (item in 0 until dropItemsList.value.size) {
-                        if (item != 0) HorizontalDivider()
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    dropItemsList.value[item],
-                                    style = Tema.Text_16_16_Medium,
-                                    color = MainColor
-                                )
-                            },
-                            onClick = {
-                                textField.value = dropItemsList.value[item]
-                                visibleList.value = false
-                            },
-                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
-                        )
-                    }
-                }
+        CustomComboBox(
+            textField = textField.value,
+            dropItemsList = dropItemsList.value,
+            selectedChange = { item ->
+                textField.value = item
+                visibleList.value = false
             },
+            itemToString = {it}
         )
+//        CustomOutlinedTextField(
+//            value = textField.value,
+//            states = TextFieldStates.None,
+//            onValueChange = {},
+//            readOnly = true,
+//            trailingIcon = {
+//                Icon(
+//                    painter = painterResource(id = R.drawable.arrow_square_down),
+//                    contentDescription = null,
+//                    modifier = Modifier
+//                        .size(30.dp)
+//                        .clickable { visibleList.value = true },
+//                    tint = MainColor
+//                )
+//                DropdownMenu(
+//                    expanded = visibleList.value,
+//                    onDismissRequest = {
+//                        visibleList.value = false
+//                    },
+//                    containerColor = BackgroundColor,
+//                ) {
+//                    for (item in 0 until dropItemsList.value.size) {
+//                        if (item != 0) HorizontalDivider()
+//                        DropdownMenuItem(
+//                            text = {
+//                                Text(
+//                                    dropItemsList.value[item],
+//                                    style = Tema.Text_16_16_Medium,
+//                                    color = MainColor
+//                                )
+//                            },
+//                            onClick = {
+//                                textField.value = dropItemsList.value[item]
+//                                visibleList.value = false
+//                            },
+//                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+//                        )
+//                    }
+//                }
+//            },
+//        )
     }
 }
 
