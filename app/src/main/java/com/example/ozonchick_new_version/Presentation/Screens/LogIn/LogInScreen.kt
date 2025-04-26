@@ -159,7 +159,7 @@ private fun BottomBody(viewModel: LogInViewModel) {
             .padding(top = 20.dp)
     ) {
         CustomCheckBox(
-            checked = viewModel.rememberUser,
+            checked = viewModel.rememberUser.value,
             onChange = {
                 viewModel.rememberUser.value = it
             },

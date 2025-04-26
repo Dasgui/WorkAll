@@ -25,6 +25,7 @@ import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.TextFieldStates
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
+import com.example.ozonchick_new_version.Presentation.ui.theme.EnabledColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.R
 
@@ -98,7 +99,9 @@ fun CustomOutlinedTextField(
             focusedIndicatorColor = MainColor,
             unfocusedIndicatorColor = MainColor,
             focusedTextColor = MainColor,
-            unfocusedTextColor = MainColor
+            unfocusedTextColor = MainColor,
+            disabledContainerColor = EnabledColor,
+            disabledIndicatorColor = EnabledColor,
         ),
         visualTransformation = if (states is TextFieldStates.Password && trailingIconVisible.value) PasswordVisualTransformation() else VisualTransformation.None
     )

@@ -6,6 +6,8 @@ val MainColor = Color(0xFFFFFFFF)
 val SecondColor = Color(0xFF00D6FF)
 val BackgroundColor = Color(0xFF2F80ED)
 
+val EnabledColor = Color(0xFF283E57)
+
 //основные цвета текста
 val Gray_Color_Passive_Secondary = Color(0xFFA7A7A7)
 val Gray_Color_Active_SideText = Color(0xFFCFCFCF)

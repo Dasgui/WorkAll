@@ -1,9 +1,16 @@
 package com.example.ozonchick_new_version.Domain
 
+import android.util.Log
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.model.UserId
 import com.example.ozonchick_new_version.Data.model.Authentication.UserChangeableInformation
+import com.example.ozonchick_new_version.Data.model.Resume.EducationGet
+import com.example.ozonchick_new_version.Data.model.Resume.ExperienceGet
+import com.example.ozonchick_new_version.Data.model.Resume.ResumeInformation
+import com.example.ozonchick_new_version.Data.model.Resume.ResumePost
 import com.example.ozonchick_new_version.Data.network.Repository
+import com.example.ozonchick_new_version.Data.strings.AppErrors
+import kotlin.math.exp
 
 class GetNameUseCase(private val repository: Repository) {
     suspend operator fun invoke(userId: UserId): CustomResult<String> {
@@ -20,5 +27,39 @@ class UpdateUserInformationUseCase(private val repository: Repository) {
 class GetUserChangeableInformationUseCase (private val repository: Repository) {
     suspend operator fun invoke (id : Int) : CustomResult<UserChangeableInformation> {
         return repository.getUserChangeableInformation(id)
+    }
+}
+
+class GetInformationResumeUseCase (private val repository: Repository) {
+    suspend operator fun invoke () : CustomResult<ResumeInformation> {
+        val education = repository.getEducation()
+        val experience = repository.getExperience()
+        return if (education is CustomResult.Success && experience is CustomResult.Success) {
+            val educationList = education.data.map { it.name }
+            val experienceList = experience.data.map { it.name }
+            Log.d("Опыт работы", experienceList.toString())
+            Log.d("Оброзование", educationList.toString())
+            CustomResult.Success(ResumeInformation(educationList, experienceList))
+        } else {
+            CustomResult.Failure(0, AppErrors.INTERNET.description)
+        }
+    }
+}
+
+class GetEducationUseCase (private val repository: Repository) {
+    suspend operator fun invoke () : CustomResult<List<EducationGet>> {
+        return repository.getEducation()
+    }
+}
+
+class GetExperienceUseCase (private val repository: Repository) {
+    suspend operator fun invoke () : CustomResult<List<ExperienceGet>> {
+        return repository.getExperience()
+    }
+}
+
+class UpdateResumeCandidateUseCase (private  val repository: Repository) {
+    suspend operator fun invoke (resume : ResumePost) : CustomResult<Boolean> {
+        return repository.updateCandidateResume(resume)
     }
 }

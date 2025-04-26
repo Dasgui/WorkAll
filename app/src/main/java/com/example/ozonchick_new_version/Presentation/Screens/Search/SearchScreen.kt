@@ -42,7 +42,8 @@ import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.R
 import org.koin.androidx.compose.koinViewModel
 
-class SearchScreen(private val statesOfGetVacancies: StatesOfGetVacancies = StatesOfGetVacancies.Normal) : Screen {
+class SearchScreen(private val statesOfGetVacancies: StatesOfGetVacancies = StatesOfGetVacancies.Normal) :
+    Screen {
     @Composable
     override fun Content() {
         SearchConstruct(statesOfGetVacancies = statesOfGetVacancies)
@@ -50,13 +51,17 @@ class SearchScreen(private val statesOfGetVacancies: StatesOfGetVacancies = Stat
 }
 
 @Composable
-private fun SearchConstruct(viewModel: SearchViewModel = koinViewModel(), statesOfGetVacancies: StatesOfGetVacancies) {
+private fun SearchConstruct(
+    viewModel: SearchViewModel = koinViewModel(),
+    statesOfGetVacancies: StatesOfGetVacancies
+) {
     val navigator = LocalNavigator.current
     LaunchedEffect(true) {
         when (val localState = statesOfGetVacancies) {
             is StatesOfGetVacancies.Filter -> {
                 viewModel.loadFilters(localState)
             }
+
             StatesOfGetVacancies.Normal -> Unit
         }
 
@@ -95,12 +100,19 @@ fun TextFields(viewModel: SearchViewModel) {
         image = R.drawable.wallet_3
     )
     VerticalSpacer(20.dp)
-    FilterDropMenu(viewModel.checkExperience, title = "Учитывать требуемый опыт работы", textField = viewModel.experience, viewModel.checkListExperience, viewModel.listExperience)
+    FilterDropMenu(
+        viewModel.checkExperience,
+        title = "Учитывать требуемый опыт работы",
+        textField = viewModel.experience,
+        viewModel.checkListExperience,
+        viewModel.listExperience
+    )
 }
 
 @Composable
 private fun FilterField(
-    checked: MutableState<Boolean>, filter: MutableState<String>,
+    checked: MutableState<Boolean>,
+    filter: MutableState<String>,
     title: String, image: Int,
 ) {
     Row(
@@ -109,7 +121,7 @@ private fun FilterField(
         modifier = Modifier.fillMaxWidth()
     ) {
         CustomCheckBox(
-            checked = checked,
+            checked = checked.value,
             onChange = {
                 checked.value = it
             },
@@ -150,8 +162,8 @@ private fun FilterField(
 private fun FilterDropMenu(
     checked: MutableState<Boolean>,
     title: String,
-    textField : MutableState<String>, visibleList : MutableState<Boolean>,
-    dropItemsList : MutableState<List<String>>
+    textField: MutableState<String>, visibleList: MutableState<Boolean>,
+    dropItemsList: MutableState<List<String>>
 
 ) {
     Row(
@@ -160,7 +172,7 @@ private fun FilterDropMenu(
         modifier = Modifier.fillMaxWidth()
     ) {
         CustomCheckBox(
-            checked = checked,
+            checked = checked.value,
             onChange = {
                 checked.value = it
             },
@@ -217,8 +229,7 @@ private fun FilterDropMenu(
                     }
                 }
             },
-
-            )
+        )
     }
 }
 

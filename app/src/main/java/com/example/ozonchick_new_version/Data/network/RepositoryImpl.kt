@@ -12,7 +12,11 @@ import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.Use
 import com.example.ozonchick_new_version.Data.model.Authentication.Employer.Employer
 import com.example.ozonchick_new_version.Data.model.Authentication.Employer.EmployerInsertInformation
 import com.example.ozonchick_new_version.Data.model.Authentication.UserChangeableInformation
+import com.example.ozonchick_new_version.Data.model.Resume.EducationGet
+import com.example.ozonchick_new_version.Data.model.Resume.ExperienceGet
 import com.example.ozonchick_new_version.Data.model.ListOfVacancies.StatesOfGetVacancies
+import com.example.ozonchick_new_version.Data.model.Resume.ResumeGet
+import com.example.ozonchick_new_version.Data.model.Resume.ResumePost
 import com.example.ozonchick_new_version.Data.model.VacancyDescriptionInsertModel
 import com.example.ozonchick_new_version.Data.model.VacancyInsertAccept
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateInformation
@@ -86,6 +90,10 @@ interface Repository {
     suspend fun getUserChangeableInformation(id: Int): CustomResult<UserChangeableInformation>
 
     suspend fun searchVacancies (getStates : StatesOfGetVacancies.Filter) : CustomResult<List<VakansInformation>>
+
+    suspend fun updateCandidateResume (resume : ResumePost) : CustomResult<Boolean>
+    suspend fun getEducation () : CustomResult<List<EducationGet>>
+    suspend fun getExperience () : CustomResult<List<ExperienceGet>>
 }
 
 class RepositoryImpl : Repository {
@@ -649,6 +657,72 @@ class RepositoryImpl : Repository {
             CustomResult.Success(response)
         } catch (ex : Exception) {
             CustomResult.Failure(1, AppErrors.INTERNET.description)
+        }
+    }
+
+    override suspend fun updateCandidateResume(resume: ResumePost): CustomResult<Boolean> {
+        return try {
+            val user = supabase.from("user_information").select() {
+                filter {
+                    eq("user_id", publicUserId.id)
+                }
+            }.decodeSingle<Candidate>()
+            val resume = if (user.resume_id != 0) {
+                supabase.from("Resume").update({
+                    set("experience_id", resume.experience_id)
+                    set("description", resume.description)
+                    set("professionName", resume.professionName)
+                    set("education", resume.education)
+                }) {
+                    select()
+                    filter {
+                        eq("id", user.resume_id)
+                    }
+                }.decodeSingleOrNull<ResumeGet>()
+            } else {
+                 supabase.from("Resume").insert(
+                    resume
+                ) {
+                    select()
+                }.decodeSingleOrNull<ResumeGet>()
+            }
+
+            if (resume == null) {
+                CustomResult.Failure(0, AppErrors.UPDATE_INFORMATION.description)
+            }
+
+            supabase.from("user_information").update(
+                {
+                    set("resume_id", resume?.id)
+                }
+            ) {
+                filter {
+                    eq("user_id", publicUserId.id)
+                }
+            }
+            CustomResult.Success(true)
+        } catch (ex : Exception) {
+            Log.d("Ошибка при создании/изменении резюме", ex.toString())
+            CustomResult.Failure(0, AppErrors.INTERNET.description)
+
+        }
+    }
+
+    override suspend fun getEducation(): CustomResult<List<EducationGet>> {
+        return try {
+            val education = supabase.from("Education").select().decodeList<EducationGet>()
+            CustomResult.Success(education)
+        } catch (ex : Exception) {
+            CustomResult.Failure(0, AppErrors.INTERNET.description)
+        }
+    }
+
+    override suspend fun getExperience(): CustomResult<List<ExperienceGet>> {
+        return try {
+            val education = supabase.from("Experience_status").select().decodeList<ExperienceGet>()
+            CustomResult.Success(education)
+        } catch (ex : Exception) {
+            CustomResult.Failure(0, AppErrors.INTERNET.description)
         }
     }
 }

@@ -13,12 +13,12 @@ import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 
 @Composable
 fun CustomCheckBox(
-    checked: MutableState<Boolean>,
+    checked: Boolean,
     onChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Checkbox(
-        checked = checked.value,
+        checked = checked,
         onCheckedChange = onChange,
         modifier = modifier,
         colors = CheckboxDefaults.colors(
