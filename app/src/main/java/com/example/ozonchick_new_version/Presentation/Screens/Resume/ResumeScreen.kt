@@ -1,5 +1,6 @@
 package com.example.ozonchick_new_version.Presentation.Screens.Resume
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Text
@@ -96,11 +97,12 @@ private fun Education(viewModel: ResumeViewModel, navigator: Navigator?) {
     )
     VerticalSpacer(10.dp)
     CustomComboBox(
-        textField = viewModel.educationField.value,
+        textField = viewModel.selectedEducation.value?.name ?: "Выберите значение",
         dropItemsList = viewModel.educationList.value,
-        selectedChange = {
-            viewModel.educationField.value = it
-        }
+        selectedChange = { education ->
+            viewModel.selectedEducation.value = education
+        },
+        itemToString = {it.name}
     )
     VerticalSpacer(20.dp)
     BottomButtons(
@@ -164,12 +166,13 @@ private fun Experience(viewModel: ResumeViewModel) {
         )
         VerticalSpacer(10.dp)
         CustomComboBox(
-            textField = viewModel.experienceField.value,
+            textField = viewModel.selectedExperience.value?.name ?: "Выберите значение",
             dropItemsList = viewModel.experienceList.value,
-            selectedChange = {
-                viewModel.experienceField.value = it
+            selectedChange = { experience ->
+                viewModel.selectedExperience.value = experience
             },
-            enabled = viewModel.enabledFieldsExperience.value
+            enabled = viewModel.enabledFieldsExperience.value,
+            itemToString = { it.name }
         )
         VerticalSpacer(80.dp)
     }

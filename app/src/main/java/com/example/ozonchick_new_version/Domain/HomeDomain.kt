@@ -35,11 +35,11 @@ class GetInformationResumeUseCase (private val repository: Repository) {
         val education = repository.getEducation()
         val experience = repository.getExperience()
         return if (education is CustomResult.Success && experience is CustomResult.Success) {
-            val educationList = education.data.map { it.name }
-            val experienceList = experience.data.map { it.name }
-            Log.d("Опыт работы", experienceList.toString())
-            Log.d("Оброзование", educationList.toString())
-            CustomResult.Success(ResumeInformation(educationList, experienceList))
+//            val educationList = education.data.map { it.name }
+//            val experienceList = experience.data.map { it.name }
+//            Log.d("Опыт работы", experienceList.toString())
+//            Log.d("Оброзование", educationList.toString())
+            CustomResult.Success(ResumeInformation(education.data, experience.data))
         } else {
             CustomResult.Failure(0, AppErrors.INTERNET.description)
         }

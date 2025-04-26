@@ -22,11 +22,12 @@ import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.R
 
 @Composable
-fun CustomComboBox(
+fun <T> CustomComboBox(
     textField: String,
-    dropItemsList: List<String>,
-    selectedChange : (String) -> Unit,
-    enabled : Boolean = true
+    dropItemsList: List<T>,
+    selectedChange : (T) -> Unit,
+    enabled : Boolean = true,
+    itemToString: (T) -> String = { it.toString() }
 ) {
     val visible : MutableState<Boolean> = rememberSaveable { mutableStateOf(false) }
     CustomOutlinedTextField(
@@ -56,7 +57,7 @@ fun CustomComboBox(
                     DropdownMenuItem(
                         text = {
                             Text(
-                                item,
+                                itemToString(item),
                                 style = Tema.Text_16_16_Medium,
                                 color = MainColor
                             )

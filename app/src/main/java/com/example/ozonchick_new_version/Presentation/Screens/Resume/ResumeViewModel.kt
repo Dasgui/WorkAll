@@ -6,6 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
+import com.example.ozonchick_new_version.Data.model.Resume.EducationGet
+import com.example.ozonchick_new_version.Data.model.Resume.ExperienceGet
 import com.example.ozonchick_new_version.Data.model.Resume.ResumeInformation
 import com.example.ozonchick_new_version.Data.model.Resume.ResumePost
 import com.example.ozonchick_new_version.Domain.GetEducationUseCase
@@ -34,14 +36,16 @@ class ResumeViewModel(
     val professionName: MutableState<String> = mutableStateOf("")
 
     val enabledFieldsExperience: MutableState<Boolean> = mutableStateOf(false)
-    val experienceList: MutableState<List<String>> =
+    val experienceList: MutableState<List<ExperienceGet>> =
         mutableStateOf(emptyList())
     val experienceField: MutableState<String> = mutableStateOf("")
+    val selectedExperience : MutableState<ExperienceGet?> = mutableStateOf(null)
 
 
-    val educationList: MutableState<List<String>> =
+    val educationList: MutableState<List<EducationGet>> =
         mutableStateOf(emptyList())
     val educationField: MutableState<String> = mutableStateOf("")
+    val selectedEducation : MutableState<EducationGet?> = mutableStateOf(null)
 
     val isFieldsError : MutableState <Boolean> = mutableStateOf(false)
 
@@ -63,10 +67,10 @@ class ResumeViewModel(
     fun postResume() {
         viewModelScope.launch(Dispatchers.IO) {
             val resume = ResumePost(
-                experience_id = 1,
+                experience_id = selectedExperience.value?.id ?: 0,
                 description = information.value,
                 professionName = professionName.value,
-                education = 1
+                education = selectedEducation.value?.id ?: 0
             )
             val response = updateResumeCandidateUseCase(resume)
             when (val localResponse = response) {
@@ -110,11 +114,11 @@ class ResumeViewModel(
     fun checkFields (step: ResumeUIModel = stepScreen.value) : Boolean {
         return when (step) {
             ResumeUIModel.Education -> {
-                educationField.value.isNotEmpty()
+                selectedEducation.value != null
             }
             ResumeUIModel.Experience -> {
                 if (enabledFieldsExperience.value) {
-                    professionName.value.isNotEmpty() && experienceField.value.isNotEmpty()
+                    professionName.value.isNotEmpty() && selectedExperience.value != null
                 } else {
                     true
                 }
