@@ -4,12 +4,14 @@ import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.model.UserId
 import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.Candidate
 import com.example.ozonchick_new_version.Data.model.ListOfVacancies.StatesOfGetVacancies
+import com.example.ozonchick_new_version.Data.model.Resume.ResumeDto
 import com.example.ozonchick_new_version.Data.model.VacancyDescriptionInsertModel
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateInformation
 import com.example.ozonchick_new_version.Data.model.Vakans_contacts
 import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Data.model.VacancyResponse
 import com.example.ozonchick_new_version.Data.network.Repository
+import com.example.ozonchick_new_version.Data.strings.AppErrors
 import com.example.ozonchick_new_version.Presentation.Models.ChangeVacancyUIModel
 
 class GetVacanciesUseCase (private val repository: Repository) {
@@ -117,5 +119,22 @@ class AcceptVacancyUseCase (private val repository: Repository) {
 class RejectVacancyUseCase (private val repository: Repository) {
     suspend operator fun invoke(candidateId: Int, vacancyId: Int) : CustomResult<Boolean> {
         return repository.rejectVacancy(candidateId, vacancyId)
+    }
+}
+
+class GetResumeCandidateUseCase (private val repository: Repository) {
+    suspend operator fun invoke (resumeId : Int) : CustomResult<ResumeDto> {
+        val resume = repository.getResume(resumeId)
+        return if (resume is CustomResult.Success) {
+            val experience = repository.getExperience(resume.data.experience_id) as CustomResult.Success
+            val education = repository.getEducation(resume.data.education) as CustomResult.Success
+
+            val resumeDto = ResumeDto(id = resume.data.id, experience = experience.data.name,
+                description = resume.data.description, professionName = resume.data.professionName, education = education.data.name)
+
+            CustomResult.Success(resumeDto)
+        } else {
+            CustomResult.Failure(0, AppErrors.INTERNET.description)
+        }
     }
 }

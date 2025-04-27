@@ -10,6 +10,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import com.example.ozonchick_new_version.Presentation.Screens.EmployerCandidateInformation.EmployerCandidateInformationScreen
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState.*
 import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
@@ -30,6 +32,7 @@ class EmployerResponsesScreen(private val vacancyId: Int) : Screen {
 
 @Composable
 private fun EmployerResponsesConstruct(viewModel: EmployerResponsesViewModel) {
+    val navigator = LocalNavigator.current
     LaunchedEffect(true) {
         viewModel.loadData()
     }
@@ -67,7 +70,8 @@ private fun EmployerResponsesConstruct(viewModel: EmployerResponsesViewModel) {
                                 viewModel.rejectCandidate(item.user_id)
                             },
                             navigateOnDescription = {
-                                viewModel.screenState.value = Failure(0, "Простите, но дополнительная информация пока не доступна.")
+                                navigator?.push(EmployerCandidateInformationScreen(item.resume_id))
+//                                viewModel.screenState.value = Failure(0, "Простите, но дополнительная информация пока не доступна.")
                             }
                         )
                     }

@@ -102,6 +102,7 @@ fun CustomOutlinedTextField(
             unfocusedTextColor = MainColor,
             disabledContainerColor = EnabledColor,
             disabledIndicatorColor = EnabledColor,
+            disabledTextColor = MainColor
         ),
         visualTransformation = if (states is TextFieldStates.Password && trailingIconVisible.value) PasswordVisualTransformation() else VisualTransformation.None
     )

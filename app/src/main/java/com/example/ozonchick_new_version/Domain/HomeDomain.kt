@@ -1,6 +1,5 @@
 package com.example.ozonchick_new_version.Domain
 
-import android.util.Log
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.model.UserId
 import com.example.ozonchick_new_version.Data.model.Authentication.UserChangeableInformation
@@ -10,7 +9,6 @@ import com.example.ozonchick_new_version.Data.model.Resume.ResumeInformation
 import com.example.ozonchick_new_version.Data.model.Resume.ResumePost
 import com.example.ozonchick_new_version.Data.network.Repository
 import com.example.ozonchick_new_version.Data.strings.AppErrors
-import kotlin.math.exp
 
 class GetNameUseCase(private val repository: Repository) {
     suspend operator fun invoke(userId: UserId): CustomResult<String> {
@@ -32,8 +30,8 @@ class GetUserChangeableInformationUseCase (private val repository: Repository) {
 
 class GetInformationResumeUseCase (private val repository: Repository) {
     suspend operator fun invoke () : CustomResult<ResumeInformation> {
-        val education = repository.getEducation()
-        val experience = repository.getExperience()
+        val education = repository.getEducations()
+        val experience = repository.getExperiences()
         return if (education is CustomResult.Success && experience is CustomResult.Success) {
 //            val educationList = education.data.map { it.name }
 //            val experienceList = experience.data.map { it.name }
@@ -48,13 +46,13 @@ class GetInformationResumeUseCase (private val repository: Repository) {
 
 class GetEducationUseCase (private val repository: Repository) {
     suspend operator fun invoke () : CustomResult<List<EducationGet>> {
-        return repository.getEducation()
+        return repository.getEducations()
     }
 }
 
 class GetExperienceUseCase (private val repository: Repository) {
     suspend operator fun invoke () : CustomResult<List<ExperienceGet>> {
-        return repository.getExperience()
+        return repository.getExperiences()
     }
 }
 

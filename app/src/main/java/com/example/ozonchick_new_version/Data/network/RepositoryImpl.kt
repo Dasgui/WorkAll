@@ -15,6 +15,7 @@ import com.example.ozonchick_new_version.Data.model.Authentication.UserChangeabl
 import com.example.ozonchick_new_version.Data.model.Resume.EducationGet
 import com.example.ozonchick_new_version.Data.model.Resume.ExperienceGet
 import com.example.ozonchick_new_version.Data.model.ListOfVacancies.StatesOfGetVacancies
+import com.example.ozonchick_new_version.Data.model.Resume.ResumeDto
 import com.example.ozonchick_new_version.Data.model.Resume.ResumeGet
 import com.example.ozonchick_new_version.Data.model.Resume.ResumePost
 import com.example.ozonchick_new_version.Data.model.VacancyDescriptionInsertModel
@@ -92,8 +93,12 @@ interface Repository {
     suspend fun searchVacancies (getStates : StatesOfGetVacancies.Filter) : CustomResult<List<VakansInformation>>
 
     suspend fun updateCandidateResume (resume : ResumePost) : CustomResult<Boolean>
-    suspend fun getEducation () : CustomResult<List<EducationGet>>
-    suspend fun getExperience () : CustomResult<List<ExperienceGet>>
+    suspend fun getEducations () : CustomResult<List<EducationGet>>
+    suspend fun getExperiences () : CustomResult<List<ExperienceGet>>
+
+    suspend fun getResume (id : Int) : CustomResult<ResumeGet>
+    suspend fun getEducation (id : Int) : CustomResult<EducationGet>
+    suspend fun getExperience (id : Int) : CustomResult<ExperienceGet>
 }
 
 class RepositoryImpl : Repository {
@@ -708,7 +713,7 @@ class RepositoryImpl : Repository {
         }
     }
 
-    override suspend fun getEducation(): CustomResult<List<EducationGet>> {
+    override suspend fun getEducations(): CustomResult<List<EducationGet>> {
         return try {
             val education = supabase.from("Education").select().decodeList<EducationGet>()
             CustomResult.Success(education)
@@ -717,10 +722,49 @@ class RepositoryImpl : Repository {
         }
     }
 
-    override suspend fun getExperience(): CustomResult<List<ExperienceGet>> {
+    override suspend fun getExperiences(): CustomResult<List<ExperienceGet>> {
         return try {
             val education = supabase.from("Experience_status").select().decodeList<ExperienceGet>()
             CustomResult.Success(education)
+        } catch (ex : Exception) {
+            CustomResult.Failure(0, AppErrors.INTERNET.description)
+        }
+    }
+
+    override suspend fun getResume(id : Int): CustomResult<ResumeGet> {
+        return try {
+            val resume = supabase.from("Resume").select() {
+                filter {
+                    eq("id", id)
+                }
+            }.decodeSingle<ResumeGet>()
+            CustomResult.Success(resume)
+        } catch (ex : Exception) {
+            CustomResult.Failure(0, AppErrors.INTERNET.description)
+        }
+    }
+
+    override suspend fun getEducation(id: Int): CustomResult<EducationGet> {
+        return try {
+            val education = supabase.from("Education").select() {
+                filter {
+                    eq("id", id)
+                }
+            }.decodeSingle<EducationGet>()
+            CustomResult.Success(education)
+        } catch (ex : Exception) {
+            CustomResult.Failure(0, AppErrors.INTERNET.description)
+        }
+    }
+
+    override suspend fun getExperience(id: Int): CustomResult<ExperienceGet> {
+        return try {
+            val experience = supabase.from("Experience_status").select() {
+                filter {
+                    eq("id", id)
+                }
+            }.decodeSingle<ExperienceGet>()
+            CustomResult.Success(experience)
         } catch (ex : Exception) {
             CustomResult.Failure(0, AppErrors.INTERNET.description)
         }

@@ -25,11 +25,13 @@ fun NameTextField(
     maxChar: Int = 0,
     onlyNumbers : Boolean = false,
     height : Dp = 55.dp,
-    singleLine : Boolean = true
+    singleLine : Boolean = true,
+    spaceBy : Dp = 10.dp,
+    enabled : Boolean = true
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        verticalArrangement = Arrangement.spacedBy(spaceBy)
     ) {
         Text(
             text = title,
@@ -55,9 +57,39 @@ fun NameTextField(
                     }
                 }
             },
+            enabled = enabled,
             singleLine = singleLine,
             placeText = holderText,
             keyboardOptions = if (onlyNumbers) KeyboardOptions(keyboardType = KeyboardType.Number) else KeyboardOptions.Default
+        )
+    }
+}
+
+@Composable
+fun NameTextField(
+    title: String,
+    information: String,
+    height : Dp = 55.dp,
+    singleLine : Boolean = true,
+    spaceBy : Dp = 10.dp,
+    enabled : Boolean = true
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(spaceBy)
+    ) {
+        Text(
+            text = title,
+            style = Tema.Text_24_24_Bold,
+            maxLines = 1,
+            color = MainColor,
+        )
+        CustomOutlinedTextField(
+            value = information,
+            modifier = Modifier.fillMaxWidth().height(height),
+            onValueChange = {},
+            enabled = enabled,
+            singleLine = singleLine,
         )
     }
 }

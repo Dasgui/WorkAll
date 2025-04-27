@@ -15,6 +15,7 @@ import com.example.ozonchick_new_version.Domain.GetNameUseCase
 import com.example.ozonchick_new_version.Domain.GetOrganizationNameUseCase
 import com.example.ozonchick_new_version.Domain.GetResponsesIdVacanciesUseCase
 import com.example.ozonchick_new_version.Domain.GetResponsesVacanciesUseCase
+import com.example.ozonchick_new_version.Domain.GetResumeCandidateUseCase
 import com.example.ozonchick_new_version.Domain.GetUserChangeableInformationUseCase
 import com.example.ozonchick_new_version.Domain.GetUsersForEmployerUseCase
 import com.example.ozonchick_new_version.Domain.GetVacanciesUseCase
@@ -31,6 +32,7 @@ import com.example.ozonchick_new_version.Presentation.Models.EmployerDetailsVaca
 import com.example.ozonchick_new_version.Presentation.Screens.ChangeInformation.ChangeInformationViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerAddVacancy.EmployerAddVacancyScreen
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerAddVacancy.EmployerAddVacancyViewModel
+import com.example.ozonchick_new_version.Presentation.Screens.EmployerCandidateInformation.EmployerCandidateInformationViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerDetailsVacancy.EmployerDetailsVacancyScreen
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerDetailsVacancy.EmployerDetailsVacancyViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerResponses.EmployerResponsesViewModel
@@ -132,5 +134,10 @@ var AppModule = module {
     factory { GetInformationResumeUseCase(get()) }
     viewModel {
         ResumeViewModel(get(), get())
+    }
+
+    factory { GetResumeCandidateUseCase(get()) }
+    viewModel {
+            (resumeId : Int) -> EmployerCandidateInformationViewModel(resumeId, get())
     }
 }
