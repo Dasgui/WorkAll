@@ -28,8 +28,11 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
+import com.example.ozonchick_new_version.Common.UserType
+import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Presentation.Screens.ChangeInformation.ChangeInformationScreen
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
+import com.example.ozonchick_new_version.Presentation.Screens.Resume.ResumeScreen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomCard
@@ -140,24 +143,34 @@ private fun ScreenHead(
 @Composable
 private fun ScreenBody(navigator: Navigator?) {
     Column(
-        modifier = Modifier.Companion
+        modifier = Modifier
             .fillMaxSize()
             .padding(top = 10.dp),
     ) {
-        CardConstruct(
-            "Настройки",
-            "Здесь вы можете настроить приложение",
-            R.drawable.setting_icon,
-            navigateOnScreen = {}
-        )
+//        CardConstruct(
+//            "Настройки",
+//            "Здесь вы можете настроить приложение",
+//            R.drawable.setting_icon,
+//            navigateOnScreen = {}
+//        )
         CardConstruct(
             "Информация о вас",
-            "Здесь вы можете изменить информация",
-            R.drawable.setting_icon,
+            "Здесь вы можете изменить информацию о себе",
+            R.drawable.edit_icon,
             navigateOnScreen = {
                 navigator?.push(ChangeInformationScreen())
             }
         )
+        if (publicUserId.type is UserType.Candidate) {
+            CardConstruct(
+                "Ваше резюме",
+                "Здесь вы можете написать своё резюме",
+                R.drawable.resume_icon,
+                navigateOnScreen = {
+                    navigator?.push(ResumeScreen())
+                }
+            )
+        }
     }
 }
 
@@ -171,13 +184,13 @@ private fun CardConstruct(
     CustomCard(
         modifier = Modifier.Companion
             .fillMaxWidth()
-            .padding(top = 20.dp)
+            .padding(vertical = 13.dp)
             .height(80.dp)
             .clickable { navigateOnScreen() },
     ) {
         Row(
             modifier = Modifier
-                .padding(start = 5.dp, end = 5.dp)
+                .padding(start = 12.dp, end = 12.dp)
                 .fillMaxSize(),
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.Companion.CenterVertically
@@ -194,19 +207,20 @@ private fun CardMain(
     icon: Int
 ) {
     Row(
-        verticalAlignment = Alignment.Companion.CenterVertically,
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround
     ) {
         Icon(
-            modifier = Modifier.Companion.size(25.dp),
+            modifier = Modifier.size(25.dp),
             painter = painterResource(id = icon),
             contentDescription = "Значок",
             tint = MainColor
         )
         Column(
-            horizontalAlignment = Alignment.Companion.Start,
+            horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.SpaceAround,
-            modifier = Modifier.Companion.padding(start = 5.dp)
+            modifier = Modifier.padding(start = 10.dp)
         ) {
             Text(
                 text = mainText,
@@ -215,15 +229,9 @@ private fun CardMain(
             )
             Text(
                 text = secondText,
-                style = Tema.Text_20_20_Medium,
+                style = Tema.Text_18_18_Medium,
                 color = MainColor,
             )
         }
     }
-    Icon(
-        modifier = Modifier.Companion.size(20.dp),
-        painter = painterResource(id = R.drawable.vector),
-        contentDescription = "",
-        tint = MainColor
-    )
 }

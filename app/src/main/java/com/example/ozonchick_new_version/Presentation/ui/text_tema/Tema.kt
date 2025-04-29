@@ -199,6 +199,14 @@ object Tema {
         lineHeight = 20.sp,
         fontFamily = MainFontFamily
     )
+
+    val Text_20_20_Bold = TextStyle(
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Bold,
+        lineHeight = 20.sp,
+        fontFamily = MainFontFamily
+    )
+
     val Text_24_24_Medium = TextStyle(
         fontSize = 24.sp,
         fontWeight = FontWeight.Medium,

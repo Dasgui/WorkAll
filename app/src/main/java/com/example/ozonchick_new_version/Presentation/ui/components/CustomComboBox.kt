@@ -1,6 +1,9 @@
 package com.example.ozonchick_new_version.Presentation.ui.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -14,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.example.ozonchick_new_version.Presentation.States.TextFieldStates
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
@@ -51,6 +55,9 @@ fun <T> CustomComboBox(
                     visible.value = false
                 },
                 containerColor = BackgroundColor,
+                modifier = Modifier.fillMaxWidth(0.93f),
+                offset = DpOffset(0.dp, 10.dp),
+                border = BorderStroke(1.dp, MainColor)
             ) {
                 dropItemsList.forEachIndexed { index, item ->
                     if (index != 0) HorizontalDivider()
