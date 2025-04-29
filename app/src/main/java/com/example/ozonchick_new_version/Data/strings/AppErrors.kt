@@ -6,5 +6,7 @@ enum class AppErrors(val description : String) {
     UPDATE_INFORMATION("Не удалось обновить информацию"),
     INCORRECT_VALUES("Не все поля заполнены или заполнены некоректно. Проверить вписанные значения."),
 
-    VACANCIES_ALREADY_EXIST("Вакансия уже добавлена в ваши отклики")
+    VACANCIES_ALREADY_EXIST("Вакансия уже добавлена в ваши отклики"),
+
+    RESUME_NOT_EXIST("Изините, но у этого пользователя ещё нет резюме.")
 }

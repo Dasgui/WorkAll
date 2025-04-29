@@ -11,8 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.example.ozonchick_new_version.Data.strings.AppErrors
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerCandidateInformation.EmployerCandidateInformationScreen
+import com.example.ozonchick_new_version.Presentation.States.DialogStates
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
+import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.States.ScreenState.*
 import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
 import com.example.ozonchick_new_version.Presentation.ui.components.CandidateCard
@@ -37,6 +40,14 @@ private fun EmployerResponsesConstruct(viewModel: EmployerResponsesViewModel) {
         viewModel.loadData()
     }
     val localState = viewModel.screenState.collectAsState()
+    if (viewModel.dialogState.value is DialogStates.Error) {
+        FailAlertDialog(
+            title = "Ошибка",
+            AppErrors.RESUME_NOT_EXIST.description,
+            onOkClick = {
+                viewModel.dialogState.value = DialogStates.None
+            })
+    }
     CustomScaffold(
         bottomButton = true,
         mainText = "Отклики",
@@ -48,7 +59,7 @@ private fun EmployerResponsesConstruct(viewModel: EmployerResponsesViewModel) {
                     title = "Ошибка",
                     curState.message,
                     onOkClick = {
-                        viewModel.screenState.value = Error
+                        viewModel.screenState.value = AwaitingChangeFromUser
                     })
             }
 
@@ -70,7 +81,11 @@ private fun EmployerResponsesConstruct(viewModel: EmployerResponsesViewModel) {
                                 viewModel.rejectCandidate(item.user_id)
                             },
                             navigateOnDescription = {
-                                navigator?.push(EmployerCandidateInformationScreen(item.resume_id))
+                                if (item.resume_id == 0) {
+                                    viewModel.dialogState.value = DialogStates.Error
+                                } else {
+                                    navigator?.push(EmployerCandidateInformationScreen(item.resume_id))
+                                }
 //                                viewModel.screenState.value = Failure(0, "Простите, но дополнительная информация пока не доступна.")
                             }
                         )

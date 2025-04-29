@@ -1,5 +1,7 @@
 package com.example.ozonchick_new_version.Presentation.Screens.EmployerResponses
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
@@ -9,6 +11,7 @@ import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Domain.AcceptCandidateUseCase
 import com.example.ozonchick_new_version.Domain.GetUsersForEmployerUseCase
 import com.example.ozonchick_new_version.Domain.RejectCandidateUseCase
+import com.example.ozonchick_new_version.Presentation.States.DialogStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +28,9 @@ class EmployerResponsesViewModel(
 ) : ViewModel() {
     val screenState : MutableStateFlow<ScreenState<List<Candidate>>> =
         MutableStateFlow(ScreenState.Loading)
+
+    val dialogState : MutableState<DialogStates> = mutableStateOf(DialogStates.None)
+
     fun loadData () {
         screenState.value = ScreenState.Loading
         viewModelScope.launch(Dispatchers.IO) {

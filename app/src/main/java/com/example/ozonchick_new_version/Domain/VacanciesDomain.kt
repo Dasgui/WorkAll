@@ -124,6 +124,9 @@ class RejectVacancyUseCase (private val repository: Repository) {
 
 class GetResumeCandidateUseCase (private val repository: Repository) {
     suspend operator fun invoke (resumeId : Int) : CustomResult<ResumeDto> {
+        if (resumeId == 0) {
+
+        }
         val resume = repository.getResume(resumeId)
         return if (resume is CustomResult.Success) {
             val experience = repository.getExperience(resume.data.experience_id) as CustomResult.Success
