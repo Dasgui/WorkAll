@@ -233,8 +233,8 @@ class RepositoryImpl : Repository {
                 CustomResult.Success(result)
             } else {
                 CustomResult.Failure(
-                    ExclusionOptions.UserExistsError.id,
-                    ExclusionOptions.UserExistsError.message
+                    ExclusionOptions.UserIsAlreadyExists.id,
+                    ExclusionOptions.UserIsAlreadyExists.message
                 )
             }
         } catch (ex: HttpRequestException) {
@@ -275,8 +275,8 @@ class RepositoryImpl : Repository {
                 CustomResult.Success(result)
             } else {
                 CustomResult.Failure(
-                    ExclusionOptions.UserExistsError.id,
-                    ExclusionOptions.UserExistsError.message
+                    ExclusionOptions.UserIsAlreadyExists.id,
+                    ExclusionOptions.UserIsAlreadyExists.message
                 )
             }
         } catch (ex: HttpRequestException) {

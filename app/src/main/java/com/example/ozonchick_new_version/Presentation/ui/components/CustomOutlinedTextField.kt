@@ -27,6 +27,7 @@ import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.EnabledColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
+import com.example.ozonchick_new_version.Presentation.ui.theme.SecondColor
 import com.example.ozonchick_new_version.R
 
 @Composable
@@ -67,7 +68,7 @@ fun CustomOutlinedTextField(
                 Text(
                     text = placeText,
                     style = Tema.Text_20_20_Medium,
-                    color = MainColor
+                    color = SecondColor
                 )
             }
         },
