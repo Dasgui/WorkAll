@@ -1,17 +1,24 @@
 package com.example.ozonchick_new_version.Presentation.Screens
 
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
@@ -22,9 +29,11 @@ import com.example.ozonchick_new_version.Presentation.ViewModels.ContactsViewMod
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
+import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpacer
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.Ozonchick_new_versionTheme
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
+import com.example.ozonchick_new_version.R
 import org.koin.androidx.compose.get
 import org.koin.core.parameter.parametersOf
 
@@ -61,52 +70,85 @@ fun Contacts_construct(viewModel: ContactsViewModel) {
                 scaffoldStates = ScaffoldStates.OnSide,
                 mainBody = {
                     Column (
-                        modifier = Modifier.padding(bottom = 80.dp).fillMaxWidth()
+                        modifier = Modifier
+                            .padding(bottom = 80.dp)
+                            .fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        Text(
-                            text = "Номер телефона: ${viewModel.informationList.collectAsState().value[0].vakans_number}",
-                            style = Tema.Text_24_24_Medium,
-                            color = MainColor,
-                            textAlign = TextAlign.Start,
-                            modifier = Modifier.padding(horizontal = 5.dp)
+                        RowItem(
+                            R.drawable.phone_fill_icon,
+                            title = "Номер телефона:",
+                            text = viewModel.informationList.collectAsState().value[0].vakans_number,
                         )
-                        Text(
-                            text ="Почта: ${viewModel.informationList.collectAsState().value[0].vakans_mail}",
-                            style = Tema.Text_24_24_Medium,
-                            color = MainColor,
-                            textAlign = TextAlign.Start,
-                            modifier = Modifier.padding(horizontal = 5.dp)
+//                        Text(
+//                            text = "Номер телефона: ${viewModel.informationList.collectAsState().value[0].vakans_number}",
+//                            style = Tema.Text_24_24_Medium,
+//                            color = MainColor,
+//                            textAlign = TextAlign.Start,
+//                            modifier = Modifier.padding(horizontal = 5.dp)
+//                        )
+                        RowItem(
+                            R.drawable.email_fill_icon,
+                            title = "Почта:",
+                            text = viewModel.informationList.collectAsState().value[0].vakans_mail,
+                            )
+//                        Text(
+//                            text ="Почта: ${viewModel.informationList.collectAsState().value[0].vakans_mail}",
+//                            style = Tema.Text_24_24_Medium,
+//                            color = MainColor,
+//                            textAlign = TextAlign.Start,
+//                            modifier = Modifier.padding(horizontal = 5.dp)
+//                        )
+                        RowItem(
+                            R.drawable.town_icon,
+                            title = "Расположение:",
+                            text = viewModel.informationList.collectAsState().value[0].vakans_raspolog,
                         )
-                        Text(
-                            text = "Расположение: ${viewModel.informationList.collectAsState().value[0].vakans_raspolog}",
-                            style = Tema.Text_24_24_Medium,
-                            color = MainColor,
-                            textAlign = TextAlign.Start,
-                            modifier = Modifier.fillMaxWidth()
-                                .drawBehind {
-                                    drawLine(
-                                        MainColor,
-                                        Offset(0f, size.height),
-                                        Offset(size.width, size.height),
-                                        10f
-                                    )
-                                }
-                                .padding(start = 5.dp, end = 5.dp, bottom = 10.dp)
+                        Canvas(modifier = Modifier.fillMaxWidth()) {
+                            drawLine(
+                                color = MainColor,
+                                start = Offset(0f, 0f),
+                                end = Offset(size.width, 0f),
+                                strokeWidth = 15f
+                            )
+                        }
+                        VerticalSpacer(20.dp)
+//                        Text(
+//                            text = "Расположение: ${viewModel.informationList.collectAsState().value[0].vakans_raspolog}",
+//                            style = Tema.Text_24_24_Medium,
+//                            color = MainColor,
+//                            textAlign = TextAlign.Start,
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .drawBehind {
+//                                    drawLine(
+//                                        MainColor,
+//                                        Offset(0f, size.height),
+//                                        Offset(size.width, size.height),
+//                                        10f
+//                                    )
+//                                }
+//                                .padding(start = 5.dp, end = 5.dp, bottom = 10.dp)
+//                        )
+                        RowItem(
+                            R.drawable.information_icon,
+                            title = "О работе: ",
+                            viewModel.informationList.collectAsState().value[0].vakans_aboutWork
                         )
-                        Text(
-                            text = "О работе:",
-                            style = Tema.Text_24_24_Medium,
-                            color = MainColor,
-                            textAlign = TextAlign.Start,
-                            modifier = Modifier.padding( top = 30.dp),
-                        )
-                        Text(
-                            text = viewModel.informationList.collectAsState().value[0].vakans_aboutWork,
-                            style = Tema.Text_24_24_Medium,
-                            color = MainColor,
-                            textAlign = TextAlign.Start,
-                            modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                        )
+//                        Text(
+//                            text = "О работе:",
+//                            style = Tema.Text_24_24_Medium,
+//                            color = MainColor,
+//                            textAlign = TextAlign.Start,
+//                            modifier = Modifier.padding( top = 30.dp),
+//                        )
+//                        Text(
+//                            text = viewModel.informationList.collectAsState().value[0].vakans_aboutWork,
+//                            style = Tema.Text_24_24_Medium,
+//                            color = MainColor,
+//                            textAlign = TextAlign.Start,
+//                            modifier = Modifier.padding(start = 5.dp, end = 10.dp)
+//                        )
                     }
                 }
             )
@@ -192,4 +234,37 @@ fun Contacts_construct(viewModel: ContactsViewModel) {
 //            }
 //        }
 //    }
+}
+
+@Composable
+private fun RowItem (icon : Int, title : String,  text : String) {
+    Column (
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(5.dp),
+    ) {
+        Row (
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.Top,
+            horizontalArrangement = Arrangement.spacedBy(15.dp)
+        ) {
+            Icon(
+                painter = painterResource(icon),
+                contentDescription = null,
+                modifier = Modifier.size(25.dp),
+                tint = MainColor
+            )
+            Text(
+                text = title,
+                style = Tema.Text_24_24_Medium,
+                color = MainColor,
+                textAlign = TextAlign.Start
+            )
+        }
+        Text(
+            text = text,
+            style = Tema.Text_24_24_Medium,
+            color = MainColor,
+            textAlign = TextAlign.Start
+        )
+    }
 }
