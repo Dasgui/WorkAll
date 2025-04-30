@@ -24,6 +24,7 @@ import com.example.ozonchick_new_version.Presentation.Screens.ContactsScreen
 import com.example.ozonchick_new_version.Presentation.Screens.Responses.ResponsesViewModel
 import com.example.ozonchick_new_version.Presentation.ui.components.Public_Button
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomCard
+import com.example.ozonchick_new_version.Presentation.ui.components.RowTextImage
 import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpacer
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
@@ -135,28 +136,6 @@ private fun MainText(
 //        )
 
         RowTextImage(R.drawable.experience_icon, "Опыт работы: " + list.vakans_experience.lowercase())
-    }
-}
-
-@Composable
-private fun RowTextImage (icon : Int, text : String) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(15.dp)
-    ) {
-        Icon(
-            painter = painterResource(icon),
-            contentDescription = null,
-            modifier = Modifier.size(25.dp),
-            tint = MainColor
-        )
-        //Расположение Location
-        Text(
-            text = text,
-            style = Tema.Text_20_20_Medium,
-            color = MainColor
-        )
     }
 }
 

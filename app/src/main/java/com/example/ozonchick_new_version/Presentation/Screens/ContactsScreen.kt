@@ -29,6 +29,7 @@ import com.example.ozonchick_new_version.Presentation.ViewModels.ContactsViewMod
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
+import com.example.ozonchick_new_version.Presentation.ui.components.RowTextImage
 import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpacer
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.Ozonchick_new_versionTheme
@@ -75,10 +76,11 @@ fun Contacts_construct(viewModel: ContactsViewModel) {
                             .fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        RowItem(
+                        RowTextImage(
                             R.drawable.phone_fill_icon,
                             title = "Номер телефона:",
                             text = viewModel.informationList.collectAsState().value[0].vakans_number,
+                            isDescription = true
                         )
 //                        Text(
 //                            text = "Номер телефона: ${viewModel.informationList.collectAsState().value[0].vakans_number}",
@@ -87,10 +89,11 @@ fun Contacts_construct(viewModel: ContactsViewModel) {
 //                            textAlign = TextAlign.Start,
 //                            modifier = Modifier.padding(horizontal = 5.dp)
 //                        )
-                        RowItem(
+                        RowTextImage(
                             R.drawable.email_fill_icon,
                             title = "Почта:",
                             text = viewModel.informationList.collectAsState().value[0].vakans_mail,
+                            isDescription = true
                             )
 //                        Text(
 //                            text ="Почта: ${viewModel.informationList.collectAsState().value[0].vakans_mail}",
@@ -99,10 +102,11 @@ fun Contacts_construct(viewModel: ContactsViewModel) {
 //                            textAlign = TextAlign.Start,
 //                            modifier = Modifier.padding(horizontal = 5.dp)
 //                        )
-                        RowItem(
+                        RowTextImage(
                             R.drawable.town_icon,
                             title = "Расположение:",
                             text = viewModel.informationList.collectAsState().value[0].vakans_raspolog,
+                            isDescription = true
                         )
                         Canvas(modifier = Modifier.fillMaxWidth()) {
                             drawLine(
@@ -130,10 +134,11 @@ fun Contacts_construct(viewModel: ContactsViewModel) {
 //                                }
 //                                .padding(start = 5.dp, end = 5.dp, bottom = 10.dp)
 //                        )
-                        RowItem(
+                        RowTextImage(
                             R.drawable.information_icon,
                             title = "О работе: ",
-                            viewModel.informationList.collectAsState().value[0].vakans_aboutWork
+                            viewModel.informationList.collectAsState().value[0].vakans_aboutWork,
+                            isDescription = true
                         )
 //                        Text(
 //                            text = "О работе:",
@@ -234,37 +239,4 @@ fun Contacts_construct(viewModel: ContactsViewModel) {
 //            }
 //        }
 //    }
-}
-
-@Composable
-private fun RowItem (icon : Int, title : String,  text : String) {
-    Column (
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(5.dp),
-    ) {
-        Row (
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.Top,
-            horizontalArrangement = Arrangement.spacedBy(15.dp)
-        ) {
-            Icon(
-                painter = painterResource(icon),
-                contentDescription = null,
-                modifier = Modifier.size(25.dp),
-                tint = MainColor
-            )
-            Text(
-                text = title,
-                style = Tema.Text_24_24_Medium,
-                color = MainColor,
-                textAlign = TextAlign.Start
-            )
-        }
-        Text(
-            text = text,
-            style = Tema.Text_24_24_Medium,
-            color = MainColor,
-            textAlign = TextAlign.Start
-        )
-    }
 }
