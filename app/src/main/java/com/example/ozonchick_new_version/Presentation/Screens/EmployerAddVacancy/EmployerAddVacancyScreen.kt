@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,6 +21,7 @@ import com.example.ozonchick_new_version.Presentation.Screens.EmployerVacancies.
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomButton
+import com.example.ozonchick_new_version.Presentation.ui.components.CustomComboBox
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomDialog
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomOutlinedTextField
@@ -42,6 +44,9 @@ class EmployerAddVacancyScreen : Screen {
 fun EmployerAddVacancyConstruct(viewModel: EmployerAddVacancyViewModel = koinViewModel()) {
     val localState = viewModel.screenState.collectAsState()
     val navigator = LocalNavigator.current
+    LaunchedEffect(true) {
+        viewModel.loadData()
+    }
     when (val curState = localState.value) {
         is ScreenState.Failure -> {
             FailAlertDialog(
@@ -144,17 +149,34 @@ fun EmployerAddVacancyConstruct(viewModel: EmployerAddVacancyViewModel = koinVie
                 holderText = "",
                 maxChar = 50
             )
-            NameTextField(
-                title = "Требуемый опыт работы*",
-                field = viewModel.experience,
-                holderText = ""
+            Text(
+                text = "Требуемый опыт работы*",
+                style = Tema.Text_24_24_Bold,
+                maxLines = 1,
+                color = MainColor,
             )
+            VerticalSpacer(10.dp)
+            CustomComboBox(
+                textField = viewModel.selectedExperience.value?.name ?: "Выберите значение",
+                dropItemsList = viewModel.experienceList.value,
+                selectedChange = { experience ->
+                    viewModel.selectedExperience.value = experience
+                },
+                enabled = true,
+                itemToString = { it.name }
+            )
+//            NameTextField(
+//                title = "Требуемый опыт работы*",
+//                field = viewModel.experience,
+//                holderText = ""
+//            )
             VerticalSpacer(20.dp)
             CustomButton(
                 onClick = {
                     if (viewModel.checkEmail() && viewModel.checkPhoneNumber() && viewModel.aboutWork.value.isNotEmpty()
-                        && viewModel.locationWork.value.isNotEmpty() && viewModel.experience.value.isNotEmpty() && viewModel.price.value.isNotEmpty()
-                        && viewModel.specialization.value.isNotEmpty()) {
+                        && viewModel.locationWork.value.isNotEmpty() && viewModel.price.value.isNotEmpty()
+                        && viewModel.specialization.value.isNotEmpty() && viewModel.selectedExperience.value?.name?.isNotEmpty() == true
+                    ) {
                         viewModel.confirmCharge.value = true
                     } else {
                         viewModel.screenState.value = ScreenState.Failure(0, AppErrors.INCORRECT_VALUES.description)

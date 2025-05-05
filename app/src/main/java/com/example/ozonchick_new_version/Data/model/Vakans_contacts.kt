@@ -8,5 +8,5 @@ data class Vakans_contacts(
     val vakans_number:String,
     val vakans_mail:String,
     val vakans_raspolog:String,
-    val vakans_aboutWork:String
+    val vakans_aboutWork:String,
 )

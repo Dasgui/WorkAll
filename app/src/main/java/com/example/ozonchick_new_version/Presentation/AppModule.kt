@@ -10,6 +10,7 @@ import com.example.ozonchick_new_version.Domain.AuthUseCase
 import com.example.ozonchick_new_version.Domain.DeleteEmployerVacancyUseCase
 import com.example.ozonchick_new_version.Domain.GetContactInformationUseCase
 import com.example.ozonchick_new_version.Domain.GetEmployerVacanciesUseCase
+import com.example.ozonchick_new_version.Domain.GetExperienceUseCase
 import com.example.ozonchick_new_version.Domain.GetInformationResumeUseCase
 import com.example.ozonchick_new_version.Domain.GetNameUseCase
 import com.example.ozonchick_new_version.Domain.GetOrganizationNameUseCase
@@ -118,8 +119,9 @@ var AppModule = module {
 
     factory { AddVacancyUseCase(get()) }
     factory { GetOrganizationNameUseCase(get()) }
+    factory { GetExperienceUseCase(get()) }
     viewModel {
-        EmployerAddVacancyViewModel(get(), get())
+        EmployerAddVacancyViewModel(get(), get(), get())
     }
 
     factory { GetUserChangeableInformationUseCase(get()) }

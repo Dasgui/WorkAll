@@ -18,4 +18,8 @@ object FieldValidators {
     fun checkPassword (password : String) : Boolean {
         return password.trim().matches(Regex(AuthenticationRegexPatterns.password))
     }
+
+    fun checkDigit (password : String) : Boolean {
+        return password.trim().matches(Regex(AuthenticationRegexPatterns.digits))
+    }
 }

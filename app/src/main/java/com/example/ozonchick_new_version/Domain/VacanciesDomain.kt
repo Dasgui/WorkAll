@@ -49,6 +49,7 @@ class GetVacancyAllInformationUseCase(private val repository: Repository) {
         return if (isAdmin) {
             val contact = repository.getContactInformation(vacancyId)
             val employer = repository.getEmployerInformation(employerId)
+
             if (contact is CustomResult.Success && employer is CustomResult.Success) {
                 CustomResult.Success(VacancyAllInformation(contact.data.first(), employer.data))
             } else {
@@ -56,8 +57,9 @@ class GetVacancyAllInformationUseCase(private val repository: Repository) {
             }
         } else {
             val contact = repository.getContactInformation(vacancyId)
-            if (contact is CustomResult.Success) {
-                CustomResult.Success(VacancyAllInformation(contact.data.first()))
+            val experiences = repository.getExperiences()
+            if (contact is CustomResult.Success && experiences is CustomResult.Success) {
+                CustomResult.Success(VacancyAllInformation(contact.data.first(), experience = experiences.data))
             } else {
                 CustomResult.Failure(0, AppErrors.INTERNET.description)
             }

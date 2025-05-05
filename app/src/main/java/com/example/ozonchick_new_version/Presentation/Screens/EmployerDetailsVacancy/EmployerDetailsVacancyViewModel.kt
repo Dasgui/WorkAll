@@ -10,6 +10,7 @@ import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.Authentication.Employer.Employer
+import com.example.ozonchick_new_version.Data.model.Resume.ExperienceGet
 import com.example.ozonchick_new_version.Data.model.VacancyAllInformation
 import com.example.ozonchick_new_version.Data.model.VacancyInsertModel
 import com.example.ozonchick_new_version.Data.model.VacancyUpdateContact
@@ -62,10 +63,9 @@ class EmployerDetailsVacancyViewModel(
     val companyName : MutableState<String> = mutableStateOf("")
     val emailEmployer : MutableState<String> = mutableStateOf("")
 
-    init {
-        loadDataForEmployer()
-
-    }
+    val selectedExperience : MutableState<ExperienceGet?> = mutableStateOf(null)
+    val experienceList: MutableState<List<ExperienceGet>> =
+        mutableStateOf(emptyList())
 
     fun loadDataForEmployer () {
         viewModelScope.launch(Dispatchers.IO) {
@@ -76,11 +76,15 @@ class EmployerDetailsVacancyViewModel(
                 is CustomResult.Success<VacancyAllInformation> -> {
                     aboutWork.value = result.data.contacts.vakans_aboutWork
                     phoneNumber.value = result.data.contacts.vakans_number
+                    experienceList.value = result.data.experience
+                    selectedExperience.value = experienceList.value.find { item ->
+                        item.name == description.vakans_experience
+                    }
 
                     inn.value = result.data.employer?.INN ?: ""
                     name.value = result.data.employer?.name ?: ""
                     companyName.value = result.data.employer?.companyName ?: ""
-                    email.value = result.data.employer?.email ?: ""
+                    emailEmployer.value = result.data.employer?.email ?: ""
 
                     screenState.value = ScreenState.Success(result.data)
                 }
@@ -96,7 +100,7 @@ class EmployerDetailsVacancyViewModel(
                 vakans_name = specialization.value,
                 vakans_price = price.value,
                 vakans_location = locationWork.value,
-                vakans_experience = experience.value,
+                vakans_experience = selectedExperience.value?.name ?: "Unknown",
                 vakans_mail = email.value
             ),
             description = VacancyUpdateContact(
@@ -116,6 +120,10 @@ class EmployerDetailsVacancyViewModel(
 
     fun checkEmail () : Boolean {
         return FieldValidators.checkEmail(email.value)
+    }
+
+    fun checkDigits () : Boolean {
+        return FieldValidators.checkDigit(price.value)
     }
 
     fun checkPhoneNumber () : Boolean {
