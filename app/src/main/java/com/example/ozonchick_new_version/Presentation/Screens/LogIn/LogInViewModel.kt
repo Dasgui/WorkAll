@@ -72,12 +72,19 @@ class LogInViewModel(private val auth : AuthUseCase) : ViewModel() {
                 is CustomResult.Failure -> logInState.value = ScreenState.Failure(curResult.code, curResult.message)
                 is CustomResult.Success -> {
                     logInState.value = ScreenState.Success(data = curResult.data)
-                    if (curResult.data is AllUserInformation.Employer) {
-                        publicUserId.id = curResult.data.employer_id
-                        publicUserId.type = UserType.Employer
-                    } else if (curResult.data is AllUserInformation.Candidate) {
-                        publicUserId.id = curResult.data.user_id
-                        publicUserId.type = UserType.Candidate
+                    when (curResult.data) {
+                        is AllUserInformation.Admin -> {
+                            publicUserId.id = curResult.data.id
+                            publicUserId.type = UserType.Admin
+                        }
+                        is AllUserInformation.Candidate -> {
+                            publicUserId.id = curResult.data.user_id
+                            publicUserId.type = UserType.Candidate
+                        }
+                        is AllUserInformation.Employer -> {
+                            publicUserId.id = curResult.data.employer_id
+                            publicUserId.type = UserType.Employer
+                        }
                     }
                     Paper.book().write<UserId>("UserId",UserId(publicUserId.id, publicUserId.type))
                 }

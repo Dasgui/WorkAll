@@ -20,11 +20,13 @@ import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerVacancies.EmployerVacanciesScreen
 import com.example.ozonchick_new_version.Presentation.Screens.Profile.ProfileScreen
 import com.example.ozonchick_new_version.Presentation.Screens.Responses.ResponsesScreen
+import com.example.ozonchick_new_version.Presentation.Screens.SplashScreen
 import com.example.ozonchick_new_version.Presentation.ui.components.HorizontalSpacer
 import com.example.ozonchick_new_version.Presentation.ui.components.Test_Components.mini_components.CustomClickableIcon
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
+import com.example.ozonchick_new_version.Screens.SignUpLogIn.SignUp.SignUpScreen
 
 @Composable
 fun ScaffoldBottomBar(
@@ -61,11 +63,25 @@ fun ScaffoldBottomBar(
             HorizontalSpacer(5.dp)
             CustomClickableIcon(
                 navigator = navigator,
-                screen = if (publicUserId.type is UserType.Employer) EmployerVacanciesScreen() else ResponsesScreen() ,
+                screen = if (publicUserId.type is UserType.Employer) EmployerVacanciesScreen() else ResponsesScreen()
+                /*when (publicUserId.type) {
+                    UserType.Admin -> SignUpScreen()
+                    UserType.Candidate -> ResponsesScreen()
+                    UserType.Employer -> EmployerVacanciesScreen()
+                    UserType.None -> SplashScreen()
+                }*/,
+
                 iconId = R.drawable.folder,
                 sizeIcon = sizeIcon,
                 colorIcon = MainColor,
-                bottomText = if (publicUserId.type is UserType.Employer) "Мои вакансии" else "Отклики",
+                bottomText = if (publicUserId.type is UserType.Employer) "Мои вакансии" else "Отклики"
+                /*when (publicUserId.type) {
+                    UserType.Admin -> "Работодатель"
+                    UserType.Candidate -> "Отклики"
+                    UserType.Employer -> "Мои вакансии"
+                    UserType.None -> ""
+                }*/,
+
                 bottomTextStyle = bottomTextStyle,
                 colorBottomText = MainColor
             )

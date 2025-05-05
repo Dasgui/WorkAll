@@ -23,4 +23,11 @@ sealed interface AllUserInformation {
         var resume_id : Int,
         var status_id : Int
     ) : AllUserInformation
+    @Serializable
+    data class Admin(
+        val id : Int = 0,
+        val email: String,
+        val password : String,
+        val name : String
+    ) : AllUserInformation
 }

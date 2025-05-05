@@ -2,6 +2,7 @@ package com.example.ozonchick_new_version.Data.network
 
 import android.util.Log
 import com.example.ozonchick_new_version.Common.CustomResult
+import com.example.ozonchick_new_version.Common.CustomResult.*
 import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Common.model.UserId
 import com.example.ozonchick_new_version.Common.publicUserId
@@ -108,27 +109,42 @@ class RepositoryImpl : Repository {
         rememberUser: Boolean
     ): CustomResult<AllUserInformation> {
         return try {
+
             val candidate = supabase.from("user_information").select() {
                 filter {
                     AllUserInformation.Candidate::email eq email
                     AllUserInformation.Candidate::password eq password
                 }
             }.decodeList<AllUserInformation.Candidate>()
-            Log.d("Запоминание юзера", rememberUser.toString())
-            if (rememberUser == true) {
-                Paper.book().write("UserId", publicUserId)
+
+            if (candidate.isNotEmpty()) {
+                return CustomResult.Success(candidate[0])
             }
-            if (candidate.isEmpty()) {
-                val employer = supabase.from("employers_information").select() {
-                    filter {
-                        AllUserInformation.Employer::email eq email
-                        AllUserInformation.Employer::password eq password
-                    }
-                }.decodeList<AllUserInformation.Employer>()
-                CustomResult.Success(employer[0])
-            } else {
-                CustomResult.Success(candidate[0])
+
+            val employer = supabase.from("employers_information").select() {
+                filter {
+                    AllUserInformation.Employer::email eq email
+                    AllUserInformation.Employer::password eq password
+                }
+            }.decodeList<AllUserInformation.Employer>()
+
+            if (employer.isNotEmpty()) {
+                return CustomResult.Success(employer[0])
             }
+
+            val admin = supabase.from("Admins").select {
+                filter {
+                    AllUserInformation.Employer::email eq email
+                    AllUserInformation.Employer::password eq password
+                }
+            }.decodeSingle<AllUserInformation.Admin>()
+
+            admin.let {
+                return CustomResult.Success(it)
+            }
+
+            CustomResult.Failure(0, AppErrors.UNKNOWN_USER.description)
+
         } catch (ex: HttpRequestException) {
             CustomResult.Failure(
                 ExclusionOptions.NetworkError.id,
@@ -603,6 +619,7 @@ class RepositoryImpl : Repository {
                 }
 
                 UserType.None -> false
+                UserType.Admin -> false
             }
             CustomResult.Success(isUpdated)
         } catch (ex: Exception) {
@@ -625,7 +642,7 @@ class RepositoryImpl : Repository {
                                 eq("user_id", id)
                             }
                         }.decodeSingle<UserChangeableInformation>()
-                    CustomResult.Success(responseCandidate)
+                    Success(responseCandidate)
                 }
 
                 UserType.Employer -> {
@@ -636,10 +653,11 @@ class RepositoryImpl : Repository {
                                 eq("employer_id", id)
                             }
                         }.decodeSingle<UserChangeableInformation>()
-                    CustomResult.Success(responseEmployer)
+                    Success(responseEmployer)
                 }
 
-                UserType.None -> CustomResult.Failure(1, "неизвестная ошибка")
+                UserType.None -> Failure(1, AppErrors.UNKNOWN.description)
+                UserType.Admin -> Failure(1, AppErrors.UNKNOWN.description)
             }
         } catch (ex: Exception) {
             CustomResult.Failure(1, "Проверьте своё соиденение с интернетом \n ${ex.message}")

@@ -8,5 +8,7 @@ enum class AppErrors(val description : String) {
 
     VACANCIES_ALREADY_EXIST("Вакансия уже добавлена в ваши отклики"),
 
-    RESUME_NOT_EXIST("Изините, но у этого пользователя ещё нет резюме.")
+    RESUME_NOT_EXIST("Изините, но у этого пользователя ещё нет резюме."),
+
+    UNKNOWN_USER("Извините, но похоже вы не зарегистрированы в нашей системе")
 }
