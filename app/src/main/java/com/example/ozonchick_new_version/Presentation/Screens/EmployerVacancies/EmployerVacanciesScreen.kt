@@ -3,6 +3,7 @@ package com.example.ozonchick_new_version.Presentation.Screens.EmployerVacancies
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -11,17 +12,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.example.ozonchick_new_version.Presentation.Screens.ContactsScreen
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerAddVacancy.EmployerAddVacancyScreen
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerDetailsVacancy.EmployerDetailsVacancyScreen
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerResponses.EmployerResponsesScreen
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
+import com.example.ozonchick_new_version.Presentation.ui.components.CustomButton
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomDialog
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.components.EmployerVacancyCard
 import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
+import com.example.ozonchick_new_version.Presentation.ui.components.Responses.VacancyCard
 import org.koin.androidx.compose.koinViewModel
 
 class EmployerVacanciesScreen : Screen {
@@ -75,20 +79,48 @@ private fun EmployerVacanciesConstruct(viewModel: EmployerVacanciesViewModel = k
                     verticalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
                     curState.data.forEach { item ->
-                        EmployerVacancyCard(
+                        VacancyCard (
                             item,
-                            deleteVacancy = {
-                                viewModel.confirmDelete.value = true
-                                viewModel.vacancyId.value = item.vakans_id
-                            },
-                            changeVacancy = {
-                                navigator?.push(
-                                    EmployerDetailsVacancyScreen(item)
+                            buttons = {
+                                CustomButton(
+                                    onClick = {
+                                        navigator?.push(
+                                            EmployerDetailsVacancyScreen(item)
+                                        )
+                                    },
+                                    placeText = "Изменить",
+                                    reverseColors = true,
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                                CustomButton(
+                                    onClick = {
+                                        navigator?.push(EmployerResponsesScreen(item.vakans_id))
+                                    },
+                                    placeText = "Соискатели",
+                                    reverseColors = true,
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                                CustomButton(
+                                    onClick = {
+                                        viewModel.confirmDelete.value = true
+                                        viewModel.vacancyId.value = item.vakans_id
+                                    },
+                                    placeText = "Удалить",
+                                    modifier = Modifier.fillMaxWidth()
                                 )
                             },
-                            onNavigateForResponses = {
-                                navigator?.push(EmployerResponsesScreen(item.vakans_id))
-                            }
+//                            deleteVacancy = {
+//                                viewModel.confirmDelete.value = true
+//                                viewModel.vacancyId.value = item.vakans_id
+//                            },
+//                            changeVacancy = {
+//                                navigator?.push(
+//                                    EmployerDetailsVacancyScreen(item)
+//                                )
+//                            },
+//                            onNavigateForResponses = {
+//                                navigator?.push(EmployerResponsesScreen(item.vakans_id))
+//                            }
                         )
                     }
                 }

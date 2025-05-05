@@ -19,6 +19,7 @@ import com.example.ozonchick_new_version.Domain.GetResumeCandidateUseCase
 import com.example.ozonchick_new_version.Domain.GetUserChangeableInformationUseCase
 import com.example.ozonchick_new_version.Domain.GetUsersForEmployerUseCase
 import com.example.ozonchick_new_version.Domain.GetVacanciesUseCase
+import com.example.ozonchick_new_version.Domain.GetVacancyAllInformationUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationCandidateUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationEmployerUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationUseCase
@@ -104,8 +105,9 @@ var AppModule = module {
         EmployerVacanciesViewModel(get(), get())
     }
     factory { UpdateEmployerVacancyUseCase(get()) }
+    factory { GetVacancyAllInformationUseCase(get()) }
     viewModel {
-        (id : Int, description : VakansInformation) -> EmployerDetailsVacancyViewModel(id, get(), get(), description)
+        (description : VakansInformation) -> EmployerDetailsVacancyViewModel(get(), get(), description)
     }
     factory { GetUsersForEmployerUseCase(get()) }
     factory { AcceptCandidateUseCase(get()) }

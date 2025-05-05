@@ -101,6 +101,8 @@ interface Repository {
     suspend fun getResume (id : Int) : CustomResult<ResumeGet>
     suspend fun getEducation (id : Int) : CustomResult<EducationGet>
     suspend fun getExperience (id : Int) : CustomResult<ExperienceGet>
+
+    suspend fun getEmployerInformation (id : Int) : CustomResult<Employer>
 }
 
 class RepositoryImpl : Repository {
@@ -824,6 +826,19 @@ class RepositoryImpl : Repository {
             CustomResult.Success(experience)
         } catch (ex : Exception) {
             CustomResult.Failure(0, AppErrors.INTERNET.description)
+        }
+    }
+
+    override suspend fun getEmployerInformation(id: Int): CustomResult<Employer> {
+        return try {
+            val result = supabase.from("employers_information").select {
+                filter {
+                    eq("employer_id", id)
+                }
+            }.decodeSingle<Employer>()
+            Success(result)
+        } catch (ex : Exception) {
+            Failure(0, AppErrors.INTERNET.description)
         }
     }
 }

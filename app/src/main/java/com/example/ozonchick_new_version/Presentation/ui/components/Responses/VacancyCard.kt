@@ -34,7 +34,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun VacancyCard(
     list: VakansInformation,
-    addVacancy: () -> Unit
+    buttons: @Composable () -> Unit
 ) {
     val navigator = LocalNavigator.current;
     CustomCard(
@@ -55,14 +55,22 @@ fun VacancyCard(
                 horizontalAlignment = Alignment.Start
             ) {
                 MainText(list)
-                MainButtons(
-                    onNavigateForContacts = {
-                        navigator?.push(ContactsScreen(list.vakans_id))
-                    },
-                    addVacancy = {
-                        addVacancy()
-                    }
-                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 10.dp),
+                    verticalArrangement = Arrangement.spacedBy(5.dp)
+                ) {
+                    buttons()
+                }
+//                MainButtons(
+//                    onNavigateForContacts = {
+//                        navigator?.push(ContactsScreen(list.vakans_id))
+//                    },
+//                    addVacancy = {
+//                        addVacancy()
+//                    }
+//                )
             }
         }
     }
@@ -148,6 +156,7 @@ private fun MainButtons(
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 10.dp),
+        verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
         if (publicUserId.type is UserType.Candidate) {
             Public_Button(

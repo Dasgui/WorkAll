@@ -26,8 +26,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import com.example.ozonchick_new_version.Common.UserType
+import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.ListOfVacancies.StatesOfGetVacancies
 import com.example.ozonchick_new_version.Data.strings.AppErrors
+import com.example.ozonchick_new_version.Presentation.Screens.ContactsScreen
+import com.example.ozonchick_new_version.Presentation.Screens.EmployerDetailsVacancy.EmployerDetailsVacancyScreen
 import com.example.ozonchick_new_version.Presentation.States.DialogStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.States.TextFieldStates
@@ -38,13 +43,16 @@ import com.example.ozonchick_new_version.Presentation.ui.components.CustomOutlin
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomSlider
 import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
+import com.example.ozonchick_new_version.Presentation.ui.components.Public_Button
 import com.example.ozonchick_new_version.Presentation.ui.components.Responses.VacancyCard
 import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpacer
+import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.R
 import org.koin.androidx.compose.koinViewModel
 
-class ListVacanciesScreen(private val statesOfGetVacancies: StatesOfGetVacancies = StatesOfGetVacancies.Normal) : Screen {
+class ListVacanciesScreen(private val statesOfGetVacancies: StatesOfGetVacancies = StatesOfGetVacancies.Normal) :
+    Screen {
     @Composable
     override fun Content() {
         ListVacanciesScreenConstruct(statesOfGetVacancies = statesOfGetVacancies)
@@ -55,7 +63,11 @@ class ListVacanciesScreen(private val statesOfGetVacancies: StatesOfGetVacancies
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-private fun ListVacanciesScreenConstruct(viewModel: ListVacanciesViewModel = koinViewModel(), statesOfGetVacancies: StatesOfGetVacancies) {
+private fun ListVacanciesScreenConstruct(
+    viewModel: ListVacanciesViewModel = koinViewModel(),
+    statesOfGetVacancies: StatesOfGetVacancies
+) {
+    val navigator = LocalNavigator.current
     LaunchedEffect(true) {
         viewModel.responseState.value = ScreenState.Loading
         viewModel.statesOfGetVacancies.value = statesOfGetVacancies
@@ -79,7 +91,11 @@ private fun ListVacanciesScreenConstruct(viewModel: ListVacanciesViewModel = koi
     }
 
     val screenState = viewModel.responseState.collectAsState()
-    CustomScaffold(mainText = "Вакансии", bottomButton = true, statesOfGetVacancies = viewModel.statesOfGetVacancies.value) {
+    CustomScaffold(
+        mainText = "Вакансии",
+        bottomButton = true,
+        statesOfGetVacancies = viewModel.statesOfGetVacancies.value
+    ) {
         Column(
             modifier = Modifier.Companion
                 .padding(bottom = 80.dp)
@@ -98,7 +114,55 @@ private fun ListVacanciesScreenConstruct(viewModel: ListVacanciesViewModel = koi
                 is ScreenState.Loading -> CustomLoading()
                 is ScreenState.Success -> {
                     viewModel.listVacancies.value.forEach { item ->
-                        VacancyCard(item, addVacancy = {viewModel.addVacancy(item.vakans_id)})
+                        VacancyCard(
+                            item,
+                            buttons = {
+                                when (publicUserId.type) {
+                                    is UserType.Admin -> {
+                                        CustomButton(
+                                            onClick = {
+                                                navigator?.push(EmployerDetailsVacancyScreen(item))
+                                            },
+                                            placeText = "Подробнее",
+                                            modifier = Modifier.fillMaxWidth(),
+                                            reverseColors = true
+                                        )
+                                    }
+                                    is UserType.Candidate -> {
+                                        CustomButton(
+                                            onClick = { viewModel.addVacancy(item.vakans_id) },
+                                            modifier = Modifier.fillMaxWidth(),
+                                            placeText = "Откликнуться"
+                                        )
+                                        CustomButton(
+                                            onClick = {
+                                                navigator?.push(ContactsScreen(item.vakans_id))
+                                            },
+                                            placeText = "Подробнее",
+                                            modifier = Modifier.fillMaxWidth(),
+                                            reverseColors = true
+                                        )
+                                    }
+                                    is UserType.Employer -> {
+                                        CustomButton(
+                                            onClick = {
+                                                navigator?.push(ContactsScreen(item.vakans_id))
+                                            },
+                                            placeText = "Подробнее",
+                                            modifier = Modifier.fillMaxWidth(),
+                                            reverseColors = true
+                                        )
+                                    }
+                                    is UserType.None -> Unit
+                                }
+//                                if (publicUserId.type is UserType.Candidate) {
+//                                    CustomButton(
+//                                        onClick = { viewModel.addVacancy(item.vakans_id) },
+//                                        modifier = Modifier.fillMaxWidth(),
+//                                        placeText = "Откликнуться"
+//                                    )
+//                                }
+                            })
                     }
                 }
 
