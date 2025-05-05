@@ -21,7 +21,6 @@ import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Data.strings.AppErrors
-import com.example.ozonchick_new_version.Presentation.Screens.ChangeInformation.ChangeInformationViewModel
 import com.example.ozonchick_new_version.Presentation.States.DialogStates
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState.*
@@ -33,9 +32,11 @@ import com.example.ozonchick_new_version.Presentation.ui.components.CustomOutlin
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
 import com.example.ozonchick_new_version.Presentation.ui.components.NameTextField
+import com.example.ozonchick_new_version.Presentation.ui.components.RowTextImage
 import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpacer
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
+import com.example.ozonchick_new_version.R
 import org.koin.androidx.compose.get
 import org.koin.core.parameter.parametersOf
 
@@ -100,6 +101,7 @@ private fun EmployerDetailsVacancyConstruct(
             is Success -> {
                 if (publicUserId.type is UserType.Admin) {
                     InformationForAdmin(viewModel)
+                    VerticalSpacer(10.dp)
                 }
                 MainInformationVacancy(viewModel)
 
@@ -115,12 +117,35 @@ private fun EmployerDetailsVacancyConstruct(
 @Composable
 private fun InformationForAdmin(viewModel : EmployerDetailsVacancyViewModel) {
     Column (
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(15.dp)
+    ) {
+        RowTextImage(
+            R.drawable.information_icon,
+            title = "Информация о работодателе",
+        )
+        Information(title = "ИНН :", text = viewModel.inn.value)
+        Information(title = "Название компании :", text = viewModel.companyName.value)
+        Information(title = "Имя:", text = viewModel.name.value)
+        Information(title = "Электронная почта :", text = viewModel.email.value)
+    }
+}
+
+@Composable
+private fun Information (title: String, text : String) {
+    Column (
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
         Text(
-            text = viewModel.inn.value,
+            text = title,
+            style = Tema.Text_24_24_Medium,
             color = MainColor,
-            style = Tema.Text_24_24_Bold
+        )
+        Text(
+            text = text,
+            style = Tema.Text_24_24_Medium,
+            color = MainColor,
         )
     }
 }

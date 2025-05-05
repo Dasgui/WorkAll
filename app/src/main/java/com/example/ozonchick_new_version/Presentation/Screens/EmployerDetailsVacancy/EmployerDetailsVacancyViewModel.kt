@@ -58,6 +58,9 @@ class EmployerDetailsVacancyViewModel(
     val dialogState : MutableState<DialogStates> = mutableStateOf(DialogStates.None)
 
     val inn : MutableState<String> = mutableStateOf("")
+    val name : MutableState<String> = mutableStateOf("")
+    val companyName : MutableState<String> = mutableStateOf("")
+    val emailEmployer : MutableState<String> = mutableStateOf("")
 
     init {
         loadDataForEmployer()
@@ -73,7 +76,12 @@ class EmployerDetailsVacancyViewModel(
                 is CustomResult.Success<VacancyAllInformation> -> {
                     aboutWork.value = result.data.contacts.vakans_aboutWork
                     phoneNumber.value = result.data.contacts.vakans_number
+
                     inn.value = result.data.employer?.INN ?: ""
+                    name.value = result.data.employer?.name ?: ""
+                    companyName.value = result.data.employer?.companyName ?: ""
+                    email.value = result.data.employer?.email ?: ""
+
                     screenState.value = ScreenState.Success(result.data)
                 }
             }
