@@ -28,17 +28,18 @@ class ProfileViewModel(
     }
     fun loadData () {
         viewModelScope.launch(Dispatchers.IO) {
-            val name = getName().await()
-            if (name !is CustomResult.Failure) {
-                informationProfileState.value = ScreenState.Success(ProfileUIModel((name as CustomResult.Success).data))
-            } else {
-                informationProfileState.value = ScreenState.Failure(name.code, name.message)
+            when (val result = getNameUseCase(publicUserId)) {
+                is CustomResult.Failure -> {
+                    informationProfileState.value = ScreenState.Failure(result.code, result.message)
+                }
+                is CustomResult.Success<String> -> {
+                    informationProfileState.value = ScreenState.Success(
+                        ProfileUIModel(result.data)
+                    )
+                }
             }
         }
     }
     val informationProfileState : MutableStateFlow<ScreenState<ProfileUIModel>> =
         MutableStateFlow(ScreenState.Loading)
-    suspend fun getName(userId: UserId = publicUserId) : Deferred<CustomResult<String>> {
-        return coroutineScope { async (Dispatchers.IO) { getNameUseCase(userId) } }
-    }
 }

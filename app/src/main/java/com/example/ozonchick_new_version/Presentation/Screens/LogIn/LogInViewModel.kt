@@ -86,7 +86,9 @@ class LogInViewModel(private val auth : AuthUseCase) : ViewModel() {
                             publicUserId.type = UserType.Employer
                         }
                     }
-                    Paper.book().write<UserId>("UserId",UserId(publicUserId.id, publicUserId.type))
+                    if (rememberUser.value) {
+                        Paper.book().write<UserId>("UserId",UserId(publicUserId.id, publicUserId.type))
+                    }
                 }
             }
             buttonEnabled.value = true

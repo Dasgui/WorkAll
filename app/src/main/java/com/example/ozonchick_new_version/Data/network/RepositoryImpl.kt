@@ -6,6 +6,7 @@ import com.example.ozonchick_new_version.Common.CustomResult.*
 import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Common.model.UserId
 import com.example.ozonchick_new_version.Common.publicUserId
+import com.example.ozonchick_new_version.Data.model.Authentication.Admin.Admin
 import com.example.ozonchick_new_version.Data.model.Authentication.AllUserInformation
 import com.example.ozonchick_new_version.Data.model.Authentication.AllUserInsertInformation
 import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.Candidate
@@ -311,27 +312,65 @@ class RepositoryImpl : Repository {
 
     override suspend fun getName(userId: UserId): CustomResult<String> {
         return try {
-            if (userId.type is UserType.Employer) {
-                val result = supabase.from("employers_information")
-                    .select()
-                    {
-                        filter {
-                            Employer::employer_id eq userId.id
-                        }
-                    }.decodeList<Employer>()
-                Log.d("Имя работодателя", result[0].name)
-                CustomResult.Success(result[0].name)
-            } else {
-                val result = supabase.from("user_information")
-                    .select()
-                    {
-                        filter {
-                            Candidate::user_id eq userId.id
-                        }
-                    }.decodeList<Candidate>()
-                Log.d("Имя соискателя", result[0].name)
-                CustomResult.Success(result[0].name)
+            when (userId.type) {
+                is UserType.Admin -> {
+                    val result = supabase.from("Admins")
+                        .select()
+                        {
+                            filter {
+                                Admin::id eq userId.id
+                            }
+                        }.decodeSingle<Admin>()
+                    Log.d("Имя админа", result.name)
+                    Success(result.name)
+                }
+                is UserType.Candidate -> {
+                    val result = supabase.from("user_information")
+                        .select()
+                        {
+                            filter {
+                                Candidate::user_id eq userId.id
+                            }
+                        }.decodeSingle<Candidate>()
+                    Log.d("Имя соискателя", result.name)
+                    Success(result.name)
+                }
+                is UserType.Employer -> {
+                    val result = supabase.from("employers_information")
+                        .select()
+                        {
+                            filter {
+                                Employer::employer_id eq userId.id
+                            }
+                        }.decodeSingle<Employer>()
+                    Log.d("Имя работодателя", result.name)
+                    Success(result.name)
+                }
+                is UserType.None -> {
+                    Failure(0, AppErrors.UNKNOWN.description)
+                }
             }
+//            if (userId.type is UserType.Employer) {
+//                val result = supabase.from("employers_information")
+//                    .select()
+//                    {
+//                        filter {
+//                            Employer::employer_id eq userId.id
+//                        }
+//                    }.decodeList<Employer>()
+//                Log.d("Имя работодателя", result[0].name)
+//                CustomResult.Success(result[0].name)
+//            } else {
+//                val result = supabase.from("user_information")
+//                    .select()
+//                    {
+//                        filter {
+//                            Candidate::user_id eq userId.id
+//                        }
+//                    }.decodeList<Candidate>()
+//                Log.d("Имя соискателя", result[0].name)
+//                CustomResult.Success(result[0].name)
+//            }
         } catch (ex: Exception) {
             Log.d("Ошибка получения имени", ex.toString())
             CustomResult.Failure(
