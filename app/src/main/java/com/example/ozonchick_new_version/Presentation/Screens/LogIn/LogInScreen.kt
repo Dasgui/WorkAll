@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -30,6 +28,7 @@ import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.States.TextFieldStates
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomButton
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomCheckBox
+import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomOutlinedTextField
 import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
 import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpacer
@@ -51,7 +50,9 @@ class LogInScreen : Screen {
 private fun LogInConstruct(
     viewModel: LogInViewModel = koinViewModel()
 ) {
+    val screenState = viewModel.screenState.collectAsState()
     val navigator = LocalNavigator.current
+
     LazyColumn(
         modifier = Modifier.Companion
             .fillMaxSize()
@@ -65,13 +66,30 @@ private fun LogInConstruct(
                     .fillMaxWidth()
                     .padding(start = 24.dp, end = 24.dp, top = 120.dp)
             ) {
-                TextHead()
-                MainBody(viewModel)
-                BottomBody(viewModel)
-                BottomText(
-                    viewModel,
-                    onNavigateForSignUp = { navigator?.replaceAll(SignUpScreen()) })
+                when (val curState = screenState.value) {
+                    is ScreenState.Failure -> FailAlertDialog(
+                        title = "Ошибка входа",
+                        curState.message,
+                        onOkClick = {
+                            viewModel.screenState.value = ScreenState.AwaitingChangeFromUser
+                        })
+
+                    ScreenState.Loading -> CustomLoading()
+                    is ScreenState.Success -> navigator?.replaceAll(ProfileScreen(/*curState.data.user_id*/))
+                    is ScreenState.Error -> Unit
+                    ScreenState.AwaitingChangeFromUser -> {
+                        TextHead()
+                        MainBody(viewModel)
+                        BottomBody(viewModel)
+                        BottomText(
+                            viewModel,
+                            onNavigateForSignUp = { navigator?.replaceAll(SignUpScreen()) })
+
+                    }
+                    ScreenState.AwaitingResponse -> Unit
+                }
             }
+
         }
 
     }
@@ -202,8 +220,7 @@ private fun BottomText(
     viewModel: LogInViewModel,
     onNavigateForSignUp: () -> Unit
 ) {
-    val screenState = viewModel.logInState.collectAsState()
-    val navigator = LocalNavigator.current
+
     Column(
         horizontalAlignment = Alignment.Companion.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -212,26 +229,14 @@ private fun BottomText(
         CustomButton(
             placeText = "Войти",
             onClick = {
+                viewModel.screenState.value = ScreenState.Loading
                 viewModel.auth()
             },
             modifier = Modifier.Companion.fillMaxWidth().height(45.dp),
             enabled = viewModel.buttonEnabled.value
         )
 
-        when (val curState = screenState.value) {
-            is ScreenState.Failure -> FailAlertDialog(
-                title = "Ошибка входа",
-                curState.message,
-                onOkClick = {
-                    viewModel.logInState.value = ScreenState.Loading
-                })
 
-            ScreenState.Loading -> Unit
-            is ScreenState.Success -> navigator?.replaceAll(ProfileScreen(/*curState.data.user_id*/))
-            is ScreenState.Error -> Unit
-            ScreenState.AwaitingChangeFromUser -> Unit
-            ScreenState.AwaitingResponse -> Unit
-        }
 
 
         val SignUpText = buildAnnotatedString {

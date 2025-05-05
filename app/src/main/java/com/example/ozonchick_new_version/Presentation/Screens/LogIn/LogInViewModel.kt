@@ -62,16 +62,16 @@ class LogInViewModel(private val auth : AuthUseCase) : ViewModel() {
     private val _isDataCorrect : MutableStateFlow<Boolean> = MutableStateFlow(false)
     var isDataCorrect : StateFlow<Boolean> = _isDataCorrect.asStateFlow()
 
-    val logInState : MutableStateFlow<ScreenState<AllUserInformation>> =
-        MutableStateFlow(ScreenState.Loading)
+    val screenState : MutableStateFlow<ScreenState<AllUserInformation>> =
+        MutableStateFlow(ScreenState.AwaitingChangeFromUser)
     fun auth()
     {
         viewModelScope.launch (Dispatchers.IO) {
             buttonEnabled.value = false
             when (val curResult = auth.invoke(_emailUser.value, _passwordUser.value, rememberUser.value)) {
-                is CustomResult.Failure -> logInState.value = ScreenState.Failure(curResult.code, curResult.message)
+                is CustomResult.Failure -> screenState.value = ScreenState.Failure(curResult.code, curResult.message)
                 is CustomResult.Success -> {
-                    logInState.value = ScreenState.Success(data = curResult.data)
+                    screenState.value = ScreenState.Success(data = curResult.data)
                     when (curResult.data) {
                         is AllUserInformation.Admin -> {
                             publicUserId.id = curResult.data.id

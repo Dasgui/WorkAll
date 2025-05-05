@@ -121,7 +121,7 @@ class RepositoryImpl : Repository {
             }.decodeList<AllUserInformation.Candidate>()
 
             if (candidate.isNotEmpty()) {
-                return CustomResult.Success(candidate[0])
+                return Success(candidate[0])
             }
 
             val employer = supabase.from("employers_information").select() {
@@ -132,7 +132,7 @@ class RepositoryImpl : Repository {
             }.decodeList<AllUserInformation.Employer>()
 
             if (employer.isNotEmpty()) {
-                return CustomResult.Success(employer[0])
+                return Success(employer[0])
             }
 
             val admin = supabase.from("Admins").select {
@@ -143,10 +143,10 @@ class RepositoryImpl : Repository {
             }.decodeSingle<AllUserInformation.Admin>()
 
             admin.let {
-                return CustomResult.Success(it)
+                return Success(it)
             }
 
-            CustomResult.Failure(0, AppErrors.UNKNOWN_USER.description)
+            Failure(0, AppErrors.UNKNOWN_USER.description)
 
         } catch (ex: HttpRequestException) {
             CustomResult.Failure(
@@ -160,9 +160,9 @@ class RepositoryImpl : Repository {
             )
         } catch (ex: Exception) {
             Log.d("Ошибка при входе", ex.toString())
-            CustomResult.Failure(
-                ExclusionOptions.UnknownError.id,
-                ExclusionOptions.UnknownError.message
+            Failure(
+                0,
+                AppErrors.UNKNOWN_USER.description
             )
         }
     }
