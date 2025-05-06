@@ -9,10 +9,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.model.UserId
 import com.example.ozonchick_new_version.Common.publicUserId
-import com.example.ozonchick_new_version.Data.model.VakansInformation
+import com.example.ozonchick_new_version.Data.model.VacancyInformation
 import com.example.ozonchick_new_version.Domain.DeleteEmployerVacancyUseCase
 import com.example.ozonchick_new_version.Domain.GetEmployerVacanciesUseCase
-import com.example.ozonchick_new_version.Presentation.Models.ProfileUIModel
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +24,7 @@ class EmployerVacanciesViewModel(
     private val getEmployerVacanciesUseCase: GetEmployerVacanciesUseCase,
     private val deleteEmployerVacancyUseCase: DeleteEmployerVacancyUseCase
 ) : ViewModel() {
-    val screenState : MutableStateFlow<ScreenState<List<VakansInformation>>> =
+    val screenState : MutableStateFlow<ScreenState<List<VacancyInformation>>> =
         MutableStateFlow(ScreenState.Loading)
     val confirmDelete : MutableState<Boolean> = mutableStateOf(false)
     val vacancyId : MutableState<Int> = mutableIntStateOf(0)
@@ -44,7 +43,7 @@ class EmployerVacanciesViewModel(
         }
     }
 
-    suspend fun getVacancies(userId: UserId) : Deferred<CustomResult<List<VakansInformation>>> {
+    suspend fun getVacancies(userId: UserId) : Deferred<CustomResult<List<VacancyInformation>>> {
         return coroutineScope { async(Dispatchers.IO) {getEmployerVacanciesUseCase(userId)} }
     }
 

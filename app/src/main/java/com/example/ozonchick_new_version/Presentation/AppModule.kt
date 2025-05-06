@@ -1,6 +1,6 @@
 package com.example.ozonchick_new_version.Presentation
 
-import com.example.ozonchick_new_version.Data.model.VakansInformation
+import com.example.ozonchick_new_version.Data.model.VacancyInformation
 import com.example.ozonchick_new_version.Data.network.Repository
 import com.example.ozonchick_new_version.Data.network.RepositoryImpl
 import com.example.ozonchick_new_version.Domain.AcceptCandidateUseCase
@@ -30,18 +30,14 @@ import com.example.ozonchick_new_version.Domain.SearchVacanciesUseCase
 import com.example.ozonchick_new_version.Domain.UpdateEmployerVacancyUseCase
 import com.example.ozonchick_new_version.Domain.UpdateResumeCandidateUseCase
 import com.example.ozonchick_new_version.Domain.UpdateUserInformationUseCase
-import com.example.ozonchick_new_version.Presentation.Models.EmployerDetailsVacancy
 import com.example.ozonchick_new_version.Presentation.Screens.ChangeInformation.ChangeInformationViewModel
-import com.example.ozonchick_new_version.Presentation.Screens.EmployerAddVacancy.EmployerAddVacancyScreen
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerAddVacancy.EmployerAddVacancyViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerCandidateInformation.EmployerCandidateInformationViewModel
-import com.example.ozonchick_new_version.Presentation.Screens.EmployerDetailsVacancy.EmployerDetailsVacancyScreen
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerDetailsVacancy.EmployerDetailsVacancyViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerResponses.EmployerResponsesViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerVacancies.EmployerVacanciesViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.ListVacancies.ListVacanciesViewModel
 import com.example.ozonchick_new_version.Presentation.ViewModels.ContactsViewModel
-import com.example.ozonchick_new_version.Presentation.ViewModels.ListOfCandidate_ViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInViewModel
 import com.example.ozonchick_new_version.Presentation.ViewModels.VakansCreate_ViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.Profile.ProfileViewModel
@@ -84,12 +80,6 @@ var AppModule = module {
         (id : Int) -> ContactsViewModel(get(), id)
     }
 
-/*    viewModel {
-        ListOfVacancies_ViewModel()
-    }*/
-    viewModel {
-        ListOfCandidate_ViewModel()
-    }
     viewModel {
         VakansCreate_ViewModel()
     }
@@ -108,7 +98,7 @@ var AppModule = module {
     factory { UpdateEmployerVacancyUseCase(get()) }
     factory { GetVacancyAllInformationUseCase(get()) }
     viewModel {
-        (description : VakansInformation) -> EmployerDetailsVacancyViewModel(get(), get(), description)
+        (description : VacancyInformation) -> EmployerDetailsVacancyViewModel(get(), get(), description)
     }
     factory { GetUsersForEmployerUseCase(get()) }
     factory { AcceptCandidateUseCase(get()) }
@@ -130,8 +120,9 @@ var AppModule = module {
         ChangeInformationViewModel(get(), get())
     }
 
+    factory { GetExperienceUseCase(get()) }
     viewModel {
-        SearchViewModel()
+        SearchViewModel(get())
     }
 
     factory { UpdateResumeCandidateUseCase(get()) }

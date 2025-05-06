@@ -5,9 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
-import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.Candidate
-import com.example.ozonchick_new_version.Data.model.VakansInformation
 import com.example.ozonchick_new_version.Domain.AcceptCandidateUseCase
 import com.example.ozonchick_new_version.Domain.GetUsersForEmployerUseCase
 import com.example.ozonchick_new_version.Domain.RejectCandidateUseCase

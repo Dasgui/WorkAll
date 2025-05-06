@@ -3,12 +3,9 @@ package com.example.ozonchick_new_version.Presentation.ViewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
-import com.example.ozonchick_new_version.Presentation.Models.ProfileUIModel
-import com.example.ozonchick_new_version.Data.model.Vakans_contacts
-import com.example.ozonchick_new_version.Data.network.supabase
+import com.example.ozonchick_new_version.Data.model.VacancyAdditionalInformation
 import com.example.ozonchick_new_version.Domain.GetContactInformationUseCase
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
-import io.github.jan.supabase.postgrest.from
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -30,12 +27,12 @@ class ContactsViewModel(
             }
         }
     }
-    val contactsState: MutableStateFlow<ScreenState<List<Vakans_contacts>>> =
+    val contactsState: MutableStateFlow<ScreenState<List<VacancyAdditionalInformation>>> =
         MutableStateFlow(ScreenState.Loading)
-    private val _informationList: MutableStateFlow<List<Vakans_contacts>> =
+    private val _informationList: MutableStateFlow<List<VacancyAdditionalInformation>> =
         MutableStateFlow(emptyList())
     var informationList = _informationList.asStateFlow()
-    suspend fun getInformation(id: Int) : Deferred<CustomResult<List<Vakans_contacts>>> {
+    suspend fun getInformation(id: Int) : Deferred<CustomResult<List<VacancyAdditionalInformation>>> {
         return coroutineScope { async(Dispatchers.IO) { getContactInformationUseCase(id) } }
 //        val result = supabase.from("vakans_contacts")
 //            .select()

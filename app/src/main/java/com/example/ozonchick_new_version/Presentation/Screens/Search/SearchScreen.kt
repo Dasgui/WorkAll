@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -27,15 +28,21 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import com.example.ozonchick_new_version.Data.model.ListOfVacancies.StatesOfGetVacancies
+import com.example.ozonchick_new_version.Data.model.Resume.ExperienceGet
 import com.example.ozonchick_new_version.Presentation.Screens.ListVacancies.ListVacanciesScreen
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
+import com.example.ozonchick_new_version.Presentation.States.ScreenState
+import com.example.ozonchick_new_version.Presentation.States.ScreenState.AwaitingChangeFromUser
 import com.example.ozonchick_new_version.Presentation.States.TextFieldStates
+import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
 import com.example.ozonchick_new_version.Presentation.ui.components.CheckBoxField
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomButton
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomCheckBox
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomComboBox
+import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomOutlinedTextField
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
+import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
 import com.example.ozonchick_new_version.Presentation.ui.components.HorizontalSpacer
 import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpacer
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
@@ -64,7 +71,7 @@ private fun SearchConstruct(
                 viewModel.loadFilters(localState)
             }
 
-            StatesOfGetVacancies.Normal -> Unit
+            StatesOfGetVacancies.Normal -> viewModel.loadExperience()
         }
 
     }
@@ -72,6 +79,22 @@ private fun SearchConstruct(
         mainText = "Поиск",
         scaffoldStates = ScaffoldStates.Vacancies
     ) {
+        val localState = viewModel.screenState.collectAsState()
+        when (val curState = localState.value) {
+            ScreenState.AwaitingChangeFromUser -> Unit
+            ScreenState.AwaitingResponse -> Unit
+            ScreenState.Error -> AlertText()
+            is ScreenState.Failure -> {
+                FailAlertDialog(
+                    title = "Ошибка",
+                    curState.message,
+                    onOkClick = {
+                        viewModel.screenState.value = AwaitingChangeFromUser
+                    })
+            }
+            ScreenState.Loading -> CustomLoading()
+            is ScreenState.Success<*> -> Unit
+        }
         TextFields(viewModel)
         VerticalSpacer(25.dp)
         BottomButtons(viewModel, navigator)
@@ -105,9 +128,11 @@ fun TextFields(viewModel: SearchViewModel) {
     FilterDropMenu(
         viewModel.checkExperience,
         title = "Учитывать требуемый опыт работы",
-        textField = viewModel.experience,
-        viewModel.checkListExperience,
-        viewModel.listExperience
+        selectedExperience = viewModel.selectedExperience.value,
+        experienceList = viewModel.experienceList.value,
+        selectedChange = {
+            viewModel.selectedExperience.value = it
+        }
     )
 }
 
@@ -149,11 +174,12 @@ private fun FilterField(
 @Composable
 private fun FilterDropMenu(
     checked: MutableState<Boolean>,
+    selectedExperience : ExperienceGet?,
+    experienceList : List<ExperienceGet>,
+    selectedChange : (ExperienceGet) -> Unit,
     title: String,
-    textField: MutableState<String>, visibleList: MutableState<Boolean>,
-    dropItemsList: MutableState<List<String>>
 
-) {
+    ) {
     CheckBoxField(
         checked = checked.value,
         onChange = {
@@ -164,14 +190,25 @@ private fun FilterDropMenu(
     VerticalSpacer(15.dp)
     if (checked.value) {
         CustomComboBox(
-            textField = textField.value,
-            dropItemsList = dropItemsList.value,
+            textField = selectedExperience?.name ?: "Выберите значение",
+            dropItemsList = experienceList,
             selectedChange = { item ->
-                textField.value = item
-                visibleList.value = false
+                selectedChange(item)
+
             },
-            itemToString = {it}
+            itemToString = {it.name}
         )
+
+//        CustomComboBox(
+//            textField = textField.value,
+//            dropItemsList = dropItemsList.value,
+//            selectedChange = { item ->
+//                textField.value = item
+//                visibleList.value = false
+//            },
+//            itemToString = {it}
+//        )
+
 //        CustomOutlinedTextField(
 //            value = textField.value,
 //            states = TextFieldStates.None,

@@ -10,14 +10,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.ListOfVacancies.StatesOfGetVacancies
-import com.example.ozonchick_new_version.Data.model.VakansInformation
-import com.example.ozonchick_new_version.Data.network.supabase
+import com.example.ozonchick_new_version.Data.model.VacancyInformation
 import com.example.ozonchick_new_version.Domain.AcceptVacancyUseCase
 import com.example.ozonchick_new_version.Domain.GetVacanciesUseCase
 import com.example.ozonchick_new_version.Domain.SearchVacanciesUseCase
 import com.example.ozonchick_new_version.Presentation.States.DialogStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
-import io.github.jan.supabase.postgrest.from
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -30,7 +28,7 @@ class ListVacanciesViewModel(
     private val acceptVacancyUseCase: AcceptVacancyUseCase,
     private val searchVacanciesUseCase: SearchVacanciesUseCase
 ) : ViewModel() {
-    val responseState : MutableStateFlow<ScreenState<List<VakansInformation>>> = MutableStateFlow(ScreenState.Loading)
+    val responseState : MutableStateFlow<ScreenState<List<VacancyInformation>>> = MutableStateFlow(ScreenState.Loading)
     val statesOfGetVacancies : MutableState<StatesOfGetVacancies> = mutableStateOf(
         StatesOfGetVacancies.Normal)
 
@@ -43,7 +41,7 @@ class ListVacanciesViewModel(
     val maxSalary = mutableIntStateOf(0)
     val currentSalary = mutableFloatStateOf(0f)
 
-    var listVacancies : MutableState<List<VakansInformation>> = mutableStateOf(listOf())
+    var listVacancies : MutableState<List<VacancyInformation>> = mutableStateOf(listOf())
 
     val dialogStates : MutableState<DialogStates> = mutableStateOf(DialogStates.None)
 
@@ -56,7 +54,7 @@ class ListVacanciesViewModel(
                     val response = searchVacanciesUseCase(localState)
                     when (response) {
                         is CustomResult.Failure -> responseState.value = ScreenState.Failure(response.code, response.message)
-                        is CustomResult.Success<List<VakansInformation>> -> {
+                        is CustomResult.Success<List<VacancyInformation>> -> {
                             responseState.value = ScreenState.Success(response.data)
                             listVacancies.value = response.data
                         }
@@ -91,7 +89,7 @@ class ListVacanciesViewModel(
         }
     }
 
-    suspend fun getInformation() : Deferred<CustomResult<List<VakansInformation>>> {
+    suspend fun getInformation() : Deferred<CustomResult<List<VacancyInformation>>> {
         return coroutineScope { async(Dispatchers.IO) { getVacanciesUseCase() } }
     }
 }

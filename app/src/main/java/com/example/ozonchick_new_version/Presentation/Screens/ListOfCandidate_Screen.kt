@@ -21,8 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import com.example.ozonchick_new_version.Data.model.Vakans_contacts
-import com.example.ozonchick_new_version.Data.model.VakansInformation
+import com.example.ozonchick_new_version.Data.model.VacancyAdditionalInformation
+import com.example.ozonchick_new_version.Data.model.VacancyInformation
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.ui.components.Public_Button
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomCard
@@ -284,13 +284,13 @@ fun ListOfCandidate_construct(/*vm: ListOfCandidate_ViewModel = koinViewModel()*
 }
 
 @Composable
-fun Card_Candidate(number: Int, list: MutableList<VakansInformation>)
+fun Card_Candidate(number: Int, list: MutableList<VacancyInformation>)
 {
     var localNumber: MutableState<Int> = remember {
         mutableIntStateOf(number)
     }
     val context = LocalContext.current
-    var contactList: MutableList<Vakans_contacts> = mutableListOf()
+    var contactList: MutableList<VacancyAdditionalInformation> = mutableListOf()
     val navigator = LocalNavigator.current
     CustomCard(
         modifier = Modifier

@@ -4,7 +4,7 @@ import com.example.ozonchick_new_version.Data.model.Authentication.Employer.Empl
 import com.example.ozonchick_new_version.Data.model.Resume.ExperienceGet
 
 data class VacancyAllInformation(
-    val contacts : Vakans_contacts,
+    val contacts : VacancyAdditionalInformation,
     val employer : Employer? = null,
     val experience: List<ExperienceGet> = emptyList<ExperienceGet>()
 )

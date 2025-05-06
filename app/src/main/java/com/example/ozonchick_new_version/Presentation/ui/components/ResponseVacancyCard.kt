@@ -13,16 +13,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
-import com.example.ozonchick_new_version.Common.UserType
-import com.example.ozonchick_new_version.Common.publicUserId
-import com.example.ozonchick_new_version.Data.model.VakansInformation
+import com.example.ozonchick_new_version.Data.model.VacancyInformation
 import com.example.ozonchick_new_version.Presentation.Screens.ContactsScreen
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 
 @Composable
 fun ResponseVacancyCard(
-    list: VakansInformation,
+    list: VacancyInformation,
     status: String,
     rejectVacancy: () -> Unit
 ) {
@@ -61,7 +59,7 @@ fun ResponseVacancyCard(
 
 @Composable
 private fun MainText(
-    list: VakansInformation
+    list: VacancyInformation
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),

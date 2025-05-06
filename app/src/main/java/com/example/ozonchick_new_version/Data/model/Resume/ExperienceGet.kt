@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ExperienceGet(
     val id : Int,
-    val name : String
+    var name : String
 )

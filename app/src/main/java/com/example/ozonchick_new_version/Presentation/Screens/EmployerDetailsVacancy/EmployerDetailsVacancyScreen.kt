@@ -20,7 +20,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Common.publicUserId
-import com.example.ozonchick_new_version.Data.model.VakansInformation
+import com.example.ozonchick_new_version.Data.model.VacancyInformation
 import com.example.ozonchick_new_version.Data.strings.AppErrors
 import com.example.ozonchick_new_version.Presentation.States.DialogStates
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
@@ -42,7 +42,7 @@ import com.example.ozonchick_new_version.R
 import org.koin.androidx.compose.get
 import org.koin.core.parameter.parametersOf
 
-class EmployerDetailsVacancyScreen(private val information: VakansInformation) : Screen {
+class EmployerDetailsVacancyScreen(private val information: VacancyInformation) : Screen {
     @Composable
     override fun Content() {
         val viewModel: EmployerDetailsVacancyViewModel = get { parametersOf(information ) }
@@ -53,7 +53,7 @@ class EmployerDetailsVacancyScreen(private val information: VakansInformation) :
 
 @Composable
 private fun EmployerDetailsVacancyConstruct(
-    information: VakansInformation,
+    information: VacancyInformation,
     viewModel: EmployerDetailsVacancyViewModel,
 ) {
     val localState = viewModel.screenState.collectAsState()

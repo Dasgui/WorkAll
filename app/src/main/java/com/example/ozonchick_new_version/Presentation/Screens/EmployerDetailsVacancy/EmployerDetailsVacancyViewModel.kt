@@ -9,37 +9,27 @@ import cafe.adriel.voyager.navigator.Navigator
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Common.publicUserId
-import com.example.ozonchick_new_version.Data.model.Authentication.Employer.Employer
 import com.example.ozonchick_new_version.Data.model.Resume.ExperienceGet
 import com.example.ozonchick_new_version.Data.model.VacancyAllInformation
-import com.example.ozonchick_new_version.Data.model.VacancyInsertModel
-import com.example.ozonchick_new_version.Data.model.VacancyUpdateContact
-import com.example.ozonchick_new_version.Data.model.VacancyUpdateInformation
-import com.example.ozonchick_new_version.Data.model.VakansInformation
-import com.example.ozonchick_new_version.Data.model.Vakans_contacts
+import com.example.ozonchick_new_version.Data.model.Employer.VacancyInsertModel
+import com.example.ozonchick_new_version.Data.model.Employer.VacancyUpdateContact
+import com.example.ozonchick_new_version.Data.model.VacancyInformation
 import com.example.ozonchick_new_version.Domain.FieldValidators
-import com.example.ozonchick_new_version.Domain.GetContactInformationUseCase
-import com.example.ozonchick_new_version.Domain.GetEmployerInformation
 import com.example.ozonchick_new_version.Domain.GetVacancyAllInformationUseCase
 import com.example.ozonchick_new_version.Domain.UpdateEmployerVacancyUseCase
 import com.example.ozonchick_new_version.Presentation.Models.ChangeVacancyUIModel
-import com.example.ozonchick_new_version.Presentation.Models.EmployerDetailsVacancy
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerVacancies.EmployerVacanciesScreen
 import com.example.ozonchick_new_version.Presentation.States.DialogStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class EmployerDetailsVacancyViewModel(
     private val getVacancyAllInformation: GetVacancyAllInformationUseCase,
     private val updateEmployerVacancyUseCase: UpdateEmployerVacancyUseCase,
 //    private val getEmployerInformation: GetEmployerInformation,
-    private val description : VakansInformation
+    private val description : VacancyInformation
 ) : ViewModel() {
     val specialization : MutableState<String> = mutableStateOf(description.vakans_name)
     val price : MutableState<String> = mutableStateOf(description.vakans_price)

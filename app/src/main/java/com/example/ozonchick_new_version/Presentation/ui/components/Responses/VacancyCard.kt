@@ -1,6 +1,5 @@
 package com.example.ozonchick_new_version.Presentation.ui.components.Responses
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,20 +7,15 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Common.publicUserId
-import com.example.ozonchick_new_version.Data.model.VakansInformation
-import com.example.ozonchick_new_version.Presentation.Screens.ContactsScreen
-import com.example.ozonchick_new_version.Presentation.Screens.Responses.ResponsesViewModel
+import com.example.ozonchick_new_version.Data.model.VacancyInformation
 import com.example.ozonchick_new_version.Presentation.ui.components.Public_Button
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomCard
 import com.example.ozonchick_new_version.Presentation.ui.components.RowTextImage
@@ -29,11 +23,10 @@ import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpac
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.R
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun VacancyCard(
-    list: VakansInformation,
+    list: VacancyInformation,
     buttons: @Composable () -> Unit
 ) {
     val navigator = LocalNavigator.current;
@@ -78,7 +71,7 @@ fun VacancyCard(
 
 @Composable
 private fun MainText(
-    list: VakansInformation
+    list: VacancyInformation
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),

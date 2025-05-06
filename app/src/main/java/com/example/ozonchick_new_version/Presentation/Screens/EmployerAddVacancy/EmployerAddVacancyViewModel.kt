@@ -8,16 +8,12 @@ import cafe.adriel.voyager.navigator.Navigator
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.Resume.ExperienceGet
-import com.example.ozonchick_new_version.Data.model.VacancyDescriptionInsertModel
-import com.example.ozonchick_new_version.Data.model.VacancyUpdateContact
-import com.example.ozonchick_new_version.Data.model.VacancyUpdateInformation
-import com.example.ozonchick_new_version.Data.model.VakansInformation
-import com.example.ozonchick_new_version.Data.model.Vakans_contacts
+import com.example.ozonchick_new_version.Data.model.Employer.VacancyDescriptionInsertModel
+import com.example.ozonchick_new_version.Data.model.Employer.VacancyUpdateInformation
 import com.example.ozonchick_new_version.Domain.AddVacancyUseCase
 import com.example.ozonchick_new_version.Domain.FieldValidators
 import com.example.ozonchick_new_version.Domain.GetExperienceUseCase
 import com.example.ozonchick_new_version.Domain.GetOrganizationNameUseCase
-import com.example.ozonchick_new_version.Presentation.Screens.EmployerVacancies.EmployerVacanciesScreen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +21,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class EmployerAddVacancyViewModel(
     private val addVacancyUseCase: AddVacancyUseCase,

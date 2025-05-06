@@ -3,7 +3,7 @@ package com.example.ozonchick_new_version.Data.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class VakansInformation(
+data class VacancyInformation(
     val vakans_id:Int,
     val vakans_name:String,
     val vakans_price:String,

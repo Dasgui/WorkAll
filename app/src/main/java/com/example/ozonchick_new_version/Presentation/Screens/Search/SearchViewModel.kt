@@ -5,60 +5,79 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Data.model.ListOfVacancies.StatesOfGetVacancies
-import com.example.ozonchick_new_version.Data.model.VakansInformation
+import com.example.ozonchick_new_version.Data.model.Resume.ExperienceGet
+import com.example.ozonchick_new_version.Data.model.VacancyInformation
 import com.example.ozonchick_new_version.Data.network.supabase
+import com.example.ozonchick_new_version.Domain.GetExperienceUseCase
+import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import io.github.jan.supabase.postgrest.from
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class SearchViewModel : ViewModel() {
+class SearchViewModel(
+    private val getExperienceUseCase: GetExperienceUseCase
+) : ViewModel() {
 
     val search = mutableStateOf("")
     val minSalaryText = mutableStateOf("")
 
-    val listExperience: MutableState<List<String>> = mutableStateOf(
-        listOf(
-            "Не требуется",
-            "Более 3 лет",
-            "Более 5 лет"
-        )
-    )
 
     val checkSalary: MutableState<Boolean> = mutableStateOf(false)
-    val checkExperience : MutableState<Boolean> = mutableStateOf(false)
+    val checkExperience: MutableState<Boolean> = mutableStateOf(false)
 
     val checkListExperience: MutableState<Boolean> = mutableStateOf(false)
 
-    val experience: MutableState<String> = mutableStateOf(listExperience.value.firstOrNull() ?: "Не требуется")
+    val experienceList: MutableState<List<ExperienceGet>> =
+        mutableStateOf(emptyList())
+    val selectedExperience: MutableState<ExperienceGet?> = mutableStateOf(null)
+
+    val screenState: MutableStateFlow<ScreenState<List<ExperienceGet>>> = MutableStateFlow(
+        ScreenState.AwaitingChangeFromUser
+    )
 
 
-
-    fun getStatesOfGetVacancies () : StatesOfGetVacancies {
+    fun getStatesOfGetVacancies(): StatesOfGetVacancies {
         return StatesOfGetVacancies.Filter(
             search = search.value,
             filterSalary = if (checkSalary.value) minSalaryText.value else "",
-            filterExperience = if (checkExperience.value) experience.value else ""
+            filterExperience = selectedExperience.value ?: ExperienceGet(0, ""),
+            filterExperienceList = experienceList.value
         )
     }
 
-    fun loadFilters (localState : StatesOfGetVacancies.Filter) {
-        if (localState.filterExperience.isNotEmpty()) {
-           checkExperience.value = true
+    fun loadExperience() {
+        viewModelScope.launch(Dispatchers.IO) {
+            when (val result = getExperienceUseCase()) {
+                is CustomResult.Failure -> screenState.value = ScreenState.Failure(result.code, result.message)
+                is CustomResult.Success<List<ExperienceGet>> -> {
+                    screenState.value = ScreenState.AwaitingChangeFromUser
+                    experienceList.value = result.data
+                }
+            }
+        }
+    }
+
+    fun loadFilters(localState: StatesOfGetVacancies.Filter) {
+        if (localState.filterExperience.name.isNotEmpty()) {
+            checkExperience.value = true
         }
         if (localState.filterSalary.isNotEmpty()) {
             checkSalary.value = true
         }
         search.value = localState.search
-        experience.value = localState.filterExperience
+        selectedExperience.value = localState.filterExperience
+        experienceList.value = localState.filterExperienceList
         minSalaryText.value = localState.filterSalary
     }
 
-    fun resetFilters () {
+    fun resetFilters() {
         checkExperience.value = false
         checkSalary.value = false
         minSalaryText.value = ""
-        experience.value = ""
+        selectedExperience.value = null
         search.value = ""
     }
 
@@ -69,7 +88,7 @@ class SearchViewModel : ViewModel() {
 //                    rangeGte("vakans_price", minSalaryText to maxSalaryText)
                     gte("vakans_price", minSalaryText.value)
                 }
-            }.decodeList<VakansInformation>()
+            }.decodeList<VacancyInformation>()
             Log.d("Вакансии по зарплате", response.toString())
         }
     }
@@ -81,7 +100,7 @@ class SearchViewModel : ViewModel() {
                     ilike("vakans_name", "%${search.value}%")
                     gte("vakans_price", minSalaryText.value)
                 }
-            }.decodeList<VakansInformation>()
+            }.decodeList<VacancyInformation>()
             Log.d("Вакансии при поиске", response.toString())
         }
     }

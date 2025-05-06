@@ -8,8 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.model.UserId
 import com.example.ozonchick_new_version.Common.publicUserId
-import com.example.ozonchick_new_version.Data.model.VacancyResponse
-import com.example.ozonchick_new_version.Data.model.VakansInformation
+import com.example.ozonchick_new_version.Data.model.Candidate.VacancyResponse
+import com.example.ozonchick_new_version.Data.model.VacancyInformation
 import com.example.ozonchick_new_version.Domain.GetResponsesIdVacanciesUseCase
 import com.example.ozonchick_new_version.Domain.GetResponsesVacanciesUseCase
 import com.example.ozonchick_new_version.Domain.RejectVacancyUseCase
@@ -29,7 +29,7 @@ class ResponsesViewModel(
 ) : ViewModel() {
     val responseState : MutableStateFlow<ScreenState<ResponsesUIModel>> =
         MutableStateFlow(ScreenState.Loading)
-    var listResponses : MutableState<List<VakansInformation>> = mutableStateOf(listOf())
+    var listResponses : MutableState<List<VacancyInformation>> = mutableStateOf(listOf())
 
     init {
         responseState.value = ScreenState.Loading
@@ -64,7 +64,7 @@ class ResponsesViewModel(
         return coroutineScope { async(Dispatchers.IO) { getResponsesIdVacanciesUseCase(userId) } }
     }
 
-    suspend fun getInformation(idList : List<Int>) : Deferred<CustomResult<List<VakansInformation>>> {
+    suspend fun getInformation(idList : List<Int>) : Deferred<CustomResult<List<VacancyInformation>>> {
         return coroutineScope { async(Dispatchers.IO) { getResponsesVacanciesUseCase(idList) } }
     }
 

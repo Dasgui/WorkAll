@@ -7,17 +7,17 @@ import com.example.ozonchick_new_version.Data.model.Authentication.Employer.Empl
 import com.example.ozonchick_new_version.Data.model.ListOfVacancies.StatesOfGetVacancies
 import com.example.ozonchick_new_version.Data.model.Resume.ResumeDto
 import com.example.ozonchick_new_version.Data.model.VacancyAllInformation
-import com.example.ozonchick_new_version.Data.model.VacancyDescriptionInsertModel
-import com.example.ozonchick_new_version.Data.model.VacancyUpdateInformation
-import com.example.ozonchick_new_version.Data.model.Vakans_contacts
-import com.example.ozonchick_new_version.Data.model.VakansInformation
-import com.example.ozonchick_new_version.Data.model.VacancyResponse
+import com.example.ozonchick_new_version.Data.model.Employer.VacancyDescriptionInsertModel
+import com.example.ozonchick_new_version.Data.model.Employer.VacancyUpdateInformation
+import com.example.ozonchick_new_version.Data.model.VacancyAdditionalInformation
+import com.example.ozonchick_new_version.Data.model.VacancyInformation
+import com.example.ozonchick_new_version.Data.model.Candidate.VacancyResponse
 import com.example.ozonchick_new_version.Data.network.Repository
 import com.example.ozonchick_new_version.Data.strings.AppErrors
 import com.example.ozonchick_new_version.Presentation.Models.ChangeVacancyUIModel
 
 class GetVacanciesUseCase(private val repository: Repository) {
-    suspend operator fun invoke(): CustomResult<List<VakansInformation>> {
+    suspend operator fun invoke(): CustomResult<List<VacancyInformation>> {
         var result = repository.getVacancies()
         result = when (val curResult = result) {
             is CustomResult.Failure -> {
@@ -33,13 +33,13 @@ class GetVacanciesUseCase(private val repository: Repository) {
 }
 
 class SearchVacanciesUseCase(private val repository: Repository) {
-    suspend operator fun invoke(getStates: StatesOfGetVacancies.Filter): CustomResult<List<VakansInformation>> {
+    suspend operator fun invoke(getStates: StatesOfGetVacancies.Filter): CustomResult<List<VacancyInformation>> {
         return repository.searchVacancies(getStates)
     }
 }
 
 class GetContactInformationUseCase(private val repository: Repository) {
-    suspend operator fun invoke(id: Int): CustomResult<List<Vakans_contacts>> {
+    suspend operator fun invoke(id: Int): CustomResult<List<VacancyAdditionalInformation>> {
         return repository.getContactInformation(id)
     }
 }
@@ -74,13 +74,13 @@ class GetResponsesIdVacanciesUseCase(private val repository: Repository) {
 }
 
 class GetResponsesVacanciesUseCase(private val repository: Repository) {
-    suspend operator fun invoke(idList: List<Int>): CustomResult<List<VakansInformation>> {
+    suspend operator fun invoke(idList: List<Int>): CustomResult<List<VacancyInformation>> {
         return repository.getResponsesVacancies(idList)
     }
 }
 
 class GetEmployerVacanciesUseCase(private val repository: Repository) {
-    suspend operator fun invoke(userId: UserId): CustomResult<List<VakansInformation>> {
+    suspend operator fun invoke(userId: UserId): CustomResult<List<VacancyInformation>> {
         return repository.getEmployerVacancies(userId)
     }
 }

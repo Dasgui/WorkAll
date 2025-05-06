@@ -1,4 +1,4 @@
-package com.example.ozonchick_new_version.Data.model
+package com.example.ozonchick_new_version.Data.model.Candidate
 
 import kotlinx.serialization.Serializable
 
