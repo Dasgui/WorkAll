@@ -1,9 +1,13 @@
 package com.example.ozonchick_new_version.Presentation.Screens.EmployerCandidateInformation
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.example.ozonchick_new_version.Data.model.Resume.ResumeDto
@@ -63,6 +67,10 @@ private fun EmployerCandidateInformationConstruct(viewModel: EmployerCandidateIn
 private fun SuccessBody (
     information : ResumeDto
 ) {
+//    TextUnderText(
+//        title = "Оброзование :",
+//        text = information.education
+//    )
     NameTextField(
         title = "Оброзование :",
         spaceBy = 10.dp,
@@ -76,6 +84,10 @@ private fun SuccessBody (
         color = MainColor
     )
     VerticalSpacer(20.dp)
+//    TextUnderText(
+//        title = "Название професии :",
+//        text = information.professionName
+//    )
     NameTextField(
         title = "Название професии :",
         spaceBy = 10.dp,
@@ -83,6 +95,10 @@ private fun SuccessBody (
         enabled = false
     )
     VerticalSpacer(10.dp)
+//    TextUnderText(
+//        title = "Сколько проработал :",
+//        text = information.experience
+//    )
     NameTextField(
         title = "Сколько проработал :",
         spaceBy = 10.dp,
@@ -91,6 +107,10 @@ private fun SuccessBody (
     )
 
     VerticalSpacer(40.dp)
+//    TextUnderText(
+//        title = "Как человек описывает себя :",
+//        text = information.description
+//    )
     NameTextField(
         title = "Как человек описывает себя :",
         spaceBy = 10.dp,
@@ -100,3 +120,24 @@ private fun SuccessBody (
     )
 }
 
+@Composable
+fun TextUnderText (
+    title : String,
+    text : String
+) {
+    Column (
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Text(
+            text = title,
+            style = Tema.Text_24_24_Bold,
+            color = MainColor
+        )
+        Text(
+            text = text,
+            style = Tema.Text_24_24_Bold,
+            color = MainColor
+        )
+    }
+}
