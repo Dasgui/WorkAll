@@ -1,5 +1,6 @@
 package com.example.ozonchick_new_version.Domain
 
+import android.util.Log
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.model.UserId
 import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.Candidate
@@ -45,7 +46,11 @@ class GetContactInformationUseCase(private val repository: Repository) {
 }
 
 class GetVacancyAllInformationUseCase(private val repository: Repository) {
-    suspend operator fun invoke(vacancyId: Int, employerId : Int,isAdmin: Boolean): CustomResult<VacancyAllInformation> {
+    suspend operator fun invoke(
+        vacancyId: Int,
+        employerId: Int,
+        isAdmin: Boolean
+    ): CustomResult<VacancyAllInformation> {
         return if (isAdmin) {
             val contact = repository.getContactInformation(vacancyId)
             val employer = repository.getEmployerInformation(employerId)
@@ -59,7 +64,12 @@ class GetVacancyAllInformationUseCase(private val repository: Repository) {
             val contact = repository.getContactInformation(vacancyId)
             val experiences = repository.getExperiences()
             if (contact is CustomResult.Success && experiences is CustomResult.Success) {
-                CustomResult.Success(VacancyAllInformation(contact.data.first(), experience = experiences.data))
+                CustomResult.Success(
+                    VacancyAllInformation(
+                        contact.data.first(),
+                        experience = experiences.data
+                    )
+                )
             } else {
                 CustomResult.Failure(0, AppErrors.INTERNET.description)
             }
@@ -147,24 +157,23 @@ class RejectVacancyUseCase(private val repository: Repository) {
 
 class GetResumeCandidateUseCase(private val repository: Repository) {
     suspend operator fun invoke(resumeId: Int): CustomResult<ResumeDto> {
-        if (resumeId == 0) {
-
-        }
         val resume = repository.getResume(resumeId)
         return if (resume is CustomResult.Success) {
             val experience =
-                repository.getExperience(resume.data.experience_id) as CustomResult.Success
-            val education = repository.getEducation(resume.data.education) as CustomResult.Success
-
-            val resumeDto = ResumeDto(
-                id = resume.data.id,
-                experience = experience.data.name,
-                description = resume.data.description,
-                professionName = resume.data.professionName,
-                education = education.data.name
-            )
-
-            CustomResult.Success(resumeDto)
+                repository.getExperience(resume.data.experience_id)
+            val education = repository.getEducation(resume.data.education)
+            if (experience is CustomResult.Success && education is CustomResult.Success) {
+                val resumeDto = ResumeDto(
+                    id = resume.data.id,
+                    experience = experience.data.name,
+                    description = resume.data.description,
+                    professionName = resume.data.professionName,
+                    education = education.data.name
+                )
+                CustomResult.Success(resumeDto)
+            } else {
+                CustomResult.Failure(0, AppErrors.INTERNET.description)
+            }
         } else {
             CustomResult.Failure(0, AppErrors.INTERNET.description)
         }

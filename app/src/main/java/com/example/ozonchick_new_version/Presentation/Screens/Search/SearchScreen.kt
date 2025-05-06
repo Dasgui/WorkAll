@@ -77,6 +77,7 @@ private fun SearchConstruct(
     }
     CustomScaffold(
         mainText = "Поиск",
+        backButton = true,
         scaffoldStates = ScaffoldStates.Vacancies
     ) {
         val localState = viewModel.screenState.collectAsState()

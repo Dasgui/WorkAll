@@ -91,7 +91,8 @@ private fun EmployerDetailsVacancyConstruct(
     }
     CustomScaffold(
         mainText = "Изменить данные",
-        scaffoldStates = ScaffoldStates.OnSide
+        scaffoldStates = ScaffoldStates.OnSide,
+        backButton = true
     ) {
         when (val curState = localState.value) {
             is Failure -> {

@@ -50,6 +50,7 @@ private fun EmployerResponsesConstruct(viewModel: EmployerResponsesViewModel) {
     }
     CustomScaffold(
         bottomButton = true,
+        backButton = true,
         mainText = "Отклики",
         scaffoldStates = ScaffoldStates.OnSide
     ) {

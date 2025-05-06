@@ -34,6 +34,7 @@ import com.example.ozonchick_new_version.Data.strings.AppErrors
 import com.example.ozonchick_new_version.Presentation.Screens.ContactsScreen
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerDetailsVacancy.EmployerDetailsVacancyScreen
 import com.example.ozonchick_new_version.Presentation.States.DialogStates
+import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.States.TextFieldStates
 import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
@@ -94,6 +95,7 @@ private fun ListVacanciesScreenConstruct(
     CustomScaffold(
         mainText = "Вакансии",
         bottomButton = true,
+        scaffoldStates = ScaffoldStates.Vacancies,
         statesOfGetVacancies = viewModel.statesOfGetVacancies.value
     ) {
         Column(

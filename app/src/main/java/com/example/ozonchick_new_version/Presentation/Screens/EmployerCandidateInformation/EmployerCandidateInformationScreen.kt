@@ -38,7 +38,8 @@ private fun EmployerCandidateInformationConstruct(viewModel: EmployerCandidateIn
     val localState = viewModel.screenState.collectAsState()
     CustomScaffold (
         mainText = "Информация",
-        scaffoldStates = ScaffoldStates.OnSide
+        scaffoldStates = ScaffoldStates.OnSide,
+        backButton = true
     ) {
         when (val localState = localState.value) {
             ScreenState.AwaitingChangeFromUser -> Unit

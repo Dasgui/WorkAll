@@ -45,7 +45,8 @@ private fun ResumeConstruct(viewModel: ResumeViewModel = koinViewModel()) {
     }
     CustomScaffold(
         scaffoldStates = ScaffoldStates.OnSide,
-        mainText = "Резюме"
+        mainText = "Резюме",
+        backButton = true
     ) {
         when (val localState = screenState.value) {
             ScreenState.AwaitingChangeFromUser -> {

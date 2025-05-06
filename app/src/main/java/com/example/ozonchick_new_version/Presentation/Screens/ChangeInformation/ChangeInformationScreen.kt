@@ -44,6 +44,7 @@ class ChangeInformationScreen : Screen {
 private fun ChangeInformationConstruct (viewModel: ChangeInformationViewModel = koinViewModel()) {
     CustomScaffold (
         bottomButton = true,
+        backButton = true,
         scaffoldStates = ScaffoldStates.OnSide,
         mainText = "Информация о вас",
         mainBody = {

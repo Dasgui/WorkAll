@@ -47,6 +47,7 @@ import com.example.ozonchick_new_version.R
 @Composable
 fun CustomScaffold(
     bottomButton: Boolean = false,
+    backButton : Boolean = false,
     mainText: String = "",
     modifier: Modifier = Modifier,
     scaffoldStates: ScaffoldStates = ScaffoldStates.Main,
@@ -74,7 +75,7 @@ fun CustomScaffold(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        if (scaffoldStates == ScaffoldStates.OnSide || scaffoldStates == ScaffoldStates.Vacancies) {
+                        if (backButton) {
                             Icon(
                                 painter = painterResource(id = R.drawable.arrow_square_right),
                                 contentDescription = "",
@@ -101,7 +102,7 @@ fun CustomScaffold(
                                     .clickable { addVacancy() },
                                 tint = MainColor
                             )
-                        } else if (scaffoldStates == ScaffoldStates.Main) {
+                        } else if (scaffoldStates == ScaffoldStates.Vacancies) {
                             Icon(
                                 painter = painterResource(id = R.drawable.search),
                                 contentDescription = null,

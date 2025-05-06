@@ -77,7 +77,8 @@ fun EmployerAddVacancyConstruct(viewModel: EmployerAddVacancyViewModel = koinVie
     }
     CustomScaffold(
         mainText = "Создать вакансию",
-        scaffoldStates = ScaffoldStates.OnSide
+        scaffoldStates = ScaffoldStates.OnSide,
+        backButton = true
     ) {
         Column(
             modifier = Modifier

@@ -68,6 +68,7 @@ fun Contacts_construct(viewModel: ContactsViewModel) {
             CustomScaffold(
                 mainText = "Контактная информация",
                 bottomButton = true,
+                backButton = true,
                 scaffoldStates = ScaffoldStates.OnSide,
                 mainBody = {
                     Column (
