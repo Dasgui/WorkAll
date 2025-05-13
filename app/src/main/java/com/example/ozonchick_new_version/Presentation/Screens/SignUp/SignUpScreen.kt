@@ -79,7 +79,7 @@ fun SignUpConstruct(viewModel: SignUpViewModel = koinViewModel(), onNavigateForL
         modifier = Modifier
             .fillMaxSize()
             .background(BackgroundColor)
-            .padding(start = 24.dp, end = 24.dp, top = 120.dp, bottom = 50.dp)
+            .padding(start = 24.dp, end = 24.dp, top = 80.dp, bottom = 50.dp)
     ) {
         item {
             TextHead()

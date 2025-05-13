@@ -29,6 +29,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
@@ -86,12 +87,14 @@ fun CustomScaffold(
                             )
                         }
                         else {
-                            Spacer(Modifier.size(40.dp))
+                            Spacer(Modifier.size(20.dp))
                         }
                         Text(
                             text = mainText,
                             style = Tema.Text_24_24_Medium,
                             color = MainColor,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(start = 5.dp, end = 5.dp)
                         )
                         if (scaffoldStates == ScaffoldStates.EmployerVacancies) {
                             Icon(
@@ -112,7 +115,7 @@ fun CustomScaffold(
                                 tint = MainColor
                             )
                         } else {
-                            Spacer(Modifier.size(40.dp))
+                            Spacer(Modifier.size(20.dp))
                         }
                     }
                 },

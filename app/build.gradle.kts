@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.ozonchick_new_version"
-        minSdk = 30
+        minSdk = 29
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
