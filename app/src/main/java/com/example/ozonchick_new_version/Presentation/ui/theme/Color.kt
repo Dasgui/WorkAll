@@ -1,7 +1,7 @@
 package com.example.ozonchick_new_version.Presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
-//Основные цвета
+//Основные цветаа
 val MainColor = Color(0xFFFFFFFF)
 val SecondColor = Color(0xFF00FF37)
 val BackgroundColor = Color(0xFF2F80ED)
