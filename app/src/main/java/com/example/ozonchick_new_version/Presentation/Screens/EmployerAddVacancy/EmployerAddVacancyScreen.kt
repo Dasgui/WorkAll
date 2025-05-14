@@ -115,7 +115,7 @@ fun EmployerAddVacancyConstruct(viewModel: EmployerAddVacancyViewModel = koinVie
                         color = MainColor,
                     )
                     Text(
-                        text = "${viewModel.aboutWork.value.length}/500",
+                        text = "${viewModel.aboutWork.value.length}/2000",
                         color = MainColor,
                         style = Tema.Text_24_24_Bold
                     )
@@ -126,7 +126,7 @@ fun EmployerAddVacancyConstruct(viewModel: EmployerAddVacancyViewModel = koinVie
                         .fillMaxWidth()
                         .height(150.dp),
                     onValueChange = {
-                        if (viewModel.aboutWork.value.length < 500) {
+                        if (viewModel.aboutWork.value.length < 2000) {
                             viewModel.aboutWork.value = it
                         }
                     },

@@ -194,7 +194,7 @@ private fun MainInformationVacancy (viewModel : EmployerDetailsVacancyViewModel)
                     color = MainColor,
                 )
                 Text(
-                    text = "${viewModel.aboutWork.value.length}/500",
+                    text = "${viewModel.aboutWork.value.length}/2000",
                     color = MainColor,
                     style = Tema.Text_24_24_Bold
                 )
@@ -205,7 +205,7 @@ private fun MainInformationVacancy (viewModel : EmployerDetailsVacancyViewModel)
                     .fillMaxWidth()
                     .height(150.dp),
                 onValueChange = {
-                    if (viewModel.aboutWork.value.length < 500) {
+                    if (viewModel.aboutWork.value.length < 2000) {
                         viewModel.aboutWork.value = it
                     }
                 },
