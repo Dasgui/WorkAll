@@ -64,7 +64,7 @@ private fun LogInConstruct(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.Companion
                     .fillMaxWidth()
-                    .padding(start = 24.dp, end = 24.dp, top = 120.dp)
+                    .padding(start = 24.dp, end = 24.dp, top = 80.dp, bottom = 80.dp)
             ) {
                 when (val curState = screenState.value) {
                     is ScreenState.Failure -> FailAlertDialog(
@@ -205,12 +205,12 @@ private fun BottomBody(viewModel: LogInViewModel) {
                 style = Tema.Text_20_20_Medium,
                 textAlign = TextAlign.Left
             )
-            Text(
-                text = "Забыли пароль?",
-                style = Tema.Text_20_20_Medium,
-                color = MainColor,
-                textAlign = TextAlign.Right
-            )
+//            Text(
+//                text = "Забыли пароль?",
+//                style = Tema.Text_20_20_Medium,
+//                color = MainColor,
+//                textAlign = TextAlign.Right
+//            )
         }
     }
 }
