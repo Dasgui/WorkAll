@@ -97,7 +97,7 @@ private fun ChangeInformationConstruct (viewModel: ChangeInformationViewModel = 
                         VerticalSpacer(30.dp)
 
                         TextFieldRowInformation(
-                            text = "Имя",
+                            text = "ФИО",
                             image = R.drawable.profile,
                             changeValue = viewModel.name,
                         )
