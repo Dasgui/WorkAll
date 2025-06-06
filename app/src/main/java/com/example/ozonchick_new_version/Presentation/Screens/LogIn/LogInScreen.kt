@@ -50,6 +50,7 @@ class LogInScreen : Screen {
 private fun LogInConstruct(
     viewModel: LogInViewModel = koinViewModel()
 ) {
+//    val screenState = viewModel.screenState.collectAsState()
     val screenState = viewModel.screenState.collectAsState()
     val navigator = LocalNavigator.current
 
@@ -230,7 +231,9 @@ private fun BottomText(
             placeText = "Войти",
             onClick = {
                 viewModel.screenState.value = ScreenState.Loading
-                viewModel.auth()
+                viewModel.authKtor()
+//                viewModel.screenState.value = ScreenState.Loading
+//                viewModel.auth()
             },
             modifier = Modifier.Companion.fillMaxWidth().height(45.dp),
             enabled = viewModel.buttonEnabled.value

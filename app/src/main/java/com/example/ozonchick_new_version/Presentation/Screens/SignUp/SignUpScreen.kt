@@ -52,14 +52,14 @@ class SignUpScreen : Screen {
 
 @Composable
 fun SignUpConstruct(viewModel: SignUpViewModel = koinViewModel(), onNavigateForLogIn: () -> Unit) {
-    val screenState = viewModel.signUpState.collectAsState()
+    val screenState = viewModel.screenState.collectAsState()
     val navigator = LocalNavigator.current
     when (val curState = screenState.value) {
         is ScreenState.Failure -> FailAlertDialog(
             title = "Ошибка регистрации",
             curState.message,
             onOkClick = {
-                viewModel.signUpState.value = ScreenState.Loading
+                viewModel.screenState.value = ScreenState.Loading
             })
 
         is ScreenState.Loading -> Unit
@@ -218,7 +218,7 @@ private fun Bottom(viewModel: SignUpViewModel, onNavigateForLogIn: () -> Unit) {
                     ) {
                         viewModel.registration()
                     } else {
-                        viewModel.signUpState.value = ScreenState.Failure(0, AppErrors.INCORRECT_VALUES.description)
+                        viewModel.screenState.value = ScreenState.Failure(0, AppErrors.INCORRECT_VALUES.description)
                     }
                 } else if (viewModel.userRole.value == UserType.Candidate) {
                     if (
@@ -228,7 +228,7 @@ private fun Bottom(viewModel: SignUpViewModel, onNavigateForLogIn: () -> Unit) {
                     ) {
                         viewModel.registration()
                     } else {
-                        viewModel.signUpState.value = ScreenState.Failure(0, AppErrors.INCORRECT_VALUES.description)
+                        viewModel.screenState.value = ScreenState.Failure(0, AppErrors.INCORRECT_VALUES.description)
                     }
                 }
             },

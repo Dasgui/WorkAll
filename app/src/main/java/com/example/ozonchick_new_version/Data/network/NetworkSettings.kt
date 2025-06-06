@@ -3,6 +3,16 @@ package com.example.ozonchick_new_version.Data.network
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.realtime.Realtime
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.request.header
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
 import kotlin.time.Duration.Companion.seconds
 
 
@@ -17,6 +27,21 @@ val supabase = createSupabaseClient(
         }
     }
 
+val client = HttpClient(CIO) {
+    install(ContentNegotiation) {
+        json( Json {
+            ignoreUnknownKeys = true
+            isLenient = true
+        })
+    }
+    defaultRequest {
+        url("https://isp-workall.online/api/v1/")
+        header(HttpHeaders.ContentType, ContentType.Application.Json)
+    }
+    install(Logging)
+}
+
+val json = Json { ignoreUnknownKeys = true }
 
 
 

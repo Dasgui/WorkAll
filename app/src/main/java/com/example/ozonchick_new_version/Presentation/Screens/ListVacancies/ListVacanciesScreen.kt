@@ -157,13 +157,6 @@ private fun ListVacanciesScreenConstruct(
                                     }
                                     is UserType.None -> Unit
                                 }
-//                                if (publicUserId.type is UserType.Candidate) {
-//                                    CustomButton(
-//                                        onClick = { viewModel.addVacancy(item.vakans_id) },
-//                                        modifier = Modifier.fillMaxWidth(),
-//                                        placeText = "Откликнуться"
-//                                    )
-//                                }
                             })
                     }
                 }

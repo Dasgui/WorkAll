@@ -1,11 +1,14 @@
 package com.example.ozonchick_new_version.Presentation
 
 import com.example.ozonchick_new_version.Data.model.VacancyInformation
+import com.example.ozonchick_new_version.Data.network.KtorRepositories.KtorRepository
+import com.example.ozonchick_new_version.Data.network.KtorRepositories.VacancyRepository
 import com.example.ozonchick_new_version.Data.network.Repository
 import com.example.ozonchick_new_version.Data.network.RepositoryImpl
 import com.example.ozonchick_new_version.Domain.AcceptCandidateUseCase
 import com.example.ozonchick_new_version.Domain.AcceptVacancyUseCase
 import com.example.ozonchick_new_version.Domain.AddVacancyUseCase
+import com.example.ozonchick_new_version.Domain.AuthKtorUseCase
 import com.example.ozonchick_new_version.Domain.AuthUseCase
 import com.example.ozonchick_new_version.Domain.DeleteEmployerVacancyUseCase
 import com.example.ozonchick_new_version.Domain.GetContactInformationUseCase
@@ -19,10 +22,13 @@ import com.example.ozonchick_new_version.Domain.GetResponsesVacanciesUseCase
 import com.example.ozonchick_new_version.Domain.GetResumeCandidateUseCase
 import com.example.ozonchick_new_version.Domain.GetUserChangeableInformationUseCase
 import com.example.ozonchick_new_version.Domain.GetUsersForEmployerUseCase
+import com.example.ozonchick_new_version.Domain.GetVacanciesKtorUseCase
 import com.example.ozonchick_new_version.Domain.GetVacanciesUseCase
 import com.example.ozonchick_new_version.Domain.GetVacancyAllInformationUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationCandidateUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationEmployerUseCase
+import com.example.ozonchick_new_version.Domain.RegistrationKtorCandidateUseCase
+import com.example.ozonchick_new_version.Domain.RegistrationKtorEmployerUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationUseCase
 import com.example.ozonchick_new_version.Domain.RejectCandidateUseCase
 import com.example.ozonchick_new_version.Domain.RejectVacancyUseCase
@@ -50,17 +56,18 @@ import org.koin.dsl.module
 
 var AppModule = module {
     factory<Repository> { RepositoryImpl() }
+    factory<KtorRepository> { VacancyRepository() }
     factory { AuthUseCase(get()) }
+    factory { AuthKtorUseCase(get()) }
     viewModel {
         LogInViewModel(get())
     }
     factory {
-        RegistrationCandidateUseCase(get())
+        RegistrationKtorCandidateUseCase(get())
     }
-    factory { RegistrationEmployerUseCase(get()) }
-    factory { RegistrationUseCase(get()) }
+    factory { RegistrationKtorEmployerUseCase(get()) }
     viewModel {
-        SignUpViewModel(get(), get(), get())
+        SignUpViewModel(get(), get())
     }
     factory { GetNameUseCase(get()) }
     viewModel {
@@ -86,8 +93,10 @@ var AppModule = module {
     factory { GetVacanciesUseCase(get()) }
     factory { AcceptVacancyUseCase(get()) }
     factory { SearchVacanciesUseCase(get()) }
+
+    factory { GetVacanciesKtorUseCase(get()) }
     viewModel {
-        ListVacanciesViewModel(get(), get(), get())
+        ListVacanciesViewModel(get(), get(), get(), get())
     }
 
     factory { GetEmployerVacanciesUseCase(get()) }

@@ -13,12 +13,30 @@ import com.example.ozonchick_new_version.Data.model.Employer.VacancyUpdateInform
 import com.example.ozonchick_new_version.Data.model.VacancyAdditionalInformation
 import com.example.ozonchick_new_version.Data.model.VacancyInformation
 import com.example.ozonchick_new_version.Data.model.Candidate.VacancyResponse
+import com.example.ozonchick_new_version.Data.model.Ktor.VacanciesResponse
+import com.example.ozonchick_new_version.Data.network.KtorRepositories.KtorRepository
 import com.example.ozonchick_new_version.Data.network.Repository
 import com.example.ozonchick_new_version.Data.strings.AppErrors
 import com.example.ozonchick_new_version.Presentation.Models.ChangeVacancyUIModel
 
 class GetVacanciesUseCase(private val repository: Repository) {
     suspend operator fun invoke(): CustomResult<List<VacancyInformation>> {
+        var result = repository.getVacancies()
+        result = when (val curResult = result) {
+            is CustomResult.Failure -> {
+                CustomResult.Failure(curResult.code, curResult.message)
+            }
+
+            is CustomResult.Success -> {
+                CustomResult.Success(curResult.data)
+            }
+        }
+        return result
+    }
+}
+
+class GetVacanciesKtorUseCase(private val repository: KtorRepository) {
+    suspend operator fun invoke() : CustomResult<VacanciesResponse> {
         var result = repository.getVacancies()
         result = when (val curResult = result) {
             is CustomResult.Failure -> {

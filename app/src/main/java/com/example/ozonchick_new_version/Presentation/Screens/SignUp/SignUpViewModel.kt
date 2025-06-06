@@ -6,10 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.UserType
+import com.example.ozonchick_new_version.Common.localUserInformation
 import com.example.ozonchick_new_version.Data.model.Authentication.AllUserInsertInformation
+import com.example.ozonchick_new_version.Data.model.Ktor.Authetication.AllTypeUserInformation
+import com.example.ozonchick_new_version.Data.model.Ktor.Authetication.CandidateInfo
 import com.example.ozonchick_new_version.Data.strings.AuthenticationRegexPatterns
 import com.example.ozonchick_new_version.Domain.RegistrationCandidateUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationEmployerUseCase
+import com.example.ozonchick_new_version.Domain.RegistrationKtorCandidateUseCase
+import com.example.ozonchick_new_version.Domain.RegistrationKtorEmployerUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationUseCase
 import com.example.ozonchick_new_version.Presentation.States.DialogStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
@@ -20,9 +25,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class SignUpViewModel(
-    private val registrationCandidateUseCase: RegistrationCandidateUseCase,
-    private val registrationEmployerUseCase: RegistrationEmployerUseCase,
-    private val registrationUseCase: RegistrationUseCase
+    private val registrationKtorCandidateUseCase : RegistrationKtorCandidateUseCase,
+    private val registrationKtorEmployerUseCase: RegistrationKtorEmployerUseCase,
 ) : ViewModel() {
 
     private val _isWrittenCorrectly: MutableStateFlow<Boolean> = MutableStateFlow(false)
@@ -34,18 +38,18 @@ class SignUpViewModel(
 
     val buttonEnabled : MutableState<Boolean> = mutableStateOf(true)
 
-    val name : MutableState<String> = mutableStateOf("") /*"Еми"*/
-    val secondName : MutableState<String> = mutableStateOf("") /*"Эльмирович"*/
+    val name : MutableState<String> = mutableStateOf("testmobile")
+    val secondName : MutableState<String> = mutableStateOf("testmobile")
 
-    val phoneNumber : MutableState<String> = mutableStateOf("") /*"+79087027174"*/
+    val phoneNumber : MutableState<String> = mutableStateOf("+79087027174")
 
-    val email : MutableState<String> = mutableStateOf("") /*"gaisovich@inbox.ru"*/
+    val email : MutableState<String> = mutableStateOf("testmobile@mail.ru")
 
-    val password : MutableState<String> = mutableStateOf("") /*"123"*/
+    val password : MutableState<String> = mutableStateOf("testmobile")
 
     val organizationName : MutableState<String> = mutableStateOf("") /*"ООО Воскресный"*/
 
-    val confirmPassword : MutableState<String> = mutableStateOf("") /*"123"*/
+    val confirmPassword : MutableState<String> = mutableStateOf("testmobile")
 
 
     private val _passwordVisibleFirst: MutableStateFlow<Boolean> = MutableStateFlow(false)
@@ -60,7 +64,7 @@ class SignUpViewModel(
 
     val INN : MutableState<String> = mutableStateOf("") /*123456789012*/
 
-    val signUpState : MutableStateFlow<ScreenState<List<AllUserInsertInformation>>> =
+    val screenState : MutableStateFlow<ScreenState<AllTypeUserInformation>> =
         MutableStateFlow(ScreenState.Loading)
 
 
@@ -69,42 +73,42 @@ class SignUpViewModel(
             buttonEnabled.value = false
             val singleName = "${secondName.value.trim()} ${name.value.trim()}"
             when (
-                val curResult = if (userRole.value == UserType.Employer) {
-                    registrationUseCase(singleName, email.value, password.value, phoneNumber.value, INN.value, organizationName.value)
+                val curResult = if (localUserInformation.type == UserType.Candidate) {
+                    registrationKtorCandidateUseCase(singleName, email.value.trim(), password.value.trim(), phoneNumber.value.trim())
                 } else {
-                    registrationUseCase(singleName, email.value.trim(), password.value.trim(), phoneNumber.value.trim())
+                    registrationKtorEmployerUseCase(singleName, email.value.trim(), password.value.trim(), phoneNumber.value.trim(), INN.value.trim(), organizationName.value.trim())
                 }
             ) {
-                is CustomResult.Failure -> signUpState.value = ScreenState.Failure(curResult.code, curResult.message)
-                is CustomResult.Success -> signUpState.value = ScreenState.Success(data = curResult.data)
+                is CustomResult.Failure -> screenState.value = ScreenState.Failure(curResult.code, curResult.message)
+                is CustomResult.Success -> screenState.value = ScreenState.Success(curResult.data)
             }
             buttonEnabled.value = true
         }
     }
 
-    fun registrationCandidate () {
-        viewModelScope.launch(Dispatchers.IO) {
-            val singleName = "${secondName.value.trim()} ${name.value.trim()}"
-            when (val curResult = registrationCandidateUseCase(singleName, email.value.trim(), password.value.trim(), phoneNumber.value.trim())) {
-                is CustomResult.Failure -> signUpState.value = ScreenState.Failure(curResult.code, curResult.message)
-                is CustomResult.Success -> {
-                    signUpState.value = ScreenState.Success(data = curResult.data)
-                }
-            }
-        }
-    }
-
-    fun registrationEmployer () {
-        viewModelScope.launch (Dispatchers.IO) {
-            val singleName = "${secondName.value.trim()} ${name.value.trim()}"
-            when (val curResult = registrationEmployerUseCase(singleName, email.value, password.value, phoneNumber.value, INN.value, organizationName.value)) {
-                is CustomResult.Failure -> signUpState.value = ScreenState.Failure(curResult.code, curResult.message)
-                is CustomResult.Success -> {
-                    signUpState.value = ScreenState.Success(data = curResult.data)
-                }
-            }
-        }
-    }
+//    fun registrationCandidate () {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            val singleName = "${secondName.value.trim()} ${name.value.trim()}"
+//            when (val curResult = registrationKtorCandidateUseCase(singleName, email.value.trim(), password.value.trim(), phoneNumber.value.trim())) {
+//                is CustomResult.Failure -> signUpState.value = ScreenState.Failure(curResult.code, curResult.message)
+//                is CustomResult.Success -> {
+//                    signUpState.value = ScreenState.Success(data = curResult.data)
+//                }
+//            }
+//        }
+//    }
+//
+//    fun registrationEmployer () {
+//        viewModelScope.launch (Dispatchers.IO) {
+//            val singleName = "${secondName.value.trim()} ${name.value.trim()}"
+//            when (val curResult = registrationEmployerUseCase(singleName, email.value, password.value, phoneNumber.value, INN.value, organizationName.value)) {
+//                is CustomResult.Failure -> signUpState.value = ScreenState.Failure(curResult.code, curResult.message)
+//                is CustomResult.Success -> {
+//                    signUpState.value = ScreenState.Success(data = curResult.data)
+//                }
+//            }
+//        }
+//    }
 
     fun checkName () : Boolean {
         return name.value.trim().matches(Regex(AuthenticationRegexPatterns.name))

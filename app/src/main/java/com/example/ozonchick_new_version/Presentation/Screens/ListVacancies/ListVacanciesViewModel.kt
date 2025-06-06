@@ -9,9 +9,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.publicUserId
+import com.example.ozonchick_new_version.Data.model.Ktor.VacanciesResponse
 import com.example.ozonchick_new_version.Data.model.ListOfVacancies.StatesOfGetVacancies
 import com.example.ozonchick_new_version.Data.model.VacancyInformation
 import com.example.ozonchick_new_version.Domain.AcceptVacancyUseCase
+import com.example.ozonchick_new_version.Domain.GetVacanciesKtorUseCase
 import com.example.ozonchick_new_version.Domain.GetVacanciesUseCase
 import com.example.ozonchick_new_version.Domain.SearchVacanciesUseCase
 import com.example.ozonchick_new_version.Presentation.States.DialogStates
@@ -25,6 +27,7 @@ import kotlinx.coroutines.launch
 
 class ListVacanciesViewModel(
     private val getVacanciesUseCase: GetVacanciesUseCase,
+    private val getVacanciesKtorUseCase: GetVacanciesKtorUseCase,
     private val acceptVacancyUseCase: AcceptVacancyUseCase,
     private val searchVacanciesUseCase: SearchVacanciesUseCase
 ) : ViewModel() {
@@ -63,12 +66,14 @@ class ListVacanciesViewModel(
                 }
                 StatesOfGetVacancies.Normal -> {
                     val vacancies = getInformation().await()
+                    val ktorVacancies = getKtorInformation().await()
                     if (vacancies !is CustomResult.Failure) {
                         responseState.value = ScreenState.Success((vacancies as CustomResult.Success).data)
                         listVacancies.value = vacancies.data
                     } else {
                         responseState.value = ScreenState.Failure(vacancies.code, vacancies.message)
                     }
+                    Log.d("Ktor вакансии", ktorVacancies.toString())
                     Log.d("Получение на откликнувшиеся вакансии", responseState.value.toString())
                 }
             }
@@ -91,5 +96,9 @@ class ListVacanciesViewModel(
 
     suspend fun getInformation() : Deferred<CustomResult<List<VacancyInformation>>> {
         return coroutineScope { async(Dispatchers.IO) { getVacanciesUseCase() } }
+    }
+
+    suspend fun getKtorInformation() : Deferred<CustomResult<VacanciesResponse>> {
+        return coroutineScope { async(Dispatchers.IO) { getVacanciesKtorUseCase() } }
     }
 }

@@ -6,3 +6,8 @@ data class UserId(
     var id : Int,
     var type : UserType
 )
+
+data class UserMainInformation(
+    var token : String,
+    var type : UserType
+)
