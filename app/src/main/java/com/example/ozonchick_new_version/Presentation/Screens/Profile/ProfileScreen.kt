@@ -29,6 +29,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import com.example.ozonchick_new_version.Common.UserType
+import com.example.ozonchick_new_version.Common.localUserInformation
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Presentation.Screens.ChangeInformation.ChangeInformationScreen
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
@@ -79,7 +80,7 @@ private fun ProfileConstruct(navigator: Navigator?, viewModel: ProfileViewModel 
                         })
                     is ScreenState.Loading -> CustomLoading()
                     is ScreenState.Success -> {
-                        ScreenHead(navigator = navigator, curState.data.name)
+                        ScreenHead(navigator = navigator, curState.data)
                         ScreenBody(navigator = navigator)
                     }
                     ScreenState.Error -> AlertText()
@@ -130,7 +131,7 @@ private fun ScreenHead(
                     modifier = Modifier.Companion
                         .size(50.dp)
                         .clickable {
-                            Paper.book().delete("UserId")
+                            Paper.book().delete("UserLocalInformation")
                             navigator?.replaceAll(LogInScreen())
                         },
                     colorFilter = ColorFilter.Companion.tint(MainColor)
@@ -161,7 +162,7 @@ private fun ScreenBody(navigator: Navigator?) {
                 navigator?.push(ChangeInformationScreen())
             }
         )
-        if (publicUserId.type is UserType.Candidate) {
+        if (localUserInformation.type is UserType.Candidate) {
             CardConstruct(
                 "Ваше резюме",
                 "Здесь вы можете написать своё резюме",

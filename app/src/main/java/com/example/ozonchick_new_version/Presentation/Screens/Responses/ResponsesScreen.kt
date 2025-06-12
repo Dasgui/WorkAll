@@ -1,6 +1,5 @@
 package com.example.ozonchick_new_version.Presentation.Screens.Responses
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -57,26 +56,18 @@ private fun ResponseConstruct(viewModel: ResponsesViewModel = koinViewModel())
 
                 is ScreenState.Loading -> CustomLoading()
                 is ScreenState.Success -> {
-                    Log.d(
-                        "Размерность списка состояния откликов",
-                        curState.data.status.size.toString()
-                    )
-                    Log.d(
-                        "Размерность списка полученных вакансий",
-                        curState.data.information.size.toString()
-                    )
-                    for (i in 0 until curState.data.status.size) {
+                    for (item in curState.data.responses ?: emptyList()) {
                         ResponseVacancyCard(
-                            list = curState.data.information[i],
-                            status = curState.data.status[i].otvet,
-                            rejectVacancy = {viewModel.reject(curState.data.information[i].vakans_id)}
+                            list = item,
+                            status = item.responseStatus.name,
+                            rejectVacancy = { viewModel.reject(item.vacancyInfo.id) }
                         )
                     }
                 }
 
                 ScreenState.Error -> AlertText()
                 ScreenState.AwaitingChangeFromUser -> Unit
-                ScreenState.AwaitingResponse -> Unit
+                ScreenState.AwaitingResponse -> AlertText("Похоже вы ещё не откликались на вакансии")
             }
         }
     }

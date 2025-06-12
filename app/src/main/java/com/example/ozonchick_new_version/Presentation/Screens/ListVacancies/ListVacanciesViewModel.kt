@@ -10,11 +10,16 @@ import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.Ktor.VacanciesResponse
+import com.example.ozonchick_new_version.Data.model.Ktor.VacancyOtklikResponse
+import com.example.ozonchick_new_version.Data.model.Ktor.VacancyResponse
 import com.example.ozonchick_new_version.Data.model.ListOfVacancies.StatesOfGetVacancies
 import com.example.ozonchick_new_version.Data.model.VacancyInformation
 import com.example.ozonchick_new_version.Domain.AcceptVacancyUseCase
+import com.example.ozonchick_new_version.Domain.AddVacancyResponseKtorUseCase
+import com.example.ozonchick_new_version.Domain.FilterVacanciesKtorUseCase
 import com.example.ozonchick_new_version.Domain.GetVacanciesKtorUseCase
 import com.example.ozonchick_new_version.Domain.GetVacanciesUseCase
+import com.example.ozonchick_new_version.Domain.SearchVacanciesKtorUseCase
 import com.example.ozonchick_new_version.Domain.SearchVacanciesUseCase
 import com.example.ozonchick_new_version.Presentation.States.DialogStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
@@ -24,14 +29,15 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ListVacanciesViewModel(
-    private val getVacanciesUseCase: GetVacanciesUseCase,
     private val getVacanciesKtorUseCase: GetVacanciesKtorUseCase,
-    private val acceptVacancyUseCase: AcceptVacancyUseCase,
-    private val searchVacanciesUseCase: SearchVacanciesUseCase
+    private val addVacancyUseCase: AddVacancyResponseKtorUseCase,
+    private val searchVacanciesUseCase: SearchVacanciesKtorUseCase,
+    private val filterVacanciesUseCase: FilterVacanciesKtorUseCase
 ) : ViewModel() {
-    val responseState : MutableStateFlow<ScreenState<List<VacancyInformation>>> = MutableStateFlow(ScreenState.Loading)
+    val responseState : MutableStateFlow<ScreenState<VacanciesResponse>> = MutableStateFlow(ScreenState.Loading)
     val statesOfGetVacancies : MutableState<StatesOfGetVacancies> = mutableStateOf(
         StatesOfGetVacancies.Normal)
 
@@ -44,7 +50,7 @@ class ListVacanciesViewModel(
     val maxSalary = mutableIntStateOf(0)
     val currentSalary = mutableFloatStateOf(0f)
 
-    var listVacancies : MutableState<List<VacancyInformation>> = mutableStateOf(listOf())
+    var listVacancies : MutableState<VacanciesResponse> = mutableStateOf(VacanciesResponse("", emptyList()))
 
     val dialogStates : MutableState<DialogStates> = mutableStateOf(DialogStates.None)
 
@@ -54,26 +60,31 @@ class ListVacanciesViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             when (val localState = statesOfGetVacancies.value) {
                 is StatesOfGetVacancies.Filter -> {
-                    val response = searchVacanciesUseCase(localState)
-                    when (response) {
+                    when (val response = if (localState.search.isEmpty()) filterVacanciesUseCase(localState) else searchVacanciesUseCase(localState.search) ) {
                         is CustomResult.Failure -> responseState.value = ScreenState.Failure(response.code, response.message)
-                        is CustomResult.Success<List<VacancyInformation>> -> {
+                        is CustomResult.Success<VacanciesResponse> -> {
                             responseState.value = ScreenState.Success(response.data)
                             listVacancies.value = response.data
                         }
                     }
-                    Log.d("Вакансии при поиске", response.toString())
+//                    val response = searchVacanciesUseCase(localState)
+//                    when (response) {
+//                        is CustomResult.Failure -> responseState.value = ScreenState.Failure(response.code, response.message)
+//                        is CustomResult.Success<List<VacancyInformation>> -> {
+//                            responseState.value = ScreenState.Success(response.data)
+//                            listVacancies.value = response.data
+//                        }
+//                    }
+//                    Log.d("Вакансии при поиске", response.toString())
                 }
                 StatesOfGetVacancies.Normal -> {
-                    val vacancies = getInformation().await()
-                    val ktorVacancies = getKtorInformation().await()
-                    if (vacancies !is CustomResult.Failure) {
-                        responseState.value = ScreenState.Success((vacancies as CustomResult.Success).data)
-                        listVacancies.value = vacancies.data
-                    } else {
-                        responseState.value = ScreenState.Failure(vacancies.code, vacancies.message)
+                    when (val curResult = getVacanciesKtorUseCase(1, 56)) {
+                        is CustomResult.Failure -> responseState.value = ScreenState.Failure(curResult.code, curResult.message)
+                        is CustomResult.Success<VacanciesResponse> -> {
+                            responseState.value = ScreenState.Success(curResult.data)
+                            listVacancies.value = curResult.data
+                        }
                     }
-                    Log.d("Ktor вакансии", ktorVacancies.toString())
                     Log.d("Получение на откликнувшиеся вакансии", responseState.value.toString())
                 }
             }
@@ -82,23 +93,20 @@ class ListVacanciesViewModel(
 
 
     fun addVacancy(vacancyId : Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = acceptVacancyUseCase(publicUserId.id, vacancyId)
-            if (response !is CustomResult.Failure) {
-                Log.d("Всё окей", "Всё окей")
-                dialogStates.value = DialogStates.Okay
-            } else {
-                Log.d("Всё плохо", "Всё плохо")
-                dialogStates.value = DialogStates.Error
+        viewModelScope.launch {
+            when(val response = addVacancyUseCase(vacancyId)) {
+                is CustomResult.Failure -> {
+                    if (response.code == 500) {
+                        dialogStates.value = DialogStates.Error
+                    } else {
+                        responseState.value = ScreenState.Failure(response.code, response.message)
+                    }
+                }
+                is CustomResult.Success<VacancyOtklikResponse> -> {
+                    Log.d("В ListVacanciesViewModel", "Okay")
+                    dialogStates.value = DialogStates.Okay
+                }
             }
         }
-    }
-
-    suspend fun getInformation() : Deferred<CustomResult<List<VacancyInformation>>> {
-        return coroutineScope { async(Dispatchers.IO) { getVacanciesUseCase() } }
-    }
-
-    suspend fun getKtorInformation() : Deferred<CustomResult<VacanciesResponse>> {
-        return coroutineScope { async(Dispatchers.IO) { getVacanciesKtorUseCase() } }
     }
 }

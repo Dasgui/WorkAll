@@ -10,7 +10,6 @@ data class EmployerMainInformation(
     @SerialName("Email") val email: String,
     @SerialName("ID") val id: Int,
     @SerialName("INN") val inn: String,
-
     @SerialName("NameOrganization") val nameOrganization: String,
     @SerialName("Password") val password: String,
     @SerialName("PhoneNumber") val phoneNumber: String,

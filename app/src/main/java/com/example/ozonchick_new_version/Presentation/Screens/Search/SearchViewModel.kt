@@ -6,10 +6,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozonchick_new_version.Common.CustomResult
+import com.example.ozonchick_new_version.Data.model.Ktor.AllExperience
+import com.example.ozonchick_new_version.Data.model.Ktor.Experience
 import com.example.ozonchick_new_version.Data.model.ListOfVacancies.StatesOfGetVacancies
 import com.example.ozonchick_new_version.Data.model.Resume.ExperienceGet
 import com.example.ozonchick_new_version.Data.model.VacancyInformation
 import com.example.ozonchick_new_version.Data.network.supabase
+import com.example.ozonchick_new_version.Domain.GetAllExperienceKtorUseCase
 import com.example.ozonchick_new_version.Domain.GetExperienceUseCase
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import io.github.jan.supabase.postgrest.from
@@ -18,50 +21,61 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
-    private val getExperienceUseCase: GetExperienceUseCase
+    private val getExperienceUseCase: GetAllExperienceKtorUseCase
 ) : ViewModel() {
 
     val search = mutableStateOf("")
     val minSalaryText = mutableStateOf("")
 
+    val searchVisible: MutableState<Boolean> = mutableStateOf(true)
 
     val checkSalary: MutableState<Boolean> = mutableStateOf(false)
     val checkExperience: MutableState<Boolean> = mutableStateOf(false)
 
     val checkListExperience: MutableState<Boolean> = mutableStateOf(false)
 
-    val experienceList: MutableState<List<ExperienceGet>> =
+    val experienceList: MutableState<List<Experience>> =
         mutableStateOf(emptyList())
-    val selectedExperience: MutableState<ExperienceGet?> = mutableStateOf(null)
+    val selectedExperience: MutableState<Experience?> = mutableStateOf(null)
 
     val screenState: MutableStateFlow<ScreenState<List<ExperienceGet>>> = MutableStateFlow(
         ScreenState.AwaitingChangeFromUser
     )
 
 
-    fun getStatesOfGetVacancies(): StatesOfGetVacancies {
-        return StatesOfGetVacancies.Filter(
-            search = search.value,
-            filterSalary = if (checkSalary.value) minSalaryText.value else "",
-            filterExperience = selectedExperience.value ?: ExperienceGet(0, ""),
-            filterExperienceList = experienceList.value
-        )
+    fun getStatesOfGetVacancies(isSearchVisible: Boolean): StatesOfGetVacancies {
+        return if ((search.value.isEmpty() && minSalaryText.value.isEmpty()
+            && selectedExperience.value?.id == 0)
+            || (search.value.isEmpty() && checkSalary.value == false && checkExperience.value == false)
+        ) {
+            StatesOfGetVacancies.Normal
+        } else {
+            StatesOfGetVacancies.Filter(
+                search = if (isSearchVisible) search.value.trim() else "",
+                filterSalary = if (checkSalary.value) minSalaryText.value.trim() else "",
+                filterExperience = if (checkExperience.value) selectedExperience.value
+                    ?: Experience("", 0, "") else null,
+                filterExperienceList = experienceList.value
+            )
+        }
     }
 
     fun loadExperience() {
         viewModelScope.launch(Dispatchers.IO) {
             when (val result = getExperienceUseCase()) {
-                is CustomResult.Failure -> screenState.value = ScreenState.Failure(result.code, result.message)
-                is CustomResult.Success<List<ExperienceGet>> -> {
+                is CustomResult.Failure -> screenState.value =
+                    ScreenState.Failure(result.code, result.message)
+
+                is CustomResult.Success<AllExperience> -> {
                     screenState.value = ScreenState.AwaitingChangeFromUser
-                    experienceList.value = result.data
+                    experienceList.value = result.data.data
                 }
             }
         }
     }
 
     fun loadFilters(localState: StatesOfGetVacancies.Filter) {
-        if (localState.filterExperience.name.isNotEmpty()) {
+        if (localState.filterExperience?.id != 0) {
             checkExperience.value = true
         }
         if (localState.filterSalary.isNotEmpty()) {

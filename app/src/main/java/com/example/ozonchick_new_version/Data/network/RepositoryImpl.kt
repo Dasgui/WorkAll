@@ -13,7 +13,7 @@ import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.Can
 import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.UserInsertInformation
 import com.example.ozonchick_new_version.Data.model.Authentication.Employer.Employer
 import com.example.ozonchick_new_version.Data.model.Authentication.Employer.EmployerInsertInformation
-import com.example.ozonchick_new_version.Data.model.Authentication.UserChangeableInformation
+import com.example.ozonchick_new_version.Data.model.Authentication.CandidateChangeableInformation
 import com.example.ozonchick_new_version.Data.model.Resume.EducationGet
 import com.example.ozonchick_new_version.Data.model.Resume.ExperienceGet
 import com.example.ozonchick_new_version.Data.model.ListOfVacancies.StatesOfGetVacancies
@@ -84,10 +84,10 @@ interface Repository {
 
     suspend fun updateUserInformation(
         id: Int,
-        information: UserChangeableInformation
+        information: CandidateChangeableInformation
     ): CustomResult<Boolean>
 
-    suspend fun getUserChangeableInformation(id: Int): CustomResult<UserChangeableInformation>
+    suspend fun getUserChangeableInformation(id: Int): CustomResult<CandidateChangeableInformation>
 
     suspend fun searchVacancies (getStates : StatesOfGetVacancies.Filter) : CustomResult<List<VacancyInformation>>
 
@@ -627,7 +627,7 @@ class RepositoryImpl : Repository {
 
     override suspend fun updateUserInformation(
         id: Int,
-        information: UserChangeableInformation
+        information: CandidateChangeableInformation
     ): CustomResult<Boolean> {
         return try {
             var userType = getUserTypeById(id).await()
@@ -668,7 +668,7 @@ class RepositoryImpl : Repository {
         }
     }
 
-    override suspend fun getUserChangeableInformation(id: Int): CustomResult<UserChangeableInformation> {
+    override suspend fun getUserChangeableInformation(id: Int): CustomResult<CandidateChangeableInformation> {
         return try {
             var userType = getUserTypeById(id).await()
             when (userType) {
@@ -679,7 +679,7 @@ class RepositoryImpl : Repository {
                             filter {
                                 eq("user_id", id)
                             }
-                        }.decodeSingle<UserChangeableInformation>()
+                        }.decodeSingle<CandidateChangeableInformation>()
                     Success(responseCandidate)
                 }
 
@@ -690,7 +690,7 @@ class RepositoryImpl : Repository {
                             filter {
                                 eq("employer_id", id)
                             }
-                        }.decodeSingle<UserChangeableInformation>()
+                        }.decodeSingle<CandidateChangeableInformation>()
                     Success(responseEmployer)
                 }
 
@@ -706,13 +706,13 @@ class RepositoryImpl : Repository {
         return try {
             val response = supabase.from("vakans").select {
                 filter {
-                    ilike("vakans_name", "%${getStates.search}%")
-                    if (getStates.filterSalary.isNotEmpty() && getStates.filterSalary.isNotEmpty()) {
-                        gte("vakans_price", getStates.filterSalary)
-                    }
-                    if (getStates.filterExperience.name.isNotBlank()) {
-                        eq("vakans_experience", getStates.filterExperience.name)
-                    }
+//                    ilike("vakans_name", "%${getStates.search}%")
+//                    if (getStates.filterSalary.isNotEmpty() && getStates.filterSalary.isNotEmpty()) {
+//                        gte("vakans_price", getStates.filterSalary)
+//                    }
+//                    if (getStates.filterExperience.name.isNotBlank()) {
+//                        eq("vakans_experience", getStates.filterExperience.name)
+//                    }
                 }
             }.decodeList<VacancyInformation>()
             CustomResult.Success(response)

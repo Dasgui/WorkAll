@@ -10,7 +10,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import com.example.ozonchick_new_version.Data.model.Ktor.ResumeData
 import com.example.ozonchick_new_version.Data.model.Resume.ResumeDto
+import com.example.ozonchick_new_version.Presentation.Models.ExclusionOptions
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerResponses.EmployerResponsesViewModel
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
@@ -26,10 +28,10 @@ import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
-class EmployerCandidateInformationScreen(val resumeId : Int) : Screen {
+class EmployerCandidateInformationScreen(val candidateId : Int) : Screen {
     @Composable
     override fun Content() {
-        val viewModel: EmployerCandidateInformationViewModel = get { parametersOf(resumeId) }
+        val viewModel: EmployerCandidateInformationViewModel = get { parametersOf(candidateId) }
         EmployerCandidateInformationConstruct(viewModel)
     }
 }
@@ -46,7 +48,7 @@ private fun EmployerCandidateInformationConstruct(viewModel: EmployerCandidateIn
         backButton = true
     ) {
         when (val localState = localState.value) {
-            ScreenState.AwaitingChangeFromUser -> Unit
+            ScreenState.AwaitingChangeFromUser -> AlertText(ExclusionOptions.NullResume.message)
             ScreenState.AwaitingResponse -> Unit
             ScreenState.Error -> AlertText()
             is ScreenState.Failure -> {
@@ -58,63 +60,84 @@ private fun EmployerCandidateInformationConstruct(viewModel: EmployerCandidateIn
                     })
             }
             ScreenState.Loading -> CustomLoading()
-            is ScreenState.Success<ResumeDto> -> SuccessBody(localState.data)
+            is ScreenState.Success<ResumeData> -> SuccessBody(localState.data)
         }
     }
 }
 
 @Composable
 private fun SuccessBody (
-    information : ResumeDto
+    information : ResumeData
 ) {
 //    TextUnderText(
 //        title = "Оброзование :",
 //        text = information.education
 //    )
+//    NameTextField(
+//        title = "Оброзование :",
+//        spaceBy = 10.dp,
+//        information = information.education,
+//        enabled = false
+//    )
+//    VerticalSpacer(40.dp)
+//    Text(
+//        text = "Кем раньше работал человек",
+//        style = Tema.Text_24_24_Bold,
+//        color = MainColor
+//    )
+//    VerticalSpacer(20.dp)
+////    TextUnderText(
+////        title = "Название професии :",
+////        text = information.professionName
+////    )
+//    NameTextField(
+//        title = "Название професии :",
+//        spaceBy = 10.dp,
+//        information = information.professionName,
+//        enabled = false
+//    )
+//    VerticalSpacer(10.dp)
+////    TextUnderText(
+////        title = "Сколько проработал :",
+////        text = information.experience
+////    )
     NameTextField(
-        title = "Оброзование :",
+        title = "Имя :",
         spaceBy = 10.dp,
-        information = information.education,
-        enabled = false
-    )
-    VerticalSpacer(40.dp)
-    Text(
-        text = "Кем раньше работал человек",
-        style = Tema.Text_24_24_Bold,
-        color = MainColor
+        information = information.candidateInfo.name,
+        enabled = false,
+        singleLine = false
     )
     VerticalSpacer(20.dp)
-//    TextUnderText(
-//        title = "Название професии :",
-//        text = information.professionName
-//    )
     NameTextField(
-        title = "Название професии :",
+        title = "Номер телефона :",
         spaceBy = 10.dp,
-        information = information.professionName,
-        enabled = false
+        information = information.candidateInfo.phoneNumber,
+        enabled = false,
+        singleLine = false
     )
-    VerticalSpacer(10.dp)
-//    TextUnderText(
-//        title = "Сколько проработал :",
-//        text = information.experience
-//    )
+    VerticalSpacer(20.dp)
     NameTextField(
-        title = "Сколько проработал :",
+        title = "Почта :",
         spaceBy = 10.dp,
-        information = information.experience,
-        enabled = false
+        information = information.candidateInfo.email,
+        enabled = false,
+        singleLine = false
     )
 
     VerticalSpacer(40.dp)
-//    TextUnderText(
-//        title = "Как человек описывает себя :",
-//        text = information.description
-//    )
+
+    NameTextField(
+        title = "Опыт :",
+        spaceBy = 10.dp,
+        information = information.resumesInfo?.firstOrNull()?.experienceInfo?.name ?: "",
+        enabled = false
+    )
+    VerticalSpacer(20.dp)
     NameTextField(
         title = "Как человек описывает себя :",
         spaceBy = 10.dp,
-        information = information.description,
+        information = information.resumesInfo?.firstOrNull()?.description ?: "",
         enabled = false,
         singleLine = false
     )

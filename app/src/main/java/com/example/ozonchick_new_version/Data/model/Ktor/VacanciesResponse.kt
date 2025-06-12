@@ -5,6 +5,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class VacanciesResponse(
-    val status: String,
-    @SerialName("vacancy_info") val vacancyInfo: List<VacancyInformation>
+    @SerialName("Status") val status: String,
+    @SerialName("VacancyInfo") val vacanciesInfo: List<VacancyInformation>
+)
+
+@Serializable
+data class VacancyResponse(
+    @SerialName("Status") val status: String,
+    @SerialName("VacancyInfo") val vacancyInfo: VacancyInformation
 )

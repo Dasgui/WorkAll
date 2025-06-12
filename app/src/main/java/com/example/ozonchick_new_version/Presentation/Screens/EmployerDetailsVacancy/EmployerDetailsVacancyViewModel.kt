@@ -7,17 +7,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.navigator.Navigator
 import com.example.ozonchick_new_version.Common.CustomResult
-import com.example.ozonchick_new_version.Common.UserType
-import com.example.ozonchick_new_version.Common.publicUserId
+import com.example.ozonchick_new_version.Common.localUserInformation
+import com.example.ozonchick_new_version.Data.model.Ktor.AllExperience
+import com.example.ozonchick_new_version.Data.model.Ktor.Experience
+import com.example.ozonchick_new_version.Data.model.Ktor.ResponseInfoStatus
+import com.example.ozonchick_new_version.Data.model.Ktor.VacancyInfo
 import com.example.ozonchick_new_version.Data.model.Resume.ExperienceGet
-import com.example.ozonchick_new_version.Data.model.VacancyAllInformation
-import com.example.ozonchick_new_version.Data.model.Employer.VacancyInsertModel
-import com.example.ozonchick_new_version.Data.model.Employer.VacancyUpdateContact
-import com.example.ozonchick_new_version.Data.model.VacancyInformation
+import com.example.ozonchick_new_version.Data.model.Ktor.VacancyInformation
+import com.example.ozonchick_new_version.Data.model.Ktor.VacancyResponse
+import com.example.ozonchick_new_version.Data.model.Ktor.VacancyUpdateResponse
 import com.example.ozonchick_new_version.Domain.FieldValidators
-import com.example.ozonchick_new_version.Domain.GetVacancyAllInformationUseCase
-import com.example.ozonchick_new_version.Domain.UpdateEmployerVacancyUseCase
-import com.example.ozonchick_new_version.Presentation.Models.ChangeVacancyUIModel
+import com.example.ozonchick_new_version.Domain.GetAllExperienceKtorUseCase
+import com.example.ozonchick_new_version.Domain.GetVacancyInformationKtorUseCase
+import com.example.ozonchick_new_version.Domain.UpdateVacancyInformationKtorUseCase
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerVacancies.EmployerVacanciesScreen
 import com.example.ozonchick_new_version.Presentation.States.DialogStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
@@ -26,22 +28,22 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class EmployerDetailsVacancyViewModel(
-    private val getVacancyAllInformation: GetVacancyAllInformationUseCase,
-    private val updateEmployerVacancyUseCase: UpdateEmployerVacancyUseCase,
-//    private val getEmployerInformation: GetEmployerInformation,
-    private val description : VacancyInformation
+    private val id : Int,
+    private val getVacancyAllInformation: GetVacancyInformationKtorUseCase,
+    private val getAllExperience: GetAllExperienceKtorUseCase,
+    private val updateVacancyInformation : UpdateVacancyInformationKtorUseCase
 ) : ViewModel() {
-    val specialization : MutableState<String> = mutableStateOf(description.vakans_name)
-    val price : MutableState<String> = mutableStateOf(description.vakans_price)
+    val specialization : MutableState<String> = mutableStateOf("")
+    val price : MutableState<String> = mutableStateOf("")
     val aboutWork : MutableState<String> = mutableStateOf("")
 
     val phoneNumber : MutableState<String> = mutableStateOf("")
-    val email : MutableState<String> = mutableStateOf(description.vakans_mail)
-    val locationWork : MutableState<String> = mutableStateOf(description.vakans_location)
+    val email : MutableState<String> = mutableStateOf("")
+    val locationWork : MutableState<String> = mutableStateOf("")
 
-    val experience : MutableState<String> = mutableStateOf(description.vakans_experience)
+    val experience : MutableState<String> = mutableStateOf("")
 
-    val screenState : MutableStateFlow<ScreenState<VacancyAllInformation>> =
+    val screenState : MutableStateFlow<ScreenState<VacancyResponse>> =
         MutableStateFlow(ScreenState.Loading)
 
     val confirmCharge : MutableState<Boolean> = mutableStateOf(false)
@@ -53,30 +55,44 @@ class EmployerDetailsVacancyViewModel(
     val companyName : MutableState<String> = mutableStateOf("")
     val emailEmployer : MutableState<String> = mutableStateOf("")
 
-    val selectedExperience : MutableState<ExperienceGet?> = mutableStateOf(null)
-    val experienceList: MutableState<List<ExperienceGet>> =
+    val selectedExperience : MutableState<Experience?> = mutableStateOf(null)
+    val experienceList: MutableState<List<Experience>> =
         mutableStateOf(emptyList())
+
+    val vacancyVisible : MutableState<Boolean> = mutableStateOf(false)
 
     fun loadDataForEmployer () {
         viewModelScope.launch(Dispatchers.IO) {
-            when (val result = getVacancyAllInformation(description.vakans_id, description.employer_id ,publicUserId.type is UserType.Admin)) {
+            val result = getVacancyAllInformation(id)
+
+            when (result) {
                 is CustomResult.Failure -> {
                     screenState.value = ScreenState.Failure(result.code, result.message)
                 }
-                is CustomResult.Success<VacancyAllInformation> -> {
-                    aboutWork.value = result.data.contacts.vakans_aboutWork
-                    phoneNumber.value = result.data.contacts.vakans_number
-                    experienceList.value = result.data.experience
-                    selectedExperience.value = experienceList.value.find { item ->
-                        item.name == description.vakans_experience
+                is CustomResult.Success<VacancyResponse> -> {
+                    val experience = getAllExperience()
+                    when (experience) {
+                        is CustomResult.Failure -> ScreenState.Failure(experience.code, experience.message)
+                        is CustomResult.Success<AllExperience> -> {
+                            specialization.value = result.data.vacancyInfo.name
+                            price.value = result.data.vacancyInfo.price.toString()
+                            email.value = result.data.vacancyInfo.email
+                            locationWork.value = result.data.vacancyInfo.location
+                            aboutWork.value = result.data.vacancyInfo.aboutWork
+                            phoneNumber.value = result.data.vacancyInfo.phoneNumber
+                            experienceList.value = experience.data.data
+                            selectedExperience.value = experienceList.value.find { item ->
+                                item.name == result.data.vacancyInfo.experience.name
+                            }
+
+                            inn.value = result.data.vacancyInfo.employee.inn
+                            name.value = result.data.vacancyInfo.name
+                            companyName.value = result.data.vacancyInfo.employee.nameOrganization
+                            emailEmployer.value = result.data.vacancyInfo.email
+                            vacancyVisible.value = result.data.vacancyInfo.isVisible
+                            screenState.value = ScreenState.Success(result.data)
+                        }
                     }
-
-                    inn.value = result.data.employer?.INN ?: ""
-                    name.value = result.data.employer?.name ?: ""
-                    companyName.value = result.data.employer?.companyName ?: ""
-                    emailEmployer.value = result.data.employer?.email ?: ""
-
-                    screenState.value = ScreenState.Success(result.data)
                 }
             }
         }
@@ -84,28 +100,30 @@ class EmployerDetailsVacancyViewModel(
 
 
     fun updateDescriptionInformation(vacancyId: Int, navigator: Navigator?) {
-        Log.d("Значение спец", specialization.value)
-        val information: ChangeVacancyUIModel = ChangeVacancyUIModel(
-            mainInformation = VacancyInsertModel(
-                vakans_name = specialization.value,
-                vakans_price = price.value,
-                vakans_location = locationWork.value,
-                vakans_experience = selectedExperience.value?.name ?: "Unknown",
-                vakans_mail = email.value
-            ),
-            description = VacancyUpdateContact(
-                vakans_number = phoneNumber.value,
-                vakans_mail = email.value,
-                vakans_raspolog = locationWork.value,
-                vakans_aboutWork = aboutWork.value
-            )
+        val information = VacancyUpdateResponse(
+            about = aboutWork.value,
+            email = email.value,
+            experienceId = selectedExperience.value?.id ?: 0,
+            isVisible = vacancyVisible.value,
+            location = locationWork.value,
+            phoneNumber = phoneNumber.value,
+            price = price.value.toInt(),
+            vacancyName = name.value,
+            id = vacancyId
         )
         viewModelScope.launch(Dispatchers.IO) {
-            when (val result = updateEmployerVacancyUseCase(vacancyId, information)) {
+            when (val result = updateVacancyInformation(information)) {
                 is CustomResult.Failure -> screenState.value = ScreenState.Failure(result.code, result.message)
-                is CustomResult.Success<*> -> navigator?.popUntil{it is EmployerVacanciesScreen}
+                is CustomResult.Success<ResponseInfoStatus> -> navigator?.popUntil{it is EmployerVacanciesScreen}
             }
         }
+    }
+
+    fun checkFields() : Boolean {
+        return checkEmail() && checkPhoneNumber() && checkDigits()
+                && aboutWork.value.isNotEmpty() && locationWork.value.isNotEmpty()
+                && selectedExperience.value != null && name.value.isNotEmpty()
+                && specialization.value.isNotEmpty()
     }
 
     fun checkEmail () : Boolean {

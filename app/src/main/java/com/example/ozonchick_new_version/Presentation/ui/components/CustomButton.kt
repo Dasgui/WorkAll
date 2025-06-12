@@ -9,6 +9,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.style.TextAlign
@@ -25,11 +26,13 @@ fun CustomButton(
     reverseColors : Boolean = false,
     modifier: Modifier = Modifier.fillMaxWidth().height(45.dp),
     shape: Shape = RectangleShape,
+    backgroundColor : Color = BackgroundColor,
+    mainColor : Color = MainColor,
     colors: ButtonColors = ButtonDefaults.buttonColors(
-        containerColor = if (reverseColors) MainColor else BackgroundColor,
-        contentColor = if (reverseColors) BackgroundColor else MainColor,
-        disabledContainerColor = if (reverseColors) MainColor else BackgroundColor,
-        disabledContentColor = if (reverseColors) BackgroundColor else MainColor
+        containerColor = if (reverseColors) mainColor else backgroundColor,
+        contentColor = if (reverseColors) backgroundColor else mainColor,
+        disabledContainerColor = if (reverseColors) mainColor else backgroundColor,
+        disabledContentColor = if (reverseColors) backgroundColor else mainColor
     ),
     border : BorderStroke? = BorderStroke(1.dp, MainColor)
 ) {

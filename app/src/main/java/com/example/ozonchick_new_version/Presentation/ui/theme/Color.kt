@@ -7,6 +7,7 @@ val SecondColor = Color(0xFF00FF37)
 val BackgroundColor = Color(0xFF2F80ED)
 
 val EnabledColor = Color(0xFF283E57)
+val SwitchOffColor = Color(0x80FFFFFF)
 
 //основные цвета текста
 val Gray_Color_Passive_Secondary = Color(0xFFA7A7A7)

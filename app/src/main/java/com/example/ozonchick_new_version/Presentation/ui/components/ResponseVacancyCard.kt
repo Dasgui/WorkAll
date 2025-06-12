@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.example.ozonchick_new_version.Data.model.Ktor.VacanciesOtklikResponse
 import com.example.ozonchick_new_version.Data.model.VacancyInformation
 import com.example.ozonchick_new_version.Presentation.Screens.ContactsScreen
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
@@ -20,7 +21,7 @@ import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 
 @Composable
 fun ResponseVacancyCard(
-    list: VacancyInformation,
+    list: VacanciesOtklikResponse,
     status: String,
     rejectVacancy: () -> Unit
 ) {
@@ -46,7 +47,7 @@ fun ResponseVacancyCard(
                 MainButtons(
                     status = status,
                     onNavigateForContacts = {
-                        navigator?.push(ContactsScreen(list.vakans_id))
+                        navigator?.push(ContactsScreen(list.vacancyInfo.id))
                     },
                     rejectVacancy = {
                         rejectVacancy()
@@ -59,7 +60,7 @@ fun ResponseVacancyCard(
 
 @Composable
 private fun MainText(
-    list: VacancyInformation
+    list: VacanciesOtklikResponse
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -67,31 +68,31 @@ private fun MainText(
     ) {
         //Требуется специалист Name
         Text(
-            text = list.vakans_name/*"Инженер"*/,
+            text = list.vacancyInfo.name/*"Инженер"*/,
             style = Tema.Text_24_24_Bold,
             color = MainColor
         )
         //Заработная плата Price
         Text(
-            text = list.vakans_price/*"90 000 - 130 000"*/,
+            text = list.vacancyInfo.price.toString()/*"90 000 - 130 000"*/,
             style = Tema.Text_24_24_Bold,
             color = MainColor
         )
         //Организация Organization
         Text(
-            text = list.vakans_organization/*"ООО Некронтиры"*/,
+            text = list.vacancyInfo.employerName/*"ООО Некронтиры"*/,
             style = Tema.Text_20_20_Medium,
             color = MainColor
         )
         //Расположение Location
         Text(
-            text = list.vakans_location/*"Челябинск"*/,
+            text = list.vacancyInfo.location/*"Челябинск"*/,
             style = Tema.Text_20_20_Medium,
             color = MainColor
         )
         //Опыт работы Experience
         Text(
-            text = "Опыт работы: " + list.vakans_experience.lowercase()/*"Опыт работы 3 до 6 лет"*/,
+            text = "Опыт работы: " + list.vacancyInfo.experience.name/*"Опыт работы 3 до 6 лет"*/,
             style = Tema.Text_20_20_Medium,
             color = MainColor
         )

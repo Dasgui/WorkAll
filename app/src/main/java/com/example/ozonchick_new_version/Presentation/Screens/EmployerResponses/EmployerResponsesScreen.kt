@@ -1,5 +1,6 @@
 package com.example.ozonchick_new_version.Presentation.Screens.EmployerResponses
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Data.strings.AppErrors
+import com.example.ozonchick_new_version.Presentation.Models.ExclusionOptions
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerCandidateInformation.EmployerCandidateInformationScreen
 import com.example.ozonchick_new_version.Presentation.States.DialogStates
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
@@ -72,30 +74,32 @@ private fun EmployerResponsesConstruct(viewModel: EmployerResponsesViewModel) {
                         .fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
-                    curState.data.forEach { item ->
+                    for (item in curState.data.responseInfo ?: emptyList()) {
                         CandidateCard(
                             item,
                             acceptCandidate = {
-                                viewModel.acceptCandidate(item.user_id)
+                                viewModel.acceptCandidate(item.id)
                             },
                             rejectCandidate = {
-                                viewModel.rejectCandidate(item.user_id)
+                                viewModel.rejectCandidate(item.id)
                             },
                             navigateOnDescription = {
-                                if (item.resume_id == 0) {
-                                    viewModel.dialogState.value = DialogStates.Error
-                                } else {
-                                    navigator?.push(EmployerCandidateInformationScreen(item.resume_id))
-                                }
-//                                viewModel.screenState.value = Failure(0, "Простите, но дополнительная информация пока не доступна.")
-                            }
+                                Log.d("ID кандидата", item.candidateInfo.id.toString())
+                                navigator?.push(EmployerCandidateInformationScreen(item.candidateInfo.id))
+//                                if (item.candidateInfo.id == 0) {
+//                                    viewModel.dialogState.value = DialogStates.Error
+//                                } else {
+//
+//                                }
+                            },
+                            candidateStatusId = item.status.id ?: 0
                         )
                     }
                 }
             }
 
             is Error -> AlertText()
-            AwaitingChangeFromUser -> Unit
+            AwaitingChangeFromUser -> AlertText(ExclusionOptions.NullCandidates.message)
             AwaitingResponse -> Unit
         }
     }

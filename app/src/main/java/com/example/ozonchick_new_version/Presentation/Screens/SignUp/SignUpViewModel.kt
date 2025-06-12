@@ -68,12 +68,13 @@ class SignUpViewModel(
         MutableStateFlow(ScreenState.Loading)
 
 
+
     fun registration() {
         viewModelScope.launch(Dispatchers.IO) {
             buttonEnabled.value = false
             val singleName = "${secondName.value.trim()} ${name.value.trim()}"
             when (
-                val curResult = if (localUserInformation.type == UserType.Candidate) {
+                val curResult = if (userRole.value == UserType.Candidate) {
                     registrationKtorCandidateUseCase(singleName, email.value.trim(), password.value.trim(), phoneNumber.value.trim())
                 } else {
                     registrationKtorEmployerUseCase(singleName, email.value.trim(), password.value.trim(), phoneNumber.value.trim(), INN.value.trim(), organizationName.value.trim())

@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 data class Status(
     @SerialName("CreatedAt") val createdAt: String?,
     @SerialName("ID") val id: Int?,
-    @SerialName("Name") val name: String?,
+    @SerialName("Name") val name: String,
 )

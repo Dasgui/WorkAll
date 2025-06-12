@@ -8,15 +8,23 @@ import kotlinx.serialization.Serializable
 sealed interface AllTypeUserInformation
 
 @Serializable
+data class AllTypeUserInfo (
+    @SerialName("CandidateInfo") val candidateInfo : CandidateMainInformation? = null,
+    @SerialName("EmployerInfo") val employerInfo : EmployerMainInformation? = null,
+    @SerialName("Status") val status: String,
+    @SerialName("Token") val token: String
+) : AllTypeUserInformation
+
+@Serializable
 data class EmployerInfo (
-    @SerialName("Employee_Info") val employerInfo : EmployerMainInformation,
-    @SerialName("status") val statusResponse: String,
-    @SerialName("token") val token: String,
+    @SerialName("EmployerInfo") val employerInfo : EmployerMainInformation,
+    @SerialName("Status") val statusResponse: String,
+    @SerialName("Token") val token: String,
 ) : AllTypeUserInformation
 
 @Serializable
 data class CandidateInfo (
-    @SerialName("candidate_Info") val candidateInfo : CandidateMainInformation,
-    @SerialName("status") val statusResponse: String,
-    @SerialName("token") val token: String,
+    @SerialName("CandidateInfo") val candidateInfo : CandidateMainInformation,
+    @SerialName("Status") val statusResponse: String,
+    @SerialName("Token") val token: String,
 ) : AllTypeUserInformation

@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -18,14 +19,14 @@ import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.SecondColor
 
 @Composable
-fun RowTextImage (icon : Int, title : String, text : String = "", isDescription : Boolean = false) {
+fun RowTextImage(icon: Int, title: String, text: String = "", isDescription: Boolean = false, textColor : Color = MainColor) {
 
     if (isDescription) {
-        Column (
+        Column(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(5.dp),
         ) {
-            Row (
+            Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Top,
                 horizontalArrangement = Arrangement.spacedBy(15.dp)
@@ -39,14 +40,14 @@ fun RowTextImage (icon : Int, title : String, text : String = "", isDescription 
                 Text(
                     text = title,
                     style = Tema.Text_24_24_Medium,
-                    color = MainColor,
+                    color = textColor,
                     textAlign = TextAlign.Start
                 )
             }
             Text(
                 text = text,
                 style = Tema.Text_24_24_Medium,
-                color = MainColor,
+                color = textColor,
                 textAlign = TextAlign.Start
             )
         }
@@ -66,7 +67,7 @@ fun RowTextImage (icon : Int, title : String, text : String = "", isDescription 
             Text(
                 text = title,
                 style = Tema.Text_24_24_Medium,
-                color = MainColor
+                color = textColor
             )
         }
     }

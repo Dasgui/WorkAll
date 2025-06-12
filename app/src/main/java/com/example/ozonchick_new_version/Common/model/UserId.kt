@@ -9,5 +9,7 @@ data class UserId(
 
 data class UserMainInformation(
     var token : String,
-    var type : UserType
+    var type : UserType,
+    var name : String,
+    var id : Int
 )

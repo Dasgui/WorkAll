@@ -3,23 +3,17 @@ package com.example.ozonchick_new_version.Presentation.Screens.Search
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Divider
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
@@ -27,8 +21,8 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
+import com.example.ozonchick_new_version.Data.model.Ktor.Experience
 import com.example.ozonchick_new_version.Data.model.ListOfVacancies.StatesOfGetVacancies
-import com.example.ozonchick_new_version.Data.model.Resume.ExperienceGet
 import com.example.ozonchick_new_version.Presentation.Screens.ListVacancies.ListVacanciesScreen
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
@@ -37,17 +31,15 @@ import com.example.ozonchick_new_version.Presentation.States.TextFieldStates
 import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
 import com.example.ozonchick_new_version.Presentation.ui.components.CheckBoxField
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomButton
-import com.example.ozonchick_new_version.Presentation.ui.components.CustomCheckBox
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomComboBox
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomOutlinedTextField
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
-import com.example.ozonchick_new_version.Presentation.ui.components.HorizontalSpacer
 import com.example.ozonchick_new_version.Presentation.ui.components.VerticalSpacer
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
-import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
+import com.example.ozonchick_new_version.Presentation.ui.theme.SecondColor
 import com.example.ozonchick_new_version.R
 import org.koin.androidx.compose.koinViewModel
 
@@ -93,31 +85,83 @@ private fun SearchConstruct(
                         viewModel.screenState.value = AwaitingChangeFromUser
                     })
             }
+
             ScreenState.Loading -> CustomLoading()
             is ScreenState.Success<*> -> Unit
         }
-        TextFields(viewModel)
+        SearchType(viewModel)
+        if (viewModel.searchVisible.value) {
+            SearchField(viewModel)
+        } else {
+            FilterFields(viewModel)
+        }
+//        SearchField(viewModel)
         VerticalSpacer(25.dp)
         BottomButtons(viewModel, navigator)
     }
 }
 
+@Composable
+private fun SearchType(viewModel: SearchViewModel) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Text(
+            text = "Поиск",
+            style = Tema.Text_24_24_Bold,
+            color = if (viewModel.searchVisible.value) {
+                MainColor
+            } else {
+                SecondColor
+            },
+            modifier = Modifier.clickable {
+                viewModel.searchVisible.value = true
+                viewModel.selectedExperience.value = null
+                viewModel.minSalaryText.value = ""
+            })
+        Text(
+            text = "Фильтры",
+            style = Tema.Text_24_24_Bold,
+            color = if (!viewModel.searchVisible.value) {
+                MainColor
+            } else {
+                SecondColor
+            },
+            modifier = Modifier.clickable {
+                viewModel.searchVisible.value = false
+                viewModel.search.value = ""
+            })
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextFields(viewModel: SearchViewModel) {
-    Text(
-        text = "Поиск",
-        style = Tema.Text_20_20_Medium,
-        color = MainColor
-    )
-    VerticalSpacer(10.dp)
-    CustomOutlinedTextField(
-        value = viewModel.search.value,
-        onValueChange = {
-            viewModel.search.value = it
-        },
-        modifier = Modifier.fillMaxWidth()
-    )
+private fun SearchField(viewModel: SearchViewModel) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 30.dp)
+    ) {
+        Text(
+            text = "Поиск",
+            style = Tema.Text_20_20_Medium,
+            color = MainColor
+        )
+        VerticalSpacer(10.dp)
+        CustomOutlinedTextField(
+            value = viewModel.search.value,
+            onValueChange = {
+                viewModel.search.value = it
+            },
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Composable
+private fun FilterFields(viewModel: SearchViewModel) {
     VerticalSpacer(20.dp)
     FilterField(
         viewModel.checkSalary,
@@ -175,9 +219,9 @@ private fun FilterField(
 @Composable
 private fun FilterDropMenu(
     checked: MutableState<Boolean>,
-    selectedExperience : ExperienceGet?,
-    experienceList : List<ExperienceGet>,
-    selectedChange : (ExperienceGet) -> Unit,
+    selectedExperience: Experience?,
+    experienceList: List<Experience>,
+    selectedChange: (Experience) -> Unit,
     title: String,
 
     ) {
@@ -197,7 +241,7 @@ private fun FilterDropMenu(
                 selectedChange(item)
 
             },
-            itemToString = {it.name}
+            itemToString = { it.name }
         )
 
 //        CustomComboBox(
@@ -261,7 +305,7 @@ fun BottomButtons(viewModel: SearchViewModel, navigator: Navigator?) {
         onClick = {
             navigator?.replaceAll(
                 ListVacanciesScreen(
-                    viewModel.getStatesOfGetVacancies()
+                    viewModel.getStatesOfGetVacancies(viewModel.searchVisible.value)
                 )
             )
         },

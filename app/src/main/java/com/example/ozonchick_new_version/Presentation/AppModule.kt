@@ -1,41 +1,54 @@
 package com.example.ozonchick_new_version.Presentation
 
-import com.example.ozonchick_new_version.Data.model.VacancyInformation
-import com.example.ozonchick_new_version.Data.network.KtorRepositories.KtorRepository
-import com.example.ozonchick_new_version.Data.network.KtorRepositories.VacancyRepository
+import com.example.ozonchick_new_version.Data.network.KtorRepositories.AuthenticationKtorRepository
+import com.example.ozonchick_new_version.Data.network.KtorRepositories.AuthenticationKtorRepositoryImpl
+import com.example.ozonchick_new_version.Data.network.KtorRepositories.CandidateKtorRepository
+import com.example.ozonchick_new_version.Data.network.KtorRepositories.CandidateKtorRepositoryImpl
+import com.example.ozonchick_new_version.Data.network.KtorRepositories.EmployerKtorRepository
+import com.example.ozonchick_new_version.Data.network.KtorRepositories.EmployerKtorRepositoryImpl
+import com.example.ozonchick_new_version.Data.network.KtorRepositories.HomeKtorRepository
+import com.example.ozonchick_new_version.Data.network.KtorRepositories.HomeKtorRepositoryImpl
+import com.example.ozonchick_new_version.Data.network.KtorRepositories.VacancyKtorRepository
+import com.example.ozonchick_new_version.Data.network.KtorRepositories.VacancyKtorRepositoryImpl
 import com.example.ozonchick_new_version.Data.network.Repository
 import com.example.ozonchick_new_version.Data.network.RepositoryImpl
+import com.example.ozonchick_new_version.Domain.AcceptCandidateKtorUseCase
 import com.example.ozonchick_new_version.Domain.AcceptCandidateUseCase
-import com.example.ozonchick_new_version.Domain.AcceptVacancyUseCase
-import com.example.ozonchick_new_version.Domain.AddVacancyUseCase
+import com.example.ozonchick_new_version.Domain.AddResumeKtorUseCase
+import com.example.ozonchick_new_version.Domain.AddVacancyResponseKtorUseCase
 import com.example.ozonchick_new_version.Domain.AuthKtorUseCase
 import com.example.ozonchick_new_version.Domain.AuthUseCase
-import com.example.ozonchick_new_version.Domain.DeleteEmployerVacancyUseCase
-import com.example.ozonchick_new_version.Domain.GetContactInformationUseCase
-import com.example.ozonchick_new_version.Domain.GetEmployerVacanciesUseCase
+import com.example.ozonchick_new_version.Domain.CreateVacancyKtorUseCase
+import com.example.ozonchick_new_version.Domain.DeleteVacancyKtorUseCase
+import com.example.ozonchick_new_version.Domain.FilterVacanciesKtorUseCase
+import com.example.ozonchick_new_version.Domain.GetAllCandidateResponseKtorUseCase
+import com.example.ozonchick_new_version.Domain.GetAllExperienceKtorUseCase
+import com.example.ozonchick_new_version.Domain.GetAllResponsesUseCase
+import com.example.ozonchick_new_version.Domain.GetCandidateResumeUseCase
+import com.example.ozonchick_new_version.Domain.GetEmployerVacanciesKtorUseCase
 import com.example.ozonchick_new_version.Domain.GetExperienceUseCase
 import com.example.ozonchick_new_version.Domain.GetInformationResumeUseCase
-import com.example.ozonchick_new_version.Domain.GetNameUseCase
 import com.example.ozonchick_new_version.Domain.GetOrganizationNameUseCase
-import com.example.ozonchick_new_version.Domain.GetResponsesIdVacanciesUseCase
-import com.example.ozonchick_new_version.Domain.GetResponsesVacanciesUseCase
+import com.example.ozonchick_new_version.Domain.GetOtklikAllStatusUseCase
 import com.example.ozonchick_new_version.Domain.GetResumeCandidateUseCase
-import com.example.ozonchick_new_version.Domain.GetUserChangeableInformationUseCase
+import com.example.ozonchick_new_version.Domain.GetResumeKtorUseCase
+import com.example.ozonchick_new_version.Domain.GetUserInformationKtorUseCase
 import com.example.ozonchick_new_version.Domain.GetUsersForEmployerUseCase
 import com.example.ozonchick_new_version.Domain.GetVacanciesKtorUseCase
 import com.example.ozonchick_new_version.Domain.GetVacanciesUseCase
-import com.example.ozonchick_new_version.Domain.GetVacancyAllInformationUseCase
-import com.example.ozonchick_new_version.Domain.RegistrationCandidateUseCase
-import com.example.ozonchick_new_version.Domain.RegistrationEmployerUseCase
+import com.example.ozonchick_new_version.Domain.GetVacancyInformationKtorUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationKtorCandidateUseCase
 import com.example.ozonchick_new_version.Domain.RegistrationKtorEmployerUseCase
-import com.example.ozonchick_new_version.Domain.RegistrationUseCase
+import com.example.ozonchick_new_version.Domain.RejectCandidateKtorUseCase
+import com.example.ozonchick_new_version.Domain.RejectCandidateResponseKtorUseCase
 import com.example.ozonchick_new_version.Domain.RejectCandidateUseCase
 import com.example.ozonchick_new_version.Domain.RejectVacancyUseCase
+import com.example.ozonchick_new_version.Domain.SearchVacanciesKtorUseCase
 import com.example.ozonchick_new_version.Domain.SearchVacanciesUseCase
-import com.example.ozonchick_new_version.Domain.UpdateEmployerVacancyUseCase
 import com.example.ozonchick_new_version.Domain.UpdateResumeCandidateUseCase
-import com.example.ozonchick_new_version.Domain.UpdateUserInformationUseCase
+import com.example.ozonchick_new_version.Domain.UpdateResumeKtorUseCase
+import com.example.ozonchick_new_version.Domain.UpdateUserInformationKtorUseCase
+import com.example.ozonchick_new_version.Domain.UpdateVacancyInformationKtorUseCase
 import com.example.ozonchick_new_version.Presentation.Screens.ChangeInformation.ChangeInformationViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerAddVacancy.EmployerAddVacancyViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerCandidateInformation.EmployerCandidateInformationViewModel
@@ -56,7 +69,12 @@ import org.koin.dsl.module
 
 var AppModule = module {
     factory<Repository> { RepositoryImpl() }
-    factory<KtorRepository> { VacancyRepository() }
+    factory<VacancyKtorRepository> { VacancyKtorRepositoryImpl() }
+    factory<AuthenticationKtorRepository> { AuthenticationKtorRepositoryImpl() }
+    factory<HomeKtorRepository> { HomeKtorRepositoryImpl() }
+    factory<CandidateKtorRepository> { CandidateKtorRepositoryImpl() }
+    factory<EmployerKtorRepository> { EmployerKtorRepositoryImpl() }
+
     factory { AuthUseCase(get()) }
     factory { AuthKtorUseCase(get()) }
     viewModel {
@@ -69,20 +87,19 @@ var AppModule = module {
     viewModel {
         SignUpViewModel(get(), get())
     }
-    factory { GetNameUseCase(get()) }
+    factory { GetUserInformationKtorUseCase(get()) }
     viewModel {
         ProfileViewModel(get())
 //        (userId : Int) ->
 //        ProfileViewModel(userId)
     }
 
-    factory { GetResponsesIdVacanciesUseCase(get()) }
-    factory { GetResponsesVacanciesUseCase(get()) }
-    factory { RejectVacancyUseCase(get()) }
+    factory { GetAllCandidateResponseKtorUseCase(get()) }
+    factory { RejectCandidateResponseKtorUseCase(get()) }
     viewModel {
-        ResponsesViewModel(get(), get(), get())
+        ResponsesViewModel(get(), get())
     }
-    factory { GetContactInformationUseCase(get()) }
+    factory { GetVacancyInformationKtorUseCase(get()) }
     viewModel {
         (id : Int) -> ContactsViewModel(get(), id)
     }
@@ -91,56 +108,65 @@ var AppModule = module {
         VakansCreate_ViewModel()
     }
     factory { GetVacanciesUseCase(get()) }
-    factory { AcceptVacancyUseCase(get()) }
-    factory { SearchVacanciesUseCase(get()) }
+    factory { AddVacancyResponseKtorUseCase(get()) }
+    factory { SearchVacanciesKtorUseCase(get()) }
+    factory { FilterVacanciesKtorUseCase(get()) }
 
     factory { GetVacanciesKtorUseCase(get()) }
     viewModel {
         ListVacanciesViewModel(get(), get(), get(), get())
     }
 
-    factory { GetEmployerVacanciesUseCase(get()) }
-    factory { DeleteEmployerVacancyUseCase(get()) }
+    factory { GetEmployerVacanciesKtorUseCase(get()) }
+    factory { DeleteVacancyKtorUseCase(get()) }
     viewModel {
         EmployerVacanciesViewModel(get(), get())
     }
-    factory { UpdateEmployerVacancyUseCase(get()) }
-    factory { GetVacancyAllInformationUseCase(get()) }
+
+
+    factory { GetVacancyInformationKtorUseCase(get ()) }
+    factory { GetAllExperienceKtorUseCase(get()) }
+    factory { UpdateVacancyInformationKtorUseCase(get()) }
     viewModel {
-        (description : VacancyInformation) -> EmployerDetailsVacancyViewModel(get(), get(), description)
-    }
-    factory { GetUsersForEmployerUseCase(get()) }
-    factory { AcceptCandidateUseCase(get()) }
-    factory { RejectCandidateUseCase(get()) }
-    viewModel {
-        (vacancyId : Int) -> EmployerResponsesViewModel(vacancyId, get(), get(), get())
+        (id : Int) -> EmployerDetailsVacancyViewModel(id, get(), get(), get())
     }
 
-    factory { AddVacancyUseCase(get()) }
+
+    factory { GetAllResponsesUseCase(get()) }
+    factory { GetOtklikAllStatusUseCase(get()) }
+
+    factory { AcceptCandidateKtorUseCase(get()) }
+    factory { RejectCandidateKtorUseCase(get()) }
+    viewModel {
+        (vacancyId : Int) -> EmployerResponsesViewModel(vacancyId, get(), get(), get(), get())
+    }
+
+    factory { CreateVacancyKtorUseCase(get()) }
     factory { GetOrganizationNameUseCase(get()) }
-    factory { GetExperienceUseCase(get()) }
+    factory { GetAllExperienceKtorUseCase(get()) }
     viewModel {
         EmployerAddVacancyViewModel(get(), get(), get())
     }
 
-    factory { GetUserChangeableInformationUseCase(get()) }
-    factory { UpdateUserInformationUseCase(get()) }
+    factory { UpdateUserInformationKtorUseCase(get()) }
     viewModel {
         ChangeInformationViewModel(get(), get())
     }
 
-    factory { GetExperienceUseCase(get()) }
+    factory { GetAllExperienceKtorUseCase(get()) }
     viewModel {
         SearchViewModel(get())
     }
 
-    factory { UpdateResumeCandidateUseCase(get()) }
-    factory { GetInformationResumeUseCase(get()) }
+    factory { GetResumeKtorUseCase(get()) }
+    factory { AddResumeKtorUseCase(get()) }
+    factory { UpdateResumeKtorUseCase(get()) }
+    factory { GetAllExperienceKtorUseCase(get()) }
     viewModel {
-        ResumeViewModel(get(), get())
+        ResumeViewModel(get(), get(), get(), get())
     }
 
-    factory { GetResumeCandidateUseCase(get()) }
+    factory { GetCandidateResumeUseCase(get()) }
     viewModel {
             (resumeId : Int) -> EmployerCandidateInformationViewModel(resumeId, get())
     }

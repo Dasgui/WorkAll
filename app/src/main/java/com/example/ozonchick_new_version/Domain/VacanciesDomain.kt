@@ -1,6 +1,5 @@
 package com.example.ozonchick_new_version.Domain
 
-import android.util.Log
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.model.UserId
 import com.example.ozonchick_new_version.Data.model.Authentication.Candidate.Candidate
@@ -13,8 +12,16 @@ import com.example.ozonchick_new_version.Data.model.Employer.VacancyUpdateInform
 import com.example.ozonchick_new_version.Data.model.VacancyAdditionalInformation
 import com.example.ozonchick_new_version.Data.model.VacancyInformation
 import com.example.ozonchick_new_version.Data.model.Candidate.VacancyResponse
+import com.example.ozonchick_new_version.Data.model.Ktor.AllExperience
+import com.example.ozonchick_new_version.Data.model.Ktor.EmployerVacancies
+import com.example.ozonchick_new_version.Data.model.Ktor.Experience
+import com.example.ozonchick_new_version.Data.model.Ktor.ResponseInfoStatus
 import com.example.ozonchick_new_version.Data.model.Ktor.VacanciesResponse
-import com.example.ozonchick_new_version.Data.network.KtorRepositories.KtorRepository
+import com.example.ozonchick_new_version.Data.model.Ktor.VacancyCreateResponse
+import com.example.ozonchick_new_version.Data.model.Ktor.VacancyInfo
+import com.example.ozonchick_new_version.Data.model.Ktor.VacancyOtklikResponse
+import com.example.ozonchick_new_version.Data.model.Ktor.VacancyUpdateResponse
+import com.example.ozonchick_new_version.Data.network.KtorRepositories.VacancyKtorRepository
 import com.example.ozonchick_new_version.Data.network.Repository
 import com.example.ozonchick_new_version.Data.strings.AppErrors
 import com.example.ozonchick_new_version.Presentation.Models.ChangeVacancyUIModel
@@ -35,21 +42,70 @@ class GetVacanciesUseCase(private val repository: Repository) {
     }
 }
 
-class GetVacanciesKtorUseCase(private val repository: KtorRepository) {
-    suspend operator fun invoke() : CustomResult<VacanciesResponse> {
-        var result = repository.getVacancies()
-        result = when (val curResult = result) {
-            is CustomResult.Failure -> {
-                CustomResult.Failure(curResult.code, curResult.message)
-            }
-
-            is CustomResult.Success -> {
-                CustomResult.Success(curResult.data)
-            }
-        }
-        return result
+class GetVacanciesKtorUseCase(private val repository: VacancyKtorRepository) {
+    suspend operator fun invoke(limit : Int, lastID : Int) : CustomResult<VacanciesResponse> {
+        return repository.getVacancies(limit, lastID)
     }
 }
+
+class CreateVacancyKtorUseCase(private val repository: VacancyKtorRepository) {
+    suspend operator fun invoke(information: com.example.ozonchick_new_version.Data.model.Ktor.VacancyInfo) : CustomResult<VacancyCreateResponse> {
+        return repository.createVacancy(information)
+    }
+}
+
+class GetEmployerVacanciesKtorUseCase(private val repository: VacancyKtorRepository) {
+    suspend operator fun invoke() : CustomResult<EmployerVacancies> {
+        return repository.getEmployerVacancies()
+    }
+}
+
+class GetAllExperienceKtorUseCase(private val repository: VacancyKtorRepository) {
+    suspend operator fun invoke() : CustomResult<AllExperience> {
+        return repository.getAllExperience()
+    }
+}
+
+class GetVacancyInformationKtorUseCase(private val  repository : VacancyKtorRepository) {
+    suspend operator fun invoke(id : Int) : CustomResult<com.example.ozonchick_new_version.Data.model.Ktor.VacancyResponse> {
+        return repository.getVacancyInformation(id)
+    }
+}
+
+class AddVacancyResponseKtorUseCase(private val repository : VacancyKtorRepository) {
+    suspend operator fun invoke(id : Int) : CustomResult<VacancyOtklikResponse> {
+        return repository.addVacancyResponse(id)
+    }
+}
+
+class UpdateVacancyInformationKtorUseCase(private val repository: VacancyKtorRepository) {
+    suspend operator fun invoke(information: VacancyUpdateResponse) : CustomResult<ResponseInfoStatus> {
+        return repository.updateVacancyInformation(information)
+    }
+}
+
+class DeleteVacancyKtorUseCase(private val repository: VacancyKtorRepository) {
+    suspend operator fun invoke(vacancyId : Int) : CustomResult<ResponseInfoStatus> {
+        return repository.deleteVacancy(vacancyId)
+    }
+}
+
+class SearchVacanciesKtorUseCase(private val repository: VacancyKtorRepository) {
+    suspend operator fun invoke(searchValue : String) : CustomResult<VacanciesResponse> {
+        return repository.searchVacancies(searchValue)
+    }
+}
+
+class FilterVacanciesKtorUseCase(private val repository: VacancyKtorRepository) {
+    suspend operator fun invoke(information: StatesOfGetVacancies.Filter) : CustomResult<VacanciesResponse> {
+        return repository.filterVacancies(information)
+    }
+}
+
+
+
+
+
 
 class SearchVacanciesUseCase(private val repository: Repository) {
     suspend operator fun invoke(getStates: StatesOfGetVacancies.Filter): CustomResult<List<VacancyInformation>> {

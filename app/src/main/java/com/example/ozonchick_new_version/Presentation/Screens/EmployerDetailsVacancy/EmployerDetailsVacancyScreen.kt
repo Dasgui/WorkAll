@@ -20,12 +20,14 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Common.publicUserId
+import com.example.ozonchick_new_version.Data.model.Ktor.VacancyCreateInfo
 import com.example.ozonchick_new_version.Data.model.VacancyInformation
 import com.example.ozonchick_new_version.Data.strings.AppErrors
 import com.example.ozonchick_new_version.Presentation.States.DialogStates
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState.*
 import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
+import com.example.ozonchick_new_version.Presentation.ui.components.CheckBoxField
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomButton
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomComboBox
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomDialog
@@ -42,19 +44,19 @@ import com.example.ozonchick_new_version.R
 import org.koin.androidx.compose.get
 import org.koin.core.parameter.parametersOf
 
-class EmployerDetailsVacancyScreen(private val information: VacancyInformation) : Screen {
+class EmployerDetailsVacancyScreen(private val id : Int) : Screen {
     @Composable
     override fun Content() {
-        val viewModel: EmployerDetailsVacancyViewModel = get { parametersOf(information ) }
-        EmployerDetailsVacancyConstruct(information, viewModel)
+        val viewModel: EmployerDetailsVacancyViewModel = get { parametersOf(id) }
+        EmployerDetailsVacancyConstruct(viewModel, id)
     }
 
 }
 
 @Composable
 private fun EmployerDetailsVacancyConstruct(
-    information: VacancyInformation,
     viewModel: EmployerDetailsVacancyViewModel,
+    id : Int
 ) {
     val localState = viewModel.screenState.collectAsState()
     val navigator = LocalNavigator.current
@@ -75,9 +77,9 @@ private fun EmployerDetailsVacancyConstruct(
     if (viewModel.confirmCharge.value) {
         CustomDialog(
             onConfirmation = {
-                Log.d("Повався", "Rjfds")
+                Log.d("Начало обновления", "Rjfds")
                 viewModel.updateDescriptionInformation(
-                    vacancyId = information.vakans_id,
+                    vacancyId = id,
                     navigator = navigator
                 )
                 viewModel.confirmCharge.value = false
@@ -173,10 +175,10 @@ private fun MainInformationVacancy (viewModel : EmployerDetailsVacancyViewModel)
         )
 
         NameTextField(
-            title = "Заработная плата*  ${viewModel.price.value.length}/20",
+            title = "Заработная плата*  ${viewModel.price.value.length}/8",
             field = viewModel.price,
             holderText = "",
-            maxChar = 20
+            maxChar = 8
         )
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -245,17 +247,18 @@ private fun MainInformationVacancy (viewModel : EmployerDetailsVacancyViewModel)
             enabled = true,
             itemToString = { it.name }
         )
-//        NameTextField(
-//            title = "Требуемый опыт работы*",
-//            field = viewModel.experience,
-//            holderText = ""
-//        )
+        VerticalSpacer(10.dp)
+        CheckBoxField(
+            checked = viewModel.vacancyVisible.value,
+            onChange = {
+                viewModel.vacancyVisible.value = it
+            },
+            text = "Показывать вакансию"
+        )
         VerticalSpacer(20.dp)
         CustomButton(
             onClick = {
-                if (viewModel.checkEmail() && viewModel.checkPhoneNumber() && viewModel.aboutWork.value.isNotEmpty()
-                    && viewModel.locationWork.value.isNotEmpty() && viewModel.experience.value.isNotEmpty() && viewModel.checkDigits()
-                    && viewModel.specialization.value.isNotEmpty()) {
+                if (viewModel.checkFields()) {
                     viewModel.confirmCharge.value = true
                 } else {
                     viewModel.dialogState.value = DialogStates.Error

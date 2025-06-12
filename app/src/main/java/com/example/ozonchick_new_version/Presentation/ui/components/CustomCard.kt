@@ -9,6 +9,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
@@ -19,9 +20,11 @@ import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 fun CustomCard(
     modifier: Modifier = Modifier.fillMaxWidth(),
     shape: Shape = RectangleShape,
-    colors: CardColors = CardDefaults.cardColors(containerColor = BackgroundColor),
+    backGroundColor : Color = BackgroundColor,
+    colors: CardColors = CardDefaults.cardColors(containerColor = backGroundColor),
     elevation: CardElevation = CardDefaults.cardElevation(),
-    border: BorderStroke? = BorderStroke(1.dp, MainColor),
+    colorBorder : Color = MainColor,
+    border: BorderStroke? = BorderStroke(1.dp, colorBorder),
     content: @Composable() (ColumnScope.() -> Unit)
 )
 {

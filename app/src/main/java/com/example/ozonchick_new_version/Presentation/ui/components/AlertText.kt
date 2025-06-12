@@ -13,14 +13,14 @@ import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 
 @Composable
-fun AlertText() {
+fun AlertText(text : String = AppErrors.INTERNET.description) {
     Column (
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = AppErrors.INTERNET.description,
+            text = text,
             style = Tema.Text_24_24_Bold,
             color = MainColor,
             textAlign = TextAlign.Center

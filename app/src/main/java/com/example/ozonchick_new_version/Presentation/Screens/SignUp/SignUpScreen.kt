@@ -1,5 +1,6 @@
 package com.example.ozonchick_new_version.Screens.SignUpLogIn.SignUp
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Common.UserType
+import com.example.ozonchick_new_version.Common.localUserInformation
 import com.example.ozonchick_new_version.Data.strings.AppErrors
 import org.koin.androidx.compose.koinViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
@@ -54,6 +56,7 @@ class SignUpScreen : Screen {
 fun SignUpConstruct(viewModel: SignUpViewModel = koinViewModel(), onNavigateForLogIn: () -> Unit) {
     val screenState = viewModel.screenState.collectAsState()
     val navigator = LocalNavigator.current
+    Log.d("Тип пользователя", viewModel.userRole.value.toString())
     when (val curState = screenState.value) {
         is ScreenState.Failure -> FailAlertDialog(
             title = "Ошибка регистрации",

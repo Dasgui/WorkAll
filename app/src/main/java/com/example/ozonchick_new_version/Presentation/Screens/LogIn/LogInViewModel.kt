@@ -9,8 +9,10 @@ import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Common.localUserInformation
 import com.example.ozonchick_new_version.Common.model.UserId
+import com.example.ozonchick_new_version.Common.model.UserMainInformation
 import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Data.model.Authentication.AllUserInformation
+import com.example.ozonchick_new_version.Data.model.Ktor.Authetication.AllTypeUserInfo
 import com.example.ozonchick_new_version.Data.model.Ktor.Authetication.AllTypeUserInformation
 import com.example.ozonchick_new_version.Data.model.Ktor.Authetication.CandidateInfo
 import com.example.ozonchick_new_version.Data.model.Ktor.Authetication.EmployerInfo
@@ -25,38 +27,39 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class LogInViewModel(/*private val auth : AuthUseCase, */private val authKtorUse : AuthKtorUseCase) : ViewModel() {
+class LogInViewModel(/*private val auth : AuthUseCase, */private val authKtorUse: AuthKtorUseCase) :
+    ViewModel() {
 
     private val _accessSharedAuth: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val accessSharedAuth: StateFlow<Boolean> = _accessSharedAuth.asStateFlow()
 
-    private val _passwordVisible : MutableStateFlow<Boolean> = MutableStateFlow(false)
-    var passwordVisible : StateFlow<Boolean> = _passwordVisible.asStateFlow()
+    private val _passwordVisible: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    var passwordVisible: StateFlow<Boolean> = _passwordVisible.asStateFlow()
 
-    fun setPasswordVisible (newValue: Boolean) {
+    fun setPasswordVisible(newValue: Boolean) {
         _passwordVisible.value = newValue
     }
 
-    val buttonEnabled : MutableState<Boolean> = mutableStateOf(true)
+    val buttonEnabled: MutableState<Boolean> = mutableStateOf(true)
 
-    private val _emailUser: MutableStateFlow<String> = MutableStateFlow("") /*gaisich@inbox.ru*/ /*test07@inbox.ru*/ /*kol@inbox.ru*/
+    private val _emailUser: MutableStateFlow<String> =
+        MutableStateFlow("empmob@mail.ru") /*gaisich@inbox.ru*/ /*test07@inbox.ru*/ /*kol@inbox.ru*/
     var emailUser: StateFlow<String> = _emailUser.asStateFlow()
 
-    fun setEmailUserFieldValue(newValue: String)
-    {
+    fun setEmailUserFieldValue(newValue: String) {
         _emailUser.value = newValue
     }
 
 
-    private val _passwordUser: MutableStateFlow<String> = MutableStateFlow("") /*1234*/ /*test07*/ /*123*/
+    private val _passwordUser: MutableStateFlow<String> =
+        MutableStateFlow("1234") /*1234*/ /*test07*/ /*123*/
     var passwordUser: StateFlow<String> = _passwordUser.asStateFlow()
 
-    fun setPasswordUserFieldValue(newValue: String)
-    {
+    fun setPasswordUserFieldValue(newValue: String) {
         _passwordUser.value = newValue
     }
 
-    val rememberUser : MutableState<Boolean> = mutableStateOf(false)
+    val rememberUser: MutableState<Boolean> = mutableStateOf(false)
 //    private val _rememberUser: MutableStateFlow<Boolean> = MutableStateFlow(false)
 //    var rememberUser: StateFlow<Boolean> = _rememberUser.asStateFlow()
 
@@ -65,8 +68,8 @@ class LogInViewModel(/*private val auth : AuthUseCase, */private val authKtorUse
 //        _rememberUser.value = newValue
 //    }
 
-    private val _isDataCorrect : MutableStateFlow<Boolean> = MutableStateFlow(false)
-    var isDataCorrect : StateFlow<Boolean> = _isDataCorrect.asStateFlow()
+    private val _isDataCorrect: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    var isDataCorrect: StateFlow<Boolean> = _isDataCorrect.asStateFlow()
 
 //    val screenState : MutableStateFlow<ScreenState<AllUserInformation>> =
 //        MutableStateFlow(ScreenState.AwaitingChangeFromUser)
@@ -102,29 +105,31 @@ class LogInViewModel(/*private val auth : AuthUseCase, */private val authKtorUse
 //    }
 
 
-    val screenState : MutableStateFlow<ScreenState<AllTypeUserInformation>> =
+    val screenState: MutableStateFlow<ScreenState<AllTypeUserInfo>> =
         MutableStateFlow(ScreenState.AwaitingChangeFromUser)
-    fun authKtor()
-    {
-        viewModelScope.launch (Dispatchers.IO) {
+
+    fun authKtor() {
+        viewModelScope.launch(Dispatchers.IO) {
             buttonEnabled.value = false
-            when (val curResult = authKtorUse.invoke(_emailUser.value, _passwordUser.value, rememberUser.value)) {
-                is CustomResult.Failure -> screenState.value = ScreenState.Failure(curResult.code, curResult.message)
+            when (val curResult =
+                authKtorUse.invoke(_emailUser.value, _passwordUser.value, rememberUser.value)) {
+                is CustomResult.Failure -> screenState.value =
+                    ScreenState.Failure(curResult.code, curResult.message)
+
                 is CustomResult.Success -> {
+                    Log.d("Успешный вход", curResult.data.toString())
+
                     screenState.value = ScreenState.Success(data = curResult.data)
-                    when (curResult.data) {
-                        is CandidateInfo -> {
-                            localUserInformation.token = "Bearer ${curResult.data.token}"
-                            localUserInformation.type = UserType.Candidate
-                            Log.d("Token", localUserInformation.token)
-                        }
-                        is EmployerInfo -> {
-                            localUserInformation.token = "Bearer ${curResult.data.token}"
-                            localUserInformation.type = UserType.Employer
-                        }
-                    }
+
+
+
                     if (rememberUser.value) {
-                        Paper.book().write<UserId>("UserId",UserId(publicUserId.id, publicUserId.type))
+                        Paper.book().write<UserMainInformation>(
+                            "UserLocalInformation", UserMainInformation(
+                                localUserInformation.token, localUserInformation.type,
+                                localUserInformation.name, localUserInformation.id
+                            )
+                        )
                     }
                 }
             }
@@ -133,9 +138,12 @@ class LogInViewModel(/*private val auth : AuthUseCase, */private val authKtorUse
         }
     }
 
-    fun isDataValid() : Boolean
-    {
-        return _emailUser.value.trim().isNotEmpty() && _passwordUser.value.trim().isNotEmpty() && _emailUser.value.trim().matches(Regex(
-            AuthenticationRegexPatterns.email))
+    fun isDataValid(): Boolean {
+        return _emailUser.value.trim().isNotEmpty() && _passwordUser.value.trim()
+            .isNotEmpty() && _emailUser.value.trim().matches(
+            Regex(
+                AuthenticationRegexPatterns.email
+            )
+        )
     }
 }

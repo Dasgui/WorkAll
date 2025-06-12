@@ -71,7 +71,7 @@ private fun ResumeConstruct(viewModel: ResumeViewModel = koinViewModel()) {
                     title = "Ошибка",
                     localState.message,
                     onOkClick = {
-                        viewModel.screenState.value = ScreenState.AwaitingChangeFromUser
+                        viewModel.screenState.value = ScreenState.Error
                     })
             }
 
@@ -220,6 +220,22 @@ private fun ResumeInformation(viewModel: ResumeViewModel, navigator: Navigator?)
         text = "${viewModel.information.value.length}/${viewModel.informationMaxChars.value}",
         style = Tema.Text_18_18_Medium,
         color = MainColor
+    )
+    VerticalSpacer(20.dp)
+    Text(
+        text = "Сколько вы проработали?",
+        style = Tema.Text_20_20_Medium,
+        color = MainColor
+    )
+    VerticalSpacer(10.dp)
+    CustomComboBox(
+        textField = viewModel.selectedExperience.value?.name ?: "Выберите значение",
+        dropItemsList = viewModel.experienceList.value,
+        selectedChange = { experience ->
+            viewModel.selectedExperience.value = experience
+        },
+        enabled = true,
+        itemToString = { it.name }
     )
     VerticalSpacer(50.dp)
     BottomButtons(

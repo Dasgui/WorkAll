@@ -3,6 +3,7 @@ package com.example.ozonchick_new_version.Data.network.KtorRepositories
 import android.util.Log
 import com.example.ozonchick_new_version.Common.CustomResult
 import com.example.ozonchick_new_version.Common.CustomResult.Failure
+import com.example.ozonchick_new_version.Data.model.Ktor.Authetication.AllTypeUserInfo
 import com.example.ozonchick_new_version.Data.model.Ktor.Authetication.AllTypeUserInformation
 import com.example.ozonchick_new_version.Data.model.Ktor.Authetication.CandidateInfo
 import com.example.ozonchick_new_version.Data.model.Ktor.Authetication.CandidateInsertInformation
@@ -20,15 +21,13 @@ import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.isSuccess
 
-interface KtorRepository {
-    suspend fun getVacancies(): CustomResult<VacanciesResponse>
-
+interface AuthenticationKtorRepository {
 
     suspend fun auth(
         email: String,
         password: String,
         rememberUser: Boolean
-    ): CustomResult<AllTypeUserInformation>
+    ): CustomResult<AllTypeUserInfo>
 
     suspend fun registrationCandidate(
         name: String,
@@ -47,64 +46,45 @@ interface KtorRepository {
     ) : CustomResult<EmployerInfo>
 }
 
-class VacancyRepository : KtorRepository {
-    override suspend fun getVacancies(): CustomResult<VacanciesResponse> {
-        return try {
-            val response = client.get("vac?limit=3&last_id=0")
-            val body: String = response.body()
-            Log.d("API_RESPONSE", body)
-            val result = json.decodeFromString<VacanciesResponse>(body)
-            CustomResult.Success(result)
-        } catch (ex: Exception) {
-            Log.d("Получение всех вакансий", ex.toString())
-            CustomResult.Failure(
-                ExclusionOptions.NetworkError.id,
-                ex.toString()
-            )
-        }
-    }
-
-
-    //Нужно добавить запоминание не id, а token.
-    //Также надо будет убрать лишние screenState. Чтоб начать убирать лишние остатки supabase.
+class AuthenticationKtorRepositoryImpl : AuthenticationKtorRepository {
     override suspend fun auth(
         email: String,
         password: String,
         rememberUser: Boolean
-    ): CustomResult<AllTypeUserInformation> {
+    ): CustomResult<AllTypeUserInfo> {
         return try {
-            var candidateResponse = client.get("user/auth") {
+            var candidateResponse = client.get("auth") {
                 url {
-                    parameters.append("email", email)
-                    parameters.append("password", password)
+                    parameters.append("Email", email)
+                    parameters.append("Password", password)
                 }
             }
 
             if (candidateResponse.status.isSuccess()) {
                 var body: String = candidateResponse.body()
-                val result = json.decodeFromString<CandidateInfo>(body)
-                Log.d("Результат входа работодат Ktor", result.toString())
+                Log.d("Результат входа работодат Ktor", body.toString())
+                val result = json.decodeFromString<AllTypeUserInfo>(body)
                 return CustomResult.Success(result)
             } else {
                 Log.d("Результат входа работодат Ktor", candidateResponse.status.toString())
             }
 
-            val employerResponse = client.get("emp/auth") {
-                url {
-                    parameters.append("email", email)
-                    parameters.append("password", password)
-                }
-            }
-            if (employerResponse.status.isSuccess()) {
-                var body: String = employerResponse.body()
-                val result = json.decodeFromString<EmployerInfo>(body)
-                Log.d("Результат входа работодат Ktor", result.toString())
+//            val employerResponse = client.get("emp/auth") {
+//                url {
+//                    parameters.append("email", email)
+//                    parameters.append("password", password)
+//                }
+//            }
+//            if (employerResponse.status.isSuccess()) {
+//                var body: String = employerResponse.body()
+//                val result = json.decodeFromString<EmployerInfo>(body)
+//                Log.d("Результат входа работодат Ktor", result.toString())
 //                return CustomResult.Success(result)
-            } else {
-                Log.d("Результат входа работодат Ktor", employerResponse.status.toString())
-            }
-
-
+//            } else {
+//                Log.d("Результат входа работодат Ktor", employerResponse.status.toString())
+//            }
+//
+//
             Failure(0, AppErrors.UNKNOWN_USER.description)
 
         } catch (ex: Exception) {
@@ -115,6 +95,7 @@ class VacancyRepository : KtorRepository {
             )
         }
     }
+
 
     override suspend fun registrationCandidate(
         name: String,
@@ -145,11 +126,10 @@ class VacancyRepository : KtorRepository {
 
         }  catch (ex: Exception) {
             Log.d("Регистрация", ex.toString())
-            Failure(0, AppErrors.UNKNOWN_USER.description)
+            Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
         }
     }
 
-    //Нужно дождаться пока свойство поменяет размер своей буквы и написание, потому что пока не получатеся замапить данные. Не охото делать по три класса.
     override suspend fun registrationEmployer(
         name: String,
         password: String,
@@ -183,7 +163,7 @@ class VacancyRepository : KtorRepository {
 
         }  catch (ex: Exception) {
             Log.d("Регистрация", ex.toString())
-            Failure(0, AppErrors.UNKNOWN_USER.description)
+            Failure(ExclusionOptions.NetworkError.id, ExclusionOptions.NetworkError.message)
         }
     }
 }

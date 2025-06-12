@@ -6,12 +6,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CandidateMainInformation(
-    @SerialName("CreatedAt") val createdAt: String,
-    @SerialName("Email") val email: String,
     @SerialName("ID") val id: Int,
     @SerialName("Name") val name: String,
-    @SerialName("Password") val password: String,
     @SerialName("PhoneNumber") val phoneNumber: String,
-    @SerialName("Status") val status: Status,
+    @SerialName("Email") val email: String,
+    @SerialName("Password") val password: String,
+    @SerialName("StatusInfo") val statusInfo: Status,
+    @SerialName("CreatedAt") val createdAt: String,
     @SerialName("UpdatedAt") val updatedAt: String,
 )
