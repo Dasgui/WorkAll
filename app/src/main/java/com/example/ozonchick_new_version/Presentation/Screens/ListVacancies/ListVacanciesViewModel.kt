@@ -17,6 +17,7 @@ import com.example.ozonchick_new_version.Data.model.VacancyInformation
 import com.example.ozonchick_new_version.Domain.AcceptVacancyUseCase
 import com.example.ozonchick_new_version.Domain.AddVacancyResponseKtorUseCase
 import com.example.ozonchick_new_version.Domain.FilterVacanciesKtorUseCase
+import com.example.ozonchick_new_version.Domain.FindVacanciesKtorUseCase
 import com.example.ozonchick_new_version.Domain.GetVacanciesKtorUseCase
 import com.example.ozonchick_new_version.Domain.GetVacanciesUseCase
 import com.example.ozonchick_new_version.Domain.SearchVacanciesKtorUseCase
@@ -35,7 +36,8 @@ class ListVacanciesViewModel(
     private val getVacanciesKtorUseCase: GetVacanciesKtorUseCase,
     private val addVacancyUseCase: AddVacancyResponseKtorUseCase,
     private val searchVacanciesUseCase: SearchVacanciesKtorUseCase,
-    private val filterVacanciesUseCase: FilterVacanciesKtorUseCase
+    private val filterVacanciesUseCase: FilterVacanciesKtorUseCase,
+    private val findVacanciesUseCase : FindVacanciesKtorUseCase
 ) : ViewModel() {
     val responseState : MutableStateFlow<ScreenState<VacanciesResponse>> = MutableStateFlow(ScreenState.Loading)
     val statesOfGetVacancies : MutableState<StatesOfGetVacancies> = mutableStateOf(
@@ -60,13 +62,22 @@ class ListVacanciesViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             when (val localState = statesOfGetVacancies.value) {
                 is StatesOfGetVacancies.Filter -> {
-                    when (val response = if (localState.search.isEmpty()) filterVacanciesUseCase(localState) else searchVacanciesUseCase(localState.search) ) {
+//                    when (val response = if (localState.search.isEmpty()) filterVacanciesUseCase(localState) else searchVacanciesUseCase(localState.search) ) {
+//                        is CustomResult.Failure -> responseState.value = ScreenState.Failure(response.code, response.message)
+//                        is CustomResult.Success<VacanciesResponse> -> {
+//                            responseState.value = ScreenState.Success(response.data)
+//                            listVacancies.value = response.data
+//                        }
+//                    }
+
+                    when (val response = findVacanciesUseCase(localState)) {
                         is CustomResult.Failure -> responseState.value = ScreenState.Failure(response.code, response.message)
                         is CustomResult.Success<VacanciesResponse> -> {
                             responseState.value = ScreenState.Success(response.data)
                             listVacancies.value = response.data
                         }
                     }
+
 //                    val response = searchVacanciesUseCase(localState)
 //                    when (response) {
 //                        is CustomResult.Failure -> responseState.value = ScreenState.Failure(response.code, response.message)

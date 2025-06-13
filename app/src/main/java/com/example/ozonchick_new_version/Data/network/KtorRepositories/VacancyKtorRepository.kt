@@ -45,6 +45,7 @@ interface VacancyKtorRepository {
 
     suspend fun searchVacancies (searchValue : String) : CustomResult<VacanciesResponse>
     suspend fun filterVacancies (information : StatesOfGetVacancies.Filter) : CustomResult<VacanciesResponse>
+    suspend fun findVacancies (information : StatesOfGetVacancies.Filter) : CustomResult<VacanciesResponse>
 }
 
 class VacancyKtorRepositoryImpl : VacancyKtorRepository {
@@ -314,6 +315,37 @@ class VacancyKtorRepositoryImpl : VacancyKtorRepository {
                     if (information.filterExperience?.id != 0) parameters.append("ExpID", information.filterExperience?.id.toString())
                     if (information.filterSalary.isNotEmpty()) parameters.append("Min", information.filterSalary)
 //                    parameters.append("Max", searchValue)
+                }
+                headers {
+                    append(HttpHeaders.Authorization, token)
+                }
+            }
+            if (response.status.isSuccess()) {
+                val result = json.decodeFromString<VacanciesResponse>(response.bodyAsText())
+                CustomResult.Success(result)
+            } else {
+                CustomResult.Failure(
+                    ExclusionOptions.NetworkError.id,
+                    ""
+                )
+            }
+        }
+        catch (ex : Exception) {
+            CustomResult.Failure(
+                ExclusionOptions.NetworkError.id,
+                ExclusionOptions.NetworkError.message
+            )
+        }
+    }
+
+    override suspend fun findVacancies(information: StatesOfGetVacancies.Filter): CustomResult<VacanciesResponse> {
+        return try {
+            val token = localUserInformation.token
+            val response = client.get("vac/search") {
+                url {
+                    if (information.filterExperience != null) parameters.append("ExpID", information.filterExperience.id.toString())
+                    if (information.filterSalary.isNotEmpty()) parameters.append("Min", information.filterSalary)
+                    if (information.search.isNotEmpty()) parameters.append("Text", information.search)
                 }
                 headers {
                     append(HttpHeaders.Authorization, token)

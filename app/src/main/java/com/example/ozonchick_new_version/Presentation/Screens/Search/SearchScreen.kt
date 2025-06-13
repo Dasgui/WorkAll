@@ -89,12 +89,14 @@ private fun SearchConstruct(
             ScreenState.Loading -> CustomLoading()
             is ScreenState.Success<*> -> Unit
         }
-        SearchType(viewModel)
-        if (viewModel.searchVisible.value) {
-            SearchField(viewModel)
-        } else {
-            FilterFields(viewModel)
-        }
+//        SearchType(viewModel)
+        SearchField(viewModel)
+        FilterFields(viewModel)
+//        if (viewModel.searchVisible.value) {
+//            SearchField(viewModel)
+//        } else {
+//            FilterFields(viewModel)
+//        }
 //        SearchField(viewModel)
         VerticalSpacer(25.dp)
         BottomButtons(viewModel, navigator)
@@ -118,8 +120,10 @@ private fun SearchType(viewModel: SearchViewModel) {
             },
             modifier = Modifier.clickable {
                 viewModel.searchVisible.value = true
-                viewModel.selectedExperience.value = null
-                viewModel.minSalaryText.value = ""
+//                viewModel.selectedExperience.value = null
+//                viewModel.minSalaryText.value = ""
+//                viewModel.checkExperience.value = false
+//                viewModel.checkSalary.value = false
             })
         Text(
             text = "Фильтры",
@@ -131,7 +135,7 @@ private fun SearchType(viewModel: SearchViewModel) {
             },
             modifier = Modifier.clickable {
                 viewModel.searchVisible.value = false
-                viewModel.search.value = ""
+//                viewModel.search.value = ""
             })
     }
 }
@@ -305,7 +309,7 @@ fun BottomButtons(viewModel: SearchViewModel, navigator: Navigator?) {
         onClick = {
             navigator?.replaceAll(
                 ListVacanciesScreen(
-                    viewModel.getStatesOfGetVacancies(viewModel.searchVisible.value)
+                    viewModel.getStatesOfGetVacancies()
                 )
             )
         },
@@ -315,6 +319,11 @@ fun BottomButtons(viewModel: SearchViewModel, navigator: Navigator?) {
     CustomButton(
         onClick = {
             viewModel.resetFilters()
+            navigator?.replaceAll(
+                ListVacanciesScreen(
+                    viewModel.getStatesOfGetVacancies()
+                )
+            )
 //            navigator?.replaceAll(
 //                ListVacanciesScreen(
 //                    StatesOfGetVacancies.Normal

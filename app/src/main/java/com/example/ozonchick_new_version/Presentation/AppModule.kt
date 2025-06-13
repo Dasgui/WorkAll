@@ -21,6 +21,7 @@ import com.example.ozonchick_new_version.Domain.AuthUseCase
 import com.example.ozonchick_new_version.Domain.CreateVacancyKtorUseCase
 import com.example.ozonchick_new_version.Domain.DeleteVacancyKtorUseCase
 import com.example.ozonchick_new_version.Domain.FilterVacanciesKtorUseCase
+import com.example.ozonchick_new_version.Domain.FindVacanciesKtorUseCase
 import com.example.ozonchick_new_version.Domain.GetAllCandidateResponseKtorUseCase
 import com.example.ozonchick_new_version.Domain.GetAllExperienceKtorUseCase
 import com.example.ozonchick_new_version.Domain.GetAllResponsesUseCase
@@ -111,10 +112,11 @@ var AppModule = module {
     factory { AddVacancyResponseKtorUseCase(get()) }
     factory { SearchVacanciesKtorUseCase(get()) }
     factory { FilterVacanciesKtorUseCase(get()) }
+    factory { FindVacanciesKtorUseCase(get()) }
 
     factory { GetVacanciesKtorUseCase(get()) }
     viewModel {
-        ListVacanciesViewModel(get(), get(), get(), get())
+        ListVacanciesViewModel(get(), get(), get(), get(), get())
     }
 
     factory { GetEmployerVacanciesKtorUseCase(get()) }

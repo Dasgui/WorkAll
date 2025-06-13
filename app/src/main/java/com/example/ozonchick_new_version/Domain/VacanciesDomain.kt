@@ -102,6 +102,12 @@ class FilterVacanciesKtorUseCase(private val repository: VacancyKtorRepository) 
     }
 }
 
+class FindVacanciesKtorUseCase(private val repository: VacancyKtorRepository) {
+    suspend operator fun invoke(information: StatesOfGetVacancies.Filter) : CustomResult<VacanciesResponse> {
+        return repository.findVacancies(information)
+    }
+}
+
 
 
 

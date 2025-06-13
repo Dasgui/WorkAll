@@ -43,18 +43,18 @@ class SearchViewModel(
     )
 
 
-    fun getStatesOfGetVacancies(isSearchVisible: Boolean): StatesOfGetVacancies {
-        return if ((search.value.isEmpty() && minSalaryText.value.isEmpty()
-            && selectedExperience.value?.id == 0)
-            || (search.value.isEmpty() && checkSalary.value == false && checkExperience.value == false)
+    fun getStatesOfGetVacancies(): StatesOfGetVacancies {
+        return if (search.value.isEmpty() && (checkSalary.value == false || minSalaryText.value.isEmpty()) && (checkExperience.value == false || selectedExperience.value?.id == null)
         ) {
+            Log.d("Обычный", "Запущен")
             StatesOfGetVacancies.Normal
         } else {
+            Log.d("Фильтр", "Запущен")
             StatesOfGetVacancies.Filter(
-                search = if (isSearchVisible) search.value.trim() else "",
-                filterSalary = if (checkSalary.value) minSalaryText.value.trim() else "",
-                filterExperience = if (checkExperience.value) selectedExperience.value
-                    ?: Experience("", 0, "") else null,
+                search = search.value.trim() /*if (search.value.isNotEmpty()) search.value.trim() else ""*/,
+                filterSalary = minSalaryText.value.trim()/*if (checkSalary.value && minSalaryText.value.isNotEmpty()) minSalaryText.value.trim() else ""*/,
+                filterExperience = selectedExperience.value/*if (checkExperience.value || selectedExperience.value?.id == null) selectedExperience.value
+                    ?: Experience("", 0, "") else null*/,
                 filterExperienceList = experienceList.value
             )
         }
@@ -75,7 +75,7 @@ class SearchViewModel(
     }
 
     fun loadFilters(localState: StatesOfGetVacancies.Filter) {
-        if (localState.filterExperience?.id != 0) {
+        if (localState.filterExperience?.id != null) {
             checkExperience.value = true
         }
         if (localState.filterSalary.isNotEmpty()) {
