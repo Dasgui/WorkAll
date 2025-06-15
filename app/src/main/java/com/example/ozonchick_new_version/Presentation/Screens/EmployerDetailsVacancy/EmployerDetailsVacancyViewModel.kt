@@ -61,6 +61,8 @@ class EmployerDetailsVacancyViewModel(
 
     val vacancyVisible : MutableState<Boolean> = mutableStateOf(false)
 
+    val unCorrectInformation : MutableState<Boolean> = mutableStateOf(false)
+
     fun loadDataForEmployer () {
         viewModelScope.launch(Dispatchers.IO) {
             val result = getVacancyAllInformation(id)
@@ -108,7 +110,7 @@ class EmployerDetailsVacancyViewModel(
             location = locationWork.value,
             phoneNumber = phoneNumber.value,
             price = price.value.toInt(),
-            vacancyName = name.value,
+            vacancyName = specialization.value,
             id = vacancyId
         )
         viewModelScope.launch(Dispatchers.IO) {
@@ -119,22 +121,46 @@ class EmployerDetailsVacancyViewModel(
         }
     }
 
-    fun checkFields() : Boolean {
-        return checkEmail() && checkPhoneNumber() && checkDigits()
-                && aboutWork.value.isNotEmpty() && locationWork.value.isNotEmpty()
-                && selectedExperience.value != null && name.value.isNotEmpty()
-                && specialization.value.isNotEmpty()
+    fun checkFields () : Boolean {
+        return if (
+            checkEmail(email.value) && checkPhoneNumber(phoneNumber.value) && checkPrice(price.value)
+            && checkAboutWork(aboutWork.value)
+            && checkLocationWork(locationWork.value) && checkPrice(price.value)
+            && checkSpecialization(specialization.value) && checkExperience(selectedExperience.value?.name) == true
+        ) {
+            true
+        }
+        else {
+            unCorrectInformation.value = true
+            false
+        }
     }
 
-    fun checkEmail () : Boolean {
-        return FieldValidators.checkEmail(email.value)
+    fun checkSpecialization (specialization : String) : Boolean {
+        return specialization.isNotEmpty()
     }
 
-    fun checkDigits () : Boolean {
-        return FieldValidators.checkDigit(price.value)
+    fun checkAboutWork (aboutWork : String) : Boolean {
+        return aboutWork.isNotEmpty()
     }
 
-    fun checkPhoneNumber () : Boolean {
-        return FieldValidators.checkPhoneNumber(phoneNumber.value)
+    fun checkLocationWork (locationWork : String) : Boolean {
+        return locationWork.isNotEmpty()
+    }
+
+    fun checkExperience (nameExperience : String?) : Boolean? {
+        return nameExperience?.isNotEmpty()
+    }
+
+    fun checkEmail (email : String) : Boolean {
+        return FieldValidators.checkEmail(email)
+    }
+
+    fun checkPhoneNumber (phoneNumber: String) : Boolean {
+        return FieldValidators.checkPhoneNumber(phoneNumber)
+    }
+
+    fun checkPrice (price : String) : Boolean {
+        return FieldValidators.checkDigit(price)
     }
 }

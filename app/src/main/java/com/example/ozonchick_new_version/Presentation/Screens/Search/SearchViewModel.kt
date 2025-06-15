@@ -12,6 +12,7 @@ import com.example.ozonchick_new_version.Data.model.ListOfVacancies.StatesOfGetV
 import com.example.ozonchick_new_version.Data.model.Resume.ExperienceGet
 import com.example.ozonchick_new_version.Data.model.VacancyInformation
 import com.example.ozonchick_new_version.Data.network.supabase
+import com.example.ozonchick_new_version.Domain.FieldValidators
 import com.example.ozonchick_new_version.Domain.GetAllExperienceKtorUseCase
 import com.example.ozonchick_new_version.Domain.GetExperienceUseCase
 import com.example.ozonchick_new_version.Presentation.States.ScreenState

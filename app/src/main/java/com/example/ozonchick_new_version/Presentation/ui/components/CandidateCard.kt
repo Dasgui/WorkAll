@@ -27,17 +27,22 @@ fun CandidateCard(
     navigateOnDescription: () -> Unit,
     candidateStatusId : Int
 ) {
-    var colorBorder = when (candidateStatuses[candidateStatusId]) {
+    var candidateStatus : CandidateStatus = CandidateStatus.None
+    val colorBorder : Color
+    when (candidateStatuses[candidateStatusId]) {
         "На рассмотрении" -> {
-            MainColor
+            colorBorder =  MainColor
+            candidateStatus = CandidateStatus.None
         }
         "Приглашение" -> {
-            Color.Green
+            colorBorder = Color.Green
+            candidateStatus = CandidateStatus.Accept
         }
         "Отказ" -> {
-            Color.Red
+            colorBorder = Color.Red
+            candidateStatus = CandidateStatus.Reject
         }
-        else -> {MainColor}
+        else -> {colorBorder = MainColor}
     }
     CustomCard (colorBorder = colorBorder) {
         Column(
@@ -52,7 +57,8 @@ fun CandidateCard(
             MainButtons(
                 acceptCandidate = {acceptCandidate()},
                 navigateOnDescription = {navigateOnDescription()},
-                rejectCandidate = {rejectCandidate()}
+                rejectCandidate = {rejectCandidate()},
+                candidateStatus = candidateStatus
             )
         }
     }
@@ -80,7 +86,8 @@ private fun MainText(
 private fun MainButtons(
     acceptCandidate: () -> Unit,
     navigateOnDescription: () -> Unit,
-    rejectCandidate: () -> Unit
+    rejectCandidate: () -> Unit,
+    candidateStatus : CandidateStatus
 ) {
     Column(
         modifier = Modifier
@@ -88,14 +95,16 @@ private fun MainButtons(
             .padding(top = 10.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
-        CustomButton(
-            onClick = {
-                acceptCandidate()
-            },
-            placeText = "Принять",
-            modifier = Modifier.fillMaxWidth(),
-            reverseColors = true
-        )
+        if (candidateStatus is CandidateStatus.Reject) {
+            CustomButton(
+                onClick = {
+                    acceptCandidate()
+                },
+                placeText = "Принять",
+                modifier = Modifier.fillMaxWidth(),
+                reverseColors = true
+            )
+        }
         CustomButton(
             onClick = {
                 navigateOnDescription()
@@ -104,12 +113,14 @@ private fun MainButtons(
             modifier = Modifier.fillMaxWidth(),
             reverseColors = true
         )
-        CustomButton(
-            onClick = {
-                rejectCandidate()
-            },
-            placeText = "Отклонить",
-            modifier = Modifier.fillMaxWidth()
-        )
+        if (candidateStatus is CandidateStatus.Accept) {
+            CustomButton(
+                onClick = {
+                    rejectCandidate()
+                },
+                placeText = "Отклонить",
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
     }
 }

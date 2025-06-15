@@ -1,5 +1,6 @@
 package com.example.ozonchick_new_version.Presentation.ui.components
 
+import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,6 +29,7 @@ import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.EnabledColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.SecondColor
+import com.example.ozonchick_new_version.Presentation.ui.theme.TransparentMainColor
 import com.example.ozonchick_new_version.R
 
 @Composable
@@ -46,7 +48,8 @@ fun CustomOutlinedTextField(
     placeholder: @Composable() (() -> Unit)? = null,
     leadingIcon: @Composable() (() -> Unit)? = null,
     trailingIcon: @Composable() (() -> Unit)? = null,
-    readOnly : Boolean = false
+    readOnly : Boolean = false,
+    indicatorColor : Color = MainColor
 ) {
     val trailingIconVisible: MutableState<Boolean> = remember { mutableStateOf(true) }
     OutlinedTextField(
@@ -68,7 +71,7 @@ fun CustomOutlinedTextField(
                 Text(
                     text = placeText,
                     style = Tema.Text_20_20_Medium,
-                    color = SecondColor
+                    color = TransparentMainColor
                 )
             }
         },
@@ -97,8 +100,8 @@ fun CustomOutlinedTextField(
         colors = TextFieldDefaults.colors(
             focusedContainerColor = BackgroundColor,
             unfocusedContainerColor = BackgroundColor,
-            focusedIndicatorColor = MainColor,
-            unfocusedIndicatorColor = MainColor,
+            focusedIndicatorColor = indicatorColor,
+            unfocusedIndicatorColor = indicatorColor,
             focusedTextColor = MainColor,
             unfocusedTextColor = MainColor,
             disabledContainerColor = EnabledColor,

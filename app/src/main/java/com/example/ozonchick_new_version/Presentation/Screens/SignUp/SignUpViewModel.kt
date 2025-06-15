@@ -38,18 +38,18 @@ class SignUpViewModel(
 
     val buttonEnabled : MutableState<Boolean> = mutableStateOf(true)
 
-    val name : MutableState<String> = mutableStateOf("testmobile")
-    val secondName : MutableState<String> = mutableStateOf("testmobile")
+    val name : MutableState<String> = mutableStateOf("") /*testmobile*/
+    val secondName : MutableState<String> = mutableStateOf("") /*testmobile*/
 
-    val phoneNumber : MutableState<String> = mutableStateOf("+79087027174")
+    val phoneNumber : MutableState<String> = mutableStateOf("") /*+79087027174*/
 
-    val email : MutableState<String> = mutableStateOf("testmobile@mail.ru")
+    val email : MutableState<String> = mutableStateOf("") /*testmobile@mail.ru*/
 
-    val password : MutableState<String> = mutableStateOf("testmobile")
+    val password : MutableState<String> = mutableStateOf("") /*testmobile*/
 
     val organizationName : MutableState<String> = mutableStateOf("") /*"ООО Воскресный"*/
 
-    val confirmPassword : MutableState<String> = mutableStateOf("testmobile")
+    val confirmPassword : MutableState<String> = mutableStateOf("") /*testmobile*/
 
 
     private val _passwordVisibleFirst: MutableStateFlow<Boolean> = MutableStateFlow(false)
@@ -112,7 +112,7 @@ class SignUpViewModel(
 //    }
 
     fun checkName () : Boolean {
-        return name.value.trim().matches(Regex(AuthenticationRegexPatterns.name))
+        return name.value.trim().matches(Regex(AuthenticationRegexPatterns.name)) && secondName.value.trim().matches(Regex(AuthenticationRegexPatterns.name))
     }
 
     fun checkEmail () : Boolean {

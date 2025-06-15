@@ -16,6 +16,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
@@ -31,7 +32,8 @@ fun <T> CustomComboBox(
     dropItemsList: List<T>,
     selectedChange : (T) -> Unit,
     enabled : Boolean = true,
-    itemToString: (T) -> String = { it.toString() }
+    itemToString: (T) -> String = { it.toString() },
+    indicatorColor : Color = MainColor
 ) {
     val visible : MutableState<Boolean> = rememberSaveable { mutableStateOf(false) }
     CustomOutlinedTextField(
@@ -77,5 +79,6 @@ fun <T> CustomComboBox(
                 }
             }
         },
+        indicatorColor = indicatorColor
     )
 }

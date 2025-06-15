@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -27,6 +28,8 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Common.UserType
 import com.example.ozonchick_new_version.Common.localUserInformation
 import com.example.ozonchick_new_version.Data.strings.AppErrors
+import com.example.ozonchick_new_version.Data.strings.AuthenticationRegexPatterns
+import com.example.ozonchick_new_version.Domain.FieldValidators
 import org.koin.androidx.compose.koinViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
@@ -39,6 +42,7 @@ import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.BackgroundColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.Presentation.ui.theme.SecondColor
+import com.example.ozonchick_new_version.Presentation.ui.theme.TransparentMainColor
 
 class SignUpScreen : Screen {
     @Composable
@@ -123,24 +127,28 @@ private fun MainBody(viewModel: SignUpViewModel) {
             title = "Имя",
             holderText = "Василий",
             field = viewModel.name,
-            maxChar = 21
+            maxChar = 21,
+            indicatorColor = if (FieldValidators.checkName(viewModel.name.value)) MainColor else TransparentMainColor
         )
         NameTextField(
             title = "Фамилия",
             holderText = "Иванович",
             field = viewModel.secondName,
-            maxChar = 21
+            maxChar = 21,
+            indicatorColor = if (FieldValidators.checkName(viewModel.secondName.value)) MainColor else TransparentMainColor
         )
         NameTextField(
             title = "Номер телефона",
             holderText = "+7**********",
             field = viewModel.phoneNumber,
-            maxChar = 12
+            maxChar = 12,
+            indicatorColor = if (FieldValidators.checkPhoneNumber(viewModel.phoneNumber.value)) MainColor else TransparentMainColor
         )
         NameTextField(
             title = "Адрес почты",
             holderText = "vasili@mail.ru",
-            field = viewModel.email
+            field = viewModel.email,
+            indicatorColor = if (FieldValidators.checkEmail(viewModel.email.value)) MainColor else TransparentMainColor
         )
         VerticalSpacer(5.dp)
         NameTextField(
@@ -148,12 +156,14 @@ private fun MainBody(viewModel: SignUpViewModel) {
             holderText = "******",
             field = viewModel.password,
             maxChar = 20,
+            indicatorColor = if (FieldValidators.checkPassword(viewModel.password.value) && viewModel.checkPasswordMatch()) MainColor else TransparentMainColor
         )
         NameTextField(
             title = "Подтвердите пароль",
             holderText = "******",
             field = viewModel.confirmPassword,
             maxChar = 20,
+            indicatorColor = if (FieldValidators.checkPassword(viewModel.confirmPassword.value) && viewModel.checkPasswordMatch()) MainColor else TransparentMainColor
         )
         if (viewModel.userRole.value == UserType.Employer) {
             NameTextField(
@@ -161,13 +171,15 @@ private fun MainBody(viewModel: SignUpViewModel) {
                 holderText = "******",
                 field = viewModel.organizationName,
                 maxChar = 50,
+                indicatorColor = if (FieldValidators.checkName(viewModel.organizationName.value)) MainColor else TransparentMainColor
             )
             NameTextField(
-                title = "Подтвердите ИНН",
+                title = "ИНН",
                 holderText = "",
                 field = viewModel.INN,
                 maxChar = 12,
-                onlyNumbers = true
+                onlyNumbers = true,
+                indicatorColor = if (viewModel.checkInn()) MainColor else TransparentMainColor
             )
         }
     }

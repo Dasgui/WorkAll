@@ -73,8 +73,13 @@ class ListVacanciesViewModel(
                     when (val response = findVacanciesUseCase(localState)) {
                         is CustomResult.Failure -> responseState.value = ScreenState.Failure(response.code, response.message)
                         is CustomResult.Success<VacanciesResponse> -> {
-                            responseState.value = ScreenState.Success(response.data)
-                            listVacancies.value = response.data
+                            if (response.data.vacanciesInfo == null) {
+                                responseState.value = ScreenState.AwaitingChangeFromUser
+                            } else {
+                                responseState.value = ScreenState.Success(response.data)
+                                listVacancies.value = response.data
+                            }
+
                         }
                     }
 
@@ -89,7 +94,7 @@ class ListVacanciesViewModel(
 //                    Log.d("Вакансии при поиске", response.toString())
                 }
                 StatesOfGetVacancies.Normal -> {
-                    when (val curResult = getVacanciesKtorUseCase(1, 56)) {
+                    when (val curResult = getVacanciesKtorUseCase(1, 1000)) {
                         is CustomResult.Failure -> responseState.value = ScreenState.Failure(curResult.code, curResult.message)
                         is CustomResult.Success<VacanciesResponse> -> {
                             responseState.value = ScreenState.Success(curResult.data)

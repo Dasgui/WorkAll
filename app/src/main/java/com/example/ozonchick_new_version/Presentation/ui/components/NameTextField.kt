@@ -9,13 +9,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
-import java.nio.file.WatchEvent
 
 @Composable
 fun NameTextField(
@@ -27,7 +27,8 @@ fun NameTextField(
     height : Dp = 55.dp,
     singleLine : Boolean = true,
     spaceBy : Dp = 10.dp,
-    enabled : Boolean = true
+    enabled : Boolean = true,
+    indicatorColor : Color = MainColor
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -60,7 +61,8 @@ fun NameTextField(
             enabled = enabled,
             singleLine = singleLine,
             placeText = holderText,
-            keyboardOptions = if (onlyNumbers) KeyboardOptions(keyboardType = KeyboardType.Number) else KeyboardOptions.Default
+            keyboardOptions = if (onlyNumbers) KeyboardOptions(keyboardType = KeyboardType.Number) else KeyboardOptions.Default,
+            indicatorColor = indicatorColor
         )
     }
 }

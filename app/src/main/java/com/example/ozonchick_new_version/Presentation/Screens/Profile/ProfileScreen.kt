@@ -40,6 +40,7 @@ import com.example.ozonchick_new_version.Presentation.ui.components.CustomCard
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomScaffold
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomLoading
 import com.example.ozonchick_new_version.Presentation.ui.components.FailAlertDialog
+import com.example.ozonchick_new_version.Presentation.ui.components.HorizontalSpacer
 import com.example.ozonchick_new_version.Presentation.ui.text_tema.Tema
 import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.R
@@ -78,11 +79,13 @@ private fun ProfileConstruct(navigator: Navigator?, viewModel: ProfileViewModel 
                         onOkClick = {
                             viewModel.informationProfileState.value = ScreenState.Error
                         })
+
                     is ScreenState.Loading -> CustomLoading()
                     is ScreenState.Success -> {
                         ScreenHead(navigator = navigator, curState.data)
                         ScreenBody(navigator = navigator)
                     }
+
                     ScreenState.Error -> AlertText()
                     ScreenState.AwaitingChangeFromUser -> Unit
                     ScreenState.AwaitingResponse -> Unit
@@ -97,7 +100,10 @@ private fun ScreenHead(
     navigator: Navigator?,
     name: String
 ) {
-    Row(modifier = Modifier.Companion.fillMaxWidth()) {
+    Row(
+        modifier = Modifier.Companion.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Image(
             painter = painterResource(id = R.drawable.good_tick),
             contentDescription = "Значок подтверждения полной регистрации",
@@ -106,38 +112,23 @@ private fun ScreenHead(
                 .size(50.dp)
                 .clip(CircleShape)
         )
-        Row(
+        Text(
+            text = name,
+            style = Tema.Text_24_24_Bold,
+            color = MainColor,
+            modifier = Modifier.weight(1f).padding(start = 10.dp)
+        )
+        Image(
+            painter = painterResource(id = R.drawable.ic_round_log_out),
+            contentDescription = "Выход",
             modifier = Modifier.Companion
-                .fillMaxWidth()
-                .padding(top = 5.dp), horizontalArrangement = Arrangement.Center
-        ) {
-            Column(
-                horizontalAlignment = Alignment.Companion.Start,
-                modifier = Modifier.Companion.padding(start = 10.dp)
-            ) {
-                Text(
-                    text = name,
-                    style = Tema.Text_24_24_Bold,
-                    color = MainColor
-                )
-            }
-            Column(
-                horizontalAlignment = Alignment.Companion.End,
-                modifier = Modifier.Companion.fillMaxWidth()
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_round_log_out),
-                    contentDescription = "Выход",
-                    modifier = Modifier.Companion
-                        .size(50.dp)
-                        .clickable {
-                            Paper.book().delete("UserLocalInformation")
-                            navigator?.replaceAll(LogInScreen())
-                        },
-                    colorFilter = ColorFilter.Companion.tint(MainColor)
-                )
-            }
-        }
+                .size(50.dp)
+                .clickable {
+                    Paper.book().delete("UserLocalInformation")
+                    navigator?.replaceAll(LogInScreen())
+                },
+            colorFilter = ColorFilter.Companion.tint(MainColor)
+        )
     }
 }
 
@@ -180,7 +171,7 @@ private fun CardConstruct(
     mainText: String,
     secondText: String,
     icon: Int,
-    navigateOnScreen : () -> Unit
+    navigateOnScreen: () -> Unit
 ) {
     CustomCard(
         modifier = Modifier.Companion

@@ -21,6 +21,7 @@ import com.example.ozonchick_new_version.Common.localUserInformation
 import com.example.ozonchick_new_version.Data.model.ListOfVacancies.StatesOfGetVacancies
 import com.example.ozonchick_new_version.Data.strings.AppErrors
 import com.example.ozonchick_new_version.Presentation.Screens.ContactsScreen
+import com.example.ozonchick_new_version.Presentation.Screens.Search.SearchScreen
 import com.example.ozonchick_new_version.Presentation.States.DialogStates
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
@@ -116,7 +117,7 @@ private fun ListVacanciesScreenConstruct(
 
                 is ScreenState.Loading -> CustomLoading()
                 is ScreenState.Success -> {
-                    for (item in viewModel.listVacancies.value.vacanciesInfo) {
+                    for (item in viewModel.listVacancies.value.vacanciesInfo ?: emptyList()) {
                         VacancyCard(
                             item,
                             buttons = {
@@ -163,7 +164,7 @@ private fun ListVacanciesScreenConstruct(
                 }
 
                 is ScreenState.Error -> AlertText()
-                ScreenState.AwaitingChangeFromUser -> Unit
+                ScreenState.AwaitingChangeFromUser -> AlertText(AppErrors.NO_FIND_VACANCIES.description, true, backOn = {navigator?.push(SearchScreen(statesOfGetVacancies))})
                 ScreenState.AwaitingResponse -> Unit
             }
         }

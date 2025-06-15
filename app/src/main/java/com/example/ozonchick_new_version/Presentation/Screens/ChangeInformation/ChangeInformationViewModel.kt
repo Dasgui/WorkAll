@@ -11,6 +11,7 @@ import com.example.ozonchick_new_version.Data.model.Authentication.CandidateChan
 import com.example.ozonchick_new_version.Data.model.Ktor.AllTypeUserDefaultResponse
 import com.example.ozonchick_new_version.Data.model.Ktor.Authetication.CandidateInsertInformation
 import com.example.ozonchick_new_version.Data.model.Ktor.Authetication.EmployerInsertInformation
+import com.example.ozonchick_new_version.Data.model.Ktor.Authetication.EmployerUpdateInformation
 import com.example.ozonchick_new_version.Data.model.Ktor.DefaultCandidateResponse
 import com.example.ozonchick_new_version.Data.model.Ktor.DefaultEmployerResponse
 import com.example.ozonchick_new_version.Data.model.Ktor.ResponseInfoStatus
@@ -70,10 +71,10 @@ class ChangeInformationViewModel(
             viewModelScope.launch (Dispatchers.IO) {
                 screenState.value = ScreenState.Loading
                 val response = updateUserInformationViewModel.invoke(CandidateInsertInformation(email.value.trim(), name.value.trim(), password.value.trim(), phoneNumber.value.trim(), statusId.value),
-                    EmployerInsertInformation(email.value.trim(), inn = "", name.value.trim(), password.value.trim(), phoneNumber.value.trim(), statusId.value))
+                    EmployerUpdateInformation(email.value.trim(), name.value.trim(), password.value.trim(), phoneNumber.value.trim(), statusId.value))
                 when (response) {
                     is CustomResult.Failure -> {
-                        screenState.value = ScreenState.Failure(1, response.message);
+                        screenState.value = ScreenState.Failure(response.code, response.message);
                     }
                     is CustomResult.Success<ResponseInfoStatus> -> {
                         localUserInformation.name = name.value.trim()
@@ -85,7 +86,7 @@ class ChangeInformationViewModel(
             screenState.value = ScreenState.Error
         }
     }
-
+//    mob@mail.ru
     fun checkChanges() : Boolean {
         return FieldValidators.checkName(name.value) && FieldValidators.checkEmail(email.value)
                 && FieldValidators.checkPhoneNumber(phoneNumber.value) && FieldValidators.checkPassword(password.value)

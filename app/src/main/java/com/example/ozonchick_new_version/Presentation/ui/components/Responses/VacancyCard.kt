@@ -10,9 +10,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.example.ozonchick_new_version.Common.UserType
@@ -100,16 +105,19 @@ fun VacancyCard(
     colorBorder: Color = MainColor,
     textColor : Color = MainColor,
     backGroundColor : Color = BackgroundColor,
-    click : () -> Unit,
     mainTextVisible : Boolean
 ) {
     val navigator = LocalNavigator.current;
+    var visible by remember { mutableStateOf(true) }
+    if (mainTextVisible == false) {
+        visible = false
+    }
     CustomCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 20.dp)
             .clickable {
-                click()
+                visible = !visible
             },
         colorBorder = colorBorder,
         backGroundColor = backGroundColor
@@ -133,7 +141,20 @@ fun VacancyCard(
                         .padding(top = 10.dp),
                     verticalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
-                    buttons()
+                    if (mainTextVisible == false) {
+                        Text(
+                            text = "Вакансия скрыта",
+                            style = Tema.Text_20_20_Medium,
+                            textAlign = TextAlign.Center,
+                            color = MainColor
+                        )
+                    }
+
+                    if (visible == true) {
+                        buttons()
+                    }
+
+
                 }
             }
         }
@@ -156,7 +177,7 @@ private fun MainText(
             style = Tema.Text_24_24_Bold,
             color = textColor
         )
-        if (mainTextVisible) {
+        if (mainTextVisible == true) {
             RowTextImage(R.drawable.wallet_fill_icon, list.price.toString(), textColor = textColor)
 
             RowTextImage(R.drawable.organization_icon, localUserInformation.name, textColor = textColor)

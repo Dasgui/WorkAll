@@ -84,7 +84,7 @@ private fun LogInConstruct(
                         BottomBody(viewModel)
                         BottomText(
                             viewModel,
-                            onNavigateForSignUp = { navigator?.replaceAll(SignUpScreen()) })
+                            onNavigateForSignUp = { navigator?.push(SignUpScreen()) })
 
                     }
                     ScreenState.AwaitingResponse -> Unit

@@ -15,6 +15,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -171,14 +172,16 @@ private fun MainInformationVacancy (viewModel : EmployerDetailsVacancyViewModel)
             title = "Требуемая специальность*  ${viewModel.specialization.value.length}/50",
             field = viewModel.specialization,
             holderText = "",
-            maxChar = 50
+            maxChar = 50,
+            indicatorColor = if (viewModel.checkSpecialization(viewModel.specialization.value)) MainColor else Color.Red
         )
 
         NameTextField(
             title = "Заработная плата*  ${viewModel.price.value.length}/8",
             field = viewModel.price,
             holderText = "",
-            maxChar = 8
+            maxChar = 8,
+            indicatorColor = if (viewModel.checkPrice(viewModel.price.value)) MainColor else Color.Red
         )
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -212,24 +215,28 @@ private fun MainInformationVacancy (viewModel : EmployerDetailsVacancyViewModel)
                     }
                 },
                 singleLine = false,
+                indicatorColor = if (viewModel.checkAboutWork(viewModel.aboutWork.value)) MainColor else Color.Red
             )
         }
         NameTextField(
             title = "Номер телефона* ${viewModel.phoneNumber.value.length}/12",
             field = viewModel.phoneNumber,
             holderText = "",
-            maxChar = 12
+            maxChar = 12,
+            indicatorColor = if (viewModel.checkPhoneNumber(viewModel.phoneNumber.value)) MainColor else Color.Red
         )
         NameTextField(
             title = "Почта*",
             field = viewModel.email,
-            holderText = ""
+            holderText = "",
+            indicatorColor = if (viewModel.checkEmail(viewModel.email.value)) MainColor else Color.Red
         )
         NameTextField(
             title = "Расположение места работы*  ${viewModel.locationWork.value.length}/50",
             field = viewModel.locationWork,
             holderText = "",
-            maxChar = 50
+            maxChar = 50,
+            indicatorColor = if (viewModel.checkLocationWork(viewModel.locationWork.value)) MainColor else Color.Red
         )
         Text(
             text = "Требуемый опыт работы*",
@@ -245,7 +252,8 @@ private fun MainInformationVacancy (viewModel : EmployerDetailsVacancyViewModel)
                 viewModel.selectedExperience.value = experience
             },
             enabled = true,
-            itemToString = { it.name }
+            itemToString = { it.name },
+            indicatorColor = if (viewModel.checkExperience(viewModel.selectedExperience.value?.name) ?: false) MainColor else Color.Red
         )
         VerticalSpacer(10.dp)
         CheckBoxField(

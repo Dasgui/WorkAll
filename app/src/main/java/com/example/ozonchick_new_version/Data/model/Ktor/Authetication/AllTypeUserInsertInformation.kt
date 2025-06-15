@@ -22,3 +22,12 @@ data class EmployerInsertInformation(
     @SerialName("PhoneNumber") val phoneNumber: String = "",
     @SerialName("StatusID") val statusId: Int = 0
 ) : AllTypeUserInsertInformation
+
+@Serializable
+data class EmployerUpdateInformation(
+    @SerialName("Email") val email: String = "",
+    @SerialName("NameOrganization") val nameOrganization: String = "",
+    @SerialName("Password") val password: String = "",
+    @SerialName("PhoneNumber") val phoneNumber: String = "",
+    @SerialName("StatusID") val statusId: Int = 0
+) : AllTypeUserInsertInformation

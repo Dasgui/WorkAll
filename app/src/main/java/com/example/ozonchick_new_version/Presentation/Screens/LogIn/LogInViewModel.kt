@@ -43,7 +43,7 @@ class LogInViewModel(/*private val auth : AuthUseCase, */private val authKtorUse
     val buttonEnabled: MutableState<Boolean> = mutableStateOf(true)
 
     private val _emailUser: MutableStateFlow<String> =
-        MutableStateFlow("empmob@mail.ru") /*gaisich@inbox.ru*/ /*test07@inbox.ru*/ /*kol@inbox.ru*/
+        MutableStateFlow("") /*empmob@mail.ru*/
     var emailUser: StateFlow<String> = _emailUser.asStateFlow()
 
     fun setEmailUserFieldValue(newValue: String) {
@@ -52,7 +52,7 @@ class LogInViewModel(/*private val auth : AuthUseCase, */private val authKtorUse
 
 
     private val _passwordUser: MutableStateFlow<String> =
-        MutableStateFlow("1234") /*1234*/ /*test07*/ /*123*/
+        MutableStateFlow("") /*1234*/
     var passwordUser: StateFlow<String> = _passwordUser.asStateFlow()
 
     fun setPasswordUserFieldValue(newValue: String) {

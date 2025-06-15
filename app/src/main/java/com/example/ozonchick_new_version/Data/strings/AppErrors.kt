@@ -12,6 +12,8 @@ enum class AppErrors(val description : String) {
 
     UNKNOWN_USER("Извините, но похоже вы не зарегистрированы в нашей системе"),
     USER_EXIST("Извините, но похоже такой пользователь уже существует"),
+    USER_INFORMATION_BUSY("Извините, но такие данные уже используются"),
 
-
+    NO_EMPLOYER_VACANCIES("Извините, но вы ещё не создавали вакансии"),
+    NO_FIND_VACANCIES("Извините, но вакансия не найдена")
 }

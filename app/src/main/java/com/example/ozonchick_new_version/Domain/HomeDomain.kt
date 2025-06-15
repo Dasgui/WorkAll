@@ -8,6 +8,7 @@ import com.example.ozonchick_new_version.Data.model.Authentication.CandidateChan
 import com.example.ozonchick_new_version.Data.model.Ktor.AllTypeUserDefaultResponse
 import com.example.ozonchick_new_version.Data.model.Ktor.Authetication.CandidateInsertInformation
 import com.example.ozonchick_new_version.Data.model.Ktor.Authetication.EmployerInsertInformation
+import com.example.ozonchick_new_version.Data.model.Ktor.Authetication.EmployerUpdateInformation
 import com.example.ozonchick_new_version.Data.model.Ktor.ResponseInfoStatus
 import com.example.ozonchick_new_version.Data.model.Resume.EducationGet
 import com.example.ozonchick_new_version.Data.model.Resume.ExperienceGet
@@ -36,7 +37,7 @@ class GetUserInformationKtorUseCase(private val repository: HomeKtorRepository) 
 }
 
 class UpdateUserInformationKtorUseCase(private val repository: HomeKtorRepository) {
-    suspend operator fun invoke (candidateInformation : CandidateInsertInformation, employerInformation : EmployerInsertInformation) : CustomResult<ResponseInfoStatus> {
+    suspend operator fun invoke (candidateInformation : CandidateInsertInformation, employerInformation : EmployerUpdateInformation) : CustomResult<ResponseInfoStatus> {
         val type = localUserInformation.type
         return if (type is UserType.Employer) {
             repository.updateUserInformation(employerInformation, "emp")

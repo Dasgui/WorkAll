@@ -33,17 +33,24 @@ class EmployerVacanciesViewModel(
     val confirmDelete: MutableState<Boolean> = mutableStateOf(false)
     val vacancyId: MutableState<Int> = mutableIntStateOf(0)
 
-    val visibleButtons : MutableState<Boolean> = mutableStateOf(false)
+    val visibleButtons: MutableState<Boolean> = mutableStateOf(true)
 
     fun loadData() {
         viewModelScope.launch(Dispatchers.IO) {
 
             when (val curResult = getVacancies().await()) {
-                is CustomResult.Failure -> screenState.value =
-                    ScreenState.Failure(curResult.code, curResult.message)
+                is CustomResult.Failure -> {
+                    Log.d("Ошибка получ вакансии", "")
+                    screenState.value = ScreenState.Failure(curResult.code, curResult.message)
+                }
 
                 is CustomResult.Success<EmployerVacancies> -> {
-                    screenState.value = ScreenState.Success(curResult.data)
+                    if (curResult.data.vacanciesInfo == null) {
+                        screenState.value = ScreenState.AwaitingChangeFromUser
+                    } else {
+                        screenState.value = ScreenState.Success(curResult.data)
+                    }
+
                     Log.d("Вакансии работодателя", curResult.data.toString())
                 }
             }

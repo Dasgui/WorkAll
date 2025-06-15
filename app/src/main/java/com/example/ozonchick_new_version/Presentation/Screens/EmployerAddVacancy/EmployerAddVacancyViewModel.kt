@@ -36,14 +36,14 @@ class EmployerAddVacancyViewModel(
     private val getUserInformationUseCase: GetUserInformationKtorUseCase,
     private val getExperienceUseCase: GetAllExperienceKtorUseCase
 ) : ViewModel() {
-    val specialization: MutableState<String> = mutableStateOf("Программист тестировщик") /*"Программист станков"*/
-    val price: MutableState<String> = mutableStateOf("60000") /*"60000"*/
+    val specialization: MutableState<String> = mutableStateOf("") /*"Программист тестировщик"*/
+    val price: MutableState<String> = mutableStateOf("") /*"60000"*/
     val aboutWork: MutableState<String> =
-        mutableStateOf("Нужно будет тестировать") /*"Вам придстоит программировать станки и тд..."*/
+        mutableStateOf("") /*Нужно будет тестировать*/
 
-    val phoneNumber: MutableState<String> = mutableStateOf("+799999999999") /*"+74017321154"*/
-    val email: MutableState<String> = mutableStateOf("testimvmeste@mail.ru") /*"chunki@mail.ru"*/
-    val locationWork: MutableState<String> = mutableStateOf("Екатеренбург") /*"Челябинская область"*/
+    val phoneNumber: MutableState<String> = mutableStateOf("") /*+799999999999*/
+    val email: MutableState<String> = mutableStateOf("") /*"testimvmeste@mail.ru"*/
+    val locationWork: MutableState<String> = mutableStateOf("") /*"Екатеренбург"*/
 
     val experience: MutableState<String> = mutableStateOf("") /*"Более 5 лет"*/
 
@@ -55,6 +55,8 @@ class EmployerAddVacancyViewModel(
     val selectedExperience : MutableState<Experience?> = mutableStateOf(null)
     val experienceList: MutableState<List<Experience>> =
         mutableStateOf(emptyList())
+
+    val unCorrectInformation : MutableState<Boolean> = mutableStateOf(false)
 
     fun loadData () {
         viewModelScope.launch(Dispatchers.IO) {
@@ -105,10 +107,34 @@ class EmployerAddVacancyViewModel(
 
 
     fun checkFields () : Boolean {
-        return checkEmail(email.value) && checkPhoneNumber(phoneNumber.value) && checkPrice(price.value)
-                && aboutWork.value.isNotEmpty()
-                && locationWork.value.isNotEmpty() && price.value.isNotEmpty()
-                && specialization.value.isNotEmpty() && selectedExperience.value?.name?.isNotEmpty() == true
+        return if (
+            checkEmail(email.value) && checkPhoneNumber(phoneNumber.value) && checkPrice(price.value)
+            && checkAboutWork(aboutWork.value)
+            && checkLocationWork(locationWork.value) && checkPrice(price.value)
+            && checkSpecialization(specialization.value) && checkExperience(selectedExperience.value?.name) == true
+        ) {
+            true
+        }
+        else {
+            unCorrectInformation.value = true
+            false
+        }
+    }
+
+    fun checkSpecialization (specialization : String) : Boolean {
+        return specialization.isNotEmpty()
+    }
+
+    fun checkAboutWork (aboutWork : String) : Boolean {
+        return aboutWork.isNotEmpty()
+    }
+
+    fun checkLocationWork (locationWork : String) : Boolean {
+        return locationWork.isNotEmpty()
+    }
+
+    fun checkExperience (nameExperience : String?) : Boolean? {
+        return nameExperience?.isNotEmpty()
     }
 
     fun checkEmail (email : String) : Boolean {

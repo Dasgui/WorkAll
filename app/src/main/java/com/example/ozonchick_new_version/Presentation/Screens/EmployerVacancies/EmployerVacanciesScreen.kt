@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.example.ozonchick_new_version.Data.strings.AppErrors
 import com.example.ozonchick_new_version.Presentation.Screens.ContactsScreen
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerAddVacancy.EmployerAddVacancyScreen
 import com.example.ozonchick_new_version.Presentation.Screens.EmployerDetailsVacancy.EmployerDetailsVacancyScreen
@@ -86,8 +87,7 @@ private fun EmployerVacanciesConstruct(viewModel: EmployerVacanciesViewModel = k
                         .fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
-                    //ИЗМЕНИТЬ
-                    for (vacancy in curState.data.vacanciesInfo) {
+                    for (vacancy in curState.data.vacanciesInfo ?: emptyList()) {
                         VacancyCard(
                             vacancy,
                             buttons = {
@@ -97,80 +97,82 @@ private fun EmployerVacanciesConstruct(viewModel: EmployerVacanciesViewModel = k
                                         .padding(top = 10.dp),
                                     verticalArrangement = Arrangement.spacedBy(5.dp)
                                 ) {
-                                    if (vacancy.isVisible) {
-                                        CustomButton(
-                                            onClick = {
-                                                navigator?.push(
-                                                    EmployerDetailsVacancyScreen(vacancy.id)
-                                                )
-                                            },
-                                            placeText = "Изменить",
-                                            reverseColors = true,
-                                            modifier = Modifier.fillMaxWidth(),
-                                        )
-                                        CustomButton(
-                                            onClick = {
-                                                navigator?.push(EmployerResponsesScreen(vacancy.id))
-                                            },
-                                            placeText = "Соискатели",
-                                            reverseColors = true,
-                                            modifier = Modifier.fillMaxWidth(),
+                                    CustomButton(
+                                        onClick = {
+                                            navigator?.push(
+                                                EmployerDetailsVacancyScreen(vacancy.id)
+                                            )
+                                        },
+                                        placeText = "Изменить",
+                                        reverseColors = true,
+                                        modifier = Modifier.fillMaxWidth(),
+                                    )
+                                    CustomButton(
+                                        onClick = {
+                                            navigator?.push(EmployerResponsesScreen(vacancy.id))
+                                        },
+                                        placeText = "Соискатели",
+                                        reverseColors = true,
+                                        modifier = Modifier.fillMaxWidth(),
 
-                                            )
-                                        CustomButton(
-                                            onClick = {
-                                                viewModel.confirmDelete.value = true
-                                                viewModel.vacancyId.value = vacancy.id
-                                                Log.d("Id вакансии", viewModel.vacancyId.value.toString())
-                                            },
-                                            placeText = "Удалить",
-                                            modifier = Modifier.fillMaxWidth(),
                                         )
-                                    } else {
-                                        Text(
-                                            text = "Вакансия скрыта",
-                                            style = Tema.Text_20_20_Medium,
-                                            textAlign = TextAlign.Center,
-                                            color = MainColor
-                                        )
-                                        if (viewModel.visibleButtons.value) {
-                                            CustomButton(
-                                                onClick = {
-                                                    navigator?.push(
-                                                        EmployerDetailsVacancyScreen(vacancy.id)
-                                                    )
-                                                },
-                                                placeText = "Изменить",
-                                                reverseColors = true,
-                                                modifier = Modifier.fillMaxWidth(),
+                                    CustomButton(
+                                        onClick = {
+                                            viewModel.confirmDelete.value = true
+                                            viewModel.vacancyId.value = vacancy.id
+                                            Log.d(
+                                                "Id вакансии",
+                                                viewModel.vacancyId.value.toString()
                                             )
-                                            CustomButton(
-                                                onClick = {
-                                                    navigator?.push(EmployerResponsesScreen(vacancy.id))
-                                                },
-                                                placeText = "Соискатели",
-                                                reverseColors = true,
-                                                modifier = Modifier.fillMaxWidth(),
+                                        },
+                                        placeText = "Удалить",
+                                        modifier = Modifier.fillMaxWidth(),
+                                    )
 
-                                                )
-                                            CustomButton(
-                                                onClick = {
-                                                    viewModel.confirmDelete.value = true
-                                                    viewModel.vacancyId.value = vacancy.id
-                                                    Log.d("Id вакансии", viewModel.vacancyId.value.toString())
-                                                },
-                                                placeText = "Удалить",
-                                                modifier = Modifier.fillMaxWidth(),
-                                            )
-                                        }
-                                    }
+//                                    if (vacancy.isVisible) {
+//                                        CustomButton(
+//                                            onClick = {
+//                                                navigator?.push(
+//                                                    EmployerDetailsVacancyScreen(vacancy.id)
+//                                                )
+//                                            },
+//                                            placeText = "Изменить",
+//                                            reverseColors = true,
+//                                            modifier = Modifier.fillMaxWidth(),
+//                                        )
+//                                        CustomButton(
+//                                            onClick = {
+//                                                navigator?.push(EmployerResponsesScreen(vacancy.id))
+//                                            },
+//                                            placeText = "Соискатели",
+//                                            reverseColors = true,
+//                                            modifier = Modifier.fillMaxWidth(),
+//
+//                                            )
+//                                        CustomButton(
+//                                            onClick = {
+//                                                viewModel.confirmDelete.value = true
+//                                                viewModel.vacancyId.value = vacancy.id
+//                                                Log.d("Id вакансии", viewModel.vacancyId.value.toString())
+//                                            },
+//                                            placeText = "Удалить",
+//                                            modifier = Modifier.fillMaxWidth(),
+//                                        )
+//                                    } else {
+//                                        Text(
+//                                            text = "Вакансия скрыта",
+//                                            style = Tema.Text_20_20_Medium,
+//                                            textAlign = TextAlign.Center,
+//                                            color = MainColor
+//                                        )
+//                                    }
                                 }
 
                             },
-                            click = {
-                                viewModel.visibleButtons.value = !viewModel.visibleButtons.value
-                            },
-                            mainTextVisible = viewModel.visibleButtons.value && vacancy.isVisible
+//                            click = {
+//                                vacancy.isVisible = !vacancy.isVisible
+//                            },
+                            mainTextVisible = vacancy.isVisible
                         )
                     }
                 }
@@ -178,7 +180,7 @@ private fun EmployerVacanciesConstruct(viewModel: EmployerVacanciesViewModel = k
             }
 
             ScreenState.Error -> AlertText()
-            ScreenState.AwaitingChangeFromUser -> Unit
+            ScreenState.AwaitingChangeFromUser -> AlertText(AppErrors.NO_EMPLOYER_VACANCIES.description)
             ScreenState.AwaitingResponse -> Unit
         }
     }

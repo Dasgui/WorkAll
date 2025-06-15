@@ -3,10 +3,11 @@ package com.example.ozonchick_new_version.Presentation.ui.theme
 import androidx.compose.ui.graphics.Color
 //Основные цветаа
 val MainColor = Color(0xFFFFFFFF)
-val SecondColor = Color(0xFF00FF37)
-val BackgroundColor = Color(0xFF2F80ED)
+val SecondColor = Color(0xFF48CAE4)
+val BackgroundColor = Color(0xFF023E8A)
+val TransparentMainColor = Color(0xFFD2D2D2)
 
-val EnabledColor = Color(0xFF283E57)
+val EnabledColor = Color(0xFF0077B6)
 val SwitchOffColor = Color(0x80FFFFFF)
 
 //основные цвета текста
@@ -16,7 +17,7 @@ val Gray_Color_Active_SideText = Color(0xFFCFCFCF)
 
 val Text_Color_Active = Color(0xFF3A3A3A)
 
-val Color_Red = Color(0xFFED3A3A)
+val Color_Red = Color(0xFFee204d)
 val Switch_Color_Track = Color(0xFFD6D6D6)
 
 //цвета кнопок

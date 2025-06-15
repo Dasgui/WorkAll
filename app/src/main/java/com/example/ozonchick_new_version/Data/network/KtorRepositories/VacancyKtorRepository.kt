@@ -194,6 +194,7 @@ class VacancyKtorRepositoryImpl : VacancyKtorRepository {
             }
             if (response.status.isSuccess()) {
                 val result = json.decodeFromString<EmployerVacancies>(response.bodyAsText())
+                Log.d("Тело резудьтата", result.toString())
                 CustomResult.Success(result)
             } else {
                 CustomResult.Failure(

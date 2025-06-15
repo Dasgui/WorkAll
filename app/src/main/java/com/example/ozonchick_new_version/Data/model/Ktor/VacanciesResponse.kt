@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class VacanciesResponse(
     @SerialName("Status") val status: String,
-    @SerialName("VacancyInfo") val vacanciesInfo: List<VacancyInformation>
+    @SerialName("VacancyInfo") val vacanciesInfo: List<VacancyInformation>?
 )
 
 @Serializable

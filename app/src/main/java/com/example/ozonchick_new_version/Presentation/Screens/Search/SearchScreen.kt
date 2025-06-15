@@ -23,6 +23,8 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import com.example.ozonchick_new_version.Data.model.Ktor.Experience
 import com.example.ozonchick_new_version.Data.model.ListOfVacancies.StatesOfGetVacancies
+import com.example.ozonchick_new_version.Data.strings.AppErrors
+import com.example.ozonchick_new_version.Domain.FieldValidators
 import com.example.ozonchick_new_version.Presentation.Screens.ListVacancies.ListVacanciesScreen
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
@@ -75,7 +77,14 @@ private fun SearchConstruct(
         val localState = viewModel.screenState.collectAsState()
         when (val curState = localState.value) {
             ScreenState.AwaitingChangeFromUser -> Unit
-            ScreenState.AwaitingResponse -> Unit
+            ScreenState.AwaitingResponse -> {
+                FailAlertDialog(
+                    title = "Ошибка",
+                    "Вы кажется ошиблись при вводе минимальной зарплаты",
+                    onOkClick = {
+                        viewModel.screenState.value = ScreenState.AwaitingChangeFromUser
+                    })
+            }
             ScreenState.Error -> AlertText()
             is ScreenState.Failure -> {
                 FailAlertDialog(
@@ -307,23 +316,31 @@ private fun FilterDropMenu(
 fun BottomButtons(viewModel: SearchViewModel, navigator: Navigator?) {
     CustomButton(
         onClick = {
-            navigator?.replaceAll(
-                ListVacanciesScreen(
-                    viewModel.getStatesOfGetVacancies()
+            if (viewModel.checkSalary.value && !FieldValidators.checkDigit(viewModel.minSalaryText.value)) {
+                viewModel.screenState.value = ScreenState.AwaitingResponse
+            } else {
+                navigator?.replaceAll(
+                    ListVacanciesScreen(
+                        viewModel.getStatesOfGetVacancies()
+                    )
                 )
-            )
+            }
         },
         placeText = "Найти вакансии"
     )
     VerticalSpacer(10.dp)
     CustomButton(
         onClick = {
-            viewModel.resetFilters()
-            navigator?.replaceAll(
-                ListVacanciesScreen(
-                    viewModel.getStatesOfGetVacancies()
+            if (viewModel.checkSalary.value && !FieldValidators.checkDigit(viewModel.minSalaryText.value)) {
+                viewModel.screenState.value = ScreenState.AwaitingResponse
+            } else {
+                viewModel.resetFilters()
+                navigator?.replaceAll(
+                    ListVacanciesScreen(
+                        viewModel.getStatesOfGetVacancies()
+                    )
                 )
-            )
+            }
 //            navigator?.replaceAll(
 //                ListVacanciesScreen(
 //                    StatesOfGetVacancies.Normal

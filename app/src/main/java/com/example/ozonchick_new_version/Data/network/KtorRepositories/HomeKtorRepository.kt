@@ -45,8 +45,8 @@ class HomeKtorRepositoryImpl : HomeKtorRepository {
             val (endpoint, paramName) = when (userType) {
                 is UserType.Employer -> Pair("emp", "EmployerID")
                 is UserType.Candidate -> Pair("user", "CandidateID")
-                UserType.Admin -> TODO()
-                UserType.None -> TODO()
+                UserType.Admin -> Pair("", "")
+                UserType.None -> Pair("", "")
             }
 
             val response = client.get(endpoint) {
@@ -85,6 +85,8 @@ class HomeKtorRepositoryImpl : HomeKtorRepository {
         endpoint: String
     ): CustomResult<ResponseInfoStatus> {
         return try {
+            Log.d("Тело обновления", information.toString())
+            Log.d("EndPoint", endpoint)
             val token = localUserInformation.token
             val response = client.put(endpoint) {
                 headers {
@@ -99,7 +101,7 @@ class HomeKtorRepositoryImpl : HomeKtorRepository {
                 CustomResult.Success(result)
             } else {
                 Log.d("Ошибка обновления Ktor", response.body())
-                Failure(0, AppErrors.USER_EXIST.description)
+                Failure(0, AppErrors.USER_INFORMATION_BUSY.description)
             }
         } catch (ex: Exception) {
             Log.d("Ошибка обновления", ex.toString())

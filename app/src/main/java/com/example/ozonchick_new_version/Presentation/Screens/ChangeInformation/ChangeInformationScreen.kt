@@ -12,11 +12,13 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.example.ozonchick_new_version.Data.strings.AppErrors
+import com.example.ozonchick_new_version.Domain.FieldValidators
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.States.TextFieldStates
@@ -59,13 +61,12 @@ private fun ChangeInformationConstruct (viewModel: ChangeInformationViewModel = 
                         })
                 }
                 is ScreenState.Failure -> {
-                    AlertText()
-//                    FailAlertDialog(
-//                        title = "Ошибка",
-//                        curState.message,
-//                        onOkClick = {
-//                            viewModel.screenState.value = ScreenState.Awaiting
-//                        })
+                    FailAlertDialog(
+                        title = "Ошибка",
+                        curState.message,
+                        onOkClick = {
+                            viewModel.screenState.value = ScreenState.AwaitingChangeFromUser
+                        })
                 }
                 ScreenState.Loading -> CustomLoading()
                 is ScreenState.Success<*> -> {
@@ -85,6 +86,7 @@ private fun ChangeInformationConstruct (viewModel: ChangeInformationViewModel = 
                             text = "Почта",
                             image = R.drawable.email,
                             changeValue = viewModel.email,
+                            indicatorColor = if (FieldValidators.checkEmail(viewModel.email.value)) MainColor else Color.Red
                         )
                         VerticalSpacer(30.dp)
 
@@ -92,7 +94,8 @@ private fun ChangeInformationConstruct (viewModel: ChangeInformationViewModel = 
                             text = "Пароль",
                             image = R.drawable.password_icon,
                             changeValue = viewModel.password,
-                            isPassword = true
+                            isPassword = true,
+                            indicatorColor = if (FieldValidators.checkPassword(viewModel.password.value)) MainColor else Color.Red
                         )
                         VerticalSpacer(30.dp)
 
@@ -100,6 +103,7 @@ private fun ChangeInformationConstruct (viewModel: ChangeInformationViewModel = 
                             text = "ФИО",
                             image = R.drawable.profile,
                             changeValue = viewModel.name,
+                            indicatorColor = if (FieldValidators.checkName(viewModel.name.value)) MainColor else Color.Red
                         )
                         VerticalSpacer(30.dp)
 
@@ -107,7 +111,8 @@ private fun ChangeInformationConstruct (viewModel: ChangeInformationViewModel = 
                             text = "Номер телефона",
                             image = R.drawable.call,
                             changeValue = viewModel.phoneNumber,
-                            maxChars = 12
+                            maxChars = 12,
+                            indicatorColor = if (FieldValidators.checkPhoneNumber(viewModel.phoneNumber.value)) MainColor else Color.Red
 
                         )
 
@@ -136,6 +141,7 @@ private fun TextFieldRowInformation (
     changeValue : MutableState<String>,
     isPassword : Boolean = false,
     maxChars : Int = Int.MAX_VALUE,
+    indicatorColor : Color = MainColor
 ) {
     RowInformation(
         text = text,
@@ -145,7 +151,8 @@ private fun TextFieldRowInformation (
     CustomOutlinedTextField(
         value = changeValue.value,
         onValueChange = {if ( it.length <= maxChars) changeValue.value = it},
-        states = if (isPassword) TextFieldStates.Password else TextFieldStates.Normal
+        states = if (isPassword) TextFieldStates.Password else TextFieldStates.Normal,
+        indicatorColor = indicatorColor
     )
 }
 
