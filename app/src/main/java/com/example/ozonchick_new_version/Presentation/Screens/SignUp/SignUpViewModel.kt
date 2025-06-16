@@ -115,6 +115,10 @@ class SignUpViewModel(
         return name.value.trim().matches(Regex(AuthenticationRegexPatterns.name)) && secondName.value.trim().matches(Regex(AuthenticationRegexPatterns.name))
     }
 
+    fun checkOrganizationName() : Boolean {
+        return organizationName.value.trim().matches(Regex(AuthenticationRegexPatterns.organizationName))
+    }
+
     fun checkEmail () : Boolean {
         return email.value.trim().matches(Regex(AuthenticationRegexPatterns.email))
     }

@@ -78,6 +78,7 @@ fun SignUpConstruct(viewModel: SignUpViewModel = koinViewModel(), onNavigateForL
                     navigator?.replaceAll(LogInScreen())
                 })
         }
+
         ScreenState.Error -> Unit
         ScreenState.AwaitingChangeFromUser -> Unit
         ScreenState.AwaitingResponse -> Unit
@@ -123,20 +124,22 @@ private fun MainBody(viewModel: SignUpViewModel) {
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(25.dp)
     ) {
-        NameTextField(
-            title = "Имя",
-            holderText = "Василий",
-            field = viewModel.name,
-            maxChar = 21,
-            indicatorColor = if (FieldValidators.checkName(viewModel.name.value)) MainColor else TransparentMainColor
-        )
-        NameTextField(
-            title = "Фамилия",
-            holderText = "Иванович",
-            field = viewModel.secondName,
-            maxChar = 21,
-            indicatorColor = if (FieldValidators.checkName(viewModel.secondName.value)) MainColor else TransparentMainColor
-        )
+        if (viewModel.userRole.value is UserType.Candidate) {
+            NameTextField(
+                title = "Имя",
+                holderText = "Василий",
+                field = viewModel.name,
+                maxChar = 21,
+                indicatorColor = if (FieldValidators.checkName(viewModel.name.value)) MainColor else TransparentMainColor
+            )
+            NameTextField(
+                title = "Фамилия",
+                holderText = "Иванович",
+                field = viewModel.secondName,
+                maxChar = 21,
+                indicatorColor = if (FieldValidators.checkName(viewModel.secondName.value)) MainColor else TransparentMainColor
+            )
+        }
         NameTextField(
             title = "Номер телефона",
             holderText = "+7**********",
@@ -227,13 +230,14 @@ private fun Bottom(viewModel: SignUpViewModel, onNavigateForLogIn: () -> Unit) {
             onClick = {
                 if (viewModel.userRole.value == UserType.Employer) {
                     if (
-                        viewModel.checkEmail() && viewModel.checkName()
+                        viewModel.checkEmail() && viewModel.checkOrganizationName()
                         && viewModel.checkInn() && viewModel.checkPhoneNumber()
                         && viewModel.checkPasswordMatch()
                     ) {
                         viewModel.registration()
                     } else {
-                        viewModel.screenState.value = ScreenState.Failure(0, AppErrors.INCORRECT_VALUES.description)
+                        viewModel.screenState.value =
+                            ScreenState.Failure(0, AppErrors.INCORRECT_VALUES.description)
                     }
                 } else if (viewModel.userRole.value == UserType.Candidate) {
                     if (
@@ -243,7 +247,8 @@ private fun Bottom(viewModel: SignUpViewModel, onNavigateForLogIn: () -> Unit) {
                     ) {
                         viewModel.registration()
                     } else {
-                        viewModel.screenState.value = ScreenState.Failure(0, AppErrors.INCORRECT_VALUES.description)
+                        viewModel.screenState.value =
+                            ScreenState.Failure(0, AppErrors.INCORRECT_VALUES.description)
                     }
                 }
             },

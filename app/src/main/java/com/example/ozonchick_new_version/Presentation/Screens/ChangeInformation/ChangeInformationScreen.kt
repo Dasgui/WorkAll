@@ -17,6 +17,8 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import com.example.ozonchick_new_version.Common.UserType
+import com.example.ozonchick_new_version.Common.localUserInformation
 import com.example.ozonchick_new_version.Data.strings.AppErrors
 import com.example.ozonchick_new_version.Domain.FieldValidators
 import com.example.ozonchick_new_version.Presentation.States.ScaffoldStates
@@ -100,7 +102,7 @@ private fun ChangeInformationConstruct (viewModel: ChangeInformationViewModel = 
                         VerticalSpacer(30.dp)
 
                         TextFieldRowInformation(
-                            text = "ФИО",
+                            text = if (localUserInformation.type is UserType.Candidate) "ФИО" else "Название компании",
                             image = R.drawable.profile,
                             changeValue = viewModel.name,
                             indicatorColor = if (FieldValidators.checkName(viewModel.name.value)) MainColor else Color.Red
