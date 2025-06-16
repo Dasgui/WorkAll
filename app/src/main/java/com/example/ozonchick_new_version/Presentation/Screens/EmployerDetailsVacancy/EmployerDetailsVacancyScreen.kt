@@ -76,7 +76,7 @@ private fun EmployerDetailsVacancyConstruct(
     }
 
     if (viewModel.confirmCharge.value) {
-        CustomDialog(
+        FailAlertDialog(
             onConfirmation = {
                 Log.d("Начало обновления", "Rjfds")
                 viewModel.updateDescriptionInformation(

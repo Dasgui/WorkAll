@@ -22,6 +22,7 @@ import com.example.ozonchick_new_version.Presentation.Screens.ListVacancies.List
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
 import com.example.ozonchick_new_version.Presentation.Screens.Profile.ProfileScreen
 import com.example.ozonchick_new_version.Presentation.Screens.Resume.ResumeScreen
+import com.example.ozonchick_new_version.Presentation.Screens.Settings.SettingsScreen
 import com.example.ozonchick_new_version.R
 import com.example.ozonchick_new_version.Screens.SignUpLogIn.SignUp.SignUpScreen
 
@@ -34,7 +35,7 @@ class SplashScreen : Screen {
                 navigator?.replaceAll(LogInScreen())
             },
             onNavigateForHome = {
-                navigator?.replaceAll(ListVacanciesScreen())
+                navigator?.replaceAll(/*EmployerAddVacancyScreen()*/ ListVacanciesScreen())
 //                navigator?.replaceAll(Settings_Screen())
             }
         )

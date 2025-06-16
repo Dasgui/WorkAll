@@ -34,7 +34,7 @@ fun CustomButton(
         disabledContainerColor = if (reverseColors) mainColor else backgroundColor,
         disabledContentColor = if (reverseColors) backgroundColor else mainColor
     ),
-    border : BorderStroke? = BorderStroke(1.dp, MainColor)
+    border : BorderStroke? = BorderStroke(1.dp, mainColor)
 ) {
     Button(
         onClick = onClick,

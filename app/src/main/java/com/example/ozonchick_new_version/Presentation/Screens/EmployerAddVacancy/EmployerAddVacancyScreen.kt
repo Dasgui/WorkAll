@@ -72,7 +72,7 @@ fun EmployerAddVacancyConstruct(viewModel: EmployerAddVacancyViewModel = koinVie
             ScreenState.AwaitingResponse -> Unit
         }
         if (viewModel.confirmCharge.value) {
-            CustomDialog(
+            FailAlertDialog(
                 onConfirmation = {
                     viewModel.addVacancy(navigator)
                     viewModel.confirmCharge.value = false

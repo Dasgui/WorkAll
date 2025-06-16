@@ -64,6 +64,7 @@ import com.example.ozonchick_new_version.Presentation.Screens.Profile.ProfileVie
 import com.example.ozonchick_new_version.Presentation.Screens.Responses.ResponsesViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.Resume.ResumeViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.Search.SearchViewModel
+import com.example.ozonchick_new_version.Presentation.Screens.Settings.SettingsViewModel
 import com.example.ozonchick_new_version.Presentation.Screens.SignUp.SignUpViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -171,5 +172,9 @@ var AppModule = module {
     factory { GetCandidateResumeUseCase(get()) }
     viewModel {
             (resumeId : Int) -> EmployerCandidateInformationViewModel(resumeId, get())
+    }
+
+    viewModel {
+        SettingsViewModel()
     }
 }

@@ -1,11 +1,31 @@
 package com.example.ozonchick_new_version.Presentation.ui.theme
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import com.example.ozonchick_new_version.Common.localAppTheme
+
 //Основные цветаа
-val MainColor = Color(0xFFFFFFFF)
-val SecondColor = Color(0xFF48CAE4)
-val BackgroundColor = Color(0xFF023E8A)
-val TransparentMainColor = Color(0xFFD2D2D2)
+var MainColor by mutableStateOf(localAppTheme.mainColor)
+var SecondColor by mutableStateOf(localAppTheme.secondColor)
+var BackgroundColor by mutableStateOf(localAppTheme.backgroundColor)
+var TransparentMainColor by mutableStateOf(localAppTheme.transparentColor)
+
+val FirstMainColor = Color(0xFFFFFFFF)
+val FirstSecondColor = Color(0xFF48CAE4)
+val FirstBackgroundColor = Color(0xFF023E8A)
+val FirstTransparentMainColor = Color(0xFFD2D2D2)
+
+val SecondMainColor = Color(0xFFFFFFFF)
+var SecondSecondColor = Color(0xFFcecece)
+val SecondBackgroundColor = Color(0xFF000000)
+val SecondTransparentMainColor = Color(0xFFD2D2D2)
+
+val ThirdMainColor = Color(0xFFa9dd38)
+val ThirdSecondColor = Color(0xFFe0e0e0)
+val ThirdBackgroundColor = Color(0xFF000000)
+val ThirdTransparentMainColor = Color(0xFF97C533)
 
 val EnabledColor = Color(0xFF0077B6)
 val SwitchOffColor = Color(0x80FFFFFF)

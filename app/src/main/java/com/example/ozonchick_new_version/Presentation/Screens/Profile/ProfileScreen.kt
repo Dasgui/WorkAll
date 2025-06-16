@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -22,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -34,6 +37,7 @@ import com.example.ozonchick_new_version.Common.publicUserId
 import com.example.ozonchick_new_version.Presentation.Screens.ChangeInformation.ChangeInformationScreen
 import com.example.ozonchick_new_version.Presentation.Screens.LogIn.LogInScreen
 import com.example.ozonchick_new_version.Presentation.Screens.Resume.ResumeScreen
+import com.example.ozonchick_new_version.Presentation.Screens.Settings.SettingsScreen
 import com.example.ozonchick_new_version.Presentation.States.ScreenState
 import com.example.ozonchick_new_version.Presentation.ui.components.AlertText
 import com.example.ozonchick_new_version.Presentation.ui.components.CustomCard
@@ -46,6 +50,7 @@ import com.example.ozonchick_new_version.Presentation.ui.theme.MainColor
 import com.example.ozonchick_new_version.R
 import io.paperdb.Paper
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.component.getScopeName
 
 class ProfileScreen() : Screen {
     @Composable
@@ -125,6 +130,7 @@ private fun ScreenHead(
                 .size(50.dp)
                 .clickable {
                     Paper.book().delete("UserLocalInformation")
+                    Paper.book().delete("UserLocalAppTheme")
                     navigator?.replaceAll(LogInScreen())
                 },
             colorFilter = ColorFilter.Companion.tint(MainColor)
@@ -153,6 +159,16 @@ private fun ScreenBody(navigator: Navigator?) {
                 navigator?.push(ChangeInformationScreen())
             }
         )
+
+        CardConstruct(
+            "Настройки",
+            "Здесь вы можете изменить цветовую схему приложения",
+            Icons.Outlined.Settings,
+            navigateOnScreen = {
+                navigator?.push(SettingsScreen())
+            }
+        )
+
         if (localUserInformation.type is UserType.Candidate) {
             CardConstruct(
                 "Ваше резюме",
@@ -193,6 +209,32 @@ private fun CardConstruct(
 }
 
 @Composable
+private fun CardConstruct(
+    mainText: String,
+    secondText: String,
+    icon: ImageVector,
+    navigateOnScreen: () -> Unit
+) {
+    CustomCard(
+        modifier = Modifier.Companion
+            .fillMaxWidth()
+            .padding(vertical = 13.dp)
+            .height(80.dp)
+            .clickable { navigateOnScreen() },
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(start = 12.dp, end = 12.dp)
+                .fillMaxSize(),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.Companion.CenterVertically
+        ) {
+            CardMain(mainText = mainText, secondText = secondText, icon = icon)
+        }
+    }
+}
+
+@Composable
 private fun CardMain(
     mainText: String,
     secondText: String,
@@ -206,6 +248,42 @@ private fun CardMain(
         Icon(
             modifier = Modifier.size(25.dp),
             painter = painterResource(id = icon),
+            contentDescription = "Значок",
+            tint = MainColor
+        )
+        Column(
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.SpaceAround,
+            modifier = Modifier.padding(start = 10.dp)
+        ) {
+            Text(
+                text = mainText,
+                style = Tema.Text_24_24_Bold,
+                color = MainColor,
+            )
+            Text(
+                text = secondText,
+                style = Tema.Text_18_18_Medium,
+                color = MainColor,
+            )
+        }
+    }
+}
+
+@Composable
+private fun CardMain(
+    mainText: String,
+    secondText: String,
+    icon: ImageVector
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceAround
+    ) {
+        Icon(
+            modifier = Modifier.size(25.dp),
+            imageVector = icon,
             contentDescription = "Значок",
             tint = MainColor
         )

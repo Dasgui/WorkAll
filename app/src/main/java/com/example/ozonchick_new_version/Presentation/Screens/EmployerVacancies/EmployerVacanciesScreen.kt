@@ -72,7 +72,7 @@ private fun EmployerVacanciesConstruct(viewModel: EmployerVacanciesViewModel = k
             is ScreenState.Loading -> CustomLoading()
             is ScreenState.Success -> {
                 if (viewModel.confirmDelete.value) {
-                    CustomDialog(
+                    FailAlertDialog(
                         onConfirmation = {
                             viewModel.deleteVacancy(viewModel.vacancyId.value)
                             viewModel.confirmDelete.value = false
