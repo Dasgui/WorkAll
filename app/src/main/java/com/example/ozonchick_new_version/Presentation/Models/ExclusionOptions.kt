@@ -9,6 +9,7 @@ sealed class ExclusionOptions(val message : String, val id : Int) {
     data object NullResponses : ExclusionOptions("Похоже вы ещё не откликались на вакансии", 5)
     data object NullCandidates : ExclusionOptions("Похоже пока не один соискатель не откликнулся на вакансию", 6)
     data object NullResume : ExclusionOptions("Простите, но пользователь пока не указал информацию про себя", 7)
+    data object UserBlock : ExclusionOptions("Извините, но вы заблокированы", 8)
 }
 
 sealed class TextFieldError {

@@ -15,5 +15,6 @@ enum class AppErrors(val description : String) {
     USER_INFORMATION_BUSY("Извините, но такие данные уже используются"),
 
     NO_EMPLOYER_VACANCIES("Извините, но вы ещё не создавали вакансии"),
-    NO_FIND_VACANCIES("Извините, но вакансия не найдена")
+    NO_FIND_VACANCIES("Извините, но вакансия не найдена"),
+
 }

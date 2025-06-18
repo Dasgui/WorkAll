@@ -13,6 +13,7 @@ import com.example.ozonchick_new_version.Data.model.Ktor.VacanciesResponse
 import com.example.ozonchick_new_version.Data.network.client
 import com.example.ozonchick_new_version.Data.network.json
 import com.example.ozonchick_new_version.Data.strings.AppErrors
+import com.example.ozonchick_new_version.Data.strings.userStatuses
 import com.example.ozonchick_new_version.Presentation.Models.ExclusionOptions
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -64,6 +65,9 @@ class AuthenticationKtorRepositoryImpl : AuthenticationKtorRepository {
                 var body: String = candidateResponse.body()
                 Log.d("Результат входа работодат Ktor", body.toString())
                 val result = json.decodeFromString<AllTypeUserInfo>(body)
+                if (result.employerInfo?.status?.id == 9 || result.candidateInfo?.statusInfo?.id == 9) {
+                    return Failure(ExclusionOptions.UserBlock.id, ExclusionOptions.UserBlock.message)
+                }
                 return CustomResult.Success(result)
             } else {
                 Log.d("Результат входа работодат Ktor", candidateResponse.status.toString())
