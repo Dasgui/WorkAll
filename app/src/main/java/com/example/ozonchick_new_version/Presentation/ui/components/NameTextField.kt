@@ -88,7 +88,6 @@ fun NameTextField(
         )
         CustomOutlinedTextField(
             value = information,
-            modifier = Modifier.fillMaxWidth().height(height),
             onValueChange = {},
             enabled = enabled,
             singleLine = singleLine,

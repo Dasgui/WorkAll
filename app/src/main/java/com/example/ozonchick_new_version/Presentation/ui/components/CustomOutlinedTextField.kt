@@ -39,11 +39,11 @@ fun CustomOutlinedTextField(
     states: TextFieldStates = TextFieldStates.Normal,
     placeText: String = "",
     modifier: Modifier = Modifier
-        .fillMaxWidth()
-        .height(55.dp),
+        .fillMaxWidth(),
     enabled: Boolean = true,
     singleLine: Boolean = true,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
+    minLines : Int = 1,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     placeholder: @Composable() (() -> Unit)? = null,
     leadingIcon: @Composable() (() -> Unit)? = null,
@@ -96,6 +96,7 @@ fun CustomOutlinedTextField(
             else -> trailingIcon
         },
         maxLines = maxLines,
+        minLines = minLines,
         singleLine = singleLine,
         colors = TextFieldDefaults.colors(
             focusedContainerColor = BackgroundColor,

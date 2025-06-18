@@ -139,7 +139,8 @@ private fun SuccessBody (
         spaceBy = 10.dp,
         information = information.resumesInfo?.firstOrNull()?.description ?: "",
         enabled = false,
-        singleLine = false
+        singleLine = false,
+//        height = 500.dp
     )
 }
 
